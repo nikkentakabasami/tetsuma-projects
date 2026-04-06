@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+
+<script src="../../jquery31/js/jquery.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/tabbed-panel.css">
+<link rel="stylesheet" type="text/css" href="../css/accord.css">
+<link rel="stylesheet" type="text/css" href="../css/acc-form-elements.css">
+<link rel="stylesheet" type="text/css" href="../css/demo-base.css">
+<script src="../js/demo-base-log.js"></script>
+<script src="../js/demo-base.js"></script>
+<script type="module" src="../js/accord-publish.js"></script>
+
+
+<script type="module" src="js/015-tabbed-panel-demo.js"></script>
+
+<style>
+
+#myTabbedPanel1 {
+  width: 500px;
+    height: 300px;
+}
+
+
+</style>
+
+
+</head>
+<body class="acc-default-font">
+
+
+  <div class="acc-button-panel">
+    <button id="b1" type="button" class="acc-btn">Активировать</button>
+  </div>
+  
+	<h2>Панель с закладками, содержащая изначально все стили</h2>
+
+
+	<div id="myTabbedPanel1" class="tabbed-panel" style="width: 100%;">
+
+		<div class="tab-container">
+			<button class="tab active" data-tab="1">Закладка 1</button>
+			<button class="tab" data-tab="2">Закладка 2</button>
+			<button class="tab" data-tab="3">Закладка 3</button>
+			<div class="tab-filler"></div>
+		</div>
+
+		<div id="tab-1" class="tab-content active">
+			<h3>Содержимое закладки 1</h3>
+			<p>Это содержимое для первой закладки.</p>
+		</div>
+
+		<div id="tab-2" class="tab-content">
+			<h3>Содержимое закладки 2</h3>
+			<p>Это содержимое для второй закладки.</p>
+		</div>
+
+		<div id="tab-3" class="tab-content">
+			<h3>Содержимое закладки 3</h3>
+			<p>Это содержимое для третьей закладки.</p>
+		</div>
+
+	</div>
+
+
+  <h2>Упрощённая панель с закладками, все стили добавятся при активации</h2>
+
+  <div id="myTabbedPanel2" style="width: 100%;">
+
+    <div class="tab-container">
+      <button>Закладка 1</button>
+      <button>Закладка 2</button>
+      <button>Закладка 3</button>
+    </div>
+
+    <div class="tab-content">
+      <h3>Содержимое закладки 1</h3>
+      <p>Это содержимое для первой закладки.</p>
+    </div>
+
+    <div class="tab-content">
+      <h3>Содержимое закладки 2</h3>
+      <p>Это содержимое для второй закладки.</p>
+    </div>
+
+    <div class="tab-content">
+      <h3>Содержимое закладки 3</h3>
+      <p>Это содержимое для третьей закладки.</p>
+    </div>
+
+  </div>
+
+
+
+</body>
+</html>

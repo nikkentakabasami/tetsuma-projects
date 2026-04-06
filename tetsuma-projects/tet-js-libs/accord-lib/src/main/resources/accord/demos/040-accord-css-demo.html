@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+
+<!-- jquery 3.1 -->
+<script src="../../jquery31/js/jquery.js"></script>
+<script src="../../jquery31/js/jquery.bootpag.min.js"></script>
+<script src="../../jquery31/js/jquery.form-validator.min.js"></script>
+
+<!-- accord - мои вспомогательные компоненты, классы, утилиты -->
+<link rel="stylesheet" type="text/css" href="../css/accord.css">
+<script type="module" src="../js/accord-publish.js"></script>
+
+</head>
+<body class="acc-default-font">
+
+<div class="acc-flex-column">
+
+  <h3>accord.css - содержит разнообразные вспомогательные стили.</h3>
+
+
+  <div class="acc-desc-panel">Панель с классом "acc-desc-panel".
+Используется для показа текстовых пояснений. 
+Текст в ней преформатирован.</div>
+
+  <div class="acc-code-panel">Панель с классом "acc-code-panel" используется для показа программного кода.</div>
+
+  <div class="acc-simple-panel no-select">
+    "acc-simple-panel" - добавляет серую рамку
+    <br>
+    "no-select" - убирает выделяемость
+  </div>
+
+
+  <div class="acc-anchor-list">
+    "acc-anchor-list" - панель со списком ссылок <a href="#" target="test">item 1</a> <a href="#" target="test">item 2</a>
+
+  </div>
+
+
+
+
+  <h4>acc-button-panel - Горизонтальная панель. иконки задаются через img</h4>
+
+  <div class="acc-button-panel">
+    <button type="button" class="acc-btn">Простая кнопка</button>
+    <button type="button" class="acc-btn">
+      <img src="../icons/check.png" />
+    </button>
+    <button type="button" class="acc-btn">
+      <img src="../icons/check.png" /><span>кнопка с img</span>
+    </button>
+  </div>
+
+
+  <h4>иконки задаются через background-image (посредством css-классов:acc-btn-add,acc-btn-cross...)</h4>
+
+  <div class="acc-button-panel">
+    <div class="acc-centered-content">My text input:</div>
+    <input type="text" />
+    <button type="button" class="acc-btn acc-btn-icon-text acc-btn-add">acc-btn-add</button>
+    <button type="button" class="acc-btn acc-btn-icon-text acc-btn-cross">acc-btn-cross</button>
+    <button type="button" class="acc-btn acc-btn-icon acc-btn-check"></button>
+
+      <select id="select" style="width: 200px;">
+        <option>Banana</option>
+        <option>Cherry</option>
+        <option>Lemon</option>
+      </select>
+
+
+
+    <button type="button" class="acc-btn acc-btn-icon acc-btn-arrow-up"></button>
+    <button type="button" class="acc-btn acc-btn-icon acc-btn-arrow-down"></button>
+    <button type="button" class="acc-btn acc-btn-icon acc-btn-eye"></button>
+    <button type="button" class="acc-btn acc-btn-icon acc-btn-eye-crossed"></button>
+    <button type="button" class="acc-btn acc-btn-icon acc-btn-rotate-left"></button>
+    <button type="button" class="acc-btn acc-btn-icon acc-btn-calendar"></button>
+    <button type="button" class="acc-btn acc-btn-icon acc-btn-"></button>
+  </div>
+
+
+
+
+  <h4>acc-button-panel-tight - горизонтальная панель без оформления и отступов</h4>
+
+  <div class="acc-button-panel-tight">
+    <input type="text" />
+    <button type="button" class="acc-btn acc-btn-icon acc-btn-calendar"></button>
+    <div class="acc-filler-panel acc-centered-content">filler panel</div>
+    <button type="button" class="acc-btn acc-btn-icon acc-btn-check"></button>
+  </div>
+
+  <h4>acc-vert-button-panel - вертикальная панель</h4>
+
+  <div class="acc-button-panel">
+    <div class="acc-vert-button-panel">
+      <button type="button" class="acc-btn acc-btn-icon-text acc-btn-add">acc-btn-add</button>
+      <button type="button" class="acc-btn acc-btn-icon-text acc-btn-cross">acc-btn-cross</button>
+    </div>
+    <div class="acc-filler-panel acc-centered-content">filler panel</div>
+
+    <div class="acc-vert-button-panel">
+      <button type="button" class="acc-btn acc-btn-icon acc-btn-check"></button>
+      <button type="button" class="acc-btn acc-btn-icon acc-btn-add"></button>
+    </div>
+  </div>
+
+
+  <!-- 
+		<button type="button" class="acc-btn"><span class="acc-btn-check"></span> </button>
+ -->
+
+
+  <div class="acc-popup acc-popup-default" style="top: 70px; left: 700px; display: flex;">
+    <div class="acc-centered-content">test popup:</div>
+    <input type="text" />
+    <button type="button" class="acc-btn acc-btn-icon-text acc-btn-add">button1</button>
+  </div>
+
+
+
+
+
+
+
+  <div class="acc-4cols acc-simple-panel">
+
+    <h4 class="acc-row">acc-4cols - расположение элементов в 4 столбца через grid layout</h4>
+
+    <div class="acc-left-content">My long label with some description</div>
+    <div class="acc-simple-panel">panel 1</div>
+    <div class="acc-left-content">My label</div>
+    <div class="acc-simple-panel">panel 2</div>
+    <div class="acc-left-content">My label</div>
+    <div class="acc-simple-panel">panel 3</div>
+    <div class="acc-left-content">My label</div>
+    <div class="acc-simple-panel">panel 4</div>
+    <div class="acc-simple-panel">panel 5</div>
+    <div class="acc-simple-panel">panel 6</div>
+
+  </div>
+
+  <div class="acc-2cols acc-simple-panel">
+
+    <h4 class="acc-row">acc-2cols - расположение элементов в 2 столбца через grid layout</h4>
+
+    <div class="acc-left-content">My label</div>
+    <div class="acc-simple-panel">panel 1</div>
+    <div class="acc-left-content">My label</div>
+    <div class="acc-simple-panel">panel 2</div>
+    <div class="acc-simple-panel">panel 3</div>
+    <div class="acc-simple-panel">panel 4</div>
+    <div class="acc-simple-panel">panel 5</div>
+
+  </div>
+
+  <h4>acc-flex-row - быстрый способ задать flex layout</h4>
+<div class="acc-flex-row acc-simple-panel">
+  <div class="acc-simple-panel">panel1</div>
+  <div class="acc-simple-panel">panel2</div>
+  <div class="acc-simple-panel">panel3</div>
+  <div class="acc-flex-column acc-simple-panel">
+    <h4>acc-flex-column</h4>
+    <div class="acc-simple-panel">panel1</div>
+    <div class="acc-simple-panel">panel2</div>
+    <div class="acc-simple-panel">panel3</div>
+  </div>
+</div>
+
+
+
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+          <a href="../../jsTree/getNode2?id=tn1">даные через JSTreeServlet</a>
+          <a href="../../demos/demos_jsp/jstreeDemo1Nodes.jsp?id=tn1">даные через jstreeDemo1Nodes.jsp</a>
+
+
+modal dialog
+  focusable
+  close on esc
+
+date, moment, month list
+
+
+
+popup menu - показывать вверх, если оно скрывается за границами окна
+
+
+multiselect
+
+boolean, int inputs
+
+---------------
+tsg
+
+
+multiselect
+  setOptions(data = null){
+
+
+initalVals for filter - demo, test
+
+data filter
+
+hidden fields - брать оттуда изначальные значения
+indexOf - replace with - includes
+
+пустые/непустые значения в фильтрах
+
+пока-скрытие столбцов сносит декорации
+
+
+
+servlet rows
+  dates
+  
+фильтрация
+  пустые/непустые значения
+
+!  вычислять фильтры-селекты автоматически.
+
+задать условия фильтрации программно, через опции
+
+
+фильтрация дат - локально и серверно
+
+
+css for columns option
+
+
+
+при изменении страницы - съезжают столбцы.
+
+	col.exp = true;
+
+	let col = {
+			id : id,
+			name : name,
+			sortName : sortName,
+		};
+???
+
+
+

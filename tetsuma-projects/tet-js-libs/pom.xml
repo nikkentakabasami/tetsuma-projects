@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>ru.tetsu</groupId>
+		<artifactId>tetsuma-projects</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>tet-js-libs</artifactId>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>accord-lib</module>
+		<module>accord-demos</module>
+		<module>auxjs-libs</module>
+		<module>tet-slick-grid-lib</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+
+			<dependency>
+				<groupId>ru.tetsu</groupId>
+				<artifactId>tsu-jetty-utils</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>

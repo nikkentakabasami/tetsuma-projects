@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>tet slick grid demo</title>
+
+<script src="../../jquery31/js/jquery.js"></script>
+
+<link rel="stylesheet" type="text/css" href="../../bootstrap3/css/bootstrap.min.css">
+<script src="../../bootstrap3/js/bootstrap.js"></script>
+<script src="../../bootstrap3/js/bootbox.min.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="../../bootstrap3/css/bootstrap-multiselect.css">
+<script src="../../bootstrap3/js/bootstrap-multiselect.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="../../accord/css/accord.css">
+<link rel="stylesheet" type="text/css" href="../../accord/css/tabbed-panel.css">
+<script type="module" src="../../accord/js/accord-publish.js"></script>
+
+
+<link rel="stylesheet" href="../css/tet.slick.grid.css" type="text/css" />
+<link rel="stylesheet" href="tsgDemoStyles.css" />
+<script type="text/javascript" src="testDataSources.js"></script>
+<script type="module" src="tsgExample37.js"></script>
+<script>
+  $(function() {
+    let tp = new TabbedPanel("#tabbedPanel1");
+  });
+</script>
+
+<!-- 
+<style>
+.multi-select .multi-select-options {
+  width: 300px;
+  position: fixed;
+}
+
+.multi-select {
+  --input-min-height: 20px;
+  --spacing-medium: 5px;
+  --spacing-large: 5px;
+  
+}
+
+</style>
+ -->
+
+</head>
+
+<body>
+	<div class="basePanel">
+		<div class="titlePanel">
+			<h2>Пример: Bootstrap Мультиселект</h2>
+			<a href="tsgExample37.js" target="source">Source code</a>
+
+		</div>
+
+		<div id="tabbedPanel1" class="tabbed-panel">
+
+			<div class="tab-container">
+				<button class="tab active" data-tab="1">Описание</button>
+				<button class="tab" data-tab="2">Ключевой код</button>
+				<div class="tab-filler"></div>
+			</div>
+
+			<div id="tab-1" class="tab-content active">
+				<pre class="acc-desc-panel">
+В этом примере демонстрируется использование модуля BSMultiselectModule, который используя библиотеку bootstrap-multiselect
+
+позволяет использовать выпадающие списки множественного выбора.
+
+Для использования требуется подключить библиотеки bootstrap 3 и bootstrap-multiselect
+
+Всё что для этого требуется - активировать этот модуль.
+А так же задать select-фильтрам атрибут multiple.
+
+
+В данном случае select-ы генерируются функцией generateSelect, после чего задаются на столбцы через опцию filterInput.
+</pre>
+			</div>
+
+			<div id="tab-2" class="tab-content">
+				<pre class="acc-code-panel">
+
+  let customerColumn = myGrid.model.columnsById["customer"];
+  customerColumn.filterInput = accordUtils.generateSelect("customer", dataSource.customers, false, true);
+  
+  let fruitColumn = myGrid.model.columnsById["fruit"];
+  fruitColumn.filterInput = accordUtils.generateSelect("fruit", dataSource.fruits, false,true);
+
+
+  let mm = new BSMultiselectModule(myGrid);
+</pre>
+			</div>
+
+		</div>
+
+		<div class="tablePanel">
+			<div id="myGrid"></div>
+		</div>
+
+		<div id="filterContainer" style="display: none;">
+			<select name="section">
+				<option value="" selected="selected">-</option>
+				<option value="0">Отдел №0</option>
+				<option value="1">Отдел №1</option>
+				<option value="2">Отдел №2</option>
+				<option value="3">Отдел №3</option>
+				<option value="4">Отдел №4</option>
+				<option value="5">Отдел №5</option>
+				<option value="6">Отдел №6</option>
+				<option value="7">Отдел №7</option>
+				<option value="8">Отдел №8</option>
+				<option value="9">Отдел №9</option>
+				<option value="10">Отдел №10</option>
+				<option value="11">Отдел №11</option>
+				<option value="12">Отдел №12</option>
+				<option value="13">Отдел №13</option>
+			</select> 
+
+		</div>
+
+
+
+
+
+	</div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

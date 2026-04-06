@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+
+<script src="../../jquery31/js/jquery.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/accord.css">
+<!-- 
+<link rel="stylesheet" type="text/css" href="../css/tabbed-panel.css">
+<link rel="stylesheet" type="text/css" href="../css/acc-form-elements.css">
+ -->
+<link rel="stylesheet" type="text/css" href="../css/demo-base.css">
+<script src="../js/demo-base-log.js"></script>
+<script src="../js/demo-base.js"></script>
+<script type="module" src="../js/accord-publish.js"></script>
+
+<script type="text/javascript" src="js/011-modal-dialog-demo.js"></script>
+
+
+</head>
+
+<body class="acc-default-font">
+
+  <div class="basePanel">
+
+    <div class="titlePanel">
+      <h2>Компонент AccModalDialog - модальный диалог</h2>
+    </div>
+
+    <div class="auxPanel" style="height: 600px;">
+      <div class="logPanel gray-border">
+        <div id="log1"></div>
+      </div>
+      <div class="logPanel gray-border">
+        <div id="log2"></div>
+      </div>
+    </div>
+
+    <div class="acc-button-panel">
+    </div>
+
+<!-- 
+      <button id="b1" type="button" class="acc-btn">Показать диалог по умолчанию с заданным текстом</button>
+      <button id="b2" type="button" class="acc-btn">Показать диалог с заданным содержимым</button>
+      <button id="b3" type="button" class="acc-btn">Показать диалог с заданным содержимым из шаблона</button>
+      <button id="b4" type="button" class="acc-btn">Показать кастомный диалог</button>
+      <button id="b5" type="button" class="acc-btn">Скрыть все диалоги</button>
+ -->
+
+    <!--               work panel                -->
+
+    <div class="workPanel"></div>
+
+
+
+  </div>
+
+  <template id="dialogContent2">
+    <form>
+
+      <h3>
+        Содержимое диалога из template.
+        <br>
+        autosize - высота диалога подбирается автоматом.
+      </h3>
+
+      <fieldset>
+        <legend>Fruit juice size</legend>
+        <input type="radio" name="size" id="size_1" value="small" checked="checked" />
+        <label for="size_1">Small</label>
+        <br>
+        <input type="radio" name="size" id="size_2" value="medium" />
+        <label for="size_2">Medium</label>
+        <br>
+        <input type="radio" name="size" id="size_3" value="large" />
+        <label for="size_3">Large</label>
+      </fieldset>
+
+
+      <fieldset>
+        <legend>checkboxes</legend>
+        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+        <label for="vehicle1"> I have a bike</label>
+        <br>
+        <input type="checkbox" id="vehicle2" name="vehicle2" value="Car" checked="checked">
+        <label for="vehicle2"> I have a car</label>
+        <br>
+        <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
+        <label for="vehicle3"> I have a boat</label>
+      </fieldset>
+
+      <div class="form-group">
+        <label for="select">Select box:</label>
+        <div class="select-wrapper">
+          <select id="select" name="select">
+            <option>Banana</option>
+            <option>Cherry</option>
+            <option>Lemon</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="fname">First name:</label>
+        <input type="text" id="fname" name="fname" value="John">
+      </div>
+    </form>
+  </template>
+
+
+  <template id="myCustomDialog">
+    <div class="acc-dialog">
+      <div class="acc-dialog-dtop">
+        <span class="acc-dialog-title no-select">custom dialog</span>
+      </div>
+
+      <div class="acc-dialog-dbody">custom body</div>
+
+      <div class="acc-dialog-dbottom">
+        <button type="button" class="acc-cancel">Отмена</button>
+        <button type="button" class="acc-ok">Выбрать</button>
+
+      </div>
+
+    </div>
+  </template>
+
+
+  <div style="display: none;">
+    <div id="dialogContent1" style="background-color: green;">Содержимое из скрытого элемента</div>
+  </div>
+
+
+
+</body>
+</html>
+

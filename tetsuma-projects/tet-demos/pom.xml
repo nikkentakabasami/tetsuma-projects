@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>ru.tetsu</groupId>
+		<artifactId>tetsuma-projects</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>tet-demos</artifactId>
+	
+	<packaging>pom</packaging>
+	<modules>
+		<module>td1</module>
+		<module>td3-processor</module>
+		<module>td3-processor-test</module>
+
+		<module>td4-swing</module>
+
+
+<!-- 
+		<module>web-projects</module>
+	
+		<module>web_projects/td50_web_jslibs</module>
+		<module>web_projects/tr50_web_jaxrs</module>
+		<module>web_projects/td50_web_2</module>
+		<module>web_projects/td50_web_3</module>
+		<module>web_projects/td50_web_1_basic</module>
+ -->
+
+		<module>libs/td10_libs_jackson</module>
+		<module>td-aux</module>
+	</modules>
+
+</project>

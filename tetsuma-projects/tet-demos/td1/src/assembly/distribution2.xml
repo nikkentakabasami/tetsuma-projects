@@ -1,0 +1,88 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.2.0 http://maven.apache.org/xsd/assembly-2.2.0.xsd">
+	<id>distribution</id>
+
+	<!-- скомпонует всего 2 файла: readme.txt - без фильтрации NOTICE.txt - 
+		с фильтрацией -->
+
+
+<!-- 
+
+				<include>**/*.txt</include>
+				<include>*.txt</include>
+
+ -->
+
+	<formats>
+		<format>jar</format>
+	</formats>
+	<fileSets>
+		<fileSet>
+	      <directory>src/assembly</directory>
+	      <outputDirectory>myassembly</outputDirectory>
+			<includes>
+				<include>**/*.properties</include>
+			</includes>
+	    </fileSet>		
+	    
+		<fileSet>
+			<directory>src</directory>
+			<outputDirectory>myst</outputDirectory>
+			<includes>
+				<include>**/*.st</include>
+			</includes>
+		</fileSet>
+		
+		<fileSet>
+			<directory>${basedir}</directory>
+			<includes>
+				<include>*.txt</include>
+			</includes>
+			<excludes>
+				<exclude>NOTICE.txt</exclude>
+			</excludes>
+		</fileSet>		
+		
+		
+	</fileSets>
+	
+	<files>
+		<file>
+			<source>NOTICE.txt</source>
+			<outputDirectory></outputDirectory>
+			<filtered>true</filtered>
+		</file>
+	</files>
+	
+
+
+<!-- 
+
+
+				<filePattern>.*txt</filePattern>
+	            <filePattern>.*assembly/filter.properties</filePattern>
+
+
+	<containerDescriptorHandlers>
+		<containerDescriptorHandler>
+			<handlerName>file-aggregator</handlerName>
+			<configuration>
+				<filePattern>.*\.txt</filePattern>
+	            
+				<outputPath>my_aggregated_file.txt</outputPath>
+				
+				
+				
+			</configuration>
+			
+			
+			
+		</containerDescriptorHandler>
+	</containerDescriptorHandlers>
+ -->
+
+
+
+
+</assembly>

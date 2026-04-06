@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>ru.tetsu</groupId>
+		<artifactId>tdParent</artifactId>
+		<version>1.0.4</version>
+	</parent>
+
+	<artifactId>
+		td1</artifactId>
+
+	<properties>
+		<testProp2>accord</testProp2>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>ru.tetsu</groupId>
+			<artifactId>td_aux</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+
+
+
+		<!-- misc -->
+
+		<dependency>
+			<groupId>
+				org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>
+				com.google.auto.service</groupId>
+			<artifactId>auto-service</artifactId>
+			<version>
+				1.0-rc2</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>
+				ST4</artifactId>
+			<version>4.0.8</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>
+				org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.26.jre6</version>
+			<scope>
+				provided</scope>
+		</dependency>
+
+
+	</dependencies>
+
+
+	<build>
+
+
+		<plugins>
+
+			<!-- тестируем maven-resources-plugin.  -->
+			<plugin>
+				<groupId>
+					org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>
+					3.3.1</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>
+								copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>
+								${basedir}/target/my_resources/${maven.compiler.source}_${testProp2}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>
+										src/main/resources/log</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+		</plugins>
+
+	</build>
+
+
+</project>

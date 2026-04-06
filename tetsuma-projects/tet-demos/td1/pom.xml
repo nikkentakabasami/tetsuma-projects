@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>ru.tetsu</groupId>
+		<artifactId>tet-demos</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>td1</artifactId>
+
+	<properties>
+		<testProp2>accord</testProp2>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>ru.tetsu</groupId>
+			<artifactId>td-aux</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+
+		<!-- misc -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+
+
+		<dependency>
+			<groupId>
+				com.google.auto.service</groupId>
+			<artifactId>auto-service</artifactId>
+			<version>
+				1.0-rc2</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>
+				ST4</artifactId>
+			<version>4.0.8</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.26.jre6</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+	</dependencies>
+
+
+	<build>
+
+
+		<plugins>
+
+			<!-- ScopedValueDemo содержит экспериментальные фичи  -->
+			<plugin>
+				<groupId>
+					org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							ru/tet/java/lang/ScopedValueDemo.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+
+		</plugins>
+
+	</build>
+
+
+</project>

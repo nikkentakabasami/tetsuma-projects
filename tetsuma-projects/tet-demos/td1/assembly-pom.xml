@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+<!-- тестируем сборку через assembly-плагин -->
+
+	<parent>
+		<groupId>ru.tetsu</groupId>
+		<artifactId>tdParent</artifactId>
+		<version>1.0.4</version>
+	</parent>
+
+	<artifactId>
+		td1</artifactId>
+
+	<properties>
+	</properties>
+
+	<dependencies>
+
+
+		<dependency>
+			<groupId>ru.tetsu</groupId>
+			<artifactId>td3-processor</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+
+		<!-- JAXB -->
+		<dependency>
+			<groupId>
+				jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>4.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>
+				com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>4.0.4</version>
+			<scope>
+				runtime</scope>
+		</dependency>
+
+
+		<!-- commons -->
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>
+				commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>
+				org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>
+				commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>
+				org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.1</version>
+		</dependency>
+
+
+		<!-- misc -->
+
+		<dependency>
+			<groupId>
+				org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>
+				com.google.auto.service</groupId>
+			<artifactId>auto-service</artifactId>
+			<version>
+				1.0-rc2</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>
+				ST4</artifactId>
+			<version>4.0.8</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>
+				org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.26.jre6</version>
+			<scope>
+				provided</scope>
+		</dependency>
+
+
+	</dependencies>
+
+
+
+	<build>
+
+		<pluginManagement>
+			<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<version>3.7.1</version>
+					</plugin>
+			</plugins>
+		</pluginManagement>
+		
+		<plugins>
+			<!-- ScopedValueDemo содержит экспериментальные фичи  -->
+			<plugin>
+				<groupId>
+					org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							ru/tet/java/lang/ScopedValueDemo.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>		
+		
+		
+	</build>
+
+
+	<profiles>
+
+		<profile>
+			<id>assembly1</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+								<descriptorRef>bin</descriptorRef>
+							</descriptorRefs>
+							<formats>zip,dir</formats>
+							
+							<workDirectory>${project.build.directory}/assembly/myworkdir</workDirectory>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+
+		<profile>
+			<id>assembly2</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<formats>zip,dir</formats>
+							<filters>
+								<filter>src/assembly/filter.properties</filter>
+							</filters>
+							<descriptors>
+								<descriptor>src/assembly/distribution2.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>assembly3</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>src/assembly/distribution3-a.xml</descriptor>
+								<descriptor>src/assembly/distribution3-b.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>assembly4</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<configuration>
+							<descriptors>
+								<descriptor>src/assembly/distribution4-a.xml</descriptor>
+								<descriptor>src/assembly/distribution4-b.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+
+
+
+
+
+
+
+
+	</profiles>
+
+
+</project>

@@ -1,0 +1,177 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>ru.tetsu</groupId>
+		<artifactId>tet-js-libs</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>accord-demos</artifactId>
+	<packaging>war</packaging>
+
+
+	<dependencies>
+
+		<dependency>
+			<groupId>ru.tetsu</groupId>
+			<artifactId>tsu-jetty-utils</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j2-impl</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jetty.toolchain</groupId>
+			<artifactId>jetty-test-helper</artifactId>
+		</dependency>
+
+		<!-- overlays -->
+
+		<dependency>
+			<groupId>ru.tetsu</groupId>
+			<artifactId>accord-lib</artifactId>
+			<version>${project.version}</version>
+			<type>zip</type>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>ru.tetsu</groupId>
+			<artifactId>tet-slick-grid-lib</artifactId>
+			<version>${project.version}</version>
+			<type>zip</type>
+			<scope>runtime</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>ru.tetsu</groupId>
+			<artifactId>auxjs-libs</artifactId>
+			<version>${project.version}</version>
+			<type>zip</type>
+			<scope>runtime</scope>
+		</dependency>
+
+
+		<!-- servlet api -->
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>jakarta.servlet.jsp.jstl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet.jsp.jstl</groupId>
+			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet.jsp</groupId>
+			<artifactId>jakarta.servlet.jsp-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+
+		<!-- jackson -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+
+		<!-- apache.commons -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+
+
+	</dependencies>
+
+
+	<build>
+		<plugins>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.4.0</version>
+				<configuration>
+					<overlays>
+						<!-- подключение js-библиотеки accord -->
+						<overlay>
+							<groupId>ru.tetsu</groupId>
+							<artifactId>accord-lib</artifactId>
+							<type>zip</type>
+						</overlay>
+
+						<overlay>
+							<groupId>ru.tetsu</groupId>
+							<artifactId>tet-slick-grid-lib</artifactId>
+							<type>zip</type>
+						</overlay>
+
+
+						<!-- подключение различных базовых js-библиотек: jquery,
+						daterangepicker, jstree, moment  -->
+						<overlay>
+							<groupId>ru.tetsu</groupId>
+							<artifactId>auxjs-libs</artifactId>
+							<type>zip</type>
+						</overlay>
+
+
+					</overlays>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.eclipse.jetty.ee10</groupId>
+				<artifactId>jetty-ee10-maven-plugin</artifactId>
+				<version>12.0.19</version>
+				<configuration>
+					<modules>ee10-plus,ee10-jsp</modules>
+					<httpConnector>
+						<port>8081</port>
+					</httpConnector>
+					<webApp>
+						<contextPath>/accord</contextPath>
+						<jettyEnvXml>
+							${project.basedir}/src/jetty-env.xml</jettyEnvXml>
+					</webApp>
+
+				</configuration>
+			</plugin>
+
+
+		</plugins>
+	</build>
+
+
+</project>
