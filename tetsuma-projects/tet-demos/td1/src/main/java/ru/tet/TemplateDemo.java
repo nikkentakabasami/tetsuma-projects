@@ -1,7 +1,8 @@
 package ru.tet;
 
-import ru.tet.aux.DemoBase;
+import ru.tet.aux.swing.DemoBase;
 
+//Шаблон для создания новых демо
 public class TemplateDemo extends DemoBase {
 
 	

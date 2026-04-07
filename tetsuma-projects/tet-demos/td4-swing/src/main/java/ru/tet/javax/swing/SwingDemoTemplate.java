@@ -1,6 +1,6 @@
 package ru.tet.javax.swing;
 
-import ru.tet.aux.DemoBaseSwing;
+import ru.tet.aux.swing.DemoBaseSwing;
 
 public class SwingDemoTemplate extends DemoBaseSwing {
 

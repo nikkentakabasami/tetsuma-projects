@@ -13,6 +13,7 @@
 
 	<modules>
 		<module>tsu-jetty-utils</module>
+		<module>tet-swing-utils</module>
 	</modules>
 
 

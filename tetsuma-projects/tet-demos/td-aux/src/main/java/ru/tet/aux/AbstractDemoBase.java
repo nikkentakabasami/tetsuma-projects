@@ -1,23 +1,30 @@
 package ru.tet.aux;
 
+import java.awt.Color;
 import java.lang.reflect.Method;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
+import ru.tet.aux.swing.AbstractDemoFrame;
 import ru.tet.javax.swing.aux.JControlPanelForTests;
 
 public abstract class AbstractDemoBase {
 
-	JTextPane textArea1;
-	JTextPane textArea2;
+	//содержит инструментальную панель и панель для логов.
+	protected AbstractDemoFrame frame;
+	
+	protected JTextPane textArea1;
+	protected JTextPane textArea2;
 	
 	protected DemoSourceUtils sourceUtils;
 
@@ -39,7 +46,7 @@ public abstract class AbstractDemoBase {
 	}
 	
 	
-	public abstract void init();
+	public abstract void init(AbstractDemoFrame frame);
 
 	//заготовки под тесты
 	public void test1() throws Exception {
@@ -179,10 +186,14 @@ public abstract class AbstractDemoBase {
 	}
 
 
+	
+
+
+	
 	public static void run(Class<? extends AbstractDemoBase> cl) {
 		SwingUtilities.invokeLater(() -> {
 			try {
-				cl.getDeclaredConstructor().newInstance().init();
+				cl.getDeclaredConstructor().newInstance().init(null);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

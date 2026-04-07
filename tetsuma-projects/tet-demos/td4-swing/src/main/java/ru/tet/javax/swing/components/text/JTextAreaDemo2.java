@@ -17,7 +17,7 @@ import javax.swing.text.Keymap;
 import javax.swing.text.NavigationFilter;
 
 import ru.tet.aux.AuxTest;
-import ru.tet.aux.DemoBaseSwing;
+import ru.tet.aux.swing.DemoBaseSwing;
 
 public class JTextAreaDemo2 extends DemoBaseSwing {
 

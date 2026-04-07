@@ -1,10 +1,9 @@
-package ru.tet.aux;
+package ru.tet.aux.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -12,38 +11,19 @@ import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.text.Style;
-import javax.swing.text.StyledDocument;
 
 import ru.tet.javax.swing.aux.JControlPanelForTests;
 
-public class DemoFrameSwing extends JFrame {
+public class DemoFrameSwing extends AbstractDemoFrame {
 
 	public static int INSET = 150;
 
 	LogDemoFrame logFrame;
 
-	// инструментальная панель - содержит кнопки, метки, селекты и прочие рабочие элементы
-	protected JControlPanelForTests controlPanel;
-
-	// рабочая панель - полигон для компонентов
-	protected JPanel workPanel;
-
-	public DemoFrameSwing() {
-
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setTitle("Мои тесты");
-		
-
-	}
-
-	Style greenStyle;
-	StyledDocument doc1;
 
 	public void initWithControlPanelAbove() {
 
@@ -66,6 +46,10 @@ public class DemoFrameSwing extends JFrame {
 		logFrame.initWithControlPanelAbove();
 		logFrame.setVisible(true);
 
+		
+		textArea1 = logFrame.textArea1;
+		textArea2 = logFrame.textArea2;
+		
 		addKeyHandlers();
 		
 		//		setAlwaysOnTop(true);

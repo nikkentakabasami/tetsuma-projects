@@ -1,4 +1,4 @@
-package ru.tet.aux;
+package ru.tet.aux.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

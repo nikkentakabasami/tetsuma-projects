@@ -1,8 +1,9 @@
 package ru.tet.aux;
 
-import javax.swing.SwingUtilities;
+import ru.tet.aux.swing.DemoBase;
+import ru.tet.aux.swing.DemoBaseSwing;
 
-public class DemoBaseTest extends DemoBaseSwing {
+public class DemoBaseSwingTest extends DemoBaseSwing {
 
 	
 	@Override
@@ -10,7 +11,7 @@ public class DemoBaseTest extends DemoBaseSwing {
 		
 		
 		log1("first row");
-		log1("Senri no michi mo ippo kara");
+		log1("//Senri no michi mo ippo kara");
 		log1("ishou kou narite, ban kotsu karu");
 		log2("final","1","2","3","4");
 		
@@ -37,11 +38,7 @@ public class DemoBaseTest extends DemoBaseSwing {
 	}
 	
 	public static void main(String[] args) {
-		
-		SwingUtilities.invokeLater(() -> {
-			DemoBaseTest d = new DemoBaseTest();
-			d.init();
-		});
+		DemoBase.run(DemoBaseSwingTest.class);
 		
 	}	
 	

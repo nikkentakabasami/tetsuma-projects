@@ -71,6 +71,26 @@ public class JControlPanelForTests extends TetBoxPanel {
 	public JTextArea textArea;
 	
 	
+	public void clearContent() {
+		buttons.clear();
+		labels.clear();
+
+		for (int i = 0; i < getComponentCount(); i++) {
+			Component comp = getComponent(i);
+			remove(comp);
+		}
+		newHorizontalBox();
+
+		/*
+		for (int i = 0; i < currentHorizontalBox.getComponentCount(); i++) {
+			Component comp = currentHorizontalBox.getComponent(i);
+			currentHorizontalBox.remove(comp);
+		}
+		 */
+		
+	}
+	
+	
 	public JControlPanelForTests() {
 		super(false);
 		

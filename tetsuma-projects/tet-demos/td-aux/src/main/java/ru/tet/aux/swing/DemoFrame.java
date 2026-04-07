@@ -1,57 +1,80 @@
-package ru.tet.aux;
+package ru.tet.aux.swing;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 
+import ru.tet.beans.SuIdNameModel;
+import ru.tet.javax.swing.aux.IdNameListCellRenderer;
 import ru.tet.javax.swing.aux.JControlPanelForTests;
 
-public class DemoFrame extends JFrame {
+/**
+ * Основа для тестов разных классов.
+ */
+public class DemoFrame extends AbstractDemoFrame {
 	
 	public static int INSET = 50;
 	
+	JComboBox demosComboBox;
 	
-	// инструментальная панель - содержит кнопки, метки, селекты и прочие рабочие элементы
-	protected JControlPanelForTests controlPanel;
+	public void initWithControlPanelAbove() {
+		setBounds();
+		
+		JComponent demoContentPane = createDemoContentPane();
+		
+		setContentPane(demoContentPane);
+		
+		setVisible(true);
 
-	// рабочая панель - полигон для компонентов
-	protected JPanel workPanel;
-	
-	JTextPane textArea1;
-	JTextPane textArea2;
-	
-	
-	public DemoFrame() {
+	}	
 
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setTitle("Мои тесты");
+	public void initComplex(String[] data, ActionListener listener) {
+		setBounds();
+		
+		createComboBox(data, listener);
+		JComponent demoContentPane = createDemoContentPane();
+
+		
+	    JPanel p = new JPanel(); 
+	    p.setLayout(new BorderLayout()); 
+
+	    p.add(demosComboBox, BorderLayout.NORTH); 
+	    p.add(demoContentPane);
+	    
+		setContentPane(p);
+		
+		setVisible(true);
 
 	}	
 	
-	Style greenStyle;
-	StyledDocument doc1;
+	void createComboBox(String[] data, ActionListener listener) {
+		
+		demosComboBox = new JComboBox(data);
+		demosComboBox.addActionListener(listener);
+		demosComboBox.setPreferredSize(new Dimension(800, 30));
+		
+	}
 	
-	public void initWithControlPanelAbove() {
-
+	protected void setBounds() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
 		setBounds(INSET, INSET, screenSize.width - INSET * 2, screenSize.height - INSET * 2);
-
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
+	}
+	
+	
+	protected JComponent createDemoContentPane() {
 		
 		workPanel = new JPanel();
 		workPanel.setBorder(BorderFactory.createTitledBorder("workPanel"));
@@ -60,12 +83,9 @@ public class DemoFrame extends JFrame {
 
 	    
 	    Font font = new Font("Serif", Font.PLAIN, 18);
-
-	    
 	    
 		textArea2 = new JTextPane();
 		textArea2.setFont(font);
-//		textArea2.setText("ta2");
 		
 		JScrollPane sp2 = new JScrollPane(textArea2);
 
@@ -77,26 +97,6 @@ public class DemoFrame extends JFrame {
 		
 		JSplitPane splitPane2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, sp1, sp2);
 		workPanel.add(splitPane2);	    
-	    
-		/*
-		textArea2 = new JTextPane();
-		textArea2.setFont(font);
-//		textArea1.setText("row1\r\nrow2\r\nrow3");
-		
-		JScrollPane sp1 = new JScrollPane(textArea2);
-		sp1.setPreferredSize(new Dimension(600, 300));
-		workPanel.add(sp1, BorderLayout.EAST);
-
-		textArea1 = new JTextPane();
-		textArea1.setFont(font);
-//		textArea2.setText("center");
-		workPanel.add(new JScrollPane(textArea1), BorderLayout.CENTER);
-		*/
-		
-		doc1 = (StyledDocument) textArea1.getDocument();
-		
-		greenStyle =doc1.addStyle("green", null);
-		StyleConstants.setForeground(greenStyle, new Color(0, 120, 0));
 		
 		controlPanel = new JControlPanelForTests();
 
@@ -105,15 +105,9 @@ public class DemoFrame extends JFrame {
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, controlPanel, workPanel);
 		splitPane.setDividerLocation(200);
-		setContentPane(splitPane);
-
-		setVisible(true);
-
-	}	
-	
-	
-	public void hlGreen(int offset, int length) {
-		doc1.setCharacterAttributes(offset, length, greenStyle, true);
+				
+		return splitPane;
+		
 	}
 	
 	

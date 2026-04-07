@@ -10,8 +10,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import ru.tet.aux.AuxTest;
-import ru.tet.aux.DemoBase;
-import ru.tet.aux.DemoBase;
+import ru.tet.aux.swing.DemoBase;
 import ru.tet.beans.User;
 import ru.tet.data.BeansSamples;
 
@@ -70,12 +69,10 @@ public class XMLEncoderDemo extends DemoBase {
 	}
 
 	@Override
-	protected void doInit() throws Exception {
+	protected void doInitControlPanel() throws Exception {
 
 		addTest1Button(null);
 		addTest2Button(null);
-		frame.hlGreen(0, 10);
-
 	}
 
 	public static void main(String[] args) {

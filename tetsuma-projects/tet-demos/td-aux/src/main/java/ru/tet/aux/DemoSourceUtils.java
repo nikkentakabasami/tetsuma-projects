@@ -21,15 +21,23 @@ public class DemoSourceUtils {
 
 	static final String TEST_METHOD_SUFFIX = "test";
 
-	AbstractDemoBase db;
+	AbstractDemoBase demoBase;
 
 	public DemoSourceUtils(AbstractDemoBase db) {
-		this.db = db;
+		this.demoBase = db;
 	}
 
-	public static Path getClassJavaFile(Class cl) {
+	/**
+	 * Находит в текущем проекте java-файл, соответствующий классу cl
+	 * 
+	 * @param cl
+	 * @return
+	 */
+	public static Path getClassJavaFile(Class cl, boolean main) {
 		String cn = cl.getCanonicalName().replaceAll("\\.", File.separator).concat(".java");
-		return Paths.get("src/main/java", cn);
+		return Paths.get("src",main?"main":"test","java", cn);
+		
+//		return Paths.get("src/main/java", cn);
 	}
 
 	public void logCurrentSources() {
@@ -40,10 +48,13 @@ public class DemoSourceUtils {
 
 	public void parseCurrentSources() {
 
-		Path path = getClassJavaFile(db.getClass());
+		Path path = getClassJavaFile(demoBase.getClass(), true);
 		if (!Files.exists(path)) {
-			db.log1("source file not found:", path);
-			return;
+			path = getClassJavaFile(demoBase.getClass(), false);
+			if (!Files.exists(path)) {
+				demoBase.log1("source file not found:", path);
+				return;
+			}
 		}
 
 		sources = new ArrayList<>(10);
@@ -98,7 +109,7 @@ public class DemoSourceUtils {
 			}, null);
 
 		} catch (IOException e) {
-			db.log2(e.getMessage());
+			demoBase.log2(e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -130,31 +141,33 @@ public class DemoSourceUtils {
 	 */
 	public void logCurrentSources(int testNo) {
 
-		for (TestSources ts : sources) {
-			if (ts.isEmpty()) {
+		for (TestSources testSources : sources) {
+			if (testSources.isEmpty()) {
 				continue;
 			}
 
-			if (testNo > 0 && ts.getTestNo() != testNo && ts.getTestNo()>0) {
+			if (testNo > 0 && testSources.getTestNo() != testNo && testSources.getTestNo()>0) {
 				continue;
 			}
 
-			for (ClassOrInterfaceDeclaration m : ts.getAuxClasses()) {
-				db.log1(m);
-				db.log1NL();
+			for (ClassOrInterfaceDeclaration m : testSources.getAuxClasses()) {
+				demoBase.log1(m);
+				demoBase.log1NL();
 			}
 
-			for (MethodDeclaration m : ts.getAuxMethods()) {
+			for (MethodDeclaration m : testSources.getAuxMethods()) {
 				//				m.getAnnotations().clear();
-				db.log1(m);
-				db.log1NL();
+				demoBase.log1(m);
+				demoBase.log1NL();
 			}
 
 			//			ts.getTestMethod().getAnnotations().clear();
-			db.log1(ts.getTestMethod());
-			db.log1NL();
+			demoBase.log1(testSources.getTestMethod());
+			demoBase.log1NL();
 
 		}
+		
+		demoBase.frame.hlComments();
 
 		/*
 		

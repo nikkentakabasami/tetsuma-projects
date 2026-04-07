@@ -176,12 +176,20 @@
 				<version>4.0.4</version>
 			</dependency>
 
+			<!-- misc -->
 
 			<dependency>
 				<groupId>com.github.javaparser</groupId>
 				<artifactId>javaparser-core</artifactId>
 				<version>3.28.0</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.reflections</groupId>
+				<artifactId>reflections</artifactId>
+				<version>0.10.2</version>
+			</dependency>
+
 
 			<dependency>
 				<groupId>org.projectlombok</groupId>
