@@ -20,7 +20,7 @@ public class DemoBase extends AbstractDemoBase {
 			DemoFrame fr = new DemoFrame();
 			fr.initWithControlPanelAbove();
 			frame = fr;
-			frame.initLog1Styles();
+//			frame.initLog1Styles();
 		}
 
 		this.controlPanel = frame.controlPanel;

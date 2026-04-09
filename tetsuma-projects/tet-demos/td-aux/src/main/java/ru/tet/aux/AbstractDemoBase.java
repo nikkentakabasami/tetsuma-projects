@@ -16,6 +16,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import ru.tet.aux.swing.AbstractDemoFrame;
+import ru.tet.aux.swing.LogDemoTextPane;
 import ru.tet.javax.swing.aux.JControlPanelForTests;
 import ru.tet.sourcebuddy.DemoEvalUtils;
 import ru.tet.sourcebuddy.EvalOptions;
@@ -38,8 +39,8 @@ public abstract class AbstractDemoBase {
 	//содержит инструментальную панель и панель для логов.
 	protected AbstractDemoFrame frame;
 	
-	protected JTextPane textArea1;
-	protected JTextPane textArea2;
+	protected LogDemoTextPane textArea1;
+	protected LogDemoTextPane textArea2;
 	
 	protected DemoSourceUtils sourceUtils;
 
@@ -128,6 +129,7 @@ public abstract class AbstractDemoBase {
 		lastTestNo = testNo;
 		log2Splitter();
 		log2(lastTestName, "finished");
+		textArea2.hlComments();
 	}
 
 	public JButton addTest1Button(String title) {

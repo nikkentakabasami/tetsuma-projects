@@ -154,7 +154,8 @@ public class DemoSourceUtils {
 
 		}
 		
-		demoBase.frame.hlComments();
+		demoBase.textArea1.hlComments();
+//		demoBase.frame.hlComments();
 
 		/*
 		

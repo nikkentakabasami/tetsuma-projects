@@ -25,7 +25,7 @@ public class DemoBaseSwing extends AbstractDemoBase {
 			DemoFrameSwing fr = new DemoFrameSwing();
 			fr.initWithControlPanelAbove();
 			frame = fr;
-			frame.initLog1Styles();
+//			frame.initLog1Styles();
 		}		
 		
 		this.controlPanel = frame.controlPanel;

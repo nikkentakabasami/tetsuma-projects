@@ -31,6 +31,8 @@ public class DemoBaseComblex extends AbstractDemoBase {
 
 		
 		demos = findDemos();
+		demos.sort((c1,c2)->c1.getCanonicalName().compareTo(c2.getCanonicalName()));
+		
 		List<String> demoNames = demos.stream().map(cl->cl.getName()).collect(Collectors.toList());
 		String[] demoNamesArray = demoNames.toArray(new String[0]);
 
@@ -47,7 +49,7 @@ public class DemoBaseComblex extends AbstractDemoBase {
 			
 		});
 		frame = fr;
-		frame.initLog1Styles();
+//		frame.initLog1Styles();
 		
 		
 		
