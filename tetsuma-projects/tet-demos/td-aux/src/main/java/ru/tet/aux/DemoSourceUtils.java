@@ -1,14 +1,12 @@
 package ru.tet.aux;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.github.javaparser.ParserConfiguration.LanguageLevel;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -16,6 +14,8 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithAnnotations;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+
+import ru.tet.utils.TetSourceUtils;
 
 public class DemoSourceUtils {
 
@@ -27,43 +27,27 @@ public class DemoSourceUtils {
 		this.demoBase = db;
 	}
 
-	/**
-	 * Находит в текущем проекте java-файл, соответствующий классу cl
-	 * 
-	 * @param cl
-	 * @return
-	 */
-	public static Path getClassJavaFile(Class cl, boolean main) {
-		String cn = cl.getCanonicalName().replaceAll("\\.", File.separator).concat(".java");
-		return Paths.get("src",main?"main":"test","java", cn);
-		
-//		return Paths.get("src/main/java", cn);
-	}
-
-	public void logCurrentSources() {
-		logCurrentSources(0);
-	}
-
 	List<TestSources> sources;
 
 	public void parseCurrentSources() {
 
-		Path path = getClassJavaFile(demoBase.getClass(), true);
-		if (!Files.exists(path)) {
-			path = getClassJavaFile(demoBase.getClass(), false);
-			if (!Files.exists(path)) {
-				demoBase.log1("source file not found:", path);
-				return;
-			}
-		}
-
+		
 		sources = new ArrayList<>(10);
 		for (int i = 0; i < 8; i++) {
 			sources.add(new TestSources(i));
 		}
 
 		try {
-			CompilationUnit cu2 = StaticJavaParser.parse(Files.newInputStream(path));
+			InputStream javaFileIS = TetSourceUtils.findSource(demoBase.getClass());
+//			if (javaFileIS==null) {
+//				demoBase.log1("source file not found:", demoBase.getClass().getCanonicalName());
+//				return;
+//			}
+			
+			StaticJavaParser.getParserConfiguration().setLanguageLevel(LanguageLevel.JAVA_15);
+			
+			CompilationUnit cu2 = StaticJavaParser.parse(javaFileIS);
+//			CompilationUnit cu2 = StaticJavaParser.parse(Files.newInputStream(path));
 
 			cu2.accept(new VoidVisitorAdapter<Object>() {
 
@@ -133,6 +117,9 @@ public class DemoSourceUtils {
 		return testSources;
 	}
 
+	public void logCurrentSources() {
+		logCurrentSources(0);
+	}	
 	/**
 	 * Выводит в первый лог исходники всех тестов.
 	 * Или только теста с номером testNo, если он задан

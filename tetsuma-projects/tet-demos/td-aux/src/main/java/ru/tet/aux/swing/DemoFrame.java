@@ -4,9 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
+import javax.swing.InputMap;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -14,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import ru.tet.beans.SuIdNameModel;
@@ -96,19 +102,67 @@ public class DemoFrame extends AbstractDemoFrame {
 		
 		
 		JSplitPane splitPane2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, sp1, sp2);
+		splitPane2.setDividerLocation(500);
 		workPanel.add(splitPane2);	    
 		
 		controlPanel = new JControlPanelForTests();
 
-		controlPanel.setMinimumSize(new Dimension(500, 200));
+		controlPanel.setMinimumSize(new Dimension(500, 100));
 		workPanel.setMinimumSize(new Dimension(500, 300));
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, controlPanel, workPanel);
 		splitPane.setDividerLocation(200);
 				
+		addKeyHandlers();
+		
 		return splitPane;
 		
 	}
+	
+	private void addKeyHandlers() {
+		InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = getRootPane().getActionMap();
+
+		inputMap.put(KeyStroke.getKeyStroke("F1"), "prev");
+		inputMap.put(KeyStroke.getKeyStroke("F2"), "next");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
+
+		actionMap.put("close", new AbstractAction() {
+			  @Override
+			  public void actionPerformed(ActionEvent e) {
+				  DemoFrame.this.dispose();
+			  }
+			});		
+		
+		actionMap.put("next", new AbstractAction() {
+		  @Override
+		  public void actionPerformed(ActionEvent e) {
+			  if (demosComboBox==null) {
+				  return;
+			  }
+			  int ind = demosComboBox.getSelectedIndex();
+			  ind++;
+			  if (ind>=demosComboBox.getItemCount()) {
+				  return;
+			  }
+			  demosComboBox.setSelectedIndex(ind);
+		  }
+		});
+		actionMap.put("prev", new AbstractAction() {
+			  @Override
+			  public void actionPerformed(ActionEvent e) {
+				  if (demosComboBox==null) {
+					  return;
+				  }
+				  int ind = demosComboBox.getSelectedIndex();
+				  ind--;
+				  if (ind<0) {
+					  return;
+				  }
+				  demosComboBox.setSelectedIndex(ind);
+			  }
+			});		
+	}	
 	
 	
 	public static void main(String[] args) {

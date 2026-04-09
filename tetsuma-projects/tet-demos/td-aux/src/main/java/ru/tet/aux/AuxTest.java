@@ -6,8 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Этой аннотацией помечаются дополнительные методы, привязанные к какому либо тесту.
- * value - номер теста
+ * Этой аннотацией помечаются дополнительные методы и классы, привязанные к какому либо тесту.
+ * value - номер теста (default 1)
  * 
  */
 @Retention(RetentionPolicy.SOURCE)

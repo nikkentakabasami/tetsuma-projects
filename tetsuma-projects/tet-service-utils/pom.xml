@@ -14,6 +14,7 @@
 	<modules>
 		<module>tsu-jetty-utils</module>
 		<module>tet-swing-utils</module>
+		<module>tet-utils</module>
 	</modules>
 
 

@@ -1,21 +1,26 @@
 package ru.tet.aux;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.tet.aux.swing.DemoBase;
 
+/**
+ * Тест для демонстрации использования DemoBase
+ */
 public class DemoBaseTest1 extends DemoBase {
 
 	List<String> demos;
 	
+	//вспомогательный класс, привязанный к первому тесту
+	@AuxTest
+	class testClass {}
+	
 	@Override
 	protected void doInit() throws Exception {
 		
-		//мой коммент
+		//комментарии выделяются зелёным
 		log1("first row");
 		log2("Senri no michi mo ippo kara");
 		log2("ishou kou narite, ban kotsu karu");
@@ -51,7 +56,12 @@ public class DemoBaseTest1 extends DemoBase {
 	
 	@Override
 	public void test1() throws Exception {
-		log2("test1 result!");
+		
+		double result = Math.pow(7, 7);
+		
+		log2("test1 result:",result);
+		log2Splitter("my splitter");
+		log2("several","different","messages","!");
 	}
 	
 	@Override

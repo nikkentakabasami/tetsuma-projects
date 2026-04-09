@@ -1,7 +1,10 @@
 package ru.tet.aux;
 
-import java.awt.Color;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -11,15 +14,27 @@ import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 
 import ru.tet.aux.swing.AbstractDemoFrame;
 import ru.tet.javax.swing.aux.JControlPanelForTests;
+import ru.tet.sourcebuddy.DemoEvalUtils;
+import ru.tet.sourcebuddy.EvalOptions;
+import ru.tet.sourcebuddy.EvalResult;
 
 public abstract class AbstractDemoBase {
 
+	static DecimalFormat createSimpleDecimalFormat() {
+		DecimalFormatSymbols simpleDot = new DecimalFormatSymbols();
+	    simpleDot.setDecimalSeparator('.');
+		DecimalFormat f = new DecimalFormat("#0.##",simpleDot);
+		return f;
+	}
+	
+	public static final DecimalFormat DECIMAL_FORMAT = createSimpleDecimalFormat();
+
+	//классы, которые нужно будет добавить в секцию import
+	protected List<Class<?>> importClasses = new ArrayList<>();
+	
 	//содержит инструментальную панель и панель для логов.
 	protected AbstractDemoFrame frame;
 	
@@ -72,9 +87,25 @@ public abstract class AbstractDemoBase {
 		});
 	}
 
-	private String nvl(String s, int n) {
-		return s != null ? s : "test" + n;
+	/**
+	 * Запуск теста с заданным номером.
+	 * 
+	 * @param testNo
+	 * @throws Exception
+	 */
+	public void test(int testNo) throws Exception {
+		if (testNo<=0) {
+			return;
+		}
+		String testName = "test" + testNo;
+		beforeTest(testNo);
+		Method method = AbstractDemoBase.class.getMethod(testName);
+		method.invoke(this);
+		lastTestName = testName;
+		afterTest(testNo);
 	}
+	
+	
 
 	private String nvl(String s, String mn) {
 		return s != null ? s : mn;
@@ -83,11 +114,7 @@ public abstract class AbstractDemoBase {
 	private JButton addTestButton(String title, int testNo) {
 		String testName = "test" + testNo;
 		return addButton(nvl(title, testName), event -> {
-			beforeTest(testNo);
-			Method method = AbstractDemoBase.class.getMethod(testName);
-			method.invoke(this);
-			lastTestName = testName;
-			afterTest(testNo);
+			test(testNo);
 		});
 	}
 
@@ -143,6 +170,27 @@ public abstract class AbstractDemoBase {
 		logSplitter(textArea2, args);
 	}
 
+	public void logEval2(String code) {
+		try {
+			
+			EvalOptions options = new EvalOptions();
+			options.getImportClasses().addAll(importClasses);
+			
+			List<EvalResult> ers = DemoEvalUtils.evalMultiExpression(code, options);
+			for(EvalResult er:ers) {
+				if (er.getComments()!=null) {
+					log2(er.getComments());
+				}
+				log2(er.getExpression(),"\t=",er.getResult(),"\n");
+				
+			}
+			
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	
 	public void log1NL() {
 		append1("\n");
 	}
@@ -178,22 +226,30 @@ public abstract class AbstractDemoBase {
 		append(ta,text);
 	}
 
+
 	private String toStr(Object o) {
 		if (o == null) {
 			return "";
 		}
+		
+		if (o instanceof Double) {
+			return DECIMAL_FORMAT.format((Double)o);
+		}
+		
 		return o.toString();
 	}
-
-
 	
 
-
-	
 	public static void run(Class<? extends AbstractDemoBase> cl) {
+		run(cl,0);
+	}
+	
+	public static void run(Class<? extends AbstractDemoBase> cl, int startTestOnLaunch) {
 		SwingUtilities.invokeLater(() -> {
 			try {
-				cl.getDeclaredConstructor().newInstance().init(null);
+				AbstractDemoBase demo = cl.getDeclaredConstructor().newInstance();
+				demo.init(null);
+				demo.test(startTestOnLaunch);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

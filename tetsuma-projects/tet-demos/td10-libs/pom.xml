@@ -18,6 +18,12 @@
 			<version>${project.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>ru.tetsu</groupId>
+			<artifactId>tet-utils</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 
 		<!-- misc -->
 		<dependency>
@@ -30,8 +36,16 @@
 			<artifactId>reflections</artifactId>
 		</dependency>
 
+		<dependency>
+		    <groupId>com.javax0.sourcebuddy</groupId>
+		    <artifactId>SourceBuddy</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+		</dependency>
 
 	</dependencies>
-
 
 </project>

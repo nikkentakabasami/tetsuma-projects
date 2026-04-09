@@ -1,10 +1,5 @@
 package ru.tet.aux.swing;
 
-import java.awt.Component;
-import java.awt.Container;
-
-import javax.swing.SwingUtilities;
-
 import ru.tet.aux.AbstractDemoBase;
 import ru.tet.swing.utils.TetSwingUtils;
 

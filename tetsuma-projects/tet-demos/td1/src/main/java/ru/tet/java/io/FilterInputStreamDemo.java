@@ -7,9 +7,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class FilterInputStreamDemo {
+import ru.tet.TemplateDemo;
+import ru.tet.aux.AuxTest;
+import ru.tet.aux.swing.DemoBase;
 
-	static class UpperCaseInputStream extends FilterInputStream {
+
+
+
+public class FilterInputStreamDemo extends DemoBase {
+
+	//FilterInputStream, переводящий строки в верхний регистр
+	@AuxTest
+	public static class UpperCaseInputStream extends FilterInputStream {
 		public UpperCaseInputStream(InputStream in) {
 			super(in);
 		}
@@ -28,14 +37,13 @@ public class FilterInputStreamDemo {
 			}
 			return result;
 		}
-	}
-
-	public static void main(String[] args) throws IOException {
-		demo1();
-	}
-
-	public static void demo1() throws IOException {
-
+	}	
+	
+	//FilterInputStream - основа для адаптерных InputStream-ов.
+	//Наследники могут преобразовывать данные по необходимости
+	@Override
+	public void test1() throws Exception {
+		
 		String inputString = "Hello, World!";
 		InputStream inputStream = new ByteArrayInputStream(inputString.getBytes());
 		InputStream upperCaseInputStream = new UpperCaseInputStream(inputStream);
@@ -43,10 +51,22 @@ public class FilterInputStreamDemo {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(upperCaseInputStream))) {
 			String line;
 			while ((line = reader.readLine()) != null) {
-				System.out.println(line);
+				log2(line);
 			}
 		}
+		
+	}
 
+	@Override
+	protected void doInitControlPanel() throws Exception {
+		addTest1Button(null);
+	}
+
+	public static void main(String[] args) {
+		DemoBase.run(FilterInputStreamDemo.class);
 	}
 
 }
+
+
+
