@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+
+<script src="../../jslibs/jquery31/js/jquery.js"></script>
+<link rel="stylesheet" type="text/css" href="../../accord-lib/css/accord.css">
+<link rel="stylesheet" type="text/css" href="../../accord-lib/css/tabbed-panel.css">
+<link rel="stylesheet" type="text/css" href="../../accord-lib/css/demo-base.css">
+<script src="../../accord-lib/js/demo-base-log.js"></script>
+<script src="../../accord-lib/js/demo-base.js"></script>
+<script type="module" src="../../accord-lib/js/accord-publish.js"></script>
+
+<link rel="stylesheet" type="text/css" href="../css/401-demo.css">
+<script src="../js/401-demo.js"></script>
+
+
+
+</head>
+<body class="acc-default-font">
+
+  <div class="basePanel">
+
+    <div class="titlePanel">
+      <h2>тестирование селекторов jquery</h2>
+    </div>
+
+    <div class="auxPanel">
+      <div id="tabbedPanel1">
+
+        <div class="tab-container">
+          <button>Описание</button>
+          <button>Ключевой код</button>
+        </div>
+
+        <div class="tab-content">
+          <pre class="acc-code-panel">
+
+let boldTag = "&lt;b&gt;&lt;/b&gt;";
+let testHtmlSnippet = "&lt;b&gt;appended text&lt;/b&gt;";
+let greenBorderDivSnippet = '&lt;div class="green-border"&gt;&lt;/div&gt;';
+
+$btn = $(".B>button.c5");
+          
+</pre>
+        </div>
+
+        <div class="tab-content">
+          <pre class="acc-code-panel">
+  код
+</pre>
+        </div>
+
+      </div>
+
+      <div class="logPanel gray-border">
+        <div id="log1"></div>
+      </div>
+
+    </div>
+
+
+
+
+  <div class="acc-4cols acc-simple-panel">
+
+    <div class="acc-left-content bg-gold">селекторы: основы, атрибуты</div>
+      <div class="acc-tool-panel-select-wrapper acc-dropdown-triangle">
+        <select id="selectors" class="acc-tool-panel-select">
+        </select>
+      </div>      
+    
+      <div class="acc-left-content bg-gold">селекторы: фильтры</div>
+      
+      <div class="acc-tool-panel-select-wrapper acc-dropdown-triangle">
+        <select id="selectors2" class="acc-tool-panel-select">
+        </select>
+      </div>      
+    
+      <div class="acc-left-content">функции: переход</div>
+      
+      <div class="acc-tool-panel-select-wrapper acc-dropdown-triangle">
+        <select id="selectors3" class="acc-tool-panel-select">
+        </select>
+      </div>      
+    
+      <div class="acc-left-content">функции: фильтры</div>
+      
+      <div class="acc-tool-panel-select-wrapper acc-dropdown-triangle">
+        <select id="selectors4" class="acc-tool-panel-select">
+        </select>
+      </div>      
+
+      <div class="acc-left-content">основные функции и атрибуты</div>
+      <div class="acc-tool-panel-select-wrapper acc-dropdown-triangle">
+        <select id="selectors5" class="acc-tool-panel-select">
+        </select>
+      </div>      
+
+      <div class="acc-left-content">attr,prop,text,html,val</div>
+      <div class="acc-tool-panel-select-wrapper acc-dropdown-triangle">
+        <select id="selectors6" class="acc-tool-panel-select">
+        </select>
+      </div>      
+
+      <div class="acc-left-content">css, classes</div>
+      <div class="acc-tool-panel-select-wrapper acc-dropdown-triangle">
+        <select id="selectors7" class="acc-tool-panel-select">
+        </select>
+      </div>      
+
+      <div class="acc-left-content">положение, размеры</div>
+      <div class="acc-tool-panel-select-wrapper acc-dropdown-triangle">
+        <select id="selectors8" class="acc-tool-panel-select">
+        </select>
+      </div>      
+
+      <div class="acc-left-content">dom manipulation</div>
+      <div class="acc-tool-panel-select-wrapper acc-dropdown-triangle">
+        <select id="selectors9" class="acc-tool-panel-select">
+        </select>
+      </div>      
+
+      <div class="acc-left-content">misc</div>
+      <div class="acc-tool-panel-select-wrapper acc-dropdown-triangle">
+        <select id="selectors10" class="acc-tool-panel-select">
+        </select>
+      </div>      
+
+
+  </div>
+
+
+
+
+
+
+    <div class="acc-button-panel">
+      <div class="acc-centered-content">Текущий селектор:</div>
+      <input type="text" id="selectorText" />
+      <button id="bExecute" type="button" class="acc-btn">Показать селектор/вычислить значение</button>
+      <div class="acc-filler-panel"></div>      
+      <button id="bReload" type="button" class="acc-btn">Перезагрузить песочницу</button>
+    </div>
+
+
+
+
+    <!--               work panel                -->
+
+    <div class="workPanel label-border">
+
+
+    </div>
+
+
+
+  </div>
+
+<template id="template1">
+      <div class="label-border A">
+        <div class="c1" data-f1="val1" data-f2="val2">c1</div>
+        <div class="c2 blue-border">c2</div>
+        <div class="c3">c3</div>
+        
+        <div class="c4">
+          <div class="c1" id="tc1">id=tc1</div>
+          <div class="c2 blue-border" id="tc2">id=tc2</div>
+          <div class="c3" id="tc3">id=tc3</div>
+          <div class="c4" id="tc4">id=tc4</div>
+          <div class="c5" id="tc5">id=tc5</div>
+          <div class="c6" id="tc6">id=tc6</div>
+        </div>
+        <div style="display: none;">hidden</div>
+        some text
+        
+      </div>
+      <div class="label-border B">
+        <div class="c1">c1</div>
+        <div class="c2">c2</div>
+        <div class="c3">c3</div>
+        <div class="c4">
+          <div class="c1">c1</div>
+          <div class="c2">c2</div>
+          <div class="c3">c3</div>
+        </div>
+        <button type="button" class="acc-btn acc-btn-icon-text acc-btn-arrow-up c5">button c5</button>        
+        <button type="button" class="acc-btn acc-btn-icon-text acc-btn-arrow-down c6">button c6</button>        
+        
+        vehicle:
+        <input type="checkbox" id="vehicle" value="Car" checked="checked">
+        <input type="text" id="tf1" value="tenka musou">
+        
+      </div>
+
+      <div class="label-border C">
+        <div class="c1">c1</div>
+        <div class="c2"></div>
+        
+        <div class="c3">
+          <div class="c1">c1</div>
+          <div class="c2">c2</div>
+          <div class="c3">
+            <div class="c1">c1</div>
+            <div class="c2">c2</div>
+            <div class="c3">c3</div>
+          </div>
+        </div>
+
+        <div class="c4">
+          <div class="c1">c1</div>
+        </div>
+
+        
+      </div>
+
+
+
+</template>
+
+
+</body>
+</html>

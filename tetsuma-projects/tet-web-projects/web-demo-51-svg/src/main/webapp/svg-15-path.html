@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<head>
+<meta charset="UTF-8" />
+<title>My notes</title>
+
+<script src="jquery31/js/jquery.js"></script>
+
+<link rel="stylesheet" type="text/css" href="css/svg-aux.css">
+<script type="text/javascript" src="js/svg-aux.js"></script>
+
+<script>
+$(() => {
+	showAllSvgDesc();
+});
+</script>
+
+<style>
+</style>
+
+
+
+
+</head>
+<body>
+	<div class="acc-desc-panel">
+
+
+C - кубическая кривая безье
+C x1 y1, x2 y2, x y
+c dx1 dy1, dx2 dy2, dx dy
+
+x,y - где заканчивается кривая
+остальные 2 точки - контрольные.
+
+
+	</div>
+
+	<div class="svg-code svg1desc"></div>
+	<svg width="600" height="300" id="svg1">
+
+<path d="M10 80 C 50 10, 150 200, 200 80" stroke="black" fill="transparent"/>
+ 
+<circle cx="10" cy="80" r="5" />
+<circle cx="200" cy="80" r="5" />
+<circle cx="50" cy="10" r="5" fill="blue" />
+<circle cx="150" cy="200" r="5" fill="blue" />
+ 
+ 
+ 
+	</svg>
+
+
+	<div class="acc-desc-panel">
+
+Q - квадратичная кривая безье
+  более простой синтаксис - обе контрольные точки совпадают
+
+Q x1 y1, x y
+q dx1 dy1, dx dy
+	
+	</div>
+
+	<div class="svg-code svg2desc"></div>
+	<svg width="600" height="400" id="svg2">
+	
+<circle cx="10" cy="80" r="5" />
+<circle cx="180" cy="80" r="5" />
+<circle cx="95" cy="10" r="5" fill="blue" />
+<path d="M10 80 Q 95 10 180 80" stroke="blue" fill="transparent"/>
+	
+
+<circle cx="210" cy="80" r="5" />
+<circle cx="380" cy="80" r="5" />
+<circle cx="295" cy="200" r="5" fill="red" />
+<path d="M210 80 Q 295 200 380 80" stroke="red" fill="transparent"/>
+
+
+
+	
+	</svg>
+
+
+
+
+
+</body>
+</html>

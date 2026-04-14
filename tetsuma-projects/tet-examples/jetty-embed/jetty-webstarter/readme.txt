@@ -6,6 +6,7 @@ MainTetJettyServer10.java
 MainTetJettyServer11.java
 MainTetJettyServer2.java
 
+------------------
 гораздо удобнее запускать jetty embedded прямо из веб-приложений.
 В этом случае не надо указывать путь к веб приложению и доп. класспаз.
 

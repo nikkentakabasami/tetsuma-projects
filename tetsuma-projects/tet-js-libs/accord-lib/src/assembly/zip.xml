@@ -10,10 +10,12 @@
     <fileSets>
         <!-- Include configuration files from src/main/config into a 'config' folder in the zip -->
         <fileSet>
-            <directory>${project.basedir}/src/main/resources/accord</directory>
-            <outputDirectory>/accord</outputDirectory>
+            <directory>${project.basedir}/src/main/resources</directory>
+            <outputDirectory>/</outputDirectory>
             
             <!-- 
+            <directory>${project.basedir}/src/main/resources/accord</directory>
+            <outputDirectory>/accord</outputDirectory>
             <excludes>
             	<exclude>demos/**</exclude>
             </excludes>

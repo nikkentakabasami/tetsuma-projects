@@ -1,10 +1,9 @@
 package ru.tet.java.lang;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.URL;
 
 import ru.tet.aux.swing.DemoBase;
+import ru.tet.utils.TetIOUtils;
 
 
 
@@ -19,12 +18,8 @@ public class ClassLoaderDemo extends DemoBase {
 	    log2("url:",url.toString());
 	    
 	    log2Splitter("file content");
-	    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-	    String inputLine;
-	    while ((inputLine = in.readLine()) != null) {
-	      log2(inputLine);
-	    }
-	    in.close();
+	    String content = TetIOUtils.streamToString(url.openStream());
+      log2(content);
 		
 	}
 

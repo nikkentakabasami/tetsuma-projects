@@ -18,7 +18,8 @@ public class DemoBaseTest2 extends DemoBase {
 	
 	@Override
 	public void test1() throws Exception {
-		//вызов демки DemoBaseTest1 из этой 
+		//вызов демки DemoBaseTest1 из этой
+		//обычно такое не практикуется!
 		DemoBaseTest1 bt1 = new DemoBaseTest1();
 		bt1.init(frame);
 		log2("using test1!");

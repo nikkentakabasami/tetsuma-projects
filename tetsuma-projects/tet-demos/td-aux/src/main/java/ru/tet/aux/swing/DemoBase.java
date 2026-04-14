@@ -5,6 +5,7 @@ import ru.tet.swing.utils.TetSwingUtils;
 
 /**
  * Основа для тестов java-классов.
+ * Пример использования: DemoBaseTest1
  * 
  */
 public class DemoBase extends AbstractDemoBase {

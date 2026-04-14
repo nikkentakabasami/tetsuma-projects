@@ -83,6 +83,20 @@
 				</configuration>
 			</plugin>
 
+			<!-- главная точка входа в демки -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>ru.tet.ComplexDemo1</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
 
 		</plugins>
 

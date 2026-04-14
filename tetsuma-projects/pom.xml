@@ -24,6 +24,7 @@
 		<module>tet-service-utils</module>
 		<module>tet-examples</module>
 		<module>tet-demos</module>
+		<module>tet-web-projects</module>
 	</modules>
 
 	<dependencyManagement>
@@ -191,9 +192,9 @@
 			</dependency>
 
 			<dependency>
-			    <groupId>com.javax0.sourcebuddy</groupId>
-			    <artifactId>SourceBuddy</artifactId>
-			    <version>2.5.3</version>
+				<groupId>com.javax0.sourcebuddy</groupId>
+				<artifactId>SourceBuddy</artifactId>
+				<version>2.5.3</version>
 			</dependency>
 
 			<dependency>
@@ -202,23 +203,49 @@
 				<version>${lombok.version}</version>
 				<scope>provided</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
 				<artifactId>junit-jupiter</artifactId>
 				<version>5.13.3</version>
 				<scope>test</scope>
 			</dependency>
-			
-			
-		</dependencies>
 
+
+		</dependencies>
 
 
 	</dependencyManagement>
 
 
+	<build>
+		<pluginManagement>
+			<plugins>
 
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.3.0</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>3.4.0</version>
+				</plugin>
+				
+			<plugin>
+				<groupId>org.eclipse.jetty.ee10</groupId>
+				<artifactId>jetty-ee10-maven-plugin</artifactId>
+				<version>12.0.19</version>
+			</plugin>				
+				
+				
+
+			</plugins>
+		</pluginManagement>
+	</build>
 
 	<!--
 			<dependency>

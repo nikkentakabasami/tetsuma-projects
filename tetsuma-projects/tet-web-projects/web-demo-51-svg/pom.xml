@@ -1,0 +1,123 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>ru.tetsu</groupId>
+		<artifactId>tet-web-projects</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>web-demo-51-svg</artifactId>
+	<packaging>war</packaging>
+
+	<dependencies>
+
+
+		<dependency>
+			<groupId>ru.tetsu</groupId>
+			<artifactId>tet-aux</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+
+		<!-- apache.commons -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>ru.tetsu</groupId>
+			<artifactId>tsu-jetty-utils</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+
+		<!-- server apis -->
+
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>jakarta.servlet.jsp.jstl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet.jsp.jstl</groupId>
+			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet.jsp</groupId>
+			<artifactId>jakarta.servlet.jsp-api</artifactId>
+		</dependency>
+
+		<!-- misc -->
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- overlays -->
+
+		<dependency>
+			<groupId>ru.tetsu</groupId>
+			<artifactId>auxjs-libs</artifactId>
+			<version>${project.version}</version>
+			<type>zip</type>
+			<scope>runtime</scope>
+		</dependency>
+
+
+
+	</dependencies>
+
+
+	<build>
+		<plugins>
+
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<overlays>
+						<overlay>
+							<groupId>ru.tetsu</groupId>
+							<artifactId>auxjs-libs</artifactId>
+							<type>zip</type>
+						</overlay>
+
+					</overlays>
+				</configuration>
+			</plugin>
+
+
+
+			<plugin>
+				<groupId>org.eclipse.jetty.ee10</groupId>
+				<artifactId>jetty-ee10-maven-plugin</artifactId>
+				<configuration>
+					<modules>ee10-plus,ee10-jsp</modules>
+					<webApp>
+						<jettyEnvXml>
+							${project.basedir}/src/aux-jetty-env.xml</jettyEnvXml>
+					</webApp>
+				</configuration>
+			</plugin>
+
+
+		</plugins>
+	</build>
+
+
+</project>

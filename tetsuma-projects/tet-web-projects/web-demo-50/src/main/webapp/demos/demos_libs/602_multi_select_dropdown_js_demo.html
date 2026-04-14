@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+
+<script src="../../jslibs/jquery31/js/jquery.js"></script>
+<link rel="stylesheet" type="text/css" href="../../accord-lib/css/accord.css">
+<link rel="stylesheet" type="text/css" href="../../accord-lib/css/tabbed-panel.css">
+<link rel="stylesheet" type="text/css" href="../../accord-lib/css/demo-base.css">
+<script src="../../accord-lib/js/demo-base-log.js"></script>
+<script src="../../accord-lib/js/demo-base.js"></script>
+<script type="module" src="../../accord-lib/js/accord-publish.js"></script>
+
+<script type="text/javascript" src="../../jslibs/misc-libs/MultiSelect.js"></script>
+<link href="../../jslibs/misc-libs/MultiSelect.css" rel="stylesheet" type="text/css">
+
+<script src="../js/602-demo.js"></script>
+<link href="../css/demo602.css" rel="stylesheet" type="text/css">
+
+
+
+
+</head>
+<body class="acc-default-font">
+
+  <div class="basePanel">
+
+    <div class="titlePanel">
+      <h2>Multi Select Dropdown JS</h2>
+    </div>
+
+    <div class="auxPanel">
+      <div id="tabbedPanel1">
+
+        <div class="tab-container">
+          <button>Описание</button>
+          <button>Ключевой код</button>
+        </div>
+
+        <div class="tab-content">
+          <pre class="acc-desc-panel">
+Multi Select Dropdown JS
+минималистичный и удобный multiselect с открытым кодом.
+</pre>
+        </div>
+
+        <div class="tab-content">
+          <pre class="acc-code-panel">
+  select2 = new MultiSelect("#cars", {
+  width: "300px",
+  height: "50px",
+  placeholder: 'Select car manufacturers',
+  });
+</pre>
+        </div>
+
+      </div>
+
+      <div class="logPanel gray-border">
+        <div id="log1"></div>
+      </div>
+
+    </div>
+
+
+    <!--               button panel                -->
+
+    <div class="acc-button-panel" id="p1">
+      <button id="b2" type="button" class="acc-btn">createMultiSelects()</button>
+      <button id="b3" type="button" class="acc-btn">destroy()</button>
+    </div>
+
+
+  <div class="acc-button-panel" id="p2">
+    <button id="b6" type="button" class="acc-btn">log selected values</button>
+    <button id="b1" type="button" class="acc-btn">set selected values</button>
+    <button id="b4" type="button" class="acc-btn">clear() - удаление всех записей</button>
+    <button id="b5" type="button" class="acc-btn">set new data for select3</button>
+    
+    
+  </div>
+
+
+    <div class="workPanel">
+    
+<div class="acc-2cols">
+
+  <form>
+
+    <h1>Multi Select Dropdown</h1>
+
+    <label for="fruits">Fruits</label>
+    <select id="fruits" name="fruits" multiple>
+      <option value="Apple">Apple</option>
+      <option value="Banana">Banana</option>
+      <option value="Blackberry">Blackberry</option>
+      <option value="Blueberry">Blueberry</option>
+      <option value="Cherry">Cherry</option>
+      <option value="Cranberry">Cranberry</option>
+      <option value="Grapes">Grapes</option>
+      <option value="Kiwi">Kiwi</option>
+      <option value="Mango">Mango</option>
+      <option value="Orange">Orange</option>
+      <option value="Peach">Peach</option>
+      <option value="Pear">Pear</option>
+      <option value="Pineapple">Pineapple</option>
+      <option value="Raspberry">Raspberry</option>
+      <option value="Strawberry">Strawberry</option>
+      <option value="Watermelon">Watermelon</option>
+    </select>
+
+    <label for="cars">Car Manufacturers</label>
+    <select id="cars" name="cars" multiple>
+      <option value="1">Audi tm</option>
+      <option value="2">BMW tm</option>
+      <option value="3">Chevrolet tm</option>
+    </select>
+
+    <label for="select3">Dynamic Select</label>
+    <select id="select3" name="dynamic"></select>
+
+  </form>
+
+  <textarea rows="20" cols="100" id="log1"></textarea>
+
+
+</div>    
+    
+    
+    </div>
+
+
+
+  </div>
+
+
+</body>
+</html>

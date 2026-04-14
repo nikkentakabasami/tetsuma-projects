@@ -27,7 +27,6 @@ public class BasicServer3_file_resources {
 		
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath(contextPath);
-//        context.setWelcomeFiles(new String[]{"index.html", "index.htm", "foo.htm"});
         context.setWelcomeFiles(new String[]{"index.htm", "foo.htm"});
         
         ResourceFactory resourceFactory = ResourceFactory.of(context);

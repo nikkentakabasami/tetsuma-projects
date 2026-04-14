@@ -7,12 +7,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.ee10.servlet.ResourceServlet;
 import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.ee10.webapp.WebAppContext;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceFactory;
@@ -32,7 +33,8 @@ import ru.tet.jetty.starter.TetJettyServerOptions.AdditionalStatic;
  * 
  */
 public class TetJettyServer {
-
+	static Logger logger = LogManager.getLogger();
+	
 	Server server;
 	WebAppContext webAppContext;
 
@@ -46,6 +48,8 @@ public class TetJettyServer {
 	public void init(TetJettyServerOptions options) throws Exception {
 		this.options = options;
 
+		logger.debug("options: "+options.getAdditionalStaticAsString());
+		
 		server = new Server(options.getPort());
 
 		webAppContext = new WebAppContext();
@@ -117,7 +121,7 @@ public class TetJettyServer {
 			
 			baseResource = ResourceFactory.combine(baseResources);		
 		}
-		
+
 
 		//дополнительный статический контент
 		//подключается через ResourceServlet
@@ -133,7 +137,7 @@ public class TetJettyServer {
 			holderAlt.setInitParameter("baseResource", as.dirPath.toUri().toASCIIString());
 			webAppContext.addServlet(holderAlt, pathSpec);
 		}
-		
+
 
 		//дополнительные classpath ресурсы веб-приложения (классы, библиотеки)
 		List<Resource> extraClasspathResources = new ArrayList<>();
@@ -175,7 +179,9 @@ public class TetJettyServer {
 	}
 
 	public void start() throws Exception {
-		server.setDumpAfterStart(true);
+		if (options.dumpAfterStart) {
+			server.setDumpAfterStart(true);
+		}
 		server.start();
 	}
 
@@ -208,5 +214,6 @@ public class TetJettyServer {
 	public Handler.Sequence getHandlers() {
 		return handlers;
 	}
+
 	
 }

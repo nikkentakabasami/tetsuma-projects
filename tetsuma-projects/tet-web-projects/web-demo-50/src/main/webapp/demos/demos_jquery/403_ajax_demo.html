@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+
+<script src="../../jslibs/jquery31/js/jquery.js"></script>
+<link rel="stylesheet" type="text/css" href="../../accord-lib/css/accord.css">
+<link rel="stylesheet" type="text/css" href="../../accord-lib/css/tabbed-panel.css">
+<link rel="stylesheet" type="text/css" href="../../accord-lib/css/demo-base.css">
+<script src="../../accord-lib/js/demo-base-log.js"></script>
+<script src="../../accord-lib/js/demo-base.js"></script>
+<script type="module" src="../../accord-lib/js/accord-publish.js"></script>
+
+
+<script src="../js/403-demo.js"></script>
+
+
+
+</head>
+<body class="acc-default-font">
+
+  <div class="basePanel">
+
+    <div class="titlePanel">
+      <h2>ajax demo</h2>
+    </div>
+
+    <div class="auxPanel" style="height: 400px;">
+
+      <div class="logPanel gray-border full-width">
+        <div id="log1"></div>
+      </div>
+
+    </div>
+
+
+
+
+    <div class="acc-button-panel">
+
+      <div class="acc-left-content">Обработчики1</div>
+      <div class="acc-tool-panel-select-wrapper acc-dropdown-triangle">
+        <select id="selectors1" class="acc-tool-panel-select" style="width: 200px;">
+        </select>
+      </div>
+      <button id="bExecute" type="button" class="acc-btn">Выполнить</button>
+      <button id="bReload" type="button" class="acc-btn">Перезагрузить песочницу</button>
+      
+      <div class="acc-filler-panel"></div>      
+      
+      <button id="bClearLog" type="button" class="acc-btn">Очистить лог</button>
+
+
+    </div>
+
+
+    <div class="acc-button-panel">
+    </div>
+
+
+
+
+    <!--               work panel                -->
+
+    <div class="workPanel label-border"></div>
+
+
+  </div>
+
+
+  <template id="template1">
+
+
+    <div class="acc-2cols">
+
+
+
+      <form action="." id="form2">
+      <div class="form-panel acc-2cols acc-form-style1" id="formDiv2">
+
+        <div class="acc-row">
+        <h3>test form</h3>
+        </div>
+
+        <label>title:</label>
+        <input type="text" name="title" value="Иван">
+        <label>id:</label>
+        <input type="text" name="id" value="233">
+        
+          <input type="submit" value="Submit">
+      </div>
+      </form>
+      
+      
+    </div>
+
+  </template>
+
+
+</body>
+</html>

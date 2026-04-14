@@ -17,18 +17,8 @@ public class DemoBaseTest1 extends DemoBase {
 	@AuxTest
 	class testClass {}
 	
-	@Override
-	protected void doInit() throws Exception {
-		
-		//комментарии выделяются зелёным
-		log1("first row");
-		log2("Senri no michi mo ippo kara");
-		log2("ishou kou narite, ban kotsu karu");
-		log2("final","1","2","3","4");
-		
-		
-	}
 	
+	//здесь добавляют кнопки и прочие элементы на controlPanel
 	@Override
 	protected void doInitControlPanel() throws Exception {
 		
@@ -54,6 +44,20 @@ public class DemoBaseTest1 extends DemoBase {
 		addTest2Button(null);
 	}
 	
+	//инициализация, которая будет выполняться перед тестами.
+	//будет выводиться в разделе исходников
+	@Override
+	protected void doInit() throws Exception {
+		
+		//комментарии выделяются зелёным
+		log1Splitter("first row");
+		log2("Senri no michi mo ippo kara");
+		log2("ishou kou narite, ban kotsu karu");
+		log2("final","1","2","3","4");
+		
+	}
+	
+
 	@Override
 	public void test1() throws Exception {
 		
@@ -66,7 +70,16 @@ public class DemoBaseTest1 extends DemoBase {
 	
 	@Override
 	public void test2() throws Exception {
-		log2("test2 result!");
+
+		//Эта функция позволяет компилировать, выполнять и выводить в лог короткие выражения.
+		logEval2("""
+				//кубический корень
+				Math.cbrt(254)
+
+				//деление с округлением вверх
+				Math.ceilDiv(22, 3)
+				""");		
+		
 	}
 	
 	public static void main(String[] args) {

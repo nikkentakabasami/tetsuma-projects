@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<head>
+<meta charset="UTF-8" />
+<title>My notes</title>
+
+<script src="jquery31/js/jquery.js"></script>
+
+<link rel="stylesheet" type="text/css" href="css/svg-aux.css">
+<script type="text/javascript" src="js/svg-aux.js"></script>
+
+<script>
+$(() => {
+	showAllSvgDesc();
+});
+</script>
+
+<style>
+</style>
+
+
+
+
+</head>
+<body>
+	<div class="acc-desc-panel">
+<b>g</b>
+  Контейнер для группировки других элементов.
+Трансформации, которые применяются к нему - применяются для всех дочерних элементов (например стили).
+Аттрибуты так же наследуются.
+
+	</div>
+
+	<div class="svg-code svg1desc"></div>
+<svg viewBox="0 0 200 100" height="200" id="svg1">
+   <g stroke="green" fill="white" stroke-width="5">
+     <circle cx="25" cy="25" r="15"/>
+     <circle cx="40" cy="25" r="15"/>
+     <circle cx="55" cy="25" r="15"/>
+     <circle cx="70" cy="25" r="15"/>
+   </g>
+</svg>
+
+
+	<div class="acc-desc-panel">
+use
+  Дублирует элементы
+
+x
+y
+width
+height
+xlink:href
+
+class
+style
+transform	
+</div>
+
+
+
+
+	<div class="svg-code svg2desc"></div>
+	<svg width="600" height="400" id="svg2">
+	
+
+<style>
+  .classA {
+    fill: red;
+  }
+</style> 
+
+<defs>
+  <g id="Port">
+    <text x="0" y="20">black</text>
+    <circle style="fill: inherit;" r="10" cx="70" cy="10"/>
+  </g>
+</defs>
+
+<use x="0" y="0" xlink:href="#Port" />
+<use x="0" y="25" xlink:href="#Port" class="classA"/>
+<use x="0" y="50" xlink:href="#Port" style="fill: blue;"/>	
+
+
+	
+	</svg>
+
+
+</body>
+</html>

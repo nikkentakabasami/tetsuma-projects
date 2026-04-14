@@ -37,6 +37,7 @@ public class TetJettyServerOptions {
 	//При использовании WebAppContext всё это включено по умолчанию.
 	boolean annotationSupport = true;
 	boolean jspSupport = true;
+	boolean dumpAfterStart = false;
 	
 
 	//дополнительные папки и jar-файлы, которые надо добавить в classpath
@@ -52,6 +53,12 @@ public class TetJettyServerOptions {
 	//комбинируются и подключаются через webAppContext.setBaseResource(r)
 	//Отлично подключаются jsp, но не подключаются html
 	List<Path> fileSystemBaseResources = new ArrayList<>(); 
+
+	
+	List<String> classpathStaticContent = new ArrayList<>();
+	List<Path> fileSystemStaticContent = new ArrayList<>(); 
+	
+	
 	
 	
 	public void addAdditionalStatic(String pathSpec, Path dirPath) {
@@ -60,6 +67,20 @@ public class TetJettyServerOptions {
 
 	public void addAdditionalStatic(Path dirPath) {
 		additionalStatic.add(new AdditionalStatic(null, dirPath));
+	}
+	
+	String getAdditionalStaticAsString() {
+		
+		StringBuilder sb = new StringBuilder();
+		for(AdditionalStatic as:additionalStatic) {
+			sb.append("\n");
+			if (as.pathSpec!=null) {
+				sb.append(as.pathSpec).append(": ");
+			}
+			sb.append(as.dirPath);
+			
+		}
+		return sb.toString();
 	}
 	
 	

@@ -45,7 +45,6 @@
 		<dependency>
 			<groupId>ru.tetsu</groupId>
 			<artifactId>tsu-jetty-utils</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 
 	</dependencies>
