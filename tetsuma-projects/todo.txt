@@ -2,3 +2,7 @@
 add log4j logger everywhere
 
 ResourceHandler
+
+403_ajax_demo.html
+  пофиксить демки, добавить тестовые сервлеты
+

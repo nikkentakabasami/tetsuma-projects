@@ -10,9 +10,8 @@ public class JettyStarter51 extends JettyStarter {
 
 	@Override
 	public void init() {
-		super.init();
-//		options.setPort(8080);
-		options.setContextPath("/webapp1");
+		options.setPort(8080);
+		options.setContextPath("/demo-51-svg");
 		
 //		options.addAdditionalStatic(getAccordPath());
 //		options.addAdditionalStatic(getTetSlickGridPath());

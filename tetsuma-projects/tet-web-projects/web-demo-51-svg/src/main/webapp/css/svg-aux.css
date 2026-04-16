@@ -5,6 +5,22 @@ svg {
 	border: 1px solid gray;
 }
 
+.demo-svg-400 {
+	width: 1000px;
+    height: 400px;
+}
+
+.demo-svg-800 {
+	width: 1000px;
+    height: 800px;
+}
+
+.demo-svg-200 {
+	width: 1000px;
+    height: 200px;
+}
+
+
 .svg-code {
 	white-space: pre-wrap;
 	border: 1px solid gray;
@@ -19,3 +35,30 @@ svg {
 	white-space: pre-wrap;
 	margin: 10px 0px;	
 }
+
+/* контейнер для demo-templates.svg */
+.demoSvgTemplates {
+	display: none;
+}
+
+
+
+
+/*------  Горизонтальная панель с кнопками acc-btn ------*/
+.acc-button-panel {
+	display: flex;
+	gap: 5px;
+	border: 1px solid #ccc;
+	background-color: white;
+	border-radius: 4px;
+	padding: 5px;
+}
+
+
+/* Выравнивает содержимое по центру */
+.acc-centered-content {
+	display: flex; 
+	align-items: center; 
+	justify-content: center;
+}
+

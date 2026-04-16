@@ -21,7 +21,7 @@ public class JettyEmbeddedStarter1 {
 	public static void main(String[] args) throws Exception {
 		
 		TetJettyServerOptions options = new TetJettyServerOptions();
-		options.setPort(8080);
+		options.setPort(8085);
 		options.setContextPath("/webapp1");
 
 		
@@ -29,11 +29,6 @@ public class JettyEmbeddedStarter1 {
 		
 		options.addAdditionalStatic(Path.of("../td50_web_jslibs/src/main/resources/jslibs/"));
 		options.addAdditionalStatic("/accord-lib/*",Path.of("/home/tetsuma/work/workspaces/_myprojects/accord/accord/src/main/webapp/accord/"));
-		
-		
-		options.addAdditionalStatic(Path.of("../td50_web_jslibs/src/main/resources/jslibs/"));
-		options.addAdditionalStatic("/accord-lib/*",Path.of("/home/tetsuma/work/workspaces/_myprojects/accord/accord/src/main/webapp/accord/"));
-		
 		
 		//подключаем сервлеты
 //		options.getExtraClasspathes().add(Path.of("../web-jslibs/target/classes"));

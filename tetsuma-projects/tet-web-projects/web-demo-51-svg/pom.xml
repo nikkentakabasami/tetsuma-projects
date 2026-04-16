@@ -20,6 +20,31 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>ru.tetsu</groupId>
+			<artifactId>tsu-jetty-utils</artifactId>
+		</dependency>
+
+		<!-- jetty -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j2-impl</artifactId>
+		</dependency>
+
+		<!-- misc -->
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+
 		<!-- apache.commons -->
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -31,40 +56,6 @@
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>ru.tetsu</groupId>
-			<artifactId>tsu-jetty-utils</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-
-
-		<!-- server apis -->
-
-		<dependency>
-			<groupId>org.glassfish.web</groupId>
-			<artifactId>jakarta.servlet.jsp.jstl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>jakarta.servlet.jsp.jstl</groupId>
-			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>jakarta.servlet</groupId>
-			<artifactId>jakarta.servlet-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>jakarta.servlet.jsp</groupId>
-			<artifactId>jakarta.servlet.jsp-api</artifactId>
-		</dependency>
-
-		<!-- misc -->
-
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
-		</dependency>
 
 		<!-- overlays -->
 
@@ -108,10 +99,6 @@
 				<artifactId>jetty-ee10-maven-plugin</artifactId>
 				<configuration>
 					<modules>ee10-plus,ee10-jsp</modules>
-					<webApp>
-						<jettyEnvXml>
-							${project.basedir}/src/aux-jetty-env.xml</jettyEnvXml>
-					</webApp>
 				</configuration>
 			</plugin>
 

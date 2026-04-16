@@ -1,0 +1,80 @@
+<?xml version="1.0" standalone="no"?>
+
+<svg 
+     version="1.1"
+     baseProfile="full"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     xmlns:ev="http://www.w3.org/2001/xml-events"
+     width="0px"
+     height="0px"
+     >
+<title>my templates</title>
+<desc>содержит symbol и defs для прорисовки в других демках</desc>
+
+
+<!-- сетка с шагом 10 пикселей -->
+<symbol id="grid-net-10">
+	<g stroke="#000000" stroke-linecap="round" stroke-width="0.5" stroke-dasharray="4,6" fill="none" stroke-opacity="0.2">
+
+		<path d="M 8  10  L  104  10 " />
+		<path d="M 8  20  L  104   20 " />
+		<path d="M 8  30  L  104   30 " />
+		<path d="M 8  40  L  104   40 " />
+		<path d="M 8  50  L  104   50 " />
+
+		<path d="M 8  60  L  104   60 " />
+		<path d="M 8  70  L  104   70 " />
+		<path d="M 8  80  L  104   80 " />
+		<path d="M 8  90  L  104   90 " />
+		<path d="M 8  100 L  104   100" />
+
+
+		<path d="M 10  8  L  10   104 " />
+		<path d="M 20  8  L  20   104 " />
+		<path d="M 30  8  L  30   104 " />
+		<path d="M 40  8  L  40   104 " />
+		<path d="M 50  8  L  50   104 " />
+
+		<path d="M 60  8  L  60   104 " />
+		<path d="M 70  8  L  70   104 " />
+		<path d="M 80  8  L  80   104 " />
+		<path d="M 90  8  L  90   104 " />
+		<path d="M 100 8  L  100  104 " />
+
+	</g>
+</symbol>
+
+
+<!-- сетка с шагом 10 пикселей - расширенный вариант -->
+<symbol id="grid-net-10-2">
+  <use xlink:href="#grid-net-10" transform="translate(0,    0)"/>
+  <use xlink:href="#grid-net-10" transform="translate(100,    0)"/>
+  <use xlink:href="#grid-net-10" transform="translate(0,   100)"/>
+  <use xlink:href="#grid-net-10" transform="translate(100,  100)"/>
+</symbol>
+
+<!-- сетка с шагом 20 пикселей -->
+<symbol id="grid-net-20">
+  <use xlink:href="#grid-net-10" transform="scale(2) translate(0,    0)"/>
+  <use xlink:href="#grid-net-10" transform="scale(2) translate(100,    0)"/>
+  <use xlink:href="#grid-net-10" transform="scale(2) translate(0,   100)"/>
+  <use xlink:href="#grid-net-10" transform="scale(2) translate(100,  100)"/>
+</symbol>
+
+<!-- сетка с шагом 50 пикселей -->
+<symbol id="grid-net-50">
+  <use xlink:href="#grid-net-10" transform="scale(5) translate(0,    0)"/>
+</symbol>
+
+
+
+<!--
+<use x="0" y="0" xlink:href="#grid-net-10" />
+<use x="0" y="0" xlink:href="#grid-net-10-2" />
+<use x="0" y="0" xlink:href="#grid-net-20" />
+<use x="0" y="0" xlink:href="#grid-net-50" />
+-->
+
+
+</svg>

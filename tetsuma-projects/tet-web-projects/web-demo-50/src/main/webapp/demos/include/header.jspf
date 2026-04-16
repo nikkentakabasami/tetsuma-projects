@@ -17,25 +17,25 @@
 <link rel="icon" type="image/png" href="images/headericon64.png" sizes="64x64">
 
 <!-- jquery 3.1 -->
-<script src="jslibs/jquery31/js/jquery.js"></script>
-<script src="jslibs/jquery31/js/jquery.bootpag.min.js"></script>
-<script src="jslibs/jquery31/js/jquery.form-validator.min.js"></script>
+<script src="jquery31/js/jquery.js"></script>
+<script src="jquery31/js/jquery.bootpag.min.js"></script>
+<script src="jquery31/js/jquery.form-validator.min.js"></script>
 
 <%--
-<script src="jslibs/jquery31/js/select2.min.js"></script>
+<script src="jquery31/js/select2.min.js"></script>
  --%>
 
-<script src="jslibs/jquery31/js/moment.min.js"></script>
+<script src="jquery31/js/moment.min.js"></script>
 
 
 <!-- bootstrap3 -->
-<link rel="stylesheet" type="text/css" href="jslibs/bootstrap3/css/bootstrap.min.css">
-<script src="jslibs/bootstrap3/js/bootstrap.js"></script>
-<script src="jslibs/bootstrap3/js/bootbox.min.js"></script>
+<link rel="stylesheet" type="text/css" href="bootstrap3/css/bootstrap.min.css">
+<script src="bootstrap3/js/bootstrap.js"></script>
+<script src="bootstrap3/js/bootbox.min.js"></script>
 
 <!-- accord - мои вспомогательные компоненты, классы, утилиты -->
-<script type="module" src="accord-lib/js/accord-publish.js"></script>
-<link rel="stylesheet" type="text/css" href="accord-lib/css/accord.css">
+<script type="module" src="accord/js/accord-publish.js"></script>
+<link rel="stylesheet" type="text/css" href="accord/css/accord.css">
 
 
 <link rel="stylesheet" type="text/css" href="demos/css/demo.css">

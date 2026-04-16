@@ -11,8 +11,8 @@ public class JettyAccordDemoStarter extends JettyStarter {
 	@Override
 	public void init() {
 		super.init();
-//		options.setPort(8080);
-		options.setContextPath("/webapp1");
+		options.setPort(8085);
+		options.setContextPath("/accord-demos");
 		
 		options.addAdditionalStatic(getAccordPath());
 		options.addAdditionalStatic(getTetSlickGridPath());

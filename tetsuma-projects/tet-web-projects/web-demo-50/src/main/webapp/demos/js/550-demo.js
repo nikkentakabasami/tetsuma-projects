@@ -2,7 +2,6 @@
 let a = {};
 let o1,o2,o3,o4, currentObject;
 
-let result;
 
 const testObject1 = {
   name: "some string",

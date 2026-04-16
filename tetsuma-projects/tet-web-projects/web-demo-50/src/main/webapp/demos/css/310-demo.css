@@ -62,19 +62,19 @@
 
 
 .btn-add::before {
-  content: url(../../accord-lib/icons/add.png);
+  content: url(../../accord/icons/add.png);
   margin-right: 6px;
   transform: translate(0px, 2px);
 }
 
 .btn-cross::before {
-  content: url(../../accord-lib/icons/cross.png);
+  content: url(../../accord/icons/cross.png);
   margin-right: 6px;
   transform: translate(0px, 2px);
 }
 
 .btn-check::before {
-  content: url(../../accord-lib/icons/check.png);
+  content: url(../../accord/icons/check.png);
   margin-right: 6px;
   transform: translate(0px, 2px);
 }

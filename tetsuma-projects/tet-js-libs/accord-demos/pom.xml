@@ -157,7 +157,7 @@
 				<configuration>
 					<modules>ee10-plus,ee10-jsp</modules>
 					<httpConnector>
-						<port>8081</port>
+						<port>8085</port>
 					</httpConnector>
 					<webApp>
 						<contextPath>/accord</contextPath>

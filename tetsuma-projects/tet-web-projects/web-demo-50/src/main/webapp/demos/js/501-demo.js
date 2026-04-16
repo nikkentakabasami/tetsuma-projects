@@ -2,7 +2,6 @@
 let a = {};
 let d1, m1, m2;
 
-let result;
 
 
 //тестовые функции

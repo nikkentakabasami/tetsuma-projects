@@ -1,7 +1,6 @@
 
 let a = {};
 
-let result;
 let regex;
 let textSample;
 

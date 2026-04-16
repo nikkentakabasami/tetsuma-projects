@@ -26,7 +26,7 @@ public abstract class JettyStarter {
 	protected TetJettyServer main;
 	protected TetJettyServerOptions options;
 	
-	boolean initiated;
+//	boolean initiated;
 	
 	public JettyStarter() {
 		
@@ -41,15 +41,11 @@ public abstract class JettyStarter {
 	}
 	
 	//Задание опций
-	public void init() {
-		initiated = true;
-	}
+	public abstract void init() throws Exception;
 	
 	public void start() throws Exception {
 		
-		if (!initiated) {
-			init();
-		}
+		init();
 		
 		main.init(options);
 		main.start();
