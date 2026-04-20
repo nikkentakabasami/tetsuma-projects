@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<head>
+<meta charset="UTF-8" />
+<title>My notes</title>
+
+<script src="../../jquery31/js/jquery.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/svg-aux.css">
+<script type="text/javascript" src="../js/svg-aux.js"></script>
+
+</head>
+<body>
+
+
+  <!-- description -->
+	<div class="acc-desc-panel">
+
+
+<b>fill</b>
+  цвет внутри элемента
+
+<b>fill-opacity</b>
+  непрозрачность
+
+<b>stroke</b>
+  Цвет линии
+
+<b>stroke-width</b>
+  Ширина линии
+
+<b>stroke-opacity</b>
+  непрозрачность
+
+	</div>
+
+  <!-- svg1 -->
+	<svg class="demo-svg-400" id="svg1">
+	
+<circle cx="40" cy="60" r="40" stroke="black" stroke-width="1" fill="red" fill-opacity="1" />
+
+<circle cx="100" cy="60" r="40" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+
+<circle cx="160" cy="60" r="40" style="fill:blue;stroke:pink;stroke-width:5;fill-opacity:0.1;stroke-opacity:0.9" />
+
+<!-- С прозрачностью всего элемента -->
+<circle cx="200" cy="60" r="40" style="fill:green;stroke:red;stroke-width:5;opacity:0.8" />
+
+
+	</svg>
+
+
+	<div class="acc-desc-panel">
+
+
+<b>fill-rule</b>
+  алгоритм определения внутренней части элемента
+
+1)nonzero
+  Если из точки можно провести луч, уходящий в бесконечность и не пересекающий стороны - точка находится снаружи  
+
+2)evenodd
+  Проводит луч, и считает что внутри фигуры находятся чётные сегменты.
+
+	</div>
+
+
+  <!-- svg2 -->
+	<svg class="demo-svg-400" id="svg2">
+	
+<svg height="210" width="500">
+  <polygon points="100,10 40,198 190,78 10,78 160,198"
+  style="fill:lime;stroke:purple;stroke-width:5;fill-rule:nonzero;" />
+</svg>
+
+<svg height="210" width="500">
+  <polygon points="300,10 240,198 390,78 210,78 360,198"
+  style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;" />
+</svg>	
+	
+	</svg>
+
+
+</body>
+</html>

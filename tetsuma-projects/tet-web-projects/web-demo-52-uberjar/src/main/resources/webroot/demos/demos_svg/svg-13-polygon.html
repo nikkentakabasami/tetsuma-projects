@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<head>
+<meta charset="UTF-8" />
+<title>My notes</title>
+
+<script src="../../jquery31/js/jquery.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/svg-aux.css">
+<script type="text/javascript" src="../js/svg-aux.js"></script>
+
+
+</head>
+<body>
+
+	<div class="acc-desc-panel">
+<b>polygon</b>
+  многоугольник
+
+fill-rule
+  стиль, определяющий, находится ли точка внутри фигуры или снаружи.
+
+1)nonzero
+  Если из точки можно провести луч, уходящий в бесконечность и не пересекающий стороны - точка находится снаружи  
+
+2)evenodd
+  Проводит луч, и считает что внутри фигуры находятся чётные сегменты.
+
+
+	</div>
+
+  
+	<svg class="demo-svg-800" id="svg1">
+
+<!-- синяя звезда -->
+  <polygon points="100,10 40,198 190,78 10,78 160,198"
+  style="fill:blue;stroke:purple;stroke-width:5;fill-rule:nonzero;" />
+
+<!-- evenodd -->
+<g transform="translate(200)">
+  <polygon points="100,10 40,198 190,78 10,78 160,198"
+  style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;" />
+</g>
+
+<!-- треугольник -->
+  <polygon points="100,200 50,390 160,310" style="fill:lime;stroke:purple;stroke-width:1" />
+  
+
+
+
+	</svg>
+
+
+
+
+
+
+</body>
+</html>

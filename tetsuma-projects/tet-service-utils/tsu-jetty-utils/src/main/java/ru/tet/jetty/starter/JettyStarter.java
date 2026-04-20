@@ -23,7 +23,7 @@ public abstract class JettyStarter {
 	
 	protected Path projectsDir;
 	
-	protected TetJettyServer main;
+	protected TetJettyServer server;
 	protected TetJettyServerOptions options;
 	
 //	boolean initiated;
@@ -35,7 +35,7 @@ public abstract class JettyStarter {
 		
 		
 		options = new TetJettyServerOptions();
-		main = new TetJettyServer();
+		server = new TetJettyServer();
 		
 		
 	}
@@ -47,9 +47,9 @@ public abstract class JettyStarter {
 		
 		init();
 		
-		main.init(options);
-		main.start();
-		main.waitForInterrupt();
+		server.init(options);
+		server.start();
+		server.waitForInterrupt();
 	}
 	
 	

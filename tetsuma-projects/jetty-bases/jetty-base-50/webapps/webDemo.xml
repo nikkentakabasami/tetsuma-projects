@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "https://www.eclipse.org/jetty/configure_10_0.dtd">
+<Configure id="wac" class="org.eclipse.jetty.ee10.webapp.WebAppContext">
+  <Set name="contextPath">/webDemos</Set>
+  <Set name="war">/home/tetsuma/work/workspaces/_myprojects/tetsuma-projects-ws/tetsuma-projects/tet-web-projects/web-demo-50/target/web-demo-50-0.0.1-SNAPSHOT.war</Set>
+
+	<New class="org.eclipse.jetty.plus.jndi.EnvEntry">
+		<Arg></Arg>
+		<Arg>testNumberValue1</Arg>
+		<Arg type="java.lang.Integer">4000</Arg>
+		<Arg type="boolean">true</Arg>
+	</New>
+
+	<New class="org.eclipse.jetty.plus.jndi.EnvEntry">
+		<Arg></Arg>
+		<Arg>testStringValue1</Arg>
+		<Arg type="java.lang.String">Sabaki kirenai</Arg>
+		<Arg type="boolean">true</Arg>
+	</New>
+
+
+	<New
+		id="myTestUser"
+		class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg>
+			<Ref refid="webapp" />
+		</Arg>
+		<Arg>ttt/testUser1</Arg>
+		<Arg></Arg>
+	</New>
+
+<!-- 
+	<New
+		id="myTestUser"
+		class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg>
+			<Ref refid="webapp" />
+		</Arg>
+		<Arg>ttt/testUser1</Arg>
+		<Arg>
+			<New class="ru.tet.beans.UserDTO">
+				<Set name="username">nemawashi</Set>
+				<Set name="password">123</Set>
+				<Set name="secondPassword">654</Set>
+				<Set name="email">nema@mail.ru</Set>
+				<Set name="enabled">true</Set>
+			</New>
+		</Arg>
+	</New>
+ -->
+
+
+</Configure>
+

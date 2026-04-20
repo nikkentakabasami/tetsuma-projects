@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<head>
+<meta charset="UTF-8" />
+<title>My notes</title>
+
+<script src="../../jquery31/js/jquery.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/svg-aux.css">
+<script type="text/javascript" src="../js/svg-aux.js"></script>
+
+
+<style>
+
+.chart rect {
+	fill: steelblue;
+}
+
+.chart text {
+	fill: white;
+	font: 10px sans-serif;
+	text-anchor: end;
+}
+</style>
+
+</head>
+<body>
+
+
+	<svg class="demo-svg-200" id="svg1">
+ <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4"
+			fill="yellow" />
+	</svg>
+
+
+	<svg class="chart demo-svg-200" id="svg2">
+  <g transform="translate(0,0)">
+    <rect width="40" height="19"></rect>
+    <text x="37" y="9.5" dy=".35em">4</text>
+  </g>
+  <g transform="translate(0,20)">
+    <rect width="80" height="19"></rect>
+    <text x="77" y="9.5" dy=".35em">8</text>
+  </g>
+  <g transform="translate(0,40)">
+    <rect width="150" height="19"></rect>
+    <text x="147" y="9.5" dy=".35em">15</text>
+  </g>
+  <g transform="translate(0,60)">
+    <rect width="160" height="19"></rect>
+    <text x="157" y="9.5" dy=".35em">16</text>
+  </g>
+  <g transform="translate(0,80)">
+    <rect width="230" height="19"></rect>
+    <text x="227" y="9.5" dy=".35em">23</text>
+  </g>
+  <g transform="translate(0,100)">
+    <rect width="420" height="19"></rect>
+    <text x="417" y="9.5" dy=".35em">42</text>
+  </g>
+</svg>
+
+
+	<svg class="demo-svg-200" id="svg3">
+  <rect width="100%" height="100%" fill="green" />
+  <circle cx="75" cy="50" r="40" fill="yellow" />
+  <text x="75" y="60" font-size="30" text-anchor="middle" fill="red">SVG</text>
+</svg>
+
+
+
+
+</body>
+</html>

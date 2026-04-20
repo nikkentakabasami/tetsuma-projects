@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<head>
+<meta charset="UTF-8" />
+<title>My notes</title>
+
+<script src="../../jquery31/js/jquery.js"></script>
+<link rel="stylesheet" type="text/css" href="../css/svg-aux.css">
+<script type="text/javascript" src="../js/svg-aux.js"></script>
+
+</head>
+<body>
+
+  <!-- button panel -->
+  <div class="acc-button-panel">
+    <button type="button" class="acc-btn">do something</button>
+  </div>
+
+  <!-- description -->
+	<div class="acc-desc-panel">
+<b>scale(x y)</b>
+  Маштабирование
+Эквивалентно вызову matrix(x 0 0 y 0 0)
+Умножает все координаты на заданное число
+	</div>
+
+  <!-- svg1 -->
+	<div class="svg-code svg1desc"></div>
+
+<defs>
+  <g id="rect40">
+    <rect x="0" y="0" width="40" height="60" style="stroke:black" />
+  </g>
+</defs>
+	
+<use x="20" y="20" xlink:href="#rect40" style="fill: blue;" />
+<use x="20" y="20" xlink:href="#rect40" style="fill: green;" transform="scale(2)" />
+
+<use x="160" y="20" xlink:href="#rect40" style="fill: orange;" />
+<use x="160" y="20" xlink:href="#rect40" style="fill: Chocolate;" transform="scale(1.5, 2)" />
+	
+	
+	</svg>
+
+
+	<div class="acc-desc-panel">
+<b>rotate(a [x y])</b>
+  Поворот по часовой стрелке вокруг заданной точки (в градусах)
+Если x и y опущены, поворот будет осуществляться вокруг начала координат
+	</div>
+
+  <!-- svg2 -->
+	<svg class="demo-svg-400" id="svg2">
+
+<use x="40" y="40" xlink:href="#rect40" style="fill: blue;" />
+<use x="40" y="40" xlink:href="#rect40" style="fill: green;" transform="rotate(-45 40 40)" />
+<use x="40" y="40" xlink:href="#rect40" style="fill: orange;" transform="rotate(20)" />
+
+<use x="160" y="20" xlink:href="#rect40" style="fill: orange;" />
+<use x="160" y="20" xlink:href="#rect40" style="fill: Chocolate;" transform="translate(20 20) scale(1.5)" />
+<use x="160" y="20" xlink:href="#rect40" style="fill: Coral;" transform="scale(1.5) translate(20 20)" />
+
+
+	</svg>
+
+
+</body>
+</html>

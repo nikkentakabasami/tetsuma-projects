@@ -54,8 +54,10 @@ public class TetJettyServer {
 
 		webAppContext = new WebAppContext();
 		webAppContext.setContextPath(options.getContextPath());
-		webAppContext.setWelcomeFiles(options.getWelcomeFiles());
-		//        context.setParentLoaderPriority(true);
+		
+		if (options.getWelcomeFiles()!=null) {
+			webAppContext.setWelcomeFiles(options.getWelcomeFiles());
+		}
 
 		//поддержка аннотаций
 		webAppContext.setConfigurationDiscovered(options.isAnnotationSupport());
@@ -94,11 +96,20 @@ public class TetJettyServer {
 		//проверяем его
 		checkDir(webProjectPath);
 
+		Resource baseResource;
+		
 		//находим папку webapp, подключаем её
 		Path webappPath = webProjectPath.resolve("src/main/webapp").toRealPath();
-		checkDir(webappPath);
-		Resource baseResource = resourceFactory.newResource(webappPath);
-
+		if (Files.exists(webappPath) && Files.isDirectory(webappPath)) {
+			baseResource = resourceFactory.newResource(webappPath);
+		} else {
+			baseResource = resourceFactory.newClassLoaderResource("webroot");
+			if (Resources.missing(baseResource)) {
+				throw new FileNotFoundException("Unable to find resource: " + baseResource);
+			}
+		}
+		
+//		checkDir(webappPath);
 		
 		
 		//доп. ресурсы для добавления в baseResources: jsp например

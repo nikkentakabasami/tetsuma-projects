@@ -23,10 +23,7 @@ public class DebugHandler extends Handler.Abstract.NonBlocking {
 	public boolean handle(Request request, Response response, org.eclipse.jetty.util.Callback callback)
 			throws Exception {
 		
-		
-//		System.out.println("DebugHandler. path:"+request.getHttpURI().getPath());
 		LOG.debug("DebugHandler. path:"+request.getHttpURI().getPath());
-		
 		
 		if (request.getHttpURI().getPath().startsWith("/debug")) {
 			response.setStatus(200);

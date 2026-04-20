@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.ee10.servlet.DefaultServlet;
 import org.eclipse.jetty.ee10.servlet.ResourceServlet;
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
@@ -24,6 +26,9 @@ import org.eclipse.jetty.util.resource.Resources;
  *
  */
 public class FileServerMultipleLocations {
+	
+	static Logger logger = LogManager.getLogger();
+	
 	public static void main(String[] args) throws Exception {
 		
 		
@@ -34,19 +39,19 @@ public class FileServerMultipleLocations {
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
 		context.setContextPath("/");
 		
-		//статические ресурсы из класспаза
-		ResourceFactory resourceFactory = ResourceFactory.of(context);
+		//добавляем статические ресурсы из класспаза через baseResource
+		ResourceFactory resourceFactory = ResourceFactory.of(server);
 		Resource baseResource = resourceFactory.newClassLoaderResource("static-root2");
-		System.out.println("baseResource is: " + baseResource.getPath());
+		logger.info("baseResource is: " + baseResource.getPath());
 		if (!Resources.isReadableDirectory(baseResource))
 			throw new FileNotFoundException("Unable to find base-resource for "+baseResource.getFileName());
 		
 		context.setBaseResource(baseResource);
 		
-		//дополнительные статические ресурсы файловой системы
+		//добавляем дополнительные статические ресурсы файловой системы через ResourceServlet
 		Path altPath = Paths.get("../../web-apps/web-static-roots/src/webapps/alt-root/");
 		String altPathUri = altPath.toUri().toASCIIString();
-		System.out.println("Alt Base Resource is: " + altPath);
+		logger.info("Alt Base Resource is: " + altPath);
 		
 		ServletHolder holderAlt = new ServletHolder("static-alt", ResourceServlet.class);
 		holderAlt.setInitParameter("baseResource", altPathUri);
@@ -56,17 +61,14 @@ public class FileServerMultipleLocations {
 		
 		context.setWelcomeFiles(new String[] { "r2index.html"});
 
-		
-		//Для обслуживания статического контента из context.baseResource
+		//добавляем DefaultServlet для обслуживания статического контента из context.baseResource
 		ServletHolder holderDef = new ServletHolder("default", DefaultServlet.class);
 		context.addServlet(holderDef, "/");
 		
 		
 		//добавляем defaultHandler - чтобы генерировать страницу с контекстами при заходе в корень сервера
 		Handler.Sequence handlers = new Handler.Sequence(context,new DefaultHandler());
-        server.setHandler(handlers);
-		
-		
+    server.setHandler(handlers);
 		
 		
 		server.start();

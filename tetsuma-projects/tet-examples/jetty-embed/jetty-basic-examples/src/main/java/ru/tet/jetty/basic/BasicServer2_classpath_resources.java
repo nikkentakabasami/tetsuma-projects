@@ -43,7 +43,7 @@ public class BasicServer2_classpath_resources {
 	
 	public static void main(String[] args) throws Exception {
 		
-		Server server = new Server(8081);
+		Server server = new Server(8082);
 		
         ContextHandlerCollection contextsHandlers = new ContextHandlerCollection();
 

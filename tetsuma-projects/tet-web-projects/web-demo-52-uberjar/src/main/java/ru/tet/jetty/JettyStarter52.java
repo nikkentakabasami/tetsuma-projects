@@ -3,30 +3,38 @@ package ru.tet.jetty;
 import javax.naming.NamingException;
 
 import ru.tet.beans.UserDTO;
-import ru.tet.jetty.starter.JettyStarter;
+import ru.tet.jetty.starter.uberjar.JettyStarter;
 
 /**
  * Запуск через jetty embedded (С использованием класса TetJettyServer)
  * 
  */
-public class JettyStarter50 extends JettyStarter {
+public class JettyStarter52 extends JettyStarter {
 
 	@Override
 	public void init() throws Exception {
-		options.setPort(8085);
-		options.setContextPath("/webapp1");
+		options.setPort(8090);
+		options.setContextPath("/demo-52");
+		options.setWelcomeFiles(null);
+
+		options.addAdditionalStatic("auxjs-libs");
+		options.addAdditionalStatic("accord-lib");
+		options.addAdditionalStatic("tet-slick-grid-lib");
+
 		
-		options.addAdditionalStatic(getAccordPath());
-		options.addAdditionalStatic(getAuxJsResourcesPath().resolve("jquery31"));
-		options.addAdditionalStatic(getAuxJsResourcesPath().resolve("misc-libs"));
-		options.addAdditionalStatic(getAuxJsResourcesPath().resolve("bootstrap3"));
 		
+		
+		//		options.addAdditionalStatic(getAccordPath());
+		//		options.addAdditionalStatic(getTetSlickGridPath());
+		//		options.addAdditionalStatic(getAuxJsResourcesPath().resolve("jquery31"));
+		//		options.addAdditionalStatic(getAuxJsResourcesPath().resolve("misc-libs"));
+
 		bindWebappEx1Jndi();
-		
+
 	}
 
 	public static void main(String[] args) throws Exception {
-		JettyStarter50 starter = new JettyStarter50();
+		JettyStarter52 starter = new JettyStarter52();
 		starter.start();
 	}
 
