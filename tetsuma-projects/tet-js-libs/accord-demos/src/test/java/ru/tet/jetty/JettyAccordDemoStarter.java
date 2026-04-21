@@ -10,7 +10,6 @@ public class JettyAccordDemoStarter extends JettyStarter {
 
 	@Override
 	public void init() {
-		super.init();
 		options.setPort(8085);
 		options.setContextPath("/accord-demos");
 		

@@ -1,89 +1,68 @@
 package ru.tet.servlets;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import ru.tet.beans.DemoFolder;
+import ru.tet.utils.TetClasspathUtils;
 
 @WebListener
 public class MainServletContextListener implements ServletContextListener {
 
-	private final static Logger logger = Logger.getLogger(MainServletContextListener.class.getName());
+	static Logger logger = LogManager.getLogger();
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		ServletContext ctx = sce.getServletContext();
+		try {
 
-		LogManager.getLogManager().getLogger(Logger.GLOBAL_LOGGER_NAME).setLevel(Level.FINE);
+			ServletContext ctx = sce.getServletContext();
 
-		logger.info("MainServletContextListener: search demo pages");
 
-		File demosDir = new File(ctx.getRealPath("/demos"));
+			String demosPath = "webroot/demos/";
+			logger.info("MainServletContextListener: search demo pages in '"+demosPath+"'");
 
-		File[] dirList =
-				demosDir
-						.listFiles(f -> f.isDirectory() && (f.getName().startsWith("demos_") || f.getName().equals("templates")));
+			List<String> demoFolders;
 
-		List<DemoFolder> demoFolders = Arrays.stream(dirList).sorted().map(dir -> {
-			List<String> list = findPageFiles(dir);
+			demoFolders = TetClasspathUtils.scanClasspathFolder(demosPath, (String fileName, boolean isDirectory) -> {
+				return isDirectory && (fileName.startsWith("demos_") || fileName.equals("templates"));
+			});
 
-			String desc = readDesc(dir);
-			DemoFolder f = new DemoFolder(dir.getName(), desc, list);
-			ctx.setAttribute(dir.getName(), f);
-			return f;
-		}).collect(Collectors.toList());
+			List<DemoFolder> dfs = new ArrayList<>();
 
-		ctx.setAttribute("demoFolders", demoFolders);
+			for (String folderName : demoFolders) {
 
-	}
+				String folderPath = demosPath + folderName;
 
-	private String readDesc(File demoDir) {
-		File descFile = new File(demoDir, "desc.txt");
-		if (descFile.exists()) {
-			try {
-				List<String> lines = IOUtils.readLines(new FileInputStream(descFile), Charsets.UTF_8);
-				return lines.stream().collect(Collectors.joining("<br>"));
-			} catch (Exception e) {
-				e.printStackTrace();
+				logger.info("scan "+folderPath);
+				
+				//ищем html страницы с демками
+				List<String> demoPages =
+						TetClasspathUtils.scanClasspathFolder(folderPath, (String fileName, boolean isDirectory) -> {
+							return !isDirectory && (fileName.endsWith(".jsp") || fileName.endsWith(".html"));
+						});
+
+				String desc = TetClasspathUtils.readClasspathResourceAsString(folderPath + "/desc.txt");
+
+				DemoFolder df = new DemoFolder(folderName, desc, demoPages);
+				dfs.add(df);
+				ctx.setAttribute(folderName, df);
+
 			}
+
+			ctx.setAttribute("demoFolders", dfs);
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		return "";
 
 	}
 
-	List<String> findPageFiles(File dir) {
-
-		List<String> pageNames = new ArrayList<>();
-		if (dir.exists() && dir.isDirectory()) {
-			for (File file : dir.listFiles((d, name) -> name.endsWith(".jsp") || name.endsWith(".html"))) {
-				pageNames.add(file.getName());
-			}
-		}
-		Collections.sort(pageNames);
-
-		String s = Arrays.toString(pageNames.toArray());
-		logger.info(dir.getName() + ": found files: " + s);
-
-		return pageNames;
-
-	}
-
-	@Override
-	public void contextDestroyed(ServletContextEvent sce) {
-	}
 }

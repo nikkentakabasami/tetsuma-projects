@@ -22,6 +22,13 @@
 
 		<dependency>
 			<groupId>ru.tetsu</groupId>
+			<artifactId>tet-utils</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>ru.tetsu</groupId>
 			<artifactId>tsu-jetty-utils</artifactId>
 		</dependency>
 

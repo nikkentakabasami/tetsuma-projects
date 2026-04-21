@@ -1,14 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>ru.tetsu</groupId>
-    <artifactId>tet-web-projects</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>web-demo-52-uberjar</artifactId>
-  
-  
-  
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>ru.tetsu</groupId>
+		<artifactId>tet-web-projects</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>web-demo-52-uberjar</artifactId>
+
+
 	<dependencies>
 
 		<dependency>
@@ -41,12 +42,25 @@
 			<groupId>org.eclipse.jetty.ee10</groupId>
 			<artifactId>jetty-ee10-servlet</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.eclipse.jetty.ee10</groupId>
 			<artifactId>jetty-ee10-webapp</artifactId>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.eclipse.jetty.ee10</groupId>
+			<artifactId>jetty-ee10-annotations</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jetty.ee10</groupId>
+			<artifactId>jetty-ee10-apache-jsp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.ee10</groupId>
+			<artifactId>jetty-ee10-glassfish-jstl</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -57,10 +71,14 @@
 			<artifactId>log4j-slf4j2-impl</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<scope>compile</scope>
+		</dependency>
 
 
-
-		<!-- overlays -->
+		<!-- js libraries -->
 		<dependency>
 			<groupId>ru.tetsu</groupId>
 			<artifactId>accord-lib</artifactId>
@@ -73,23 +91,22 @@
 			<version>${project.version}</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>ru.tetsu</groupId>
 			<artifactId>auxjs-libs</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
-			<!-- apache.commons -->
-			<dependency>
-				<groupId>commons-io</groupId>
-				<artifactId>commons-io</artifactId>
-			</dependency>
+		<!-- apache.commons -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
 
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-			</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
 
 
 		<!-- jackson -->
@@ -123,18 +140,105 @@
 		<plugins>
 
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>ru.tet.jetty.JettyStarter52</mainClass>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Version>${jetty.version}</Implementation-Version>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.6.0</version>
+
+				<executions>
+					<execution>
+						<id>create-uber-jar</id>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<finalName>web-demo-52</finalName>
+							<createDependencyReducedPom>false</createDependencyReducedPom>
+							<createSourcesJar>false</createSourcesJar>
+
+							<!-- минимизация толком не работает -->
+							<minimizeJar>false</minimizeJar>
+							<entryPoints>
+								<entryPoint>ru.tet.jetty.JettyStarter52</entryPoint>
+							</entryPoints>
+
+							<artifactSet>
+								<includes>
+									<include>*:*</include>
+								</includes>
+								<excludes>
+									<exclude>
+										javax.websocket:javax.websocket-client-api</exclude>
+								</excludes>
+							</artifactSet>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/VERSION.md</exclude>
+										<exclude>META-INF/VERSION.txt</exclude>
+										<exclude>META-INF/VERSION</exclude>
+										<exclude>META-INF/LICENSE.md</exclude>
+										<exclude>META-INF/LICENSE.txt</exclude>
+										<exclude>META-INF/LICENSE</exclude>
+										<exclude>META-INF/MANIFEST.MF</exclude>
+										<exclude>META-INF/NOTICE.md</exclude>
+										<exclude>META-INF/NOTICE.txt</exclude>
+										<exclude>META-INF/NOTICE</exclude>
+										<exclude>about.html</exclude>
+										<exclude>module-info.class</exclude>
+
+										<!-- чтоб избавиться от ошибки: Invalid
+										signature file digest -->
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+
+									</excludes>
+								</filter>
+							</filters>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>ru.tet.jetty.JettyStarter52</mainClass>
+									<manifestEntries>
+										<Main-Class>ru.tet.jetty.JettyStarter52</Main-Class>
+										<Implementation-Version>${jetty.version}</Implementation-Version>
+
+										<!-- чтобы log4j находил классы -->
+										<Multi-Release>true</Multi-Release>
+									</manifestEntries>
+								</transformer>
+
+
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 
 		</plugins>
 	</build>
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
 </project>

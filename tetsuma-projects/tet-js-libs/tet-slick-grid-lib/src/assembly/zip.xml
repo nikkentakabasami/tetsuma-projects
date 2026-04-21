@@ -9,8 +9,8 @@
 
     <fileSets>
         <fileSet>
-            <directory>${project.basedir}/src/main/resources/tetSlickGrid</directory>
-            <outputDirectory>/tetSlickGrid</outputDirectory>
+            <directory>${project.basedir}/src/main/resources/tet-slick-grid-lib</directory>
+            <outputDirectory>/</outputDirectory>
             
             <!-- 
             <excludes>

@@ -12,7 +12,6 @@
 
 	<modules>
 		<module>web-demo-50</module>
-		<module>web-demo-51-svg</module>
 		<module>web-demo-52-uberjar</module>
 	</modules>
 

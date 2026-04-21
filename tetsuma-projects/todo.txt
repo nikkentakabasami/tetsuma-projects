@@ -6,3 +6,68 @@ ResourceHandler
 403_ajax_demo.html
   пофиксить демки, добавить тестовые сервлеты
 
+
+
+<artifactId>maven-shade-plugin</artifactId>
+минификация
+
+
+
+минификация js:
+
+<plugin>
+    <groupId>com.samaxes.maven</groupId>
+    <artifactId>minify-maven-plugin</artifactId>
+    <version>1.7.6</version>
+    <executions>
+        <execution>
+            <phase>process-resources</phase>
+            <goals>
+                <goal>minify</goal>
+            </goals>
+            <configuration>
+                <jsSourceFiles>
+                    <jsSourceFile>src/main/webapp/js/app.js</jsSourceFile>
+                    <!-- добавьте другие файлы по необходимости -->
+                </jsSourceFiles>
+                <cssSourceFiles>
+                    <cssSourceFile>src/main/webapp/css/style.css</cssSourceFile>
+                    <!-- добавьте другие файлы по необходимости -->
+                </cssSourceFiles>
+                <webappSourceDir>src/main/webapp</webappSourceDir>
+                <webappTargetDir>${project.build.directory}/${project.build.finalName}</webappTargetDir>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+
+
+<plugin>
+    <groupId>net.alchim31.maven</groupId>
+    <artifactId>yuicompressor-maven-plugin</artifactId>
+    <version>1.5.1</version>
+    <executions>
+        <execution>
+            <phase>process-resources</phase>
+            <goals>
+                <goal>compress</goal>
+            </goals>
+            <configuration>
+                <nosuffix>true</nosuffix>
+                <jscompressor>
+                    <linebreakpos>-1</linebreakpos>
+                </jscompressor>
+                <csscompressor>
+                    <linebreakpos>-1</linebreakpos>
+                </csscompressor>
+                <includes>
+                    <include>**/*.js</include>
+                    <include>**/*.css</include>
+                </includes>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+
+
+

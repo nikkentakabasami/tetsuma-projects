@@ -13,13 +13,13 @@ public class JettyStarter50 extends JettyStarter {
 
 	@Override
 	public void init() throws Exception {
-		options.setPort(8085);
-		options.setContextPath("/webapp1");
+		options.setPort(8080);
+		options.setContextPath("/web-demo-50");
 		
 		options.addAdditionalStatic(getAccordPath());
 		options.addAdditionalStatic(getAuxJsResourcesPath().resolve("jquery31"));
 		options.addAdditionalStatic(getAuxJsResourcesPath().resolve("misc-libs"));
-		options.addAdditionalStatic(getAuxJsResourcesPath().resolve("bootstrap3"));
+//		options.addAdditionalStatic(getAuxJsResourcesPath().resolve("bootstrap3"));
 		
 		bindWebappEx1Jndi();
 		

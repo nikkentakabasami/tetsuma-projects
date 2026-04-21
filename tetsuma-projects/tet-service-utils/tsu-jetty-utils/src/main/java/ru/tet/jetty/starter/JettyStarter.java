@@ -74,13 +74,13 @@ public abstract class JettyStarter {
 		return path;
 	}
 	protected Path getAuxJsResourcesPath() {
-		Path path = getAuxJsProjectPath().resolve(RESOURCES_SUBDIR_NAME);
+		Path path = getAuxJsProjectPath().resolve(RESOURCES_SUBDIR_NAME).resolve("auxjs-libs");
 		checkDir(path);
 		return path;
 	}
 	
 	protected Path getAccordPath() {
-		Path path = projectsDir.resolve(JS_LIBS_DIR_NAME).resolve("accord-lib").resolve(RESOURCES_SUBDIR_NAME).resolve("accord");
+		Path path = projectsDir.resolve(JS_LIBS_DIR_NAME).resolve("accord-lib").resolve(RESOURCES_SUBDIR_NAME).resolve("accord-lib").resolve("accord");
 		checkDir(path);
 		return path;
 	}

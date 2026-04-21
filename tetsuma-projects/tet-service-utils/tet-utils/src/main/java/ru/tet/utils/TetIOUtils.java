@@ -11,22 +11,30 @@ import java.util.Objects;
 
 public class TetIOUtils {
 
-
 	/**
-	 * Загружает ресурс в classpath в виде строки.
+	 * Загружает classpath-ресурс в виде строки.
 	 * 
 	 * @param resourceName
 	 * @return
 	 * @throws IOException
 	 */
 	public static String loadResourceAsString(String resourceName) throws IOException {
-        try (final var is = TetIOUtils.class.getClassLoader().getResourceAsStream(resourceName)) {
-            return new String(Objects.requireNonNull(is).readAllBytes(), StandardCharsets.UTF_8);
-        }
+		try (final var is = TetIOUtils.class.getClassLoader().getResourceAsStream(resourceName)) {
+			return new String(Objects.requireNonNull(is).readAllBytes(), StandardCharsets.UTF_8);
+		}
 	}
+
 	
-	public static List<String> streamToLines(InputStream is) throws IOException{
-		
+	/**
+	 * Преобразовать поток в список строк.
+	 * Аналог IOUtils.readLines
+	 * 
+	 * @param is
+	 * @return
+	 * @throws IOException
+	 */
+	public static List<String> streamToLines(InputStream is) throws IOException {
+
 		List<String> result = new ArrayList<>();
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
 			String line;
@@ -36,12 +44,16 @@ public class TetIOUtils {
 		}
 		return result;
 	}
-	
-	public static String streamToString(InputStream is) throws IOException{
-        return new String(Objects.requireNonNull(is).readAllBytes(), StandardCharsets.UTF_8);
+
+	/**
+	 * Преобразовать поток в строку.
+	 * 
+	 * @param is
+	 * @return
+	 * @throws IOException
+	 */
+	public static String streamToString(InputStream is) throws IOException {
+		return new String(Objects.requireNonNull(is).readAllBytes(), StandardCharsets.UTF_8);
 	}
-	
-	
-	
-	
+
 }

@@ -139,10 +139,13 @@ public class TetJettyServer {
 		for(AdditionalStatic as: options.getAdditionalStatic()) {
 			checkDir(as.dirPath);
 			
+			
 			String pathSpec = as.pathSpec;
 			if (pathSpec==null) {
 				pathSpec = "/"+as.dirPath.getFileName().toString()+"/*";
 			}
+		
+			logger.info("add AdditionalStatic. pathSpec:"+pathSpec+", as.dirPath:"+as.dirPath);
 			
 			ServletHolder holderAlt = new ServletHolder(ResourceServlet.class);
 			holderAlt.setInitParameter("baseResource", as.dirPath.toUri().toASCIIString());
