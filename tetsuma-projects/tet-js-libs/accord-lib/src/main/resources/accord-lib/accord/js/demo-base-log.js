@@ -375,14 +375,16 @@ function logVal2NL(key, val, ...vals) {
 }
 */
 
-
-
-$(function() {
-	
+function initDemoLogs(){
 	$log1 = $('#log1');
 	$log2 = $('#log2');
 	$log3 = $('#log3');
 	$logPanel = $('.logPanel');
+}
+
+
+$(function() {
 	
+	initDemoLogs();
 	
 });
