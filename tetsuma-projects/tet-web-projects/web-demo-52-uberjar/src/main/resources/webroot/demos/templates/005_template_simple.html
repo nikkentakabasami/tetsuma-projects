@@ -10,9 +10,9 @@
 <script src="../../accord/js/demo-base-log.js"></script>
 <script src="../../accord/js/demo-base.js"></script>
 <script type="module" src="../../accord/js/accord-publish.js"></script>
+<link rel="stylesheet" type="text/css" href="../../accord/css/acc-form-elements.css">
 
-<link rel="stylesheet" type="text/css" href="../css/demo000.css">
-<script src="../js/000-demo.js"></script>
+<script src="../js/005-demo.js"></script>
 
 </head>
 <body class="acc-default-font">
@@ -20,37 +20,29 @@
   <div class="basePanel">
 
     <div class="titlePanel">
-      <h2>template_title</h2>
+      <h2>template_for_js_demos</h2>
     </div>
 
     <div class="auxPanel">
       <div id="tabbedPanel1">
-
         <div class="tab-container">
           <button>Описание</button>
           <button>Ключевой код</button>
         </div>
-
         <div class="tab-content">
           <pre class="acc-desc-panel">
-  описание
+  Элементарный шаблон для демок.
+  Содержит панель с описанием, панель для кнопок и панель с логом.
+  Не рекомендуется к использованию.
 </pre>
         </div>
-
         <div class="tab-content">
           <pre class="acc-code-panel">
   код
 </pre>
         </div>
-
       </div>
-
-      <div class="logPanel gray-border">
-        <div id="log1"></div>
-      </div>
-
     </div>
-
 
     <!--               button panel                -->
 
@@ -59,34 +51,10 @@
       <button id="b2" type="button" class="acc-btn">кнопка2</button>
     </div>
 
-    <!--               work panel                -->
-
-    <div class="workPanel">
-    
-      <div id="tabbedPanel2" style="height: 100%;">
-
-    <!--               tab panel if needed                -->
-        <div class="tab-container">
-          <button>page1</button>
-          <button>page2 код</button>
-        </div>
-
-        <div class="tab-content">
-  page1 content
-        </div>
-
-        <div class="tab-content">
-  page2 content
-        </div>
-      </div>    
-    
-    
+    <div class="workPanel logPanel">
+        <div id="log1"></div>
     </div>
-
-
-
   </div>
-
 
 </body>
 </html>

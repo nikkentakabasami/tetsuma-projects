@@ -12,10 +12,7 @@
 <script type="module" src="../../accord/js/accord-publish.js"></script>
 <link rel="stylesheet" type="text/css" href="../../accord/css/acc-form-elements.css">
 
-
-
-<script src="../js/005-demo.js"></script>
-
+<script src="../js/003-demo.js"></script>
 
 
 </head>
@@ -25,12 +22,17 @@
 
     <div class="titlePanel">
       <h2>Шаблон_для_тестирования_js_кода</h2>
+      <h2>демо, использующее выпадающий список</h2>
     </div>
 
-    <div class="auxPanel" style="height: 400px;">
+    <div class="auxPanel">
 
-      <div class="logPanel gray-border full-width">
+      <div class="logPanel gray-border">
         <div id="log1"></div>
+      </div>
+
+      <div class="logPanel gray-border">
+        <div id="log2"></div>
       </div>
 
     </div>
@@ -41,12 +43,8 @@
     <div class="acc-button-panel">
 
       <div class="acc-left-content">Обработчики1</div>
-      <div class="acc-tool-panel-select-wrapper acc-dropdown-triangle">
+      <div class="acc-tool-panel-select-wrapper">
         <select id="selectors1" class="acc-tool-panel-select" style="width: 200px;">
-        </select>
-      </div>
-      <div class="acc-tool-panel-select-wrapper acc-dropdown-triangle">
-        <select id="selectors2" class="acc-tool-panel-select" style="width: 200px;">
         </select>
       </div>
 
@@ -69,15 +67,6 @@
 
     </div>
 
-
-
-
-
-
-
-
-
-
     <!--               work panel                -->
 
     <div class="workPanel label-border"></div>
@@ -86,50 +75,37 @@
   </div>
 
 
-  <template id="template1">
 
+<template id="template1">
 
-    <div class="acc-2cols">
-
-      <form action="." id="form1">
-      <div class="form-panel acc-2cols acc-form-style1" id="formDiv1">
-
-        <div class="acc-row acc-form-button-panel1">
-          <button class="acc-btn" type="button" id="testBtn1">testBtn1</button>
-          <button class="acc-btn" type="button" id="testBtn1">testBtn2</button>
+    <div  class="form-panel acc-form-style1">
+        <div class="form-group">
+          <label>inp1:</label>
+          <input type="text"  id="inp1">
         </div>
 
-        <label>inp1:</label>
-        <input type="text" id="inp1" value="John" autocomplete="off">
-        <label>inp2:</label>
-        <input type="text" id="inp2" value="Connor" autocomplete="off">
-        <label>inp3:</label>
-        <input type="text" id="inp3" autocomplete="off"/>
-
-        <label>inp4:</label>
-        <select id="inp4">
-          <option>Banana</option>
-          <option>Cherry</option>
-          <option>Lemon</option>
-        </select>
-        <div class="acc-row acc-form-button-panel1">
-          <button class="acc-btn" id="btn1">btn1</button>
-          <button class="acc-btn" id="btn2">btn2</button>
+        <div class="form-group">
+          <label>inp2:</label>
+          <input type="text"  id="inp2">
         </div>
-
-          <input type="submit" value="Submit">
-      </div>
-      </form>
-
-      <div class="form-panel acc-2cols acc-form-style1" id="formDiv2">
-        <label>inp11:</label>
-        <input type="text" id="inp11" value="John">
       
-      </div>
+        <div class="form-group">
+          <label>inp3:</label>
+          <select  id="inp3">
+            <option>Banana</option>
+            <option>Cherry</option>
+            <option>Lemon</option>
+          </select>
+        </div>
+      
+        <div class="acc-row acc-form-button-panel1">
+          <button class="acc-btn" id="btn1">Ok</button>
+          <button class="acc-btn" id="btn2">Cancel</button>
+        </div>
     </div>
 
-  </template>
 
+</template>
 
 </body>
 </html>

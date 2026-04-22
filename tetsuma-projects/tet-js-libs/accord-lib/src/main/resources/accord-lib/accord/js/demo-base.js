@@ -1,4 +1,10 @@
+/**
+ * Функционал, использующийся для создания демок, тестирующих js.
+ * 
+ * 
+ */
 
+//вспомогательная переменная
 let result;
 
 let mainJsHref = null;
@@ -48,7 +54,9 @@ let greenSpan = '<span class="green"></span>';
 //счётчик для добавления новых демо-кнопок
 let newButtonNo = 1;
 
-
+//первый селект, обслуживающий демки
+let $demoSelect1 = null;
+let $bExecute;
 
 //возвращает ссылку на главный js-файл этой демки
 function findMainJs() {
@@ -224,6 +232,10 @@ function initDemoCodeSelect(selector, data) {
 		$sel = $(selector);
 	}
 	
+	if (!$demoSelect1){
+		$demoSelect1 = $sel;
+	}
+	
   $sel.change(e => {
     clearLog();
 
@@ -292,14 +304,14 @@ function execDemoFunc(func) {
     let code = trimFuncCode(func);
     log(code);
 
-    let result = null;
+    let r = null;
     try {
-      result = func();
+      r = func();
 
       let logMess = '\nexecuted. ';
-      if (result && result.jquery) {
-        result.addClass("red-border");
-        logMess += "elements found: " + result.length;
+      if (r && r.jquery) {
+        r.addClass("red-border");
+        logMess += "elements found: " + r.length;
       }
       log(logMess);
 
@@ -321,6 +333,7 @@ let reloadSandboxVars = function() {
 
 }
 
+//очищает .workPanel и загружает в неё элементы из #template1
 function reloadSandbox() {
 
   $workPanel.empty();
@@ -590,9 +603,9 @@ $(function() {
   new TabbedPanel("#tabbedPanel2");
 
 
+  $bExecute = $("#bExecute");
 
-
-  $("#bExecute").click(e => {
+  $bExecute.click(e => {
     if (!currentFunc) {
       let v = $selectorText.val();
       highlight(v);
@@ -619,7 +632,23 @@ $(function() {
     reloadSandbox();
   });
 
-
+  $(document).keydown(e=>{
+  	if (e.keyCode==109){  //-
+		accordUtils.selectNextOption($demoSelect1,false);
+  	} else if (e.keyCode==107){ //+
+		accordUtils.selectNextOption($demoSelect1,true);
+  	} else if (e.keyCode==13 || e.keyCode==123){ //Enter
+		$bExecute.trigger("click");
+	} else if (e.keyCode==45 || e.keyCode==96){ //0
+		reloadSandbox()	
+	}
+	
+	
+	
+  	console.log(e.keyCode);
+  })
+  
+  
 
 });
 

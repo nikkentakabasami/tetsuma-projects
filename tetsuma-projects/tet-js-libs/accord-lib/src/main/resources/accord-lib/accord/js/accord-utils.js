@@ -31,6 +31,7 @@ let accordUtils = {
   fillSelect: fillSelect,
   generateSelectOptions: generateSelectOptions,
   generateDatalist: generateDatalist,
+  selectNextOption: selectNextOption,
   
   random: random,
   randomDate: randomDate,
@@ -47,6 +48,28 @@ let accordUtils = {
 
 };
 window.accordUtils = accordUtils;
+
+
+
+//выбирает следующую/предыдущую опцию в <select>
+function selectNextOption($select, next = true){
+	
+	let $opt = $select.find('option:selected');
+	
+	
+	if (!$opt.length){
+		$opt = $select.find('option:first');
+	}
+	
+	let $nextOption = next?$opt.next('option'):$opt.prev('option');
+
+	if ($nextOption.length) {
+	    $select.val($nextOption.val()).trigger('change');
+	}	
+	
+}
+
+
 
 
 //добавляет в документ js-файл (и выполняет его)

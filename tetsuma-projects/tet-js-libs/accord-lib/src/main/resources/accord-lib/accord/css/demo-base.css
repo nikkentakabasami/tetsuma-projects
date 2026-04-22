@@ -45,7 +45,6 @@ p {
 
 
 #tabbedPanel1 {
-    height: 200px;
     width: 100%;
 }
 
@@ -77,8 +76,9 @@ p {
 }
 
 .auxPanel {
-    height: 200px;
+    height: 400px;
     display: flex;
+    flex-grow: 0;
 }
 
 .logPanel {

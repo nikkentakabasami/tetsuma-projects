@@ -1,8 +1,17 @@
+/**
+ * Функционал, использующийся для создания демок, тестирующих js.
+ * 
+ * Методы для вывода сообщений в лог.
+ * 
+ */
 
-
+//панели-логи. В них выводятся сообщения.
 let $log1, $log2, $log3;
+
+//панель с $log1, $log2...
 let $logPanel;
 
+//настройки, позволяющие включить автоскролинг в первый или второй лог 
 let autoscrollLog1 = false;
 let autoscrollLog2 = true;
 
@@ -169,22 +178,10 @@ function le2nl(exp) {
 	log2();
 	return _le($log2, exp)
 }
-function le2NL(exp) {
-	return le2nl(exp);
-}
 
 
 
-
-
-
-
-
-
-
-
-
-
+//очистка логов
 function clearLog() {
 	$log1.text("");
 	$log2.text("");
@@ -196,6 +193,7 @@ function clearLog2() {
 	$log2.text("");
 }
 
+//вывод в логи
 function log(...vals) {
 	logMessage($log1, ...vals);
 }
@@ -271,12 +269,7 @@ function lognl(...vals) {
 	log();
 	log(...vals);
 }
-function log2NL(...vals) {
-	log2nl(...vals);
-}
-function logNL(...vals) {
-	lognl(...vals);
-}
+
 
 
 function logVal(key, val, ...vals) {
@@ -287,10 +280,7 @@ function logVal2(key, val, ...vals) {
 	val = stringifyObject(val);
 	log2(key+": "+val, ...vals);
 }
-function logVal2NL(key, val, ...vals) {
-	log2();
-	logVal2(key, val, ...vals);
-}
+
 
 //выводит в лог только указанные атрибуты объекта
 function logObject(o, ...attributes) {
@@ -364,6 +354,26 @@ function logTextSample2(text, title="textSample"){
 	log2(text);
 	log2("----------------------");
 }
+
+
+
+/*
+Избыточные
+
+function le2NL(exp) {
+	return le2nl(exp);
+}
+function log2NL(...vals) {
+	log2nl(...vals);
+}
+function logNL(...vals) {
+	lognl(...vals);
+}
+function logVal2NL(key, val, ...vals) {
+	log2();
+	logVal2(key, val, ...vals);
+}
+*/
 
 
 
