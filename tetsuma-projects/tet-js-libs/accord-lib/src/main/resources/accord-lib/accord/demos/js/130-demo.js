@@ -17,7 +17,7 @@ $(document).ready(function() {
 	addDemoButtons(bh1)
 	
 	
-	demoOptions.beforeExecDemoFunc = ()=>{
+	demoOptions.beforeExec = ()=>{
 		clearLog2();
 	};
 	

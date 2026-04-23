@@ -20,7 +20,7 @@ $(document).ready(function() {
 		
 	window.myGrid = myGrid;
 //	demoOptions.initFunction = createTable;
-	demoOptions.beforeExecDemoFunc = ()=>{
+	demoOptions.beforeExec = ()=>{
 		clearLog2();
 	};
 	

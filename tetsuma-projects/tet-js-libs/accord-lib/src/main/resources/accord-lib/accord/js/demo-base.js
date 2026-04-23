@@ -37,11 +37,16 @@ let demoButtons = [];
 let demoOptions = {
 
     //выполняются до и после выполнения currentFunc/демо-кнопок
-    beforeExecDemoFunc: null,
-    afterExecDemoFunc: null,
+    beforeExec: null,
+    afterExec: null,
 
     //функция инициализации всего кода: выводить её при нажатии каждой демо-кнопки
-    initFunction: null
+    initFunction: null,
+	
+	//функция, выполняющаяся после reloadSandbox
+	reloadSandboxVars: null,
+
+	
 
 };
 
@@ -158,9 +163,6 @@ function removeOddIndent(code) {
     for (let i = 0;i < lines.length;i++) {
         let line = lines[i];
 
-        //		line = line.replaceAll("\t","  ");
-        //		lines[i] = line;
-
         if (line.trim().length == 0) {
             continue;
         }
@@ -199,7 +201,7 @@ function trimFuncCode(func) {
     return code;
 }
 
-
+//подсвечивает комменты в логах серым цветом
 function highlightLogComments1() {
     highlightLogComments($log1);
 }
@@ -226,108 +228,58 @@ function highlightLogComments($log) {
 }
 
 
+//вывод currentFunc в лог1 
+function logCurrentFunc(){
+	clearLog1();
+	
+	if (typeof currentFunc == "string") {
+	    currentFunc = removeOddIndent(currentFunc);
+	    log(currentFunc);
+	} else {
+	    let code = trimFuncCode(currentFunc);
+	    log(code);
+		
+		let initFunction = currentFunc.init || demoOptions.currentFunc;
 
-function initDemoCodeSelect(selector, data) {
-
-    let $sel = selector;
-    if (!selector.jquery) {
-        $sel = $(selector);
-    }
-
-    if (!$demoSelect1) {
-        $demoSelect1 = $sel;
-    }
-
-    $sel.change(e => {
-        clearLog();
-		reloadSandbox();
-
-        let v = $sel.val();
-
-
-        if (Array.isArray(data)) {
-            //		reloadSandbox();
-            let v = $sel.children("option:selected").text();
-            $selectorText.val(v);
-            currentFunc = null;
-            log(v);
-        } else {
-            $selectorText.val(v);
-            currentFunc = data[v];
-
-            if (typeof currentFunc == "string") {
-                currentFunc = removeOddIndent(currentFunc);
-                log(currentFunc);
-
-            } else {
-                let code = trimFuncCode(currentFunc);
-                log(code);
-				
-				let initFunction = currentFunc.init || demoOptions.currentFunc;
-
-				//указана доп. функция инициализации - вывести её в лог
-				if (initFunction) {
-				    log();
-				    lognl("//функция инициализации:");
-				    log(String(initFunction));
-				}
-				highlightLogComments1();
-				
-            }
-
-        }
-
-    });
-
-
-    let opts = {
-        data: data,
-        withNullOption: true,
-        selectedValue: null,
-        contentIsValue: true,
-        valueIsIndex: false
-    };
-
-    if (Array.isArray(data)) {
-        opts.valueIsIndex = true;
-        opts.contentIsValue = false;
-    }
-
-    accordUtils.fillSelect($sel, opts);
-
+		//указана доп. функция инициализации - вывести её в лог
+		if (initFunction) {
+		    log();
+		    lognl("//функция инициализации:");
+		    log(String(initFunction));
+		}
+	}
+	highlightLogComments1();	
+	
 }
 
-
-function execDemoFunc(func) {
-    if (!func) {
+//выполняет currentFunc
+function execDemoFunc() {
+    if (!currentFunc) {
         return;
     }
 
+	if (demoOptions.beforeExec) {
+	    demoOptions.beforeExec();
+	}
+	
     $(".workPanel *").removeClass("red-border");
 
+    clearLog2();
 
-    clearLog();
-
-    if (typeof func == "string") {
-
-        log(func);
-        le2(func);
-
+    if (typeof currentFunc == "string") {
+        le2(currentFunc);
     } else {
-
-        let code = trimFuncCode(func);
-        log(code);
 
         let r = null;
         try {
-            r = func();
+            r = currentFunc();
 
             let logMess = '\nexecuted. ';
             if (r && r.jquery) {
                 r.addClass("red-border");
                 logMess += "elements found: " + r.length;
             }
-            log(logMess);
+            log2(logMess);
 
         } catch (error) {
             log("Error:", error.message);
@@ -336,16 +288,68 @@ function execDemoFunc(func) {
 
     }
 
-
-    highlightLogComments1();
+	if (demoOptions.afterExec) {
+	    demoOptions.afterExec();
+	}
+	
     highlightLogComments2();
 
 }
 
+function initDemoCodeSelect(selector, data) {
 
-let reloadSandboxVars = function() {
+    let $sel = selector;
+    if (!selector.jquery) {
+        $sel = $(selector);
+    }
+
+	//заполняем вспомогательные переменные
+    if (!$demoSelect1) {
+        $demoSelect1 = $sel;
+    }
+
+	//заполняем select
+	let opts = {
+	    data: data,
+	    withNullOption: true,
+	    selectedValue: null,
+	    contentIsValue: true,
+	    valueIsIndex: false
+	};
+	if (Array.isArray(data)) {
+	    opts.valueIsIndex = true;
+	    opts.contentIsValue = false;
+	}
+	accordUtils.fillSelect($sel, opts);
+	
+	//обработчик выбора в select
+    $sel.change(e => {
+        clearLog();
+		reloadSandbox();
+		currentFunc = null;
+
+        let v = $sel.val();
+
+		//задан массив jquery-селекторов
+        if (Array.isArray(data)) {
+            v = $sel.children("option:selected").text();
+            log(v);
+        } else {
+            currentFunc = data[v];
+			logCurrentFunc();
+        }
+		
+		$selectorText.val(v);
+
+    });
+
+
 
 }
+
+
+
+
 
 //очищает .workPanel и загружает в неё элементы из #template1
 function reloadSandbox() {
@@ -380,12 +384,14 @@ function reloadSandbox() {
     $panel2 = $("#formDiv2");
 
 
-    if (reloadSandboxVars) {
-        reloadSandboxVars();
+    if (demoOptions.reloadSandboxVars) {
+        demoOptions.reloadSandboxVars();
     }
 
 
 }
+
+
 
 
 //let emptyDiv = $("<div></div>");
@@ -529,39 +535,16 @@ function addDemoButton(handlerName, handler, panelSelector = ".acc-button-panel"
     $panel.append($newButton);
 
     $newButton.click(event => {
-        let isScript = (typeof handler == "string");
-        clearLog1();
+		
+		//выделяем последнюю нажатую кнопку
+		$panel.find("button").removeClass("blue-border");
+		$newButton.addClass("blue-border");
 
-        //выделяем последнюю нажатую кнопку
-        $panel.find("button").removeClass("blue-border");
-        $newButton.addClass("blue-border");
-
-        if (demoOptions.beforeExecDemoFunc) {
-            demoOptions.beforeExecDemoFunc();
-        }
-
-        if (isScript) {
-            le2(handler);
-        } else {
-
-            let code = trimFuncCode(handler);
-            log(code);
-            handler(event);
-        }
-
-        if (demoOptions.afterExecDemoFunc) {
-            demoOptions.afterExecDemoFunc();
-        }
-
-        let initFunction = handler.init || demoOptions.initFunction;
-
-        //указана доп. функция инициализации - вывести её в лог
-        if (initFunction) {
-            log();
-            lognl("//функция инициализации:");
-            log(String(initFunction));
-        }
-        highlightLogComments1();
+		currentFunc = handler;
+		
+		logCurrentFunc();
+		execDemoFunc();
+		
     });
 
 }
@@ -626,16 +609,7 @@ function initDemo() {
             return;
         }
 
-        if (demoOptions.beforeExecDemoFunc) {
-            demoOptions.beforeExecDemoFunc();
-        }
-
         execDemoFunc(currentFunc);
-
-        if (demoOptions.afterExecDemoFunc) {
-            demoOptions.afterExecDemoFunc();
-        }
-		
 
     });
 
@@ -683,8 +657,6 @@ const defaultBruefDemoOptions = {
 	selectedOption: null,
 	title: null,
 }
-
-//function initBriefDemo(demoType = DT_SELECT, workPanelTemplate = TEMPLATE_FORM1, initFunction = null) {
 
 
 function initBriefDemo(options) {

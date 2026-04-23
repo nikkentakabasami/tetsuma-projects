@@ -152,14 +152,14 @@ $(() => {
     $("#selectors1").val("le_demo2").trigger("change");
 
 	//код, который будет выполняться перед каждой демо-функцией
-	demoOptions.beforeExecDemoFunc = ()=>{
+	demoOptions.beforeExec = ()=>{
 		
 		//очищает .workPanel и загружает в неё элементы из #template1
 		reloadSandbox();
 	};
 
 	//и после неё
-	demoOptions.afterExecDemoFunc	= ()=>{
+	demoOptions.afterExec	= ()=>{
 	};
 	
     reloadSandbox();

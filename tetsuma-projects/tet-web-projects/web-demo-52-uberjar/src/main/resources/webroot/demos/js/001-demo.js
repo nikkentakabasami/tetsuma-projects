@@ -34,14 +34,14 @@ $(document).ready(function() {
 	addDemoButtons(bh1)
 	
 	//код, который будет выполняться перед каждой демо-функцией
-	demoOptions.beforeExecDemoFunc = ()=>{
+	demoOptions.beforeExec = ()=>{
 		
 		//очищает .workPanel и загружает в неё элементы из #template1
 		reloadSandbox();
 	};
 
 	//и после неё
-	demoOptions.afterExecDemoFunc	= ()=>{
+	demoOptions.afterExec	= ()=>{
 	};
 
 	//сразу запускаем первую демку

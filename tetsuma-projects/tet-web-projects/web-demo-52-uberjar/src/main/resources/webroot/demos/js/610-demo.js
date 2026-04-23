@@ -139,12 +139,12 @@ $(() => {
 	
 	initDemoCodeSelect("#selectors1", selectorsData1);
 	
-	beforeExecDemoFunc = ()=>{
+	demoOptions.beforeExec = ()=>{
 		destroyTree1();
 		clearLog();
 	};
 	
-	afterExecDemoFunc	= ()=>{
+	demoOptions.afterExec	= ()=>{
 		currentTree = $jstree1.jstree(true);
 		
 		$jstree1.on("changed.jstree", function(e, data) {
