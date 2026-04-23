@@ -9,9 +9,9 @@ let buttonHandlers1 = {
 		
 		
 		//decorInput - декорирует input, добавляя к нему кнопку (впереди или позади) с заданной иконкой.
-		accordUtils.decorInput($("#tf1"));
+		accordUtils.decorInput($inp1);
 	
-		accordUtils.decorInput($("#tf2"),{
+		accordUtils.decorInput($inp2,{
 			addButton: true,
 			buttonClasses: "acc-btn-check",
 			placeButtonBefore: false,
@@ -27,7 +27,7 @@ let buttonHandlers1 = {
 		//использует для этого объект XMLHttpRequest (считается устаревшим способом).
 		//Загружает синхронно.
 		
-		accordUtils.loadHtmlFragmentXHR("demos/misc/testFragment.html","#testFragment1",true);
+		accordUtils.loadHtmlFragmentXHR("demos/misc/testFragment.html",".workPanel",true);
 		log("loadHtmlFragmentXHR finished");
 		
 		
@@ -38,7 +38,7 @@ let buttonHandlers1 = {
 		//загружает html-фрагмент в заданный контейнер ($target) или body (если контейнер не задан)
 		//использует для этого метод fetch(url).
 		//Возвращает promise, так что загружать можно синхронно или асинхронно.
-		accordUtils.loadHtmlFragmentFetch("demos/misc/testFragment.html","#testFragment2",true)
+		accordUtils.loadHtmlFragmentFetch("demos/misc/testFragment.html",".workPanel",true)
 		.then(result => {
 			log("loadHtmlFragmentFetch finished");
 		});
@@ -47,43 +47,45 @@ let buttonHandlers1 = {
 		//alignToCenter($panel) - Располагает панель с абсолютным позиционированием по центру браузера	
 		
 		$myPopup.css("display","flex");
+		accordUtils.alignToCenter($myPopup);
 	},	
 
 
 	
 }
 
-function popupInit(){
-	$myPopup = $("#myPopup"); 
-	
-	$myPopup.click(e=>{
-		accordUtils.alignToCenter($myPopup);
-	});
+buttonHandlers1.test4_alignToCenter.init = popupInit;
 
+function popupInit(){
+	
+	$myPopup = $('<div class="acc-popup-default no-select acc-popup">Плавающая панель.</div>'); 
+	$myPopup.css("display","none");
+	$myPopup.appendTo(document.body);
+	
 	$myPopup.dblclick(e=>{
 		$myPopup.css("display","none");
 	});
-		
 	
 }
 
 
 $(document).ready(function() {
 
-	//для демо-функции можно задать связанную функцию, которая будет выводится в лог при её выполнении.
-	buttonHandlers1.test4_alignToCenter.init = popupInit;
 	
-	//добавляем демо-кнопки
-	addDemoButtons(buttonHandlers1)
 	
-	popupInit();
+	initBriefDemo(	{
+		demoType: DT_SELECT,
+		workPanelTemplate: TEMPLATE_FORM1,
+		selectorsData: buttonHandlers1,
+		selectedOption: "test1_decorInput",
+		title: "accordUtils - содержит разнообразные вспомогательные методы",
+		initFunction: ()=>{
+			popupInit();
+			
+		}
+	});		
 	
-	demoOptions.beforeExecDemoFunc = ()=>{
-		reloadSandbox();
-	};
-
-	//сразу запускаем первую демку
-	demoButtons[0].trigger("click");
+	
 		
 	
 });

@@ -1,4 +1,5 @@
 
+
 import {showWaitPanel,hideWaitPanel} from '../../../accord/js/accord-bundle.js';
 
 
@@ -29,13 +30,15 @@ let buttonHandlers1 = {
 
 $(document).ready(function() {
 
-	addDemoButtons(buttonHandlers1)
+	initBriefDemo(	{
+		demoType: DT_BUTTONS,
+		workPanelTemplate: null,
+		selectorsData: buttonHandlers1,
+		selectedOption: null,
+		title: "Компонент waitPanel - панель ожидания",
+		initFunction: ()=>{
+			
+		}
+	});	
 	
 });
-
-
-
-
-
-
-

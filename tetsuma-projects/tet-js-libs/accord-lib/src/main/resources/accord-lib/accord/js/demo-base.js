@@ -104,7 +104,7 @@ function addTitlePanelButtons() {
     }
 
     if (!$("#bReload").length && $("#template1").length) {
-        $tp.append('<button id="bReload" type="button" class="acc-btn">Перезагрузить песочницу</button>');
+        $tp.append('<button id="bReload" type="button" class="acc-btn">Перезагрузить песочницу (0)</button>');
     }
 
     if (!$tp.children("a").length) {
@@ -262,6 +262,17 @@ function initDemoCodeSelect(selector, data) {
             } else {
                 let code = trimFuncCode(currentFunc);
                 log(code);
+				
+				let initFunction = currentFunc.init || demoOptions.currentFunc;
+
+				//указана доп. функция инициализации - вывести её в лог
+				if (initFunction) {
+				    log();
+				    lognl("//функция инициализации:");
+				    log(String(initFunction));
+				}
+				highlightLogComments1();
+				
             }
 
         }
@@ -624,6 +635,7 @@ function initDemo() {
         if (demoOptions.afterExecDemoFunc) {
             demoOptions.afterExecDemoFunc();
         }
+		
 
     });
 
@@ -659,6 +671,7 @@ function initDemo() {
 
 
 const DT_SELECT = 1;
+const DT_BUTTONS = 2;
 
 const TEMPLATE_FORM1 = 1;
 
@@ -668,6 +681,7 @@ const defaultBruefDemoOptions = {
 	initFunction: null,
 	selectorsData: null,
 	selectedOption: null,
+	title: null,
 }
 
 //function initBriefDemo(demoType = DT_SELECT, workPanelTemplate = TEMPLATE_FORM1, initFunction = null) {
@@ -679,19 +693,52 @@ function initBriefDemo(options) {
 	
 	options = $.extend({}, defaultBruefDemoOptions, options);
 	
-	accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment1.html",null,true);
-	accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate1.html",null,true);
+	switch (options.demoType) {
+	  case DT_SELECT:
+		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment1.html",null,true);
+	    break;
+		case DT_BUTTONS:
+		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment2.html",null,true);
+		  break;
+	  default:
+		console.log(`demoType ${options.demoType} not found.`);
+		return;
+	}	
+		
+	switch (options.workPanelTemplate) {
+	  case TEMPLATE_FORM1:
+		accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate1.html",null,true);
+	    break;
+	  default:
+	}	
+
+	if (options.title){
+		$(".titlePanel h2").text(options.title);
+	}
+	
+		
 	initDemoLogs();
 	initDemo();
 	
-	if (options.selectorsData){
-		initDemoCodeSelect("#selectors1", options.selectorsData);
+	if (options.demoType==DT_SELECT) {
+		if (options.selectorsData){
+			initDemoCodeSelect("#selectors1", options.selectorsData);
+		}
+
+		if (options.selectedOption){
+			//выбрать опцию после загрузки страницы 
+			$("#selectors1").val(options.selectedOption).trigger("change");
+		}
+	}
+		  
+	if (options.demoType==DT_BUTTONS) {
+		if (options.selectorsData){
+			//добавляем демо-кнопки
+			addDemoButtons(options.selectorsData)
+		}
+
 	}
 	
-	if (options.selectedOption){
-		//выбрать опцию после загрузки страницы 
-		$("#selectors1").val(options.selectedOption).trigger("change");
-	}
 	
 	
 	if (options.initFunction){

@@ -12,6 +12,8 @@ let buttonHandlers1 = {
 	
 }
 
+buttonHandlers1.showDialog1.init = createDialog1;
+
 function createDialog1(){
 	dialog1 = new AccModalDialog({
 	  title: "Диалог по умолчанию",
@@ -35,13 +37,21 @@ function createDialog1(){
 }
 
 
+
+
+
 $(document).ready(function() {
 
-	createDialog1();
-	
-	buttonHandlers1.showDialog1.init = createDialog1;
-	
-	addDemoButtons(buttonHandlers1)
+	initBriefDemo(	{
+		demoType: DT_BUTTONS,
+		workPanelTemplate: null,
+		selectorsData: buttonHandlers1,
+		selectedOption: null,
+		title: "AccModalDialog - получение содержимого по ссылке",
+		initFunction: ()=>{
+			createDialog1();
+		}
+	});	
 	
 });
 

@@ -1,5 +1,4 @@
 
-//import { AccModalDialog } from '../../js/accord-bundle.js';
 
 
 
@@ -7,9 +6,6 @@ let dialog1;
 let dialog2;
 let dialog3;
 let dialog4;
-
-
-
 
 
 let bh1 = {
@@ -105,19 +101,21 @@ function createDialog4(){
 
 $(document).ready(function() {
 
-	addDemoButtons(bh1)
-
+	initBriefDemo(	{
+		demoType: DT_BUTTONS,
+		workPanelTemplate: null,
+		selectorsData: bh1,
+		selectedOption: null,
+		title: "Компонент AccModalDialog - модальный диалог",
+		initFunction: ()=>{
+			createDialog1();
+			createDialog2();
+			createDialog3();
+			createDialog4();
+		}
+	});	
 	
-		
-	createDialog1();
-	createDialog2();
-	createDialog3();
-	createDialog4();
-		
-
 });
-
-
 
 
 

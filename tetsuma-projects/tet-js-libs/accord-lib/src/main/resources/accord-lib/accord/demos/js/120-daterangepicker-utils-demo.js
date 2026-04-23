@@ -2,7 +2,7 @@
 
 import {AccDaterangepickerUtils} from '../../js/accord-bundle.js';
 
-let buttonHandlers1 = {
+let selectorsData1 = {
 	
 	test1_daterangepicker(){
 		//тестируем библиотеку daterangepicker
@@ -19,7 +19,7 @@ let buttonHandlers1 = {
 		
 		//вид по умолчанию
 		//выбирает диапазон дат
-		$("#tf1").daterangepicker(defaultOptions);
+		$inp1.daterangepicker(defaultOptions);
 
 
 
@@ -34,7 +34,7 @@ let buttonHandlers1 = {
 				maxYear: parseInt(moment().format('YYYY'), 10),
 				startDate: "20.04.1982",
 			});
-		$("#tf2").daterangepicker(options, function(start, end, label) {
+		$inp2.daterangepicker(options, function(start, end, label) {
 			var years = moment().diff(start, 'years');
 			log2("You are " + years + " years old!");
 		});
@@ -47,7 +47,7 @@ let buttonHandlers1 = {
 		//список доп. опций, которые можно задать: AccDaterangepickerUtils.addOptionsDefault
 		
 		// С презаданными диапазонами 
-		AccDaterangepickerUtils.initDateEditor($("#tf1"), {
+		AccDaterangepickerUtils.initDateEditor($inp1, {
 			drops: 'up',
 			//Не скрывать при выборе
 			dontHideOnSelect: true,
@@ -59,7 +59,7 @@ let buttonHandlers1 = {
 		});
 
 		//Выбор диапазона
-		AccDaterangepickerUtils.initDateRangeEditor($("#tf2")	, {
+		AccDaterangepickerUtils.initDateRangeEditor($inp2, {
 			drops: 'up',
 				decorInput: true,
 				decorButtonClasses: "acc-btn-eye",
@@ -71,7 +71,7 @@ let buttonHandlers1 = {
 	test3_AccDaterangepickerUtils(){
 		
 		//Выбор даты
-		AccDaterangepickerUtils.initDateEditor($("#tf1"), {
+		AccDaterangepickerUtils.initDateEditor($inp1, {
 			drops: 'up',
 			decorInput: true,
 			autoApply: false,
@@ -87,25 +87,17 @@ let buttonHandlers1 = {
 
 $(function() {
 
-//	reloadSandbox();
-
-	//добавляем демо-кнопки
-	addDemoButtons(buttonHandlers1)
-
-	demoOptions.beforeExecDemoFunc = ()=>{
-		reloadSandbox();
-	};
 	
-	
-	//сразу запускаем первую демку
-	demoButtons[0].trigger("click");
-	
-//	buttonHandlers1.test1_daterangepicker();	
-	
-	
-//	log(String(init));
-	
-
+	initBriefDemo(	{
+		demoType: DT_SELECT,
+		workPanelTemplate: TEMPLATE_FORM1,
+		selectorsData: selectorsData1,
+		selectedOption: "test1_daterangepicker",
+		title: "daterangepicker",
+		initFunction: ()=>{
+			
+		}
+	});	
 
 
 });

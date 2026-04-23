@@ -63,6 +63,7 @@ $(document).ready(function() {
 		workPanelTemplate: TEMPLATE_FORM1,
 		selectorsData: selectorsData1,
 		selectedOption: "demo1_script",
+		title: "mytitle",
 		initFunction: ()=>{
 			
 		}
