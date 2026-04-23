@@ -256,6 +256,7 @@ function lc2NL(comment) {
 	lc2nl(comment);
 }
 
+//вывод ссылки
 function la2(href, mess) {
 	$log2.append(`<a href="${href}" target="logref">${mess}</a> \n`);
 }
@@ -271,7 +272,7 @@ function lognl(...vals) {
 }
 
 
-
+//вывод переменных
 function logVal(key, val, ...vals) {
 	val = stringifyObject(val);
 	log(key+": "+val, ...vals);

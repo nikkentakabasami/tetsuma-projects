@@ -459,7 +459,7 @@ function initSelect(selector, data){
 
 $(()=>{
 	
-	beforeHighlight = ()=>{
+	demoOptions.reloadSandboxVars = ()=>{
 		$btn = $(".B>button.c5");
 	}
 	

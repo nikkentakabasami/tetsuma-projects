@@ -143,12 +143,7 @@ let selectorsData2 = [
 function testExpression(re){
 	$log1.text(currentFunc);
 	
-	regex = accordUtils.stringToRegex(re);
-	
-//	logRegexParams();
-
-	//копируем текст в буфер обмена
-//	accordUtils.copyTextToBuffer(currentFunc);		
+//	regex = accordUtils.stringToRegex(re);
 
 	le2("regex");
 	

@@ -1,25 +1,8 @@
 
-let $myPopup;
 
-//демо-функции.
-//при вызове addDemoButtons - для каждой такой функции будет создана и добавлена демо-кнопка (на acc-button-panel)
+//accordUtils - ajax методы
 let buttonHandlers1 = {
 	
-	test1_decorInput(){
-		
-		
-		//decorInput - декорирует input, добавляя к нему кнопку (впереди или позади) с заданной иконкой.
-		accordUtils.decorInput($inp1);
-	
-		accordUtils.decorInput($inp2,{
-			addButton: true,
-			buttonClasses: "acc-btn-check",
-			placeButtonBefore: false,
-			buttonHandler: e=>{
-				log2("hello");
-			}
-		});
-	},
 	test2_loadHtmlFragmentXHR(){
 		
 		//loadHtmlFragmentXHR(fragmentUrl, $target, relativeToAccord = false)
@@ -43,30 +26,24 @@ let buttonHandlers1 = {
 			log("loadHtmlFragmentFetch finished");
 		});
 	},
-	test4_alignToCenter(){
-		//alignToCenter($panel) - Располагает панель с абсолютным позиционированием по центру браузера	
-		
-		$myPopup.css("display","flex");
-		accordUtils.alignToCenter($myPopup);
+	
+	loadFileAsString(){
+		//синхронная загрузка файла в виде строки
+		let cssCode = accordUtils.loadFileAsString('misc/test.css');
+		log2(cssCode);
+	},
+
+	openDownloadUrl(){
+		//запуск скачивания файла
+		//Скачиваться будет только если на сервере задан заголовок:
+		//Content-Disposition: attachment; filename="testFragment.html"
+		accordUtils.openDownloadUrl('misc/test.css');
 	},	
-
+	
 
 	
 }
 
-buttonHandlers1.test4_alignToCenter.init = popupInit;
-
-function popupInit(){
-	
-	$myPopup = $('<div class="acc-popup-default no-select acc-popup">Плавающая панель.</div>'); 
-	$myPopup.css("display","none");
-	$myPopup.appendTo(document.body);
-	
-	$myPopup.dblclick(e=>{
-		$myPopup.css("display","none");
-	});
-	
-}
 
 
 $(document).ready(function() {
@@ -77,11 +54,9 @@ $(document).ready(function() {
 		demoType: DT_SELECT,
 		workPanelTemplate: TEMPLATE_FORM1,
 		selectorsData: buttonHandlers1,
-		selectedOption: "test1_decorInput",
-		title: "accordUtils - содержит разнообразные вспомогательные методы",
+		selectedOption: "test2_loadHtmlFragmentXHR",
+		title: "accordUtils - ajax методы",
 		initFunction: ()=>{
-			popupInit();
-			
 		}
 	});		
 	

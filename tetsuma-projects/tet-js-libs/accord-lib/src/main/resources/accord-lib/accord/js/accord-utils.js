@@ -7,17 +7,16 @@ export { accordUtils };
 
 
 let $copyDiv;
-let downloadLink3 = null;
 let scriptSrc = import.meta.url;
 let accordUtils = {
   accordPath: scriptSrc.substring(0, scriptSrc.lastIndexOf('/js/') + 1),
   alignToCenter: alignToCenter,
-  jsonCopy: jsonCopy,
+  
   getHiddenContainer: getHiddenContainer,
   addCssFile: addCssFile,
   loadHtmlFragmentXHR: loadHtmlFragmentXHR,
   loadHtmlFragmentFetch: loadHtmlFragmentFetch,
-	loadFileAsString: loadFileAsString,
+  loadFileAsString: loadFileAsString,
   deleteAllCookies: deleteAllCookies,
   deleteAllCookiesAndReload: deleteAllCookiesAndReload,
   copyTextToBuffer: copyTextToBuffer,
@@ -33,12 +32,15 @@ let accordUtils = {
   generateDatalist: generateDatalist,
   selectNextOption: selectNextOption,
   
+  jsonCopy: jsonCopy,
   random: random,
   randomDate: randomDate,
   formatDate: formatDate,
   parseDate: parseDate,
   cloneTemplate: cloneTemplate,
   cloneObject: cloneObject,
+  
+  
 	highlightText: highlightText,
 	stringToRegex: stringToRegex,
 	escapeHTML: escapeHTML,
@@ -104,12 +106,13 @@ function removeJSFromPage(script) {
 }
 
 
-//экранирует спецсимволы в тексте перед вставкой в html 
+//экранирует спецсимволы в тексте (для вставки его в html) 
 function escapeHTML(str) {
     const temp = document.createElement('div');
     temp.textContent = str;
     return temp.innerHTML;
 }
+
 
 //преобразовывает строку с регулярным выражением (например "/a{3}/g") в объект RegExp
 function stringToRegex(str){
@@ -135,7 +138,7 @@ const defaultHighlightOptions = {
 	class: "green",
 	startIndex: -1,
 	length: -1,
-	sections: null,
+	sections: null,  //массив из пар [index, length]
 	text: null,
 	$div: null,
 	matchHandler: null
@@ -245,6 +248,7 @@ function random(max, min = 0) {
 	return Math.floor(Math.random() * (max - min)) + min;
 }
 
+//возвращает случайную дату в заданном диапазоне
 function randomDate(minYear = 2020, maxYear=2025){
 	let yearDiapazon = maxYear - minYear;
 	return new Date(minYear+random(yearDiapazon), random(13), random(30));
@@ -252,6 +256,7 @@ function randomDate(minYear = 2020, maxYear=2025){
 
 
 
+//простое форматирование даты: dd.mm.yyy
 function formatDate(date) {
   let d = date.getDate();
   let m = date.getMonth() + 1;
@@ -259,6 +264,7 @@ function formatDate(date) {
   return (d <= 9 ? '0' + d : d) + '.' + (m<=9 ? '0' + m : m) + '.' + y;
 }
 
+//простой парсинг даты: dd.mm.yyy
 function parseDate(dateStr) {
   let d=dateStr.substring(0,2);
   let m=dateStr.substring(3,5);
@@ -435,6 +441,7 @@ function alignToCenter($panel) {
     .css("left", $g.width() / 2 - $panel.width() / 2);
 }
 
+//клонирование объекта через JSON стрингификацию и парсинг
 function jsonCopy(src) {
   return JSON.parse(JSON.stringify(src));
 }
@@ -454,7 +461,7 @@ function getHiddenContainer() {
 
 }
 
-
+//динамическое подключение css файла
 // addCssFile('styles.css');
 function addCssFile(filename) {
   let link = document.createElement('link');
@@ -466,6 +473,7 @@ function addCssFile(filename) {
   head.appendChild(link);
 }
 
+//синхронная загрузка файла в виде строки
 function loadFileAsString(fileUrl){
 	
 	let xhr = new XMLHttpRequest();
@@ -568,6 +576,7 @@ function deleteAllCookiesAndReload(event) {
   location.href = location.pathname;
 }
 
+//Закидывает заданный текст в буфер обмена
 function copyTextToBuffer(textValue) {
   window.getSelection().removeAllRanges();
 	if (!$copyDiv){
@@ -587,17 +596,25 @@ function copyTextToBuffer(textValue) {
 }
 
 
+//запуск скачивания файла
+//Скачиваться будет только если на сервере задан заголовок:
+//Content-Disposition: attachment; filename="testFragment.html"
 function openDownloadUrl(url) {
-  if (!downloadLink3) {
-    downloadLink3 = document.createElement('a');
-  }
-  downloadLink3.href = url;
-  downloadLink3.click();
-
+	let l = document.createElement('a');
+  // l.download = 'test.ext';
+  l.href = url;
+  document.body.appendChild(l);
+  l.click();
+  document.body.removeChild(l);
 }
 
 
 
+
+
+
+
+//возвращает данные из формы в виде json-объекта.
 function formToJSON($form) {
   var array = $form.serializeArray();
   var json = {};

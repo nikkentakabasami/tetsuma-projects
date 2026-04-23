@@ -4,25 +4,9 @@ let myVar = 10;
 let currentJS;
 
 
-//тестовые функции
-//возвращают query-объекты, задействованные в тесте: они будут выделены красной рамкой
 let selectorsData1 = {
 
 
-
-	accordUtils_demo1:`
-	accordUtils.accordPath;
-	
-	accordUtils.random(10);
-	
-	accordUtils.randomDate();
-	
-	accordUtils.formatDate(new Date());
-	
-	accordUtils.parseDate("05.05.2025");
-
-	`,	
-		
 	addJSToPage1(){
 		//addJSToPage(jsHref, onload) - добавляет в документ js-файл (и выполняет его)
 		
@@ -62,11 +46,16 @@ let selectorsData1 = {
 
 
 $(() => {
-  initDemoCodeSelect("#selectors1", selectorsData1);
 	
-	//выбрать опцию после загрузки страницы 
-	$("#selectors1").val("accordUtils_demo1").trigger("change");
-
+	initBriefDemo(	{
+		demoType: DT_SELECT,
+		workPanelTemplate: 0,
+		selectorsData: selectorsData1,
+		selectedOption: "addJSToPage1",
+		title: "accordUtils - динамическая подгрузка js файлов",
+		initFunction: ()=>{
+		}
+	});		
 
 });
 

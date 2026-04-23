@@ -53,6 +53,8 @@ let demoOptions = {
 //Содержит #template1 - используется песочница
 let hasSandbox = false;
 
+//режим тестирования jquery функций (входные данные - это массив селекторов и jquery-запросов)
+let jquerySelectorsMode = false;
 
 let greenSpan = '<span class="green"></span>';
 
@@ -230,6 +232,10 @@ function highlightLogComments($log) {
 
 //вывод currentFunc в лог1 
 function logCurrentFunc(){
+	if (!currentFunc){
+		return;
+	}
+	
 	clearLog1();
 	
 	if (typeof currentFunc == "string") {
@@ -252,12 +258,58 @@ function logCurrentFunc(){
 	
 }
 
+
+
+//выделяет объекты с заданным селектором красной рамкой
+//выводит в лог значение выражения (или число найденных элементов)
+function highlightJquery(val) {
+    if (!val) {
+        return;
+    }
+
+	reloadSandbox();
+
+    clearLog();
+    log(val);
+	
+	if (demoOptions.beforeExec) {
+	    demoOptions.beforeExec();
+	}
+	
+    if (val.indexOf("$") >= 0 && val.indexOf("$=") < 0) {
+
+        val = eval(val);
+        if (!val.jquery) {
+            log(val);
+            return;
+        }
+
+    } else {
+        val = $(val);
+    }
+
+    val.addClass("red-border");
+
+	if (demoOptions.afterExec) {
+	    demoOptions.afterExec();
+	}
+	
+    logVal("elements found", val.length);
+
+}
+
+
 //выполняет currentFunc
 function execDemoFunc() {
     if (!currentFunc) {
         return;
     }
 
+	if (jquerySelectorsMode) {
+	    highlightJquery(currentFunc);
+		return;
+	}
+	
 	if (demoOptions.beforeExec) {
 	    demoOptions.beforeExec();
 	}
@@ -298,6 +350,9 @@ function execDemoFunc() {
 
 function initDemoCodeSelect(selector, data) {
 
+	jquerySelectorsMode = Array.isArray(data);
+	
+	
     let $sel = selector;
     if (!selector.jquery) {
         $sel = $(selector);
@@ -331,9 +386,10 @@ function initDemoCodeSelect(selector, data) {
         let v = $sel.val();
 
 		//задан массив jquery-селекторов
-        if (Array.isArray(data)) {
+        if (jquerySelectorsMode) {
             v = $sel.children("option:selected").text();
             log(v);
+			currentFunc = v;
         } else {
             currentFunc = data[v];
 			logCurrentFunc();
@@ -354,11 +410,11 @@ function initDemoCodeSelect(selector, data) {
 //очищает .workPanel и загружает в неё элементы из #template1
 function reloadSandbox() {
 
+	$workPanel.empty();
 	if (!hasSandbox){
 		return;
 	}
 	
-    $workPanel.empty();
 
     let $sandboxPanels = accordUtils.cloneTemplate("#template1");
     $sandboxPanels.appendTo($workPanel);
@@ -447,47 +503,6 @@ function showStyleTagText() {
 
 
 
-
-let beforeHighlight = null;
-
-
-//выделяет объекты с заданным селектором красной рамкой
-//выводит в лог значение выражения (или число найденных элементов)
-function highlight(val) {
-    reloadSandbox();
-    if (!val) {
-        return;
-    }
-
-    if (beforeHighlight) {
-        beforeHighlight();
-    }
-
-
-    clearLog();
-    log(val);
-    if (val.indexOf("$") >= 0 && val.indexOf("$=") < 0) {
-
-        val = eval(val);
-        if (!val.jquery) {
-            log(val);
-            return;
-            //			throw new Error('Выражение должно возвращать jquery-объект!');
-        }
-
-    } else {
-        val = $(val);
-    }
-
-    val.addClass("red-border");
-
-    logVal("elements found", val.length);
-
-}
-
-
-
-
 function formatDateTime(date) {
     let r = formatDate(date);
     let t = formatTime(date);
@@ -553,7 +568,7 @@ function addDemoButton(handlerName, handler, panelSelector = ".acc-button-panel"
 function initDemo() {
 
 	hasSandbox = $("#template1").length>0;
-
+	
     $sel1 = $("#selectors1");
     $sel2 = $("#selectors2");
     $sel3 = $("#selectors3");
@@ -603,14 +618,7 @@ function initDemo() {
     $bExecute = $("#bExecute");
 
     $bExecute.click(e => {
-        if (!currentFunc) {
-            let v = $selectorText.val();
-            highlight(v);
-            return;
-        }
-
         execDemoFunc(currentFunc);
-
     });
 
     $("#bClearLog").click(e => {
@@ -626,7 +634,7 @@ function initDemo() {
             accordUtils.selectNextOption($demoSelect1, false);
         } else if (e.keyCode == 107) { //+
             accordUtils.selectNextOption($demoSelect1, true);
-        } else if (e.keyCode == 13 || e.keyCode == 123) { //Enter
+        } else if (e.keyCode == 13) { //Enter    || e.keyCode == 123
             $bExecute.trigger("click");
         } else if (e.keyCode == 45 || e.keyCode == 96) { //0
             reloadSandbox()
@@ -648,6 +656,7 @@ const DT_SELECT = 1;
 const DT_BUTTONS = 2;
 
 const TEMPLATE_FORM1 = 1;
+const TEMPLATE_FORM2 = 2;
 
 const defaultBruefDemoOptions = {
 	demoType: DT_SELECT,
@@ -681,6 +690,9 @@ function initBriefDemo(options) {
 	  case TEMPLATE_FORM1:
 		accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate1.html",null,true);
 	    break;
+		case TEMPLATE_FORM2:
+		accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate2.html",null,true);
+		  break;
 	  default:
 	}	
 
