@@ -470,6 +470,7 @@ function initDemo() {
 
 const DT_SELECT = 1;
 const DT_BUTTONS = 2;
+const DT_SELECTORS = 3;
 
 const TEMPLATE_FORM1 = 1;
 const TEMPLATE_FORM2 = 2;
@@ -498,20 +499,30 @@ function initBriefDemo(options) {
 		case DT_BUTTONS:
 		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment2.html",null,true);
 		  break;
+	  case DT_SELECTORS:
+	  accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment3.html",null,true);
+	    break;
 	  default:
 		console.log(`demoType ${options.demoType} not found.`);
 		return;
 	}	
 		
-	switch (options.workPanelTemplate) {
-	  case TEMPLATE_FORM1:
-		accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate1.html",null,true);
-	    break;
-		case TEMPLATE_FORM2:
-		accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate2.html",null,true);
-		  break;
-	  default:
-	}	
+	if (typeof options.workPanelTemplate == "string"){
+		accordUtils.loadHtmlFragmentXHR(options.workPanelTemplate,null,false);
+	} else {
+		
+		switch (options.workPanelTemplate) {
+		  case TEMPLATE_FORM1:
+			accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate1.html",null,true);
+		    break;
+			case TEMPLATE_FORM2:
+			accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate2.html",null,true);
+			  break;
+		  default:
+		}	
+		
+	}
+	
 
 	if (options.title){
 		$(".titlePanel h2").text(options.title);
@@ -526,7 +537,7 @@ function initBriefDemo(options) {
 	initDemoLogs();
 	initDemo();
 	
-	if (options.demoType==DT_SELECT) {
+	if (options.demoType==DT_SELECT || options.demoType==DT_SELECTORS) {
 		if (options.selectorsData){
 			initDemoCodeSelect("#selectors1", options.selectorsData);
 		}

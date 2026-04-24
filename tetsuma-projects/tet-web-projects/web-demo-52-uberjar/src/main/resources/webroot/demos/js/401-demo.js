@@ -466,7 +466,11 @@ $(()=>{
 	
 	$workPanel = $(".workPanel");
 	
-	initSelect("#selectors", selectorsData);
+	initDemoCodeSelect("#selectors", selectorsData);
+	
+	
+	/*
+//	initSelect("#selectors", selectorsData);
 	initSelect("#selectors2", selectorsData2);
 	initSelect("#selectors3", selectorsData3);
 	initSelect("#selectors4", selectorsData4);
@@ -477,7 +481,8 @@ $(()=>{
 	initSelect("#selectors9", selectorsData9);
 //	initSelect("#selectors10", selectorsData10);
 	initDemoCodeSelect("#selectors10", selectorsData10);
-
+*/
+	
 	reloadSandbox();
 	
 		

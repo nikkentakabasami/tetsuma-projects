@@ -398,3 +398,25 @@ acc-row - элемент, занимающий целую строку.
 	gap: 5px;
 	padding: 5px;
 }
+
+
+/*  
+grid-панель, использующаяся для демок
+*/
+
+
+.acc-demo-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	border: 2px solid #f76707;
+	border-radius: 5px;
+	background-color: #fff4e6;
+}
+
+.acc-demo-grid>div {
+	border: 2px solid gray;
+	border-radius: 5px;
+	background-color: WhiteSmoke;
+	padding: 1em;
+}
+
