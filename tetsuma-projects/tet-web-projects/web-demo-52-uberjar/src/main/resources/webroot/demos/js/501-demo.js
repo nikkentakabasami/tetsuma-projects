@@ -99,9 +99,9 @@ let selectorsData1 = {
 
 				
 		lc2NL("Парсинг вручную");		
-		log2NL(String(parseDate));
+		log2NL(String(accordUtils.parseDate));
 
-		le2("parseDate('05.07.2007');");
+		le2("accordUtils.parseDate('05.07.2007');");
 		
 		
 		
@@ -209,16 +209,6 @@ function formatDateTimeMoment(date) {
 	return m.format('DD.MM.YYYY, hh:mm:ss');
 }
 
-
-
-function parseDate(dateStr) {
-  let d=dateStr.substring(0,2);
-  let m=dateStr.substring(3,5);
-  let y=dateStr.substring(6,10);
-  m--;
-  let c = new Date(y, m, d); 
-  return c;  
-}
 
 
 

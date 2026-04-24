@@ -1,4 +1,4 @@
-let bh1 = {
+let selectorsData1 = {
 
 	serializeForms1: `
 		$("#form1").serialize();
@@ -14,12 +14,24 @@ let bh1 = {
 $(document).ready(function() {
 	
 	//добавляем демо-кнопки
-	addDemoButtons(bh1)
+//	addDemoButtons(bh1)
 	
 	
 	demoOptions.beforeExec = ()=>{
 		clearLog2();
 	};
+	
+	
+	initBriefDemo(	{
+		demoType: DT_SELECT,
+		workPanelTemplate: null,
+		selectorsData: selectorsData1,
+		selectedOption: "serializeForms1",
+		title: "mytitle",
+		initFunction: ()=>{
+			
+		}
+	});		
 	
 	
 });

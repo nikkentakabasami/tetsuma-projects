@@ -10,20 +10,28 @@ let $copyDiv;
 let scriptSrc = import.meta.url;
 let accordUtils = {
   accordPath: scriptSrc.substring(0, scriptSrc.lastIndexOf('/js/') + 1),
-  alignToCenter: alignToCenter,
   
+  //-------dom ----------
+  
+  alignToCenter: alignToCenter,
   getHiddenContainer: getHiddenContainer,
+  openDownloadUrl: openDownloadUrl,
+  decorInput: decorInput,
+  calcElementPosition: calcElementPosition,
+  cloneTemplate: cloneTemplate,
+  highlightText: highlightText,
+  
   addCssFile: addCssFile,
+  addJSToPage: addJSToPage,
+  removeJSFromPage: removeJSFromPage,
+  
+  //-------ajax ----------
+  
   loadHtmlFragmentXHR: loadHtmlFragmentXHR,
   loadHtmlFragmentFetch: loadHtmlFragmentFetch,
   loadFileAsString: loadFileAsString,
-  deleteAllCookies: deleteAllCookies,
-  deleteAllCookiesAndReload: deleteAllCookiesAndReload,
-  copyTextToBuffer: copyTextToBuffer,
-  openDownloadUrl: openDownloadUrl,
-  formToJSON: formToJSON,
-  decorInput: decorInput,
-  calcElementPosition: calcElementPosition,
+
+  //-------select ----------
   
   generateSelect: generateSelect,
   generateBooleanSelect: generateBooleanSelect,
@@ -32,24 +40,110 @@ let accordUtils = {
   generateDatalist: generateDatalist,
   selectNextOption: selectNextOption,
   
+  //-------select ----------
+    
+  deleteAllCookies: deleteAllCookies,
+  deleteAllCookiesAndReload: deleteAllCookiesAndReload,
+  copyTextToBuffer: copyTextToBuffer,
+  formToJSON: formToJSON,
+
+  //-------format ----------
+
+  formatDate: formatDate,
+  formatTime: formatTime,
+  formatDateTime: formatDateTime,
+  parseDate: parseDate,
+  
+  //-------misc ----------
+      
   jsonCopy: jsonCopy,
   random: random,
   randomDate: randomDate,
-  formatDate: formatDate,
-  parseDate: parseDate,
-  cloneTemplate: cloneTemplate,
   cloneObject: cloneObject,
-  
-  
-	highlightText: highlightText,
 	stringToRegex: stringToRegex,
 	escapeHTML: escapeHTML,
-	addJSToPage: addJSToPage,
-	removeJSFromPage: removeJSFromPage,
-  
+	removeOddIndent: removeOddIndent,
+	funcToString: funcToString,
+	
+	  
 
 };
 window.accordUtils = accordUtils;
+
+
+//возвращает код функции в виде строки.
+//убирает лишние отступы, может убрать её объявление
+function funcToString(func, removeDeclaration = false) {
+	
+	let code = String(func);
+
+	if (removeDeclaration){
+		let ind1 = code.indexOf("{");
+		let ind2 = code.lastIndexOf("}");
+		code = code.substring(ind1 + 1, ind2);
+	}
+	
+	code = removeOddIndent(code);
+	return code;	
+}
+
+
+//убирает лишние отступы в коде, а так же пустые строки в начале и конце
+function removeOddIndent(code) {
+
+    let lines = code.split("\n")
+    if (lines.length == 1) {
+        return code.trim();
+    }
+
+    lines = lines.map(line => line.replaceAll("\t", "  ").trimRight());
+
+    //убираем пустые строки в начале	
+    while (lines.length > 0 && lines[0].length == 0) {
+        lines.shift();
+    }
+
+    //убираем пустые строки в конце	
+    while (lines.length > 0 && lines[lines.length - 1].length == 0) {
+        lines.pop();
+    }
+
+
+    let minIndent = 0;
+    for (let i = 0;i < lines.length;i++) {
+        let line = lines[i];
+		
+        if (line.length == 0) {
+            continue;
+        }
+
+        let r = line.match(/^ +/i);
+        if (r) {
+            let indent = r[0].length;
+            if (!minIndent) {
+                minIndent = indent;
+                continue;
+            }
+            if (indent < minIndent) {
+                minIndent = indent;
+            }
+        } else {
+			minIndent = 0;
+		}
+    }
+
+    if (minIndent) {
+        lines = lines.map(line => line.substring(minIndent));
+    }
+
+    return lines.join("\n");
+
+}
+
+
+
+
+
 
 
 
@@ -263,6 +357,24 @@ function formatDate(date) {
   let y = date.getFullYear();
   return (d <= 9 ? '0' + d : d) + '.' + (m<=9 ? '0' + m : m) + '.' + y;
 }
+
+//простое форматирование времени: hh.mm.ss
+function formatTime(date) {
+    let h = date.getHours();
+    let m = date.getMinutes();
+    let s = date.getSeconds();
+    return (h <= 9 ? '0' + h : h) + ':' + (m <= 9 ? '0' + m : m) + ':' + (s <= 9 ? '0' + s : s);
+}
+
+function formatDateTime(date) {
+    let r = formatDate(date);
+    let t = formatTime(date);
+    if (t != "00:00:00") {
+        r = r + " " + t;
+    }
+    return r;
+}
+
 
 //простой парсинг даты: dd.mm.yyy
 function parseDate(dateStr) {

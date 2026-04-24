@@ -20,15 +20,20 @@ let $hideAuxButton;
 //input с текущим селектором
 let $selectorText;
 
-//выбранная функция/код
+//выбранная демо функция/код
 let currentFunc = null;
+
+let helpPopup;
 
 //элементы песочницы
 let $btn1, $btn2, $inp1, $inp2, $inp3, $inp4, $testBtn1, $testBtn2;
 let formDiv1, formDiv2;
-let form1, form2;
-let $panel1, $panel2;
+let $form1, $form2, $formPanel;
+
+//let $panel1, $panel2;
 let $sel1, $sel2, $sel3, $sel4;
+
+
 
 //демо-кнопки
 let demoButtons = [];
@@ -45,8 +50,6 @@ let demoOptions = {
 	
 	//функция, выполняющаяся после reloadSandbox
 	reloadSandboxVars: null,
-
-	
 
 };
 
@@ -84,18 +87,7 @@ function findMainJs() {
     return mainJsHref;
 }
 
-//прописывает ссылку на главный js-файл в ссылке в заголовке
-function fixSrcRef() {
 
-    let src = findMainJs();
-    if (!src) {
-        console.log("mainJs not found!");
-        return;
-    }
-
-    $(".titlePanel a").attr("href", src);
-
-}
 
 //добавляет в демку доп. элементы
 function addTitlePanelButtons() {
@@ -122,7 +114,7 @@ function addTitlePanelButtons() {
 
 }
 
-
+//показывает панель с js-кодом этой демки.
 function showMainJs() {
     let options = {
         draggable: false,
@@ -132,101 +124,11 @@ function showMainJs() {
         cssClass: "help-panel",
         panelExtraClasses: "acc-popup"
     }
-    let p1 = new AccPopup(options);
-    p1.show();
-}
-
-
-
-
-
-//убирает лишние отступы в коде
-function removeOddIndent(code) {
-
-    let lines = code.split("\n")
-    if (lines.length == 1) {
-        return code.trim();
-    }
-
-    lines = lines.map(line => line.replaceAll("\t", "  "));
-
-    //убираем пустые строки в начале	
-    while (lines.length > 0 && lines[0].trim().length == 0) {
-        lines.shift();
-    }
-
-    //убираем пустые строки в конце	
-    while (lines.length > 0 && lines[lines.length - 1].trim().length == 0) {
-        lines.pop();
-    }
-
-
-    let minIndent = 0;
-    for (let i = 0;i < lines.length;i++) {
-        let line = lines[i];
-
-        if (line.trim().length == 0) {
-            continue;
-        }
-
-        let r = line.match(/^ +/i);
-        if (r) {
-
-            let indent = r[0].length;
-            if (!minIndent) {
-                minIndent = indent;
-                continue;
-            }
-            if (indent < minIndent) {
-                minIndent = indent;
-            }
-        }
-    }
-
-    if (minIndent) {
-        lines = lines.map(line => line.substring(minIndent));
-    }
-
-    return lines.join("\n");
-
-}
-
-//возвращает код заданной функции.
-//убирает её объявление, убирает лишние отступы
-function trimFuncCode(func) {
-    let code = String(func);
-
-    let ind1 = code.indexOf("{");
-    let ind2 = code.lastIndexOf("}");
-    code = code.substring(ind1 + 1, ind2);
-    code = removeOddIndent(code);
-    return code;
-}
-
-//подсвечивает комменты в логах серым цветом
-function highlightLogComments1() {
-    highlightLogComments($log1);
-}
-function highlightLogComments2() {
-    highlightLogComments($log2);
-}
-function highlightLogComments($log) {
-
-    const text = $log.html();
-    const lines = text.split('\n');
-
-    const processedLines = lines.map(line => {
-        let ind = line.indexOf('//');
-        if (ind >= 0) {
-            return line.substring(0, ind) + '<span class="gray">' + line.substring(ind) + '</span>';
-        } else {
-            return line;
-        }
-    });
-
-    let newText = processedLines.join('\n');
-
-    $log.html(newText);
+	if (!helpPopup){
+		helpPopup = new AccPopup(options);
+	}
+	helpPopup.show();
+	
 }
 
 
@@ -239,10 +141,10 @@ function logCurrentFunc(){
 	clearLog1();
 	
 	if (typeof currentFunc == "string") {
-	    currentFunc = removeOddIndent(currentFunc);
+	    currentFunc = accordUtils.removeOddIndent(currentFunc);
 	    log(currentFunc);
 	} else {
-	    let code = trimFuncCode(currentFunc);
+	    let code = accordUtils.funcToString(currentFunc, true);
 	    log(code);
 		
 		let initFunction = currentFunc.init || demoOptions.currentFunc;
@@ -251,7 +153,9 @@ function logCurrentFunc(){
 		if (initFunction) {
 		    log();
 		    lognl("//функция инициализации:");
-		    log(String(initFunction));
+			
+			let code = accordUtils.funcToString(initFunction, true);
+			log(code);
 		}
 	}
 	highlightLogComments1();	
@@ -297,6 +201,50 @@ function highlightJquery(val) {
     logVal("elements found", val.length);
 
 }
+
+//очищает .workPanel и загружает в неё элементы из #template1
+function reloadSandbox() {
+
+	$workPanel.empty();
+	if (!hasSandbox){
+		return;
+	}
+	
+
+    let $sandboxPanels = accordUtils.cloneTemplate("#template1");
+    $sandboxPanels.appendTo($workPanel);
+
+
+    $btn1 = $("#btn1");
+    $btn2 = $("#btn2");
+    $inp1 = $("#inp1");
+    $inp2 = $("#inp2");
+    $inp3 = $("#inp3");
+    $inp4 = $("#inp4");
+
+    $testBtn1 = $("#testBtn1");
+    $testBtn2 = $("#testBtn2");
+
+    $formDiv1 = $("#formDiv1");
+    $formDiv2 = $("#formDiv2");
+
+    $form1 = $("#form1");
+    $form2 = $("#form2");
+
+	$formPanel = $(".form-panel");
+	
+	
+//    $panel1 = $("#formDiv1");
+//    $panel2 = $("#formDiv2");
+
+
+    if (demoOptions.reloadSandboxVars) {
+        demoOptions.reloadSandboxVars();
+    }
+
+
+}
+
 
 
 //выполняет currentFunc
@@ -348,6 +296,7 @@ function execDemoFunc() {
 
 }
 
+//инициализация селекта с демками
 function initDemoCodeSelect(selector, data) {
 
 	jquerySelectorsMode = Array.isArray(data);
@@ -399,148 +348,18 @@ function initDemoCodeSelect(selector, data) {
 
     });
 
-
-
 }
-
-
-
-
-
-//очищает .workPanel и загружает в неё элементы из #template1
-function reloadSandbox() {
-
-	$workPanel.empty();
-	if (!hasSandbox){
-		return;
-	}
-	
-
-    let $sandboxPanels = accordUtils.cloneTemplate("#template1");
-    $sandboxPanels.appendTo($workPanel);
-
-
-    $btn1 = $("#btn1");
-    $btn2 = $("#btn2");
-    $inp1 = $("#inp1");
-    $inp2 = $("#inp2");
-    $inp3 = $("#inp3");
-    $inp4 = $("#inp4");
-
-    $testBtn1 = $("#testBtn1");
-    $testBtn2 = $("#testBtn2");
-
-    $formDiv1 = $("#formDiv1");
-    $formDiv2 = $("#formDiv2");
-
-    $form1 = $("#form1");
-    $form2 = $("#form2");
-
-    $panel1 = $("#formDiv1");
-    $panel2 = $("#formDiv2");
-
-
-    if (demoOptions.reloadSandboxVars) {
-        demoOptions.reloadSandboxVars();
-    }
-
-
-}
-
-
-
-
-//let emptyDiv = $("<div></div>");
-//let defaultStyles = window.getComputedStyle(emptyDiv.get(0));
-
-let showCssStylesDefaultOptions = {
-    showInContent: false,
-    showInPrevSibling: false
-}
-
-
-function showCssStylesForElements(selector, opt) {
-
-    let options = $.extend({}, showCssStylesDefaultOptions, opt);
-
-
-    $(selector).each((index, el) => {
-        let $el = $(el);
-        let styleText = $(el).attr("style");
-        if (!styleText) {
-            return;
-        }
-        let infoPanelSelector = $el.data("show-style-in");
-        if (infoPanelSelector) {
-            $("#" + infoPanelSelector).text(styleText);
-        }
-        if (options.showInContent) {
-            $el.text(styleText);
-        }
-        if (options.showInPrevSibling) {
-            $el.prevAll(":header:first").text(styleText);
-        }
-    });
-
-}
-
-function showStyleTagText() {
-
-
-    $(":header[data-style-element]").each((index, el) => {
-        let $el = $(el);
-        let styleElement = $(el).data("style-element");
-
-        let styleText = $("#" + styleElement).text();
-
-        $el.text(styleText)
-    });
-
-
-    //	$("#style1").text()
-
-}
-
-
-
-function formatDateTime(date) {
-    let r = formatDate(date);
-    let t = formatTime(date);
-    if (t != "00:00:00") {
-        r = r + " " + t;
-    }
-    return r;
-    //	return formatDate(date)+" "+formatTime(date);
-}
-
-function formatTime(date) {
-    let h = date.getHours();
-    let m = date.getMinutes();
-    let s = date.getSeconds();
-    return (h <= 9 ? '0' + h : h) + ':' + (m <= 9 ? '0' + m : m) + ':' + (s <= 9 ? '0' + s : s);
-}
-
-function formatDate(date) {
-    let d = date.getDate();
-    let m = date.getMonth() + 1;
-    let y = date.getFullYear();
-    return (d <= 9 ? '0' + d : d) + '.' + (m <= 9 ? '0' + m : m) + '.' + y;
-}
-
 
 
 //добавляет набор демо кнопок на панель
 //при клике на кнопку - показывает код демо-функции и выполняет её
 function addDemoButtons(handlers, panelSelector = ".acc-button-panel") {
 
-
     for (let handlerName in handlers) {
         let handler = handlers[handlerName];
         addDemoButton(handlerName, handler, panelSelector);
     }
-
 }
-
 
 function addDemoButton(handlerName, handler, panelSelector = ".acc-button-panel") {
     let $panel = $(panelSelector);
@@ -567,23 +386,25 @@ function addDemoButton(handlerName, handler, panelSelector = ".acc-button-panel"
 
 function initDemo() {
 
+	//вспомогательные переменные
 	hasSandbox = $("#template1").length>0;
-	
     $sel1 = $("#selectors1");
     $sel2 = $("#selectors2");
     $sel3 = $("#selectors3");
     $sel4 = $("#selectors4");
-
-
     $workPanel = $(".workPanel");
     $selectorText = $("#selectorText");
 
-
+	//добавление кнопок, если их нет 
     addTitlePanelButtons();
-    fixSrcRef();
 
+	//прописываем ссылку на главный js-файл в ссылке в заголовке
+	let src = findMainJs();
+	if (src) {
+		$(".titlePanel a").attr("href", src);
+	}
+	
     $hideAuxButton = $("#hideAuxButton");
-
     if ($log1.parents(".auxPanel").children().length >= 2) {
         new AccSplitter({
             panelSelector: ".auxPanel",
@@ -597,8 +418,8 @@ function initDemo() {
         showMainJs();
     });
 
+	//кнопка скрытия панели с логами
     $hideAuxButton.click(e => {
-
         showAux = !showAux;
         if (showAux) {
             $("div.auxPanel").css("display", "flex");
@@ -607,8 +428,6 @@ function initDemo() {
             $("div.auxPanel").css("display", "none");
             $hideAuxButton.text("показать описание");
         }
-
-
     });
 
 
@@ -616,7 +435,6 @@ function initDemo() {
     new TabbedPanel("#tabbedPanel2");
 
     $bExecute = $("#bExecute");
-
     $bExecute.click(e => {
         execDemoFunc(currentFunc);
     });
@@ -629,6 +447,7 @@ function initDemo() {
         reloadSandbox();
     });
 
+	//быстрые клавиши
     $(document).keydown(e => {
         if (e.keyCode == 109) {  //-
             accordUtils.selectNextOption($demoSelect1, false);
@@ -639,9 +458,6 @@ function initDemo() {
         } else if (e.keyCode == 45 || e.keyCode == 96) { //0
             reloadSandbox()
         }
-
-
-
         console.log(e.keyCode);
     })
 
@@ -665,9 +481,10 @@ const defaultBruefDemoOptions = {
 	selectorsData: null,
 	selectedOption: null,
 	title: null,
+	afterSandboxReload: null
 }
 
-
+//инициализация лаконичного демо
 function initBriefDemo(options) {
 	
 	$(document.body).addClass("acc-default-font");
@@ -700,6 +517,11 @@ function initBriefDemo(options) {
 		$(".titlePanel h2").text(options.title);
 	}
 	
+	//функция, выполняющаяся после reloadSandbox
+	if (options.afterSandboxReload){
+		demoOptions.reloadSandboxVars = options.afterSandboxReload;
+	}
+	
 		
 	initDemoLogs();
 	initDemo();
@@ -729,7 +551,6 @@ function initBriefDemo(options) {
 		options.initFunction();
 	}
 	
-	//typeof selectorsData2=='undefined'
 	
 }
 

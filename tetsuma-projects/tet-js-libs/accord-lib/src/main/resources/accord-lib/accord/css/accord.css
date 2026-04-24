@@ -223,7 +223,9 @@
 	justify-content: left;
 }
 
-
+.acc-hidden {
+	display: none;
+}
 
 
 

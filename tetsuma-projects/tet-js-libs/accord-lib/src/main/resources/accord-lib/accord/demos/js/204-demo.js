@@ -63,10 +63,8 @@ let buttonHandlers1 = {
 		$inp1.val("111"); !
 		$inp2.val("123"); !
 		
-		$form = $("#testForm1"); !
-		
 		//возвращает данные из формы в виде json-объекта.
-		accordUtils.formToJSON($form); ~
+		accordUtils.formToJSON($form1); ~
 		
 	`,
 

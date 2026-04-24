@@ -13,7 +13,7 @@ let selectorsData1 = {
 
 
 
-	random_and_format:`
+	random:`
 
 	//возвращает случайное целое число в заданном диапазоне
 	accordUtils.random(10);
@@ -26,15 +26,25 @@ let selectorsData1 = {
 	//можно задать диапазон дат: randomDate(minYear, maxYear)
 	accordUtils.randomDate(2020, 2021);
 		
+
+	`,		
+	
+
+	date_format_and_parse:`
+
 	//простое форматирование даты: dd.mm.yyy
 	accordUtils.formatDate(new Date());
 
+	//простое форматирование времени: hh.mm.ss
+	accordUtils.formatTime(new Date());
+
+	accordUtils.formatDateTime(new Date());
+	
 	//простой парсинг даты: dd.mm.yyy
 	accordUtils.parseDate("05.05.2025");
 
 	`,		
 	
-
 	accordUtils_demo1:`
 	
 	//путь к библиотеке accord. Вычисляется через import.meta.url
@@ -111,7 +121,30 @@ let selectorsData1 = {
 	
 
 	
+	removeOddIndent(){
 
+		r= `
+		Текст
+		с лишними отступами`;
+		logTextSample2(r,"sample text");	
+				
+		//убирает лишние отступы в коде, а так же пустые строки в начале и конце
+		r = accordUtils.removeOddIndent(r);
+		logTextSample2(r,"fixed text");	
+				
+	},
+		
+	funcToString(){
+
+		//возвращает код функции в виде строки. убирает лишние отступы
+		r = accordUtils.funcToString(accordUtils.funcToString);
+		logTextSample2(r,"function");	
+		
+		//может убрать объявление функции
+		r = accordUtils.funcToString(accordUtils.funcToString, true);
+		logTextSample2(r,"trimmed function");	
+				
+	},	
 	
 	
 	
@@ -127,7 +160,7 @@ $(() => {
 		demoType: DT_SELECT,
 		workPanelTemplate: TEMPLATE_FORM1,
 		selectorsData: selectorsData1,
-		selectedOption: "random_and_format",
+		selectedOption: "removeOddIndent",
 		title: "accordUtils - различные функции",
 		initFunction: ()=>{
 			

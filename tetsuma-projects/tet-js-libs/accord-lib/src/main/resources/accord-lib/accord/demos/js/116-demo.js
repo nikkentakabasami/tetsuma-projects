@@ -2,7 +2,7 @@
 
 let p1,p2,p3,p4;
 
-let buttonHandlers1 = {
+let selectorsData1 = {
 	
 	test1_contentText(){
 		
@@ -91,9 +91,17 @@ let buttonHandlers1 = {
 
 $(document).ready(function() {
 
-	//добавляем демо-кнопки
-	addDemoButtons(buttonHandlers1)
-	
+
+	initBriefDemo(	{
+		demoType: DT_SELECT,
+		workPanelTemplate: TEMPLATE_FORM1,
+		selectorsData: selectorsData1,
+		selectedOption: null,
+		title: "AccPopup - создание плавающих панелей",
+		initFunction: ()=>{
+			
+		}
+	});	
 	
 		
 	

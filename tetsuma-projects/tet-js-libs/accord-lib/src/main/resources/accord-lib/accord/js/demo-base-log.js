@@ -43,7 +43,7 @@ function stringifyObject(o, indent = "", withBraces = false) {
 		o = Array.from(o);		
 	}
 	if (o instanceof Date){
-		return formatDateTime(o);
+		return accordUtils.formatDateTime(o);
 	}
 	
 	if (o._isAMomentObject){
@@ -211,19 +211,17 @@ function log3(...vals) {
 
 //выводит в лог код заданной функции, выполняет её, выводит в лог результат функции
 function _lf($log, func) {
-	let code = trimFuncCode(func);
-//	let codeNode = logMessage($log, code+"\n");
+	let code = accordUtils.funcToString(func,true);
 	let codeNode = logMessage($log, code);
+	
 	//выделяем код зелёным
 	$(codeNode).wrap(greenSpan);
 	
 	let val = func();
 	if (val!=null){
-//		val = stringifyObject(val);
 		logMessage($log, val);
 		return val;
 	}
-//	logMessage($log);
 }
 function lf(func) {
 	return _lf($log1, func);
@@ -294,12 +292,14 @@ function logObject(o, ...attributes) {
 
 
 //Показ функции в логе
-function logFunc(f){
-	clearLog1();
-	log(String(f));
-	highlightLogComments1();
+function logFuncCode(f){
+	let code = accordUtils.funcToString(f);
+	log(code);
 }
-
+function logFuncCode2(f){
+	let code = accordUtils.funcToString(f);
+	log2(code);
+}
 
 
 function logMessage($log, ...vals) {
@@ -334,7 +334,12 @@ function logMessage($log, ...vals) {
 
 
 
-
+function logTitle(title){
+	log("----------"+(title?title:"")+"------------");
+}
+function logTitle2(title){
+	log2("----------"+(title?title:"")+"------------");
+}
 
 //выводит в лог фрагент найденного текста
 function logTextFragment(text, title="found fragment"){
@@ -345,12 +350,12 @@ function logTextFragment(text, title="found fragment"){
 	
 }
 
-function logTextSample(text, title="textSample"){
+function logTextSample(text, title){
 	log("----------"+(title?title:"")+"------------");
 	log(text);
 	log("----------------------");
 }
-function logTextSample2(text, title="textSample"){
+function logTextSample2(text, title){
 	log2("----------"+(title?title:"")+"------------");
 	log2(text);
 	log2("----------------------");
@@ -358,23 +363,38 @@ function logTextSample2(text, title="textSample"){
 
 
 
-/*
-Избыточные
 
-function le2NL(exp) {
-	return le2nl(exp);
+
+//подсвечивает комменты в логах серым цветом
+function highlightLogComments1() {
+    highlightLogComments($log1);
 }
-function log2NL(...vals) {
-	log2nl(...vals);
+function highlightLogComments2() {
+    highlightLogComments($log2);
 }
-function logNL(...vals) {
-	lognl(...vals);
+function highlightLogComments($log) {
+
+    const text = $log.html();
+    const lines = text.split('\n');
+
+    const processedLines = lines.map(line => {
+        let ind = line.indexOf('//');
+        if (ind >= 0) {
+            return line.substring(0, ind) + '<span class="gray">' + line.substring(ind) + '</span>';
+        } else {
+            return line;
+        }
+    });
+
+    let newText = processedLines.join('\n');
+
+    $log.html(newText);
 }
-function logVal2NL(key, val, ...vals) {
-	log2();
-	logVal2(key, val, ...vals);
-}
-*/
+
+
+
+
+
 
 function initDemoLogs(){
 	$log1 = $('#log1');

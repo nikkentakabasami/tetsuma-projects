@@ -2,7 +2,7 @@
 //import { AccSplitter } from '../../js/accord-splitter.js';
 
 
-let bh1 = {
+let selectorsData1 = {
 	
 	init_splitter1(){
 		//класс AccSplitter
@@ -17,13 +17,22 @@ let bh1 = {
 	
 }
 
-function test1Init(){
-	//init function
-}
 
 
 $(document).ready(function() {
 
+
+	initBriefDemo(	{
+		demoType: DT_SELECT,
+		workPanelTemplate: null,
+		selectorsData: selectorsData1,
+		selectedOption: "init_splitter1",
+		title: "mytitle",
+		initFunction: ()=>{
+			
+		}
+	});	
+	
 	//добавляем демо-кнопки
 	addDemoButtons(bh1)
 		
