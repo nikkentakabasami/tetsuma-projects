@@ -44,13 +44,17 @@ let $form1, $form2, $formPanel;
 let $sel1, $sel2, $sel3, $sel4;
 
 //первый селект, обслуживающий демки
-let $demoSelect1 = null;
+let $mainSelect = null;
+
+//данные первого селекта
+let mainData = null;
+
+//комменты, привязанные к mainData
+let mainDataComments = null;
 
 //кнопка выполнения кода
 let $bExecute;
 
-//режим тестирования jquery функций (входные данные - это массив селекторов и jquery-запросов)
-let jquerySelectorsMode = false;
 
 //input с текущим селектором ()
 let $selectorText;
@@ -70,14 +74,22 @@ let demoOptions = {
     initFunction: null,
 	
 	//функция, выполняющаяся после reloadSandbox
-	reloadSandboxVars: null,
+	afterSandboxReload: null,
 
+	//режим тестирования jquery функций (входные данные - это массив селекторов и jquery-запросов)
+	jquerySelectorsMode: false,
+	
+	
 };
 
 //Содержит ли #template1 - используется ли песочница
 let hasSandbox = false;
 
 let greenSpan = '<span class="green"></span>';
+let boldTag = "<b></b>";
+let testHtmlSnippet = "<b>appended text</b>";
+let greenBorderDivSnippet = '<div class="green-border"></div>';
+
 
 
 //счётчик для добавления новых демо-кнопок
@@ -122,29 +134,14 @@ function addTitlePanelButtons() {
     }
 
     if (!$tp.children("a").length) {
-        $tp.append('<a href="#" target="source">Исходники</a>');
+        $tp.append('<a href="#" target="source">Исходники (F1)</a>');
     }
 
 
 
 }
 
-//показывает панель с js-кодом этой демки.
-function showMainJs() {
-    let options = {
-        draggable: false,
-        contentTextUrl: mainJsHref,
-        hideOnDblclick: true,
-        fullScreen: true,
-        cssClass: "help-panel",
-        panelExtraClasses: "acc-popup"
-    }
-	if (!helpPopup){
-		helpPopup = new AccPopup(options);
-	}
-	helpPopup.show();
-	
-}
+
 
 
 //вывод currentFunc в лог1 
@@ -188,8 +185,7 @@ function highlightJquery(val) {
 
 	reloadSandbox();
 
-    clearLog();
-    log(val);
+    lognl(val);
 	
 	if (demoOptions.beforeExec) {
 	    demoOptions.beforeExec();
@@ -253,8 +249,8 @@ function reloadSandbox() {
 //    $panel2 = $("#formDiv2");
 
 
-    if (demoOptions.reloadSandboxVars) {
-        demoOptions.reloadSandboxVars();
+    if (demoOptions.afterSandboxReload) {
+        demoOptions.afterSandboxReload();
     }
 
 
@@ -268,7 +264,7 @@ function execDemoFunc() {
         return;
     }
 
-	if (jquerySelectorsMode) {
+	if (demoOptions.jquerySelectorsMode) {
 		let val = $selectorText.val();
 	    highlightJquery(val);
 		return;
@@ -313,9 +309,20 @@ function execDemoFunc() {
 }
 
 //инициализация селекта с демками
-function initDemoCodeSelect(selector, data) {
+function initDemoCodeSelect(selector = "selectors1", data = null) {
 
-	jquerySelectorsMode = Array.isArray(data);
+	if (!data){
+		
+		if (typeof selectorsData1 !=undefined){
+			data = selectorsData1;
+		} else {
+			return;
+		}
+	}
+	
+	
+	
+//	jquerySelectorsMode = Array.isArray(data);
 	
 	
     let $sel = selector;
@@ -324,8 +331,8 @@ function initDemoCodeSelect(selector, data) {
     }
 
 	//заполняем вспомогательные переменные
-    if (!$demoSelect1) {
-        $demoSelect1 = $sel;
+    if (!$mainSelect) {
+        $mainSelect = $sel;
     }
 
 	//заполняем select
@@ -351,16 +358,25 @@ function initDemoCodeSelect(selector, data) {
         let v = $sel.val();
 
 		//задан массив jquery-селекторов
-        if (jquerySelectorsMode) {
-            v = $sel.children("option:selected").text();
-            log(v);
-			currentFunc = v;
+        if (demoOptions.jquerySelectorsMode) {
+//            let exp = $sel.children("option:selected").text();
+			
+//			let ind = Number(v);
+			let exp = mainData[v];
+			let comment = mainDataComments[v];
+			
+			log(comment);
+            log(exp);
+			highlightLogComments1();	
+						
+			currentFunc = exp;
+			$selectorText.val(exp);
         } else {
             currentFunc = data[v];
 			logCurrentFunc();
+			$selectorText.val(v);
         }
 		
-		$selectorText.val(v);
 
     });
 
@@ -413,12 +429,23 @@ function initDemo() {
 
 	//добавление кнопок, если их нет 
     addTitlePanelButtons();
-
+	
 	//прописываем ссылку на главный js-файл в ссылке в заголовке
 	let src = findMainJs();
 	if (src) {
 		$(".titlePanel a").attr("href", src);
 	}
+	
+	let options = {
+	    draggable: false,
+	    contentTextUrl: mainJsHref,
+	    hideOnDblclick: true,
+	    fullScreen: true,
+	    cssClass: "help-panel",
+	    panelExtraClasses: "acc-popup"
+	}
+	helpPopup = new AccPopup(options);
+	
 	
     $hideAuxButton = $("#hideAuxButton");
     if ($log1.parents(".auxPanel").children().length >= 2) {
@@ -431,7 +458,7 @@ function initDemo() {
     //показывать исходники при нажатии на ссылку
     $(".titlePanel a").click(e => {
         e.preventDefault();
-        showMainJs();
+        helpPopup.show();
     });
 
 	//кнопка скрытия панели с логами
@@ -465,15 +492,18 @@ function initDemo() {
 
 	//быстрые клавиши
     $(document).keydown(e => {
-        if (e.keyCode == 109) {  //-
-            accordUtils.selectNextOption($demoSelect1, false);
-        } else if (e.keyCode == 107) { //+
-            accordUtils.selectNextOption($demoSelect1, true);
+        if (e.keyCode == 109 || e.keyCode == 33) {  //-, pagUP
+            accordUtils.selectNextOption($mainSelect, false);
+        } else if (e.keyCode == 107 || e.keyCode == 34) { //+, pgDown
+            accordUtils.selectNextOption($mainSelect, true);
         } else if (e.keyCode == 13) { //Enter    || e.keyCode == 123
             $bExecute.trigger("click");
         } else if (e.keyCode == 45 || e.keyCode == 96) { //0
             reloadSandbox()
-        }
+        } else if (e.keyCode == 112) { //F1
+			e.preventDefault();
+			helpPopup.toggleVisible();
+		}
         console.log(e.keyCode);
     })
 
@@ -498,7 +528,8 @@ const defaultBruefDemoOptions = {
 	selectorsData: null,
 	selectedOption: null,
 	title: null,
-	afterSandboxReload: null
+	afterSandboxReload: null,
+	jquerySelectorsMode: false,
 }
 
 //инициализация лаконичного демо
@@ -507,6 +538,12 @@ function initBriefDemo(options) {
 	$(document.body).addClass("acc-default-font");
 	
 	options = $.extend({}, defaultBruefDemoOptions, options);
+	
+	demoOptions.afterSandboxReload = options.afterSandboxReload;
+	demoOptions.jquerySelectorsMode = options.jquerySelectorsMode;
+	
+	parseMainSelectorsData(options.selectorsData);
+	
 	
 	switch (options.demoType) {
 	  case DT_SELECT:
@@ -544,19 +581,16 @@ function initBriefDemo(options) {
 		$(".titlePanel h2").text(options.title);
 	}
 	
-	//функция, выполняющаяся после reloadSandbox
-	if (options.afterSandboxReload){
-		demoOptions.reloadSandboxVars = options.afterSandboxReload;
-	}
-	
 		
 	initDemoLogs();
 	initDemo();
 	
 	if (options.demoType==DT_SELECT || options.demoType==DT_SELECTORS) {
-		if (options.selectorsData){
-			initDemoCodeSelect("#selectors1", options.selectorsData);
-		}
+		initDemoCodeSelect("#selectors1", mainData);
+		
+//		if (options.selectorsData){
+//			initDemoCodeSelect("#selectors1", options.selectorsData);
+//		}
 
 		if (options.selectedOption){
 			//выбрать опцию после загрузки страницы 
@@ -567,12 +601,10 @@ function initBriefDemo(options) {
 	if (options.demoType==DT_BUTTONS) {
 		if (options.selectorsData){
 			//добавляем демо-кнопки
-			addDemoButtons(options.selectorsData)
+			//addDemoButtons(options.selectorsData)
+			addDemoButtons(mainData);
 		}
-
 	}
-	
-	
 	
 	if (options.initFunction){
 		options.initFunction();
@@ -581,6 +613,66 @@ function initBriefDemo(options) {
 	
 }
 
+function parseMainSelectorsData(selectorsData){
+
+	mainData = selectorsData;
+	mainDataComments = null;
+	
+
+	//демки заданы одной большой строкой
+	if (typeof selectorsData == "string") {
+
+		mainDataComments = [];
+		mainData = [];
+
+		let lines = selectorsData.split("\n");
+
+		let ind = 0;
+		let currExp = null;
+		let currComment = null;
+		
+		lines.push("");
+		lines.forEach(line=>{
+			
+			line = line.trim();
+			
+			//пустая строка
+			if (!line){
+				if (!currExp){
+					return;
+				}
+				mainData[ind] = currExp;
+				mainDataComments[ind] = currComment;
+				
+				currExp = null;
+				currComment = null;
+				ind++;
+				return;
+				
+			}
+
+			if (line.startsWith("//")){
+				if (currComment){
+					currComment+="\n"+line;					
+				} else {
+					currComment = line;
+				}
+			} else {
+				currExp = line;
+			}
+			
+		});//for lines
+			
+	}
+	
+
+	
+	
+//	jquerySelectorsMode = Array.isArray(data);
+	
+	
+	
+} 
 
 
 

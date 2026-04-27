@@ -15,7 +15,7 @@ let $logPanel;
 let autoscrollLog1 = false;
 let autoscrollLog2 = true;
 
-
+const graySpan = '<span class="gray">';
 
 //преобразовывает объекты в строки, с форматированием, для вывода в лог
 function stringifyObject(o, indent = "", withBraces = false) {
@@ -378,9 +378,13 @@ function highlightLogComments($log) {
     const lines = text.split('\n');
 
     const processedLines = lines.map(line => {
+		if (line.includes(graySpan)){
+			return line;
+		}
+		
         let ind = line.indexOf('//');
         if (ind >= 0) {
-            return line.substring(0, ind) + '<span class="gray">' + line.substring(ind) + '</span>';
+            return line.substring(0, ind) + graySpan + line.substring(ind) + '</span>';
         } else {
             return line;
         }

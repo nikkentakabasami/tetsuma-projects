@@ -5,8 +5,7 @@ let selectorsData1 = `
 //все кнопки
 .workPanel button
 
-//кнопки, у которых одновременно
-//есть классы acc-btn и c5
+//одновременно имеет классы acc-btn и c5
 .workPanel button.acc-btn.c5
 
 //имеет класс c1, находится внутри div.А
@@ -30,17 +29,16 @@ let selectorsData1 = `
 //все элементы стоящие после div.c2 (но имеющие того же родителя)
 .A>.c2 ~ *
 
-//-----------------фильтрация по атрибутам--------------------------
+//-----------------по атрибутам--------------------------
 
-//элементы с атрибутом title
+//поиск по наличию атрибута
 .A *[title]
 	
-//поиск по значению атрибута. 
-//Значение можно задавать и без скобок, если нет пробелов
-.A>div[title='c3 title!'], .A *[title=c2_title]
+//поиск по значению атрибута. Значение можно задавать и без скобок.
+.A>div[title='c1_title'], .B *[title=c3_title]
 
 //значение атрибута начинается со значения
-.workPanel *[title^='c3']
+.workPanel *[title^='c1']
 
 //значение атрибута заканчивается значением
 .workPanel *[title$='le']
@@ -49,35 +47,35 @@ let selectorsData1 = `
 .workPanel *[title*='2']
 
 //с заданием двух условий по атрибутам
-.A *[title*=1][id=tc1]
+.A>*[title*=1][id=ac1]
 
 //Соответствует всем элементам input, select, button
 .workPanel :input
 
-//все скрытые элементы
-$(".workPanel :hidden").show()
+//
+.workPanel :hidden
 
 `;
 
 
-$(() => {
-  
 
-  initBriefDemo(	{
-  	demoType: DT_SELECTORS,
-  	workPanelTemplate: "../fragments/selectorsSandbox1.html",
-  	selectorsData: selectorsData1,
-  	title: "селекторы: основы, атрибуты",
+$(document).ready(function() {
+
+	initBriefDemo(	{
+	demoType: DT_SELECTORS,
+	workPanelTemplate: "fragments/ss1.html",
+	selectorsData: selectorsData1,
+	title: "селекторы: основы, атрибуты",
 	jquerySelectorsMode: true,
 	afterSandboxReload: ()=>{
 		$btn = $(".B>button.c5");
 	},
-  	initFunction: ()=>{
-  		
-  	}
-  });	
-  
-  
+	initFunction: ()=>{
+		
+	}
+	});	
+	
 });
+
 
 

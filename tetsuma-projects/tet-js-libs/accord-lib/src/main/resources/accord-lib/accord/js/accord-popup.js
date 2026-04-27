@@ -337,6 +337,14 @@ class AccPopup {
 		}
     }
 
+	toggleVisible(){
+		if (this.visible){
+			this.hide();
+		} else {
+			this.show();
+		}
+		
+	}
 
 
 
