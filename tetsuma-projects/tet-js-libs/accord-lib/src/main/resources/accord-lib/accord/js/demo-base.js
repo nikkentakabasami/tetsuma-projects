@@ -1,6 +1,15 @@
 /**
  * Функционал, использующийся для создания демок, тестирующих js.
  * 
+ * Основные функции:
+ * logCurrentFunc - вывод currentFunc в лог1 
+ * highlightJquery(val) - выделяет объекты с заданным селектором красной рамкой
+ * reloadSandbox() - очищает .workPanel и загружает в неё элементы из #template1
+ * execDemoFunc() - выполняет currentFunc
+ * initDemoCodeSelect(selector, data) - инициализация селекта с демками
+ * addDemoButtons(handlers, panelSelector = ".acc-button-panel") - добавляет набор демо кнопок на панель
+ * initDemo()
+ * initBriefDemo(options) - инициализация лаконичного демо
  * 
  */
 
@@ -9,7 +18,6 @@ let result;
 
 let mainJsHref = null;
 
-let $workPanel;
 
 //показывается ли сейчас auxPanel
 let showAux = true;
@@ -17,22 +25,35 @@ let showAux = true;
 //кнопка показа/скрытия auxPanel
 let $hideAuxButton;
 
-//input с текущим селектором
-let $selectorText;
 
-//выбранная демо функция/код
+//выбранная демо функция/код/селектор
 let currentFunc = null;
 
+//popup с исходниками страницы
 let helpPopup;
 
-//элементы песочницы
+//песочница
+let $workPanel;
+
+//элементы песочницы - вспомогательные переменные
 let $btn1, $btn2, $inp1, $inp2, $inp3, $inp4, $testBtn1, $testBtn2;
 let formDiv1, formDiv2;
 let $form1, $form2, $formPanel;
 
-//let $panel1, $panel2;
+//селекты с демками
 let $sel1, $sel2, $sel3, $sel4;
 
+//первый селект, обслуживающий демки
+let $demoSelect1 = null;
+
+//кнопка выполнения кода
+let $bExecute;
+
+//режим тестирования jquery функций (входные данные - это массив селекторов и jquery-запросов)
+let jquerySelectorsMode = false;
+
+//input с текущим селектором ()
+let $selectorText;
 
 
 //демо-кнопки
@@ -53,11 +74,8 @@ let demoOptions = {
 
 };
 
-//Содержит #template1 - используется песочница
+//Содержит ли #template1 - используется ли песочница
 let hasSandbox = false;
-
-//режим тестирования jquery функций (входные данные - это массив селекторов и jquery-запросов)
-let jquerySelectorsMode = false;
 
 let greenSpan = '<span class="green"></span>';
 
@@ -65,9 +83,6 @@ let greenSpan = '<span class="green"></span>';
 //счётчик для добавления новых демо-кнопок
 let newButtonNo = 1;
 
-//первый селект, обслуживающий демки
-let $demoSelect1 = null;
-let $bExecute;
 
 //возвращает ссылку на главный js-файл этой демки
 function findMainJs() {
@@ -89,7 +104,7 @@ function findMainJs() {
 
 
 
-//добавляет в демку доп. элементы
+//добавляет в демку недостающие доп. элементы
 function addTitlePanelButtons() {
 
     let $tp = $(".titlePanel");
@@ -163,7 +178,7 @@ function logCurrentFunc(){
 }
 
 
-
+//используется в jquerySelectorsMode
 //выделяет объекты с заданным селектором красной рамкой
 //выводит в лог значение выражения (или число найденных элементов)
 function highlightJquery(val) {
@@ -254,7 +269,8 @@ function execDemoFunc() {
     }
 
 	if (jquerySelectorsMode) {
-	    highlightJquery(currentFunc);
+		let val = $selectorText.val();
+	    highlightJquery(val);
 		return;
 	}
 	
