@@ -10,8 +10,10 @@
  * addDemoButtons(handlers, panelSelector = ".acc-button-panel") - добавляет набор демо кнопок на панель
  * initDemo()
  * initBriefDemo(options) - инициализация лаконичного демо
+ * parseMainSelectorsData(sd) - если демки заданы строкой - он разбивает её на 2 массива
  * 
  */
+
 
 //вспомогательная переменная
 let result;
@@ -175,6 +177,24 @@ function logCurrentFunc(){
 }
 
 
+function elementToString(el){
+	let r = "";
+	if (el.nodeName){
+		r = el.nodeName.toLowerCase()+" ";
+	}
+	
+	if (el.id){
+		r+="#"+el.id+" ";
+	}
+	if (el.className){
+		let cl = el.className.replace(/ +/g,".")
+		r+="."+cl+" ";
+	}
+	return r;
+}
+
+
+
 //используется в jquerySelectorsMode
 //выделяет объекты с заданным селектором красной рамкой
 //выводит в лог значение выражения (или число найденных элементов)
@@ -185,7 +205,8 @@ function highlightJquery(val) {
 
 	reloadSandbox();
 
-    lognl(val);
+	clearLog2();
+    log2(val);
 	
 	if (demoOptions.beforeExec) {
 	    demoOptions.beforeExec();
@@ -203,13 +224,20 @@ function highlightJquery(val) {
         val = $(val);
     }
 
-    val.addClass("red-border");
+	
+	log2();
+    logVal2("elements found: ", val.length);
+	log2();
+	val.each((ind,el)=>{
+	  log2(elementToString(el));
+	});
+	
+	val.addClass("red-border");
 
 	if (demoOptions.afterExec) {
 	    demoOptions.afterExec();
 	}
 	
-    logVal("elements found", val.length);
 
 }
 
@@ -504,7 +532,7 @@ function initDemo() {
 			e.preventDefault();
 			helpPopup.toggleVisible();
 		}
-        console.log(e.keyCode);
+//        console.log(e.keyCode);
     })
 
 	reloadSandbox();			
@@ -613,6 +641,7 @@ function initBriefDemo(options) {
 	
 }
 
+//если демки заданы строкой - он разбивает её на 2 массива: mainData - демки и mainDataComments - связанные с ними комменты
 function parseMainSelectorsData(selectorsData){
 
 	mainData = selectorsData;
@@ -651,7 +680,7 @@ function parseMainSelectorsData(selectorsData){
 				
 			}
 
-			if (line.startsWith("//")){
+			if (line.startsWith("//") || line.startsWith("# ") || line=="#"){
 				if (currComment){
 					currComment+="\n"+line;					
 				} else {
@@ -666,11 +695,6 @@ function parseMainSelectorsData(selectorsData){
 	}
 	
 
-	
-	
-//	jquerySelectorsMode = Array.isArray(data);
-	
-	
 	
 } 
 
