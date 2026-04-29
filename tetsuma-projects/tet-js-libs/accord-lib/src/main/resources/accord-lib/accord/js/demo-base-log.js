@@ -388,24 +388,20 @@ function highlightLogComments($log) {
 		if (line=="#"){
 			return "";
 		}
+
+		if (line.startsWith('# ')) {
+			let s = line.substring(2);
+			return grenSpan + s + endSpan;
+		} else if (line.startsWith('//# ')) {
+			let s = line.substring(4);
+			return grenSpan + s + endSpan;
+		} 
 		
+				
         let ind = line.indexOf('//');
         if (ind >= 0) {
 			let s = line.substring(ind);
             return line.substring(0, ind) + graySpan + s + endSpan;
-        } else {
-			
-			ind = line.indexOf('# ');
-			if (ind >= 0) {
-				let s = line.substring(ind+2);
-				
-				if (s.length){
-					return line.substring(0, ind) + grenSpan + s + endSpan;
-				} else {
-					return line.substring(0, ind);
-				}
-				
-			}
         }
 		return line;
     });

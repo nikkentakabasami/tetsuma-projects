@@ -387,7 +387,9 @@ function initDemoCodeSelect(selector = "selectors1", data = null) {
 	//обработчик выбора в select
     $sel.change(e => {
         clearLog();
-		reloadSandbox();
+		if (demoOptions.reloadSandboxOnChange){
+			reloadSandbox();
+		}
 		currentFunc = null;
 
         let v = $sel.val();
@@ -518,7 +520,7 @@ function initDemo() {
     });
 
     $("#bClearLog").click(e => {
-        clearLog();
+        clearLog2();
     });
 
     $("#bReload").click(e => {
@@ -587,9 +589,9 @@ const defaultBruefDemoOptions = {
 	initFunction: null,
 	selectorsData: null,
 	selectedOption: null,
-	title: null,
 	afterSandboxReload: null,
 	jquerySelectorsMode: false,
+	reloadSandboxOnChange: true
 }
 
 //инициализация лаконичного демо
@@ -598,10 +600,11 @@ function initBriefDemo(options) {
 	$(document.body).addClass("acc-default-font");
 	
 	options = $.extend({}, defaultBruefDemoOptions, options);
-	
-	demoOptions.afterSandboxReload = options.afterSandboxReload;
-	demoOptions.jquerySelectorsMode = options.jquerySelectorsMode;
-	demoOptions.nextPage = options.nextPage;
+
+	demoOptions = $.extend(demoOptions, options);
+		
+//	demoOptions.afterSandboxReload = options.afterSandboxReload;
+//	demoOptions.jquerySelectorsMode = options.jquerySelectorsMode;
 	
 	parseMainSelectorsData(options.selectorsData);
 	

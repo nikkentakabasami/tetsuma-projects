@@ -4,11 +4,11 @@
 
 //тестовый обработчик для всех типов событий - выводит данные из event в лог
 function universalDemoHandler(event) {
-  logNL();
+  log2nl();
 
   event.preventDefault();
 
-  log(
+  log2(
 	//event.type - тип события: click, mouseover...
 	`type=${event.type}, ` +
 
@@ -26,7 +26,7 @@ function universalDemoHandler(event) {
 
   if (type == 'mouseover' || type == 'mouseout' || type == 'mouseenter' || type == 'mouseleave') {
 
-	log(
+	log2(
 	  //event.relatedTarget - mouseover(элемент, с которого пришел курсор мыши), mouseout(на который перешел)
 	  `relatedTarget=${event.relatedTarget?.id}`
 	);
@@ -36,7 +36,7 @@ function universalDemoHandler(event) {
 
   if (type == 'mousedown' || type == 'mouseup' || type == 'click') {
 
-	log(
+	log2(
 	  //event.button - Какая кнопка мыши была нажата (0-левая, 1-средняя, 2-правая)
 	  `button=${event.button}, ` +
 
@@ -58,7 +58,7 @@ function universalDemoHandler(event) {
 
   if (type == 'keydown' || type == 'keyup') {
 
-	log(
+	log2(
 	  //code - название клавиши. Примеры: KeyD, Digit5, F2
 	  `code=${event.originalEvent.code}, ` +
 
@@ -89,11 +89,21 @@ function universalDemoHandler(event) {
 let selectorsData1 = {
 
   bind_inp_click: function() {
+	
+	//# .bind( eventType, eventData, handler )
+	//# .bind( eventType, eventData, preventBubble )
+	//# .bind( events )
+	//#   Назначает обработчик к одному или более событиям
+	//#   Считается устаревшим - нужно использовать on
+	
+	
 	//назначает обработчик на все инпуты
-	return $("#formDiv1 input").bind("click", universalDemoHandler);
+	return $("#form1 input").bind("click", universalDemoHandler);
   },
 
   unbind_inp1: function() {
+	$("#form1 input").bind("click", universalDemoHandler);
+	
 	//unbind - убирает обработчик
 	return $inp2.unbind("click", universalDemoHandler);
   },
@@ -302,10 +312,17 @@ let selectorsData1 = {
 
 
 $(() => {
-  initDemoCodeSelect("#selectors", selectorsData1);
 
-  reloadSandbox();
-
+	initBriefDemo(	{
+		demoType: DT_SELECT,
+		workPanelTemplate: TEMPLATE_FORM1,
+		selectorsData: selectorsData1,
+		reloadSandboxOnChange: true,
+		initFunction: ()=>{
+			
+		}
+	});	
+	
 });
 
 
