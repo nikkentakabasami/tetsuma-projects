@@ -154,7 +154,6 @@ $(() => {
   	demoType: DT_SELECTORS,
   	workPanelTemplate: "../fragments/selectorsSandbox1.html",
   	selectorsData: selectorsData1,
-  	title: "dom manipulation",
 	jquerySelectorsMode: true,
 	afterSandboxReload: ()=>{
 		$btn = $(".B>button.c5");

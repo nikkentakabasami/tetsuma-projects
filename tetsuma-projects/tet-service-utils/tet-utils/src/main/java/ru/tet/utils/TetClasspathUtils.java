@@ -23,6 +23,9 @@ public class TetClasspathUtils {
 	}
 
 	/**
+	 * Сканер ресурсов.
+	 * Возвращает список имён файлов, которые лежат в classpath по заданному пути.
+	 * Не погружается глубже первого уровня.
 	 * 
 	 * @param folderPath Например "webroot/demos/"
 	 * @return

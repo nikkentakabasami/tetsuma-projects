@@ -35,7 +35,6 @@ $(() => {
 		workPanelTemplate: "../fragments/selectorsSandbox1.html",
 		selectorsData: selectorsData1,
 		selectedOption: "demo1_script",
-		title: "mytitle",
 		afterSandboxReload: ()=>{
 			$btn = $(".B>button.c5");
 		},

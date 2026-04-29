@@ -26,6 +26,13 @@
   <a href="test1" target="jaxrs">TestServlet1 - check jndi</a>
   <a href="test_js_libs.html" target="jaxrs">test_js_libs.html - check js libs</a>
 
+  <a href="demoscan/demoFolders" target="jaxrs">DemosServlet - demoFolders</a>
+  <a href="demoscan/refreshDemoList" target="jaxrs">DemosServlet - refreshDemoList</a>
+
+  <a href="demoscan/siblingPages?pageName=410_jquery_selectors1.html" target="jaxrs">DemosServlet - siblingPages</a>
+
+
+
 	</div>
 	
 	
@@ -40,7 +47,7 @@
 			<div>${folder.desc}</div>
 
 			<c:forEach var="page" items="${folder.pages}">
-				<a href="demos/${folder.name}/${page}" target="${folder.name}">${page}</a>
+				<a href="demos/${folder.name}/${page.name}" target="${folder.name}">${page.desc}</a>
 			</c:forEach>
 
 		</div>

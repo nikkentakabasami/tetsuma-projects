@@ -121,9 +121,8 @@ $(() => {
   	demoType: DT_SELECTORS,
   	workPanelTemplate: "../fragments/selectorsSandbox1.html",
   	selectorsData: selectorsData1,
-  	title: "css, classes, положение, размеры",
 	jquerySelectorsMode: true,
-	afterSandboxReload: ()=>{
+	nextPage: "416_jquery.html",
 		$btn = $(".B>button.c5");
 	},
   	initFunction: ()=>{

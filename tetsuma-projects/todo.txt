@@ -1,3 +1,5 @@
+my notes - uber jar, optimized
+
  jQuery UI
    research
  

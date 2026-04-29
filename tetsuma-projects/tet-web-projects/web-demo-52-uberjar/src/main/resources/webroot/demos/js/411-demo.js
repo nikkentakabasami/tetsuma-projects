@@ -133,7 +133,6 @@ $(() => {
   	demoType: DT_SELECTORS,
   	workPanelTemplate: "../fragments/selectorsSandbox1.html",
   	selectorsData: selectorsData1,
-  	title: "селекторы: фильтры",
 	jquerySelectorsMode: true,
 	afterSandboxReload: ()=>{
 		$btn = $(".B>button.c5");

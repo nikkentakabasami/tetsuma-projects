@@ -20,6 +20,8 @@ let result;
 
 let mainJsHref = null;
 
+//предыдущая и следующая страницы
+let siblingPages = null;
 
 //показывается ли сейчас auxPanel
 let showAux = true;
@@ -136,9 +138,14 @@ function addTitlePanelButtons() {
     }
 
     if (!$tp.children("a").length) {
-        $tp.append('<a href="#" target="source">Исходники (F1)</a>');
+        $tp.append('<a id="mainsrc" href="#">Исходники (F1)</a>');
     }
 
+	/*
+	if (demoOptions.nextPage) {
+	    $tp.append(`<a href="${demoOptions.nextPage}">Next demo (*)</a>`);
+	}
+	*/
 
 
 }
@@ -461,7 +468,7 @@ function initDemo() {
 	//прописываем ссылку на главный js-файл в ссылке в заголовке
 	let src = findMainJs();
 	if (src) {
-		$(".titlePanel a").attr("href", src);
+		$("a#mainsrc").attr("href", src);
 	}
 	
 	let options = {
@@ -484,7 +491,7 @@ function initDemo() {
     }
 
     //показывать исходники при нажатии на ссылку
-    $(".titlePanel a").click(e => {
+    $("a#mainsrc").click(e => {
         e.preventDefault();
         helpPopup.show();
     });
@@ -531,10 +538,35 @@ function initDemo() {
         } else if (e.keyCode == 112) { //F1
 			e.preventDefault();
 			helpPopup.toggleVisible();
+		} else if (e.ctrlKey &&  e.keyCode == 37) { // <-
+			e.preventDefault();
+			if (siblingPages[0]){
+				location.href = siblingPages[0];
+			}
+			
+		}else if (e.ctrlKey &&  e.keyCode == 39) { // ->
+			e.preventDefault();
+			if (siblingPages[1]){
+				location.href = siblingPages[1];
+			}
+			
 		}
-//        console.log(e.keyCode);
+		
+		
+        console.log(e.keyCode);
     })
 
+	createSiblingPageAnchors();
+
+	//задаём заголовок страницы (берём его из <title>)
+	let title = $("title").text()
+	if (title){
+		$(".titlePanel h2").text(title);
+	}
+	
+		
+	
+		
 	reloadSandbox();			
 
 }
@@ -569,6 +601,7 @@ function initBriefDemo(options) {
 	
 	demoOptions.afterSandboxReload = options.afterSandboxReload;
 	demoOptions.jquerySelectorsMode = options.jquerySelectorsMode;
+	demoOptions.nextPage = options.nextPage;
 	
 	parseMainSelectorsData(options.selectorsData);
 	
@@ -602,11 +635,6 @@ function initBriefDemo(options) {
 		  default:
 		}	
 		
-	}
-	
-
-	if (options.title){
-		$(".titlePanel h2").text(options.title);
 	}
 	
 		
@@ -698,6 +726,43 @@ function parseMainSelectorsData(selectorsData){
 	
 } 
 
+
+function createSiblingPageAnchors(){
+
+	let ind = location.pathname.lastIndexOf("/");
+		
+	let pageName = location.pathname.substring(ind+1);
+	
+	$.get({
+	  url: "../../demoscan/siblingPages",
+	  data: { 'pageName': pageName },
+	  success: function(data, status, request){
+		
+		if (!data){
+			console.log("siblings not found");
+			return;
+		}
+
+		siblingPages = data;
+		
+		let $tp = $(".titlePanel");
+		if (siblingPages[0]){
+			$tp.append(`<a href="${data[0]}">Prev demo (Ctrl+left)</a>`);
+		}
+		if (siblingPages[1]){
+			$tp.append(`<a href="${data[1]}">Next demo (Ctrl+right)</a>`);
+		}
+		
+//		console.log(data);
+				
+	  }
+	});
+
+	
+	
+	
+	
+}
 
 
 $(function() {
