@@ -1,39 +1,14 @@
 
 
-//Функция, которая будет вызвана в случае удачного завершения запроса к серверу. 
-//data	:данные, присланные сервером и уже прошедшие предварительную обработку (которая отлична для разных dataType)
-//textStatus	: Статус выполнения ("success", "notmodified", "nocontent", "error", "timeout", "abort", "parsererror")
-function debugSuccessHandler(data, textStatus) {
-  let type = typeof data;
-  log("request successfull");
-  log("textStatus: ", textStatus);
-  log("data type:", type);
-  log("data: ", data);
-}
-
-
-
-//Функция, которая будет вызвана в случае неудачного завершения запроса к серверу.
-function debugErrorHandler(jqXHR, textStatus, errorThrown) {
-  log("textStatus:", textStatus);
-  log("errorThrown:", errorThrown);
-}
-
-
-//Функция, которая будет вызвана после завершения ajax-запроса.
-//Вызывается позднее success и error.
-function debugCompleteHandler(jqXHR, textStatus) {
-  log("all complete. textStatus:", textStatus);
-}
 
 let testJson = {
-  "title": "Иван",
-  "id": 30
+  title: "Иван",
+  id: 30
 }
 
 let badTestJson = {
-  "title": "Иван",
-  "badField": 30
+  title: "Иван",
+  badField: 30
 }
 
 
@@ -48,12 +23,64 @@ const updateFilterUrl = "../../testAjax/updateTasksFilter";
 
 
 
-//тестовые функции
-//возвращают query-объекты, задействованные в тесте: они будут выделены красной рамкой
 let selectorsData1 = {
 
-  ajax_get_json_file: function() {
+	templates: function() {
+		
+	//# Примеры типичных ajax-запросов
+		
+	//get запрос с получением json
+	$.get({
+	  url: sectionsUrl,
+	  dataType: "json",    //Тип данных, который Вы ожидаете от сервера
+	  data: {title: "Иван", id: 30},    //параметры запроса.
+	  success: (data, textStatus)=>{
+	    log2("textStatus: ", textStatus);
+	    log2("data1: ", data);
+	  },
+	  error: (jqXHR, textStatus, errorThrown)=>{
+	    log2("textStatus:", textStatus);
+	    log2("errorThrown3:", errorThrown);
+	  }
+	});
 
+	//отправляем json на сервер
+	$.post({
+	  url: updateFilterUrl,
+	  contentType: 'application/json',    //Формат, в котором данные отправляются на сервер.
+	  data: JSON.stringify(testJson),    //тело запроса
+	  success: (data, textStatus)=>{
+	    log2("textStatus: ", textStatus);
+	    log2("data2: ", data);
+	  },
+	  error: (jqXHR, textStatus, errorThrown)=>{
+	    log2("textStatus:", textStatus);
+	    log2("errorThrown3:", errorThrown);
+	  }
+	});
+
+	//отправляем параметры запроса на сервер
+	$.post({
+	  url: testPostUrl,
+	  data: JSON.stringify(testJson),    //параметры запроса (будут отправлены в теле запроса)
+	  success: (data, textStatus)=>{
+	    log2("textStatus: ", textStatus);
+	    log2("data3: ", data);
+	  },
+	  error: (jqXHR, textStatus, errorThrown)=>{
+	    log2("textStatus:", textStatus);
+	    log2("errorThrown3:", errorThrown);
+	  }
+	});	
+
+
+	},	
+	
+	
+	
+  ajax_get_json_file: function() {
+	//# $.ajax(settings)
+	
 	//получаем json из файла
 	$.ajax({
 	  url: testJsonUrl,
@@ -81,8 +108,6 @@ let selectorsData1 = {
 
   },
   ajax_post_json: function() {
-
-	//	let formData = accordUtils.formToJSON(this.grid.filtersModel.$form);
 
 	//отправляем json на сервер
 	$.ajax({
@@ -128,7 +153,7 @@ let selectorsData1 = {
   ajax_post_form: function() {
 
 	//отправляем данные формы на сервер
-	var serializedForm = $("#form2").serialize();
+	var serializedForm = $form1.serialize();
 	$.ajax({
 	  url: testPostUrl,
 	  type: 'POST',
@@ -138,13 +163,31 @@ let selectorsData1 = {
 	  error: debugErrorHandler,
 	  complete: debugCompleteHandler
 	});
-
-
-
-
   },
+  
+  
+  ajax_post_form2: function() {
+
+
+	//перехватываем submit формы
+	$form1.submit(function(event) {
+		event.preventDefault();
+		var serializedForm = $form1.serialize();
+		$.ajax({
+		  url: testPostUrl,
+		  type: 'POST',
+		  data: serializedForm,
+		  success: debugSuccessHandler,
+		  error: debugErrorHandler,
+		});
+	});
+	
+  },
+  
+  
+  
   xhr_get_sync: function() {
-	//XMLHttpRequest - встроенный в браузер класс, который даёт возможность делать ajax-запросы
+	//# XMLHttpRequest - встроенный в браузер класс, который даёт возможность делать ajax-запросы
 
 	//GET-запрос с использованием XMLHttpRequest. 
 	//Синхронный запрос
@@ -152,12 +195,12 @@ let selectorsData1 = {
 	xhr.open("GET", sectionsUrl, false); // false для синхронного вызова
 	xhr.send();
 
-	log(`status: ${xhr.status}, statusText: ${xhr.statusText}`);
+	log2(`status: ${xhr.status}, statusText: ${xhr.statusText}`);
 	if (xhr.status === 200) {
-	  log(`responseType: ${xhr.responseType}`);
-	  log("data: ", xhr.responseText);
+	  log2(`responseType: ${xhr.responseType}`);
+	  log2("data: ", xhr.responseText);
 	} else {
-	  log("Ошибка загрузки");
+	  log2("Ошибка загрузки");
 	}
 
   },
@@ -175,28 +218,28 @@ let selectorsData1 = {
 	
 	//load - загрузка завершена
 	xhr.onload = (event) => {
-	  log(`status: ${xhr.status}, statusText: ${xhr.statusText}`);
+	  log2(`status: ${xhr.status}, statusText: ${xhr.statusText}`);
 
 	  if (xhr.status != 200) {
-		log("Ошибка");
+		log2("Ошибка");
 		return;
 	  }
-	  log(`Готово, получили ${xhr.response.length} байт`);
-	  log("data: ", xhr.responseText);
+	  log2(`Готово, получили ${xhr.response.length} байт`);
+	  log2("data: ", xhr.responseText);
 	};
 
 	//error - ошибка
 	xhr.onerror = (event) => {
-	  log(`status: ${xhr.status}, statusText: ${xhr.statusText}`);
-	  log("Запрос не удался");
+	  log2(`status: ${xhr.status}, statusText: ${xhr.statusText}`);
+	  log2("Запрос не удался");
 	};
 
 	//progress - запускается периодически, по мере загрузки данных
 	xhr.onprogress = (event) => {
 	  if (event.lengthComputable) {
-		log(`Получено ${event.loaded} из ${event.total} байт`);
+		log2(`Получено ${event.loaded} из ${event.total} байт`);
 	  } else {
-		log(`Получено ${event.loaded} байт`);
+		log2(`Получено ${event.loaded} байт`);
 	  }
 	};
 
@@ -206,8 +249,9 @@ let selectorsData1 = {
 
   fetch_get_sync: async function() {
 
-	//fetch - Современная замена XMLHttpRequest. Доступен как глобальная функция. 
-	//Не использует коллбэки, основан на promise.
+	//# fetch - Современная замена XMLHttpRequest. Доступен как глобальная функция. 
+	//# Не использует коллбэки, основан на promise.
+	
 	//get-запрос в синхронном стиле
 	try {
 	  const response = await fetch(sectionsUrl);
@@ -226,12 +270,10 @@ let selectorsData1 = {
 	  //в виде потока
 	  //const stream = response.body.pipeThrough(new TextDecoderStream());
 	  //for await (const value of stream) {console.log(value);}	  
-	  	  
-	  
 
-	  log(result);
+	  log2(result);
 	} catch (error) {
-	  log(error.message);
+	  log2(error.message);
 	}
 
   },
@@ -241,12 +283,12 @@ let selectorsData1 = {
 	  //get-запрос в асинхронном стиле (fetch возвращает Promise)
 	  fetch(sectionsUrl)
 	  	.then(response => {
-	  		log(`status: ${response.status}, statusText: ${response.statusText}`);
+	  		log2(`status: ${response.status}, statusText: ${response.statusText}`);
 	  		if (!response.ok) {
-	  			log("Error!");
+	  			log2("Error!");
 	  		}
 	  		response.text().then(result=>{
-	  			log(result);
+	  			log2(result);
 	  		});
 	  });
   },    
@@ -267,15 +309,15 @@ let selectorsData1 = {
 		body: new URLSearchParams(testJson),
 
 	  });
-	  log(`status: ${response.status}, statusText: ${response.statusText}`);
+	  log2(`status: ${response.status}, statusText: ${response.statusText}`);
 	  if (!response.ok) {
-	  throw new Error(`Bad response status: ${response.status}`);
+	    throw new Error(`Bad response status: ${response.status}`);
 	  }
 	  const result = await response.text();
 
-	  log(result);
+	  log2(result);
 	} catch (error) {
-	  log(error.message);
+	  log2(error.message);
 	}
 
   },
@@ -293,24 +335,57 @@ let selectorsData1 = {
 		  "Content-Type": "application/json",
 		},
 		body: JSON.stringify(testJson),
-//		body: JSON.stringify(badTestJson),
+		//body: JSON.stringify(badTestJson),
 		
 	  });
-	  log(`status: ${response.status}, statusText: ${response.statusText}`);
+	  log2(`status: ${response.status}, statusText: ${response.statusText}`);
 	  if (!response.ok) {
-	  throw new Error(`Bad response status: ${response.status}`);
+	    throw new Error(`Bad response status: ${response.status}`);
 	  }
 	  const result = await response.text();
 
-	  log(result);
+	  log2(result);
 	} catch (error) {
-	  log(error.message);
+	  log2(error.message);
 	}
 
   },
 
+  short_format: function() {
+	
+	//# $.post( url [, data ] [, success ] [, dataType ] )
+	//# $.get( url [, data ] [, success ] [, dataType ] )
+	//# $.post(settings)
+	//# $.get(settings)
+	//#   Являются сокращением метода ajax.
+	
+	$.get({
+	  url: testJsonUrl,
+	  data: { 'key': '123' },
+	  success: debugSuccessHandler,
+	  error : debugErrorHandler
+	});
+	
+	//get запрос с получением json
+	$.get({
+	  url: sectionsUrl,
+	  dataType: "json",    //Тип данных, который Вы ожидаете от сервера
+	  data: {title: "Иван", id: 30},    //параметры запроса.
+	  success: (data, textStatus)=>{
+	    log2("textStatus: ", textStatus);
+	    log2("data: ", data);
+	  },
+	  error: (jqXHR, textStatus, errorThrown)=>{
+	    log2("textStatus:", textStatus);
+	    log2("errorThrown:", errorThrown);
+	  }
+	});	
+	
+	
+	},
   
-  
+	
+
 
 }
 
@@ -319,28 +394,20 @@ let selectorsData1 = {
 
 
 $(() => {
-  initDemoCodeSelect("#selectors1", selectorsData1);
 
-  reloadSandbox();
-
-
-  //перехватываем submit формы
-  $("№form2").submit(function(event) {
-	event.preventDefault();
-
-	var serializedForm = $("#form2").serialize();
-	//отправляем данные формы на сервер
-	$.ajax({
-	  url: testPostUrl,
-	  type: 'POST',
-	  data: serializedForm,
-	  success: debugSuccessHandler,
-	  error: debugErrorHandler,
-	  complete: debugCompleteHandler
-	});
-
-  });
+	initBriefDemo(	{
+		demoType: DT_SELECT,
+		workPanelTemplate: TEMPLATE_FORM1,
+		selectorsData: selectorsData1,
+		selectedOption: "templates",
+		initFunction: ()=>{
+			
+		}
+	});	
+	
 
 
+  
+  
 
 });

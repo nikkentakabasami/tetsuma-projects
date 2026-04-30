@@ -3,17 +3,15 @@ package ru.tet.beans;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-
 @Data
 @AllArgsConstructor
-public class DemoPage {
+public class TestAuxInfo {
 
-	//числовой идентификатор
-	String id;
-	
+	int id;
 	String name;
-	
 	String desc;
+
+	
 	
 	
 }

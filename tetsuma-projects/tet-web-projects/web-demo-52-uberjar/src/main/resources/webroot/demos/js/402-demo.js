@@ -1,204 +1,197 @@
 
 
 
-
-//тестовый обработчик для всех типов событий - выводит данные из event в лог
-function universalDemoHandler(event) {
-  log2nl();
-
-  event.preventDefault();
-
-  log2(
-	//event.type - тип события: click, mouseover...
-	`type=${event.type}, ` +
-
-	//event.currentTarget - Элемент, на который назначен обработчик события в данный момент.
-	`currentTarget=${event.currentTarget?.id}, ` +
-	
-	//event.target - самый глубокий элемент, на котором произошло событие.
-	//То есть, это элемент, на котором фактически сработало событие
-	`target=${event.target?.id}`
-
-  );
-
-  let type = event.type;
-
-
-  if (type == 'mouseover' || type == 'mouseout' || type == 'mouseenter' || type == 'mouseleave') {
-
-	log2(
-	  //event.relatedTarget - mouseover(элемент, с которого пришел курсор мыши), mouseout(на который перешел)
-	  `relatedTarget=${event.relatedTarget?.id}`
-	);
-  }
-
-
-
-  if (type == 'mousedown' || type == 'mouseup' || type == 'click') {
-
-	log2(
-	  //event.button - Какая кнопка мыши была нажата (0-левая, 1-средняя, 2-правая)
-	  `button=${event.button}, ` +
-
-	  //event.pageX - координаты относительно документа, учитывая прокрутку
-	  `pageX=${event.pageX}, pageY=${event.pageY},` +
-
-	  //event.clientX - координаты кликнутой точки относительно окна
-	  `clientX=${event.clientX}, clientY=${event.clientY},` +
-
-	  //event.which - jquery атрибут. Для нажатия клавиши = event.keyCode. Для нажатия кнопки мыши = event.button
-	  `which=${event.which}, ` +
-
-	  //нажаты ли клавиши-модификаторы
-	  `shiftKey=${event.shiftKey}, altKey=${event.altKey}, ctrlKey=${event.ctrlKey}, metaKey=${event.metaKey}`
-	);
-
-  }
-
-
-  if (type == 'keydown' || type == 'keyup') {
-
-	log2(
-	  //code - название клавиши. Примеры: KeyD, Digit5, F2
-	  `code=${event.originalEvent.code}, ` +
-
-	  //key - символьное значение клавиши: F3, Q, q, Alt...
-	  `key=${event.key}, ` +
-
-	  //keyCode - Устаревший. Возвращает числовой код клавиши.
-	  `keyCode=${event.keyCode}, ` +
-
-	  //which ==event.keyCode
-	  `which=${event.which}, ` +
-
-	  //При долгом нажатии клавиши возникает автоповтор: keydown срабатывает снова и снова
-	  //Для таких событий event.repeat=true.
-	  `repeat=${event.originalEvent.repeat}, ` +
-
-	  //нажаты ли клавиши-модификаторы
-	  `shiftKey=${event.shiftKey}, altKey=${event.altKey}, ctrlKey=${event.ctrlKey}, metaKey=${event.metaKey}`
-	);
-
-  }
-
-}
-
-
 //тестовые функции
 //возвращают query-объекты, задействованные в тесте: они будут выделены красной рамкой
 let selectorsData1 = {
 
-  bind_inp_click: function() {
+
+  
+
+  event_desc: function() {
 	
-	//# .bind( eventType, eventData, handler )
-	//# .bind( eventType, eventData, preventBubble )
-	//# .bind( events )
-	//#   Назначает обработчик к одному или более событиям
-	//#   Считается устаревшим - нужно использовать on
+	//# Стандартные события в DOM:
+	//# blur, focus, load, resize, scroll, unload, beforeunload, click, dblclick, 
+	//# mousedown, mouseup, mousemove, mouseover, mouseout, mouseenter, mouseleave, 
+	//# change, select, submit, keydown, keypress, keyup
 	
+	//# Атрибуты событий:
+	//# 
+	//# event.type
+	//# 
+	//# event.currentTarget - Элемент, на который назначен обработчик события в данный момент.
+	//# event.target - самый глубокий элемент, на котором произошло событие.
+	//# event.relatedTarget - mouseover(элемент, с которого пришел курсор мыши), mouseout(на который перешел)
+	//# 
+	//# mousedown,mouseup,click:
+	//# 
+	//# event.button - Какая кнопка мыши была нажата (0-левая, 1-средняя, 2-правая)
+	//# event.pageX/pageY - координаты относительно документа, учитывая прокрутку
+	//# event.clientX/clientY - координаты кликнутой точки относительно окна
+	//# event.which - jquery атрибут. Для нажатия клавиши = event.keyCode. Для нажатия кнопки мыши = event.button
+	//# 
+	//# keydown,keyup:
+	//# 
+	//# event.originalEvent.code - код клавиши. Примеры: KeyD, Digit5, F2
+	//# event.key - нажатый символ
+	//# shiftKey, altKey, ctrlKey, metaKey - нажаты ли клавиши-модификаторы
+	//# event.keyCode - Устаревший. Возвращает числовой код клавиши.
+	//# event.repeat - автоповтор	
+	
+	$inp1.on("click keydown", universalEventHandler);
+	
+  },
+
+  
+
+	templates: function() {
+
+	//шаблоны для использования
+	$inp1.keydown(event => {
+	  event.preventDefault();
+	  log2(`keydown, key=${event.key}, keyCode=${event.keyCode}`);
+	});
+
+	$inp1.mousedown(event => {
+	  log2("mousedown, button="+event.button);
+	});
+
+	$form1.submit(event => {
+	  event.preventDefault();  //предотвратить поведение элемента по умолчанию
+	  log2("form1 submit");
+	});
+	
+	$inp2.click(event => {
+	  event.stopPropagation();  //предотвращает всплытие события вверх по дереву.
+	  log2("inp2 click");
+	});
+	
+	//однократное событие
+	$inp3.one("click", event => {
+	  log2("inp1 click once");
+	});	
+	
+
+	},
+	
+	
+    
+  on1: function() {
+
+	//# .on( events [, selector ] [, data ], handler )
+	//#   Назначение событий. Полностью заменяет bind
+	
+
 	
 	//назначает обработчик на все инпуты
-	return $("#form1 input").bind("click", universalDemoHandler);
-  },
+	$("#form1 input").on("click", universalEventHandler);
 
-  unbind_inp1: function() {
-	$("#form1 input").bind("click", universalDemoHandler);
 	
-	//unbind - убирает обработчик
-	return $inp2.unbind("click", universalDemoHandler);
-  },
+	$btn1.click(e=>{
+		//# .off( events [, handler ] )
+		//#   Удаление обработчиков
+		
+		//убирает обработчик
+		$inp1.off("click", universalEventHandler);
 
-
-  on_inp1_click: function() {
-	//on - назначение обработчика
-	return $inp1.on("click", universalDemoHandler);
+		//убирает все обработчики событий, привязанные к этому элементу
+		$inp2.off();
+	});
+	
+	
+	
   },
 
   on_two_events: function() {
-	//on - назначение обработчика на 2 события
-	return $inp1.on("mouseenter mouseleave", event => {
+	//назначение обработчика на 2 события
+	$inp1.on("mouseenter mouseleave", event => {
 	  $inp1.toggleClass("bg-red");
 	});
+	
+	//назначение сразу нескольких обработчиков на разные события
+	$inp2.on({
+	  mouseenter: universalEventHandler,
+	  mouseleave: universalEventHandler,
+	  click: universalEventHandler
+	});
+	
   },
 
-  on_inp1_multi_handlers: function() {
-	//назначение сразу нескольких обработчиков на разные события
-	return $inp1.on({
-	  mouseenter: universalDemoHandler,
-	  mouseleave: universalDemoHandler,
-	  click: universalDemoHandler
-	});
-  },
 
   on_data_param: function() {
-	//назначение обработчика с передачей data-объекта, который можно получить из event
-	$inp1.on("click", { msg: "Spoon!" }, event => {
-	  log("inp1 click. event.data:", event.data);
+	
+	//# .on( events [, selector ] [, data ], handler )
+	//# 
+	//# data
+	//#   объект, который будет передан в event.data
+	
+	//эта фича используется редко, ведь обработчик - closure
+	let outerVar = 477;	
+	$inp1.on("click", {msg: "my message."}, event=> {
+	  log2("event.data.msg:", event.data.msg);
+	  log2("outerVar:", outerVar);
 	});
 
-	$testBtn1.on("click", event => {
+	$btn1.on("click", event => {
 	  $inp1.trigger("click");
 	});
 
-	return $().add($inp1).add($testBtn1);
+	return $().add($inp1).add($btn1);
   },
 
   trigger_data: function() {
 	//при вызове trigger можно передать data-объект.
 	//Его можно получить через доп. параметр обработчика события.
 	//В event.data он не попадёт!
-	$testBtn1.on("click", event => {
+	$btn1.on("click", event => {
 	  $inp1.trigger("click", "Trigger message");
 	});
 	
 	$inp1.on("click", (event, data) => {
-	  log("inp1 click. data:", data, "event.data:", event.data);
+	  log2("inp1 click. data:", data);
 	});
 
-	return $().add($inp1).add($testBtn1);
+	return $().add($inp1).add($btn1);
   },
 
 
   on_selector: function() {
-	//назначение обработчика с передачей дополнительного селектора-фильтра
-	//фактически будет 1 обработчик на $panel1
-	return $panel1.on("click", " input:text", universalDemoHandler);
+	
+	//# .on( events [, selector ] [, data ], handler )
+	//# 
+	//# selector
+	//#   селектор-фильтр, определяющий дочерние элементы, которые запустят событие
+	//#   фактически будет 1 обработчик, но срабатывать он будет только на заданных в селекторе элементах
+	
+	return $workPanel.on("click", "#form1 input:text", universalEventHandler);
   },
 
-  off_inp1: function() {
-	//off() - убирает все обработчики событий, привязанные к этому элементу
-	return $inp1.off();
-  },
 
   events_mouse1: function() {
 
-	$inp1.on("click", universalDemoHandler);
+	//события мыши
+	$inp1.on("click", universalEventHandler);
 
-	$inp2.on("mousedown", universalDemoHandler);
-	$inp2.on("mouseup", universalDemoHandler);
+	$inp2.on("mousedown", universalEventHandler);
+	$inp2.on("mouseup", universalEventHandler);
 
-	$inp3.on("mouseover", universalDemoHandler);
-	$inp3.on("mouseout", universalDemoHandler);
+	$btn1.on("mouseover", universalEventHandler);
+	$btn1.on("mouseout", universalEventHandler);
 
 	//	Похожи на mouseover/mouseout, но есть отличия:
 	//  1)Переходы внутри элемента, на его потомки и с них, не считаются.
 	//  2)Эти события не всплывают.
-	$formDiv2.on("mouseenter", universalDemoHandler);
-	$formDiv2.on("mouseleave", universalDemoHandler);
+	$btn2.on("mouseenter", universalEventHandler);
+	$btn2.on("mouseleave", universalEventHandler);
 
-	return $().add($inp1).add($inp2).add($inp3).add($formDiv2);
   },
 
   events_keyboard: function() {
 
-	$inp1.on("keydown", universalDemoHandler);
-
-	$inp2.on("keyup", universalDemoHandler);
-
-	//получение и потеря фокуса ввода
-	$inp3.on("focus", universalDemoHandler);
-	$inp3.on("blur", universalDemoHandler);
-
+	//клавиатурные события
+	$inp1.on("keydown", universalEventHandler);
+	$inp1.on("keyup", universalEventHandler);
+	$inp2.on("keypress", universalEventHandler);
 
 	return $().add($inp1).add($inp2);
   },
@@ -207,24 +200,21 @@ let selectorsData1 = {
   events_misc: function() {
 
 	//получение и потеря фокуса ввода
-	$inp1.on("focus", universalDemoHandler);
-	$inp1.on("blur", universalDemoHandler);
+	$inp1.on("focus", universalEventHandler);
+	$inp1.on("blur", universalEventHandler);
 
-	$inp2.on("cut", universalDemoHandler);
-	$inp2.on("copy", universalDemoHandler);
-	$inp2.on("paste", universalDemoHandler);
-
+	//копирование/вставка
+	$inp2.on("cut", universalEventHandler);
+	$inp2.on("copy", universalEventHandler);
+	$inp2.on("paste", universalEventHandler);
 
 	//срабатывает по окончании изменения элемента.
 	//Для input-ов срабатывает при потере ими фокуса, для остальных - сразу же
-	$inp3.on("change", universalDemoHandler);
-	$inp4.on("change", universalDemoHandler);
-
+	$inp2.on("change", universalEventHandler);
+	$inp3.on("change", universalEventHandler);
 
 	return $().add($inp1).add($inp2);
   },
-
-
 
   events_preventDefault: function() {
 
@@ -235,13 +225,13 @@ let selectorsData1 = {
 	//запрет на submit формы 
 	$form1.submit(event => {
 	  event.preventDefault();
-	  log("form1 submit");
+	  log2("form1 submit");
 	});
 
 	//запрет на клавиатурные события в $inp2 
 	$inp2.keydown(event => {
 	  event.preventDefault();
-	  log("inp2 keydown");
+	  log2("inp2 keydown");
 	});
 
 
@@ -251,17 +241,17 @@ let selectorsData1 = {
 
   events_stopPropagation: function() {
 	//stopPropagation() - предотвращает всплытие события вверх по дереву.
-	//$panel1 это событие уже не получит
+	//$form1 это событие уже не получит
 	$inp1.click(event => {
 		event.stopPropagation();
-		log("inp1 click");
+		log2("inp1 click");
 	});
 	$inp2.click(event => {
-		log("inp2 click");
+		log2("inp2 click");
 	});
 
-	$panel1.click(event => {
-	  log("panel1 click");
+	$form1.click(event => {
+	  log2("panel1 click");
 	});
 	
 	
@@ -271,39 +261,86 @@ let selectorsData1 = {
 
   
   one: function() {
-
-	  $inp1.one("click", event => {
-	    log("inp1 click once");
-	  });
+	//# .one(events [, data ], handler)
+	//#   Назначает обработчик, который выполняется единожды.
 	
-	  return $().add($inp1);
+	$inp1.one("click", event => {
+	  log2("inp1 click once");
+	});
+	return $().add($inp1);
   },
+
   
 
-  //шаблоны
-  templates: function() {
+  
+  //-------------------deprecated----------------------
+  
+  bind1: function() {
 
-	$inp1.keydown(event => {
-	  event.preventDefault();
-	  log(`keydown, key=${event.key}, keyCode=${event.keyCode}`);
-	});
-	
-	$inp1.mousedown(event => {
-	  log("mousedown, button="+event.button);
-	});
+  //# .bind( eventType[, eventData], handler )
+  //#   Назначает обработчик к одному или более событиям
+  //#   Считается устаревшим - следует использовать on (у него такой же интерфейс)
+  //# 
+  //# eventData - объект, который будет передан в обработчик.
+  //# 
+  //# unbind( event_type, handler)
+  //#   удаляет привязанные события из каждого элемента набора.
+  	
 
-	$form1.submit(event => {
-	  event.preventDefault();
-	  log("form1 submit");
-	});
-	
-	$inp3.on("click", { msg: "Spoon!" }, event => {
-	  log("inp1 click. event.data:", event.data);
-	});	
-	
+  //назначает обработчик на все инпуты
+  $("#form1 input").bind("click", universalEventHandler);
 
-    return $().add($inp1).add($inp2);
+  //unbind - убирает обработчик
+  $inp2.unbind("click", universalEventHandler);
+
+  },
+
+  bind2: function() {
+
+  //назначение сразу нескольких обработчиков на разные события
+  $inp1.bind({
+    click: universalEventHandler,
+    mouseenter: universalEventHandler
+  });	
+
+  //назначение обработчика на 2 события
+  $inp2.bind("mouseenter mouseleave", event => {
+    $inp2.toggleClass("bg-red");
+  });
+
+
+
+
+  },
+  bind3: function() {
+
+  //обращение к элементу, отправившему событие
+  $inp1.bind("keydown", function() {
+    log2($(this).val());
+  });
+
+  $inp2.bind("keyup", event=> {
+    log2($(event.target).val());
+  });
+  	
+  },
+
+
+  bind4: function() {
+
+  //с передачей data-объекта, который можно получить из event
+  //эта фича используется редко, ведь обработчик - closure
+  let outerVar = 477;	
+  $inp1.bind("click", {msg: "my message."}, event=> {
+    log2("event.data.msg:", event.data.msg);
+  	  log2("outerVar:", outerVar);
+  });
+
   },  
+  
+  
+  
+    
   
 }
 
@@ -317,6 +354,7 @@ $(() => {
 		demoType: DT_SELECT,
 		workPanelTemplate: TEMPLATE_FORM1,
 		selectorsData: selectorsData1,
+//		selectedOption: "on1",
 		reloadSandboxOnChange: true,
 		initFunction: ()=>{
 			

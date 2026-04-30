@@ -59,11 +59,28 @@ public class DemosScanner {
 			
 			List<DemoPage> demoPages = new ArrayList<>(pageNames.size());
 			for(String pageName:pageNames) {
+
+				//ищем числовой идентификатор, который может быть в начале имени файла
+				String id = null;
+				int ind = pageName.indexOf('_');
+				if (ind>0) {
+					id = pageName.substring(0, ind);
+					if (!id.matches("\\d+")) {
+						id=null;
+					}
+				}
+				
 				String pageDesc = scanDemoFileDesc(folderPath+"/"+pageName);
 				if (pageDesc==null) {
 					pageDesc = pageName;
+				} else {
+					if (id!=null) {
+						pageDesc = id+" "+pageDesc;
+					}
 				}
-				demoPages.add(new DemoPage(pageName, pageDesc));
+				
+				
+				demoPages.add(new DemoPage(id,pageName, pageDesc));
 			}
 			
 			

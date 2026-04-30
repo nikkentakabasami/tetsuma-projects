@@ -300,6 +300,19 @@ function logFuncCode2(f){
 	log2(code);
 }
 
+//
+function logObject2(object, objectName){
+	if (objectName){
+		log2("# "+objectName+":");
+		highlightLogComments2();		
+	}
+	log2(accordUtils.objectToString(object));	
+}
+
+function logJson2(objectName, data){
+	log2(objectName+":", JSON.stringify(data,"",2));
+}
+
 
 function logMessage($log, ...vals) {
 	
@@ -320,9 +333,11 @@ function logMessage($log, ...vals) {
 	
 
 	if (autoscrollLog1 && $log==$log1 || autoscrollLog2 && $log==$log2){
+		
+		let $p = $log.parent();
 		//scroll to bottom	
-		var h = $logPanel.prop('scrollHeight');
-		$logPanel.scrollTop(h);	
+		var h = $p.prop('scrollHeight');
+		$p.scrollTop(h);	
 		
 	}
 
@@ -392,9 +407,14 @@ function highlightLogComments($log) {
 		if (line.startsWith('# ')) {
 			let s = line.substring(2);
 			return grenSpan + s + endSpan;
-		} else if (line.startsWith('//# ')) {
-			let s = line.substring(4);
-			return grenSpan + s + endSpan;
+		} else if (line.startsWith('//#')) {
+			
+			if (line.length>4){
+				let s = line.substring(4);
+				return grenSpan + s + endSpan;
+			} else {
+				return "";
+			}
 		} 
 		
 				

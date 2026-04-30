@@ -13,6 +13,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ru.tet.beans.DemoFolder;
 
+/**
+ * Сервлет, обслуживающий DemosScanner 
+ * 
+ */
 @WebServlet("/demoscan/*")
 public class DemosServlet extends HttpServlet {
 
@@ -20,11 +24,14 @@ public class DemosServlet extends HttpServlet {
 	public static final String REFRESH_DEMOS_URL = "/refreshDemoList";
 	public static final String DEMO_FOLDERS_URL = "/demoFolders";
 	
+	DemosScanner demosScanner;
+	
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 
 		super.init(config);
+		demosScanner = DemosScanner.getInstance();
 
 	}
 
@@ -38,7 +45,7 @@ public class DemosServlet extends HttpServlet {
 		if (pathInfo.startsWith(SIBLINGS_URL)) {
 			
 			String pageName = request.getParameter("pageName");
-			String[] siblingPages = DemosScanner.getInstance().findSiblingPages(pageName);
+			String[] siblingPages = demosScanner.findSiblingPages(pageName);
 
 			ObjectMapper mapper = new ObjectMapper();
 			response.setContentType("application/json");
@@ -48,7 +55,7 @@ public class DemosServlet extends HttpServlet {
 		
 		if (pathInfo.startsWith(REFRESH_DEMOS_URL)) {
 
-			List<DemoFolder> demoFolders = DemosScanner.getInstance().scanDemos();
+			List<DemoFolder> demoFolders = demosScanner.scanDemos();
 			request.getServletContext().setAttribute("demoFolders", demoFolders);
 			response.getWriter().write("ok");
 
@@ -57,7 +64,7 @@ public class DemosServlet extends HttpServlet {
 		
 		if (pathInfo.startsWith(DEMO_FOLDERS_URL)) {
 
-			List<DemoFolder> demoFolders = DemosScanner.getInstance().getDemoFolders();
+			List<DemoFolder> demoFolders = demosScanner.getDemoFolders();
 
 			ObjectMapper mapper = new ObjectMapper();
 			response.setContentType("application/json");

@@ -1,4 +1,4 @@
-package ru.tet.demos.aux;
+package ru.tet.servlets;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ru.tet.beans.JSTreeNode;
-import ru.tet.data.JSTreeDataSamples;
+import ru.tet.demos.aux.JSTreeDataSamples;
 
 @WebServlet("/jsTree/*")
 public class JSTreeServlet extends HttpServlet {

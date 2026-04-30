@@ -40,7 +40,7 @@ let helpPopup;
 let $workPanel;
 
 //элементы песочницы - вспомогательные переменные
-let $btn1, $btn2, $inp1, $inp2, $inp3, $inp4, $testBtn1, $testBtn2;
+let $btn1, $btn2, $inp1, $inp2, $inp3, $inp4, $testBtn1, $testBtn2, $btnSubmit;
 let formDiv1, formDiv2;
 let $form1, $form2, $formPanel;
 
@@ -260,6 +260,7 @@ function reloadSandbox() {
     let $sandboxPanels = accordUtils.cloneTemplate("#template1");
     $sandboxPanels.appendTo($workPanel);
 
+	$btnSubmit = $("#btnSubmit");
 
     $btn1 = $("#btn1");
     $btn2 = $("#btn2");

@@ -64,12 +64,35 @@ let accordUtils = {
 	escapeHTML: escapeHTML,
 	removeOddIndent: removeOddIndent,
 	funcToString: funcToString,
+	objectToString: objectToString,
+	
 	
 	  
 
 };
 window.accordUtils = accordUtils;
 
+
+//log2(accordUtils.objectToString({id:2033, val: "my val "}))
+
+//преобразует объект в строку для вывода в лог.
+//выполняет форматирование, убирает лишние кавычки.
+function objectToString(object) {
+
+	let code =	JSON.stringify(object,"",2);
+	
+	let ind1 = code.indexOf("{");
+	let ind2 = code.lastIndexOf("}");
+	code = code.substring(ind1 + 1, ind2-1);
+	
+//	code = removeOddIndent(code);
+
+	//убираем кавычки у полей и ведущие пробелы в строках
+	//поисковое выражение с тремя группами, $2 - содержимое второй группы (то что внутри кавычек)
+	code = code.replace(/^(\s*")([^"]+)(")/gm,'$2');	
+	
+	return code;	
+}
 
 //возвращает код функции в виде строки.
 //убирает лишние отступы, может убрать её объявление
