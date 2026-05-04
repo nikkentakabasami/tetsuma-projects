@@ -8,7 +8,7 @@ let selectorsData1 = {
 
   
 
-  event_desc: function() {
+  event_desc() {
 	
 	//# Стандартные события в DOM:
 	//# blur, focus, load, resize, scroll, unload, beforeunload, click, dblclick, 
@@ -44,7 +44,7 @@ let selectorsData1 = {
 
   
 
-	templates: function() {
+	templates() {
 
 	//шаблоны для использования
 	$inp1.keydown(event => {
@@ -76,7 +76,7 @@ let selectorsData1 = {
 	
 	
     
-  on1: function() {
+  on1() {
 
 	//# .on( events [, selector ] [, data ], handler )
 	//#   Назначение событий. Полностью заменяет bind
@@ -102,7 +102,7 @@ let selectorsData1 = {
 	
   },
 
-  on_two_events: function() {
+  on_two_events() {
 	//назначение обработчика на 2 события
 	$inp1.on("mouseenter mouseleave", event => {
 	  $inp1.toggleClass("bg-red");
@@ -117,7 +117,14 @@ let selectorsData1 = {
 	
   },
 
+  trigger(){
+	//передача фокуса ввода
+	$inp1.trigger("focus");
+  },
+  
 
+  
+  
   on_data_param: function() {
 	
 	//# .on( events [, selector ] [, data ], handler )

@@ -1,222 +1,180 @@
 
-let a = {};
-let d1, m1, m2;
 
+let testString = "  Seishun tte a to iu ma to iu koto.";
+let testString2;
+
+let n1, n2, n3, n4;
 
 
 //тестовые функции
 //возвращают query-объекты, задействованные в тесте: они будут выделены красной рамкой
 let selectorsData1 = {
+	
+	String_declaration() {
+		
+		//способы объявления строк
+		a.s1 = "моя строка 1";
+		a.s2 = 'моя строка 2';
+		a.s4 = String ("моя строка 3");
 
-	Date: () => {
-		a = {};
-		
-		lf2NL(()=>{
-			//Создание Date
-			
-			//текущая дата
-			d1 = new Date();
-			a.d1 = new Date();
-			
-			//new Date(year, month, day, hours, minutes, seconds, milliseconds)
-			a.d2 = new Date(2014, 11, 31, 12, 30, 0);	//31.12.2014 12:30:00
-			a.d3 = new Date(2011, 0, 1, 0, 0, 0, 0); 	//01.01.2011  (январь - нулевой месяц)
-			a.d4 = new Date(2011, 0, 1); 							//то же самое
-			a.d7 = new Date(2011, 0, 32); 						//Автоисправление - 1 февраля 2011!
-			
-			//new Date(milliseconds)
-			a.d5 = new Date(1241777298123);				//milliseconds since 1970/01/01
-			
-			//new Date(dateString)
-			a.d6 = new Date("May 21, 1958 10:15 AM");
-			a.d8 = new Date("2020-05-12T23:50:21.817Z");		//json формат
+		//возвращает объект String, а не примитив!
+		a.s5 = new String ("моя строка 3");
 
-			//копирование
-			a.copyDate1 = new Date(d1);
-			a.copyDate2 = new Date(d1.getTime());			
-			
-			return a;
-		});
-//		le2("a")
+		//String(x) - конвертирует аргумент в строку
+		a.s5 = String(22);
+		a.s6 = String(false);
 
-		lc2NL("Получение компонентов даты");
+		//Переноc строки
+		a.s7 = "Hello \n\
+			World!";
+
+		//Template Strings - обратные кавычки.
+		//позволяют выполнять перенос строк (multiline string), использовать любые кавычки
+		a.s11 = `Это очень длинная строка,
+				которая продолжается на следующей строке.`;
+
+		//позволяют встраивать выражения в строку, заключая их в ${…}
+		let name = "Иван";
+		a.s12 = `Привет, ${name}!`;
+		a.s13 = `результат: ${1 + 2}`;
 		
-		le2("d1.getFullYear();");
+	},
+
+	String_escape(){
 		
-		le2("d1.getMonth();  //Месяц (0..11)");
-		
-		le2("d1.getDate();	//Число месяца (1..)");
-		
-		le2("d1.getDay();	//номер дня в неделе (0- воскресенье, 6 - суббота)");
-		
-		le2("d1.getTime();	//число миллисекунд, прошедших с 1 января 1970");
-		
-		le2("d1.getHours();");
-		le2("d1.getMinutes();");
-		le2("d1.getSeconds();");
-		le2("d1.getMilliseconds();");
-		
-		
-		le2("d1.getTimezoneOffset();	//Возвращает разницу между местным и UTC-временем, в минутах.");
-		
-		le2("a.d1>a.d2;  //сравнение дат");
-		
-		
-		lf2NL(()=>{
-			//Установка компонентов даты
-			
-			d1.setFullYear(2015,0,5);
-			d1.setMonth(2);
-			d1.setDate(100);
+		//backslash escape character - Экранирование спецсимволов
+		a.s10= 'It\'s alright.\\';
+
+		a.s11 = "I'm a JavaScript \"programmer\".";
 					
-			//setHours(hour [, min, sec, ms])
-			d1.setHours(1,2,3,4);
-					
-			d1.setMinutes(0);
-			d1.setSeconds(0);
-			d1.setMilliseconds(0);
-					
-			d1.setTime(1433754206311);			
-		});
-
-
-
+		//escape sequences
+		a.s12= "\n-New Line,\r-Carriage Return,\t-tab";
 		
-	},	
+	},
+	
+	
+	String_encoding(){
 		
-	Date_format: () => {
-		
-		lc2NL("Форматирование вручную");		
-		log2(String(formatDate));
+		//  \uNNNN - Символ в кодировке Юникод.
+		a.s1 = "\u00A9";
 
-		le2("formatDate(new Date());");
-		le2("formatTime(new Date());");
-		
-		lc2NL("Форматирование через moment.js");		
-		log2(String(formatDateTimeMoment));
-		
-//		le2("formatDateTimeMoment(new Date());");
+		//	\xXX	Символ с шестнадцатеричным юникодным кодом.
+		a.s2 = "\x7A";
 
+		// \u{X…XXXXXX} Нотация для указания всех возможных символов юникода
+		a.s3 = "\u{1F60D}";
+
+		//Для указания символов с диакретическими знаками - указывается символ а затем сами знаки.
+		a.s4 = "S\u0307";	//символ S и знак "точка сверху"
+		a.s5 = "S\u0307\u0323";
+
+	},
+	
+	String_encoding_func: `
+		//String.fromCharCode() - создание строк из кодов UTF-16.
+		//Работает только с кодами в диапазоне от 0 до 65535.
+		//Не поддерживает эмодзи или исторические символы, у которых кодовые точки выше 0xFFFF.
+		String.fromCharCode(189, 43, 190, 61);
+
+		//String.fromCodePoint() - то же что и fromCharCode, но поддерживает значения выше 0xFFFF.
+		String.fromCodePoint(189, 43, 190, 61);
+		String.fromCodePoint(9731, 9733, 9842, 0x2f804)
+
+		//str.charCodeAt(pos) - Возвращает код символа на позиции pos (0-65535)
+		testString.charCodeAt(0);
+
+		//str.codePointAt(pos) - Возвращает полный код символа на позиции.
+		//Этот код может стостоять из двух суррогатных пар
+		testString.codePointAt(0);			
+	`,
+	
+	
+	String_functions: `
+		testString;
+		testString.length;
 				
-		lc2NL("Парсинг вручную");		
-		log2NL(String(accordUtils.parseDate));
+		//str.charAt(ind) - Получение символа по индексу.
+		//В JavaScript нет отдельного типа «символ», так что charAt возвращает строку, состоящую из выбранного символа.
+		//Символ так же можно получить квадратными скобками, как в массиве.
+		testString.charAt(5);
+		testString[5];
 
-		le2("accordUtils.parseDate('05.07.2007');");
+		//str.at(ind) - Аналог charAt, но поддерживает отрицательный индекс.
+		//(-1 - последний символ)
+		testString.at(-1);
+		testString.at(-5);
+						
+		testString.toLowerCase();
+		testString.toUpperCase();
+				
+		//str.indexOf(searchValue, fromIndex)
+		testString.indexOf('to');
+				
+		//str.lastIndexOf(searchValue, fromIndex)
+		testString.lastIndexOf('to');
+				
+		testString.substring(5,10);
+				
+		//str.slice(start, end) - аналог substring, но удобнее.
+		//Отличие: Отрицательные значения отсчитываются от конца строки (-1 - последний символ)
+		testString.slice(-5);  //5 последних символов
+		testString.slice(1,-1);  //убрать первый и последний символы
+				
+		testString.replace('to','AA');
+		testString.replaceAll('to','AA');
 		
+		//Чтобы заменить все значения - можно использовать регулярные выражения
+		testString.replace(/to/g,'AA');
+				
+		//str.match(re) - поиск регулярным выражением.
+		//Возвращает массив найденных значений
+		testString.match(/(?<= )\\w+/g);  //слова, перед которыми пробел
+				
+		//str.split(separator, limit) - разбиение строки
+		testString.split(' ',3);
+				
+		//str.concat(...o) - склеивание строк
+		'ae'.concat(true,'-',66);
+				
+		testString.trim();
+		testString.trimEnd();
+		testString.trimStart();
+				
+		//str.toWellFormed() - устраняет некорректные последовательности символов Unicode
+		testString2 = "Hello World \uD800";
 		
+		testString2.isWellFormed();
+		testString2 = testString2.toWellFormed();
+		testString2.isWellFormed();
+				
+		//padStart(targetLength, padString), padEnd(...) - дополнят строку до нужной длины повтором заданной строки
+		testString.padStart(40,'*');
+		testString.padEnd(40,'*#');
+		'hello_'.repeat(5);
 		
-	},	
+	`,
 	
-	moment_create: () => {
-	
-		lc2("Создание moment");		
-	
-		le2("m1 = moment();	//получение текущей даты");
-		
-		lc2("задание даты строкой в формате ISO 8601");		
-		le2('moment("2013-02-08");');
-		le2('moment("2013-02");');
-		le2('moment("2013-039");');
-		le2('moment("20130208");');
-		le2('moment("2013");');
-		le2('moment("2013-02-08 09:30");');
-		le2('moment("2013-02-08 09:30:26");');
-		le2('moment("2013-02-08 09:30:26.123");');
-	
-	
-		lc2("задание даты строкой в формате RFC 2822");		
-		le2('moment("6 Mar 17 21:22 UT");');
-		le2('moment("6 Mar 2017 21:22:23 GMT");');
-		
-		lc2("задание даты строкой в заданном формате");		
-		le2('moment("12-25-1995", "MM-DD-YYYY");');
-		le2('moment("12/25/1995", "MM-DD-YYYY");');
-		le2('moment("24 12 2019 09:15:00", "DD MM YYYY hh:mm:ss", true);');
-		le2('moment("19.12.2025, 11:48:52", "DD.MM.YYYY, hh:mm:ss");');
-		le2('moment("12-25-1995", ["MM-DD-YYYY", "YYYY-MM-DD"]);	//можно задать несколько форматов');
-		
-		lc2("задание даты объектом");		
-		le2('moment({ hour:15, minute:10 });');
-		le2('moment({ y    :2010, M     :3, d   :5, h    :15, m      :10, s      :3, ms          :123});');
-		le2('moment({ year :2010, month :3, day :5, hour :15, minute :10, second :3, millisecond :123});');
-		
-		lc2("задание даты массивом в формате [year, month, day, hour, minute, second, millisecond]");		
-		le2('moment([2010, 1, 14, 15, 25, 50, 125]);');
-		
-		lc2("клонирование");		
-		le2('moment(m1);');
-		le2('m1.clone();');
-	
-		
-	},	
-	
-	moment_misc: () => {
-		
-		m1 = moment();
-		m2 = moment("2013-02-08");
-		
-		
-		lc2('связь с Date');
-		le2('moment(new Date());  //задание даты объектом Date');
-		le2('m1.toDate();	// Получаем объект Date');
-		
-		le2('m1.format();	//показ локального времени');
-		le2('m1.utc().format();	//переключение в формат UTC (всемирное время)');
-		le2('m1.format("DD.MM.YYYY, hh:mm:ss");	//форматирование времени своим форматом');
-		le2('m1.calendar();	//форматирует время так, чтобы показывать его относительно заданной даты');
-		le2('m1.valueOf();	//вывод миллисекунд прошедших с Unix Epoch');
-		
-		
-		lc2("получение частей даты");		
-		le2('m1.year();');
-		le2('m1.month();');
-		le2('m1.date();');
-		le2('m1.hour();');
-		le2('m1.minute();');
-		le2('m1.second();');
-		le2('m1.millisecond();');
-		le2('m1.day();   //dayOfWeek');
-		le2('m1.dayOfYear();');
-		
-		
-		lc2("задание частей даты");
-		le2('m1.year(2025).month(2).date(11).hour(2);');
-		
-		le2('m1');
-		
-		lc2("задание частей даты методом set");
-		le2('m1.set("year", 2013).set("month", 1);');
-		
-		lc2("модификация даты");
-		le2('m1.subtract(10, "day").add(1, "year");');
-		
-		
-		lc2("сравнение дат");		
-		le2('moment.max(m1, m2);');
-		le2('moment.min(m1, m2);');
-		
-		
-	},	
-
 	
 }
-
-
-
-
-function formatDateTimeMoment(date) {
-	var m = moment(date);
-	return m.format('DD.MM.YYYY, hh:mm:ss');
-}
-
 
 
 
 $(() => {
-  initDemoCodeSelect("#selectors1", selectorsData1);
 
-//	$("#selectors1").val("moment_misc").trigger("change");
-
+	
+	initBriefDemo(	{
+		demoType: DT_SELECT_NO_WP,
+		workPanelTemplate: 0,
+		selectorsData: selectorsData1,
+//		selectedOption: "demo1_script",
+		lfMode: true,
+		autoscrollLog2: false,
+		initFunction(){
+			
+		},
+	});		
+	
+	
 });
 
 

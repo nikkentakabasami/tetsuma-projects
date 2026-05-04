@@ -146,6 +146,11 @@ p {
 	color: green;
 }
 
+.blue {
+	color: SlateBlue;
+}
+
+
 #log1 {
   white-space: pre-wrap;
 }

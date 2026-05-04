@@ -15,6 +15,41 @@
  */
 
 
+//опции, определяющий, как будет работать текущая демка
+let demoOptions = {
+
+    //выполняются до и после выполнения currentFunc/демо-кнопок
+    beforeExec: null,
+    afterExec: null,
+
+    //функция инициализации всего кода: выводить её при нажатии каждой демо-кнопки
+    initFunction: null,
+	
+	//функция, выполняющаяся после reloadSandbox
+	afterSandboxReload: null,
+
+	//режим тестирования jquery функций (входные данные - это массив селекторов и jquery-запросов)
+	jquerySelectorsMode: false,
+	
+	//выполнять ли функции в режиме lf2 (с выводом тела и результата во второй лог)
+	lfMode: false,
+	
+	//настройки, позволяющие включить автоскролинг в первый или второй лог 
+	autoscrollLog1: false,
+	autoscrollLog2: false,
+	
+	
+	
+	
+};
+
+
+
+
+//объект, в который можно выводить множественные результаты выполнения функции.
+//в конце выполнения каждой демки, если в него что то записано - он будет выведен во второй лог
+let a = {};
+
 //вспомогательная переменная
 let result;
 
@@ -67,29 +102,13 @@ let $selectorText;
 //демо-кнопки
 let demoButtons = [];
 
-//опции, определяющий, как будет работать текущая демка
-let demoOptions = {
 
-    //выполняются до и после выполнения currentFunc/демо-кнопок
-    beforeExec: null,
-    afterExec: null,
-
-    //функция инициализации всего кода: выводить её при нажатии каждой демо-кнопки
-    initFunction: null,
-	
-	//функция, выполняющаяся после reloadSandbox
-	afterSandboxReload: null,
-
-	//режим тестирования jquery функций (входные данные - это массив селекторов и jquery-запросов)
-	jquerySelectorsMode: false,
-	
-	
-};
 
 //Содержит ли #template1 - используется ли песочница
 let hasSandbox = false;
 
 let greenSpan = '<span class="green"></span>';
+let blueSpan = '<span class="blue"></span>';
 let boldTag = "<b></b>";
 let testHtmlSnippet = "<b>appended text</b>";
 let greenBorderDivSnippet = '<div class="green-border"></div>';
@@ -215,6 +234,7 @@ function highlightJquery(val) {
 	clearLog2();
     log2(val);
 	
+	a = {};
 	if (demoOptions.beforeExec) {
 	    demoOptions.beforeExec();
 	}
@@ -240,9 +260,12 @@ function highlightJquery(val) {
 	});
 	
 	val.addClass("red-border");
-
+	
 	if (demoOptions.afterExec) {
 	    demoOptions.afterExec();
+	}
+	if (Object.keys(a).length){
+		log2nl(a);
 	}
 	
 
@@ -306,6 +329,7 @@ function execDemoFunc() {
 		return;
 	}
 	
+	a = {};
 	if (demoOptions.beforeExec) {
 	    demoOptions.beforeExec();
 	}
@@ -316,18 +340,25 @@ function execDemoFunc() {
 
     if (typeof currentFunc == "string") {
         le2(currentFunc);
+		$log2.parent().trigger("focus");
     } else {
 
         let r = null;
         try {
-            r = currentFunc();
+			
+			if (demoOptions.lfMode){
+				lf2(currentFunc);
+			} else {
+				r = currentFunc();
 
-            let logMess = '\nexecuted. ';
-            if (r && r.jquery) {
-                r.addClass("red-border");
-                logMess += "elements found: " + r.length;
-            }
-            log2(logMess);
+				let logMess = '\nexecuted. ';
+				if (r && r.jquery) {
+				    r.addClass("red-border");
+				    logMess += "elements found: " + r.length;
+				}
+				log2(logMess);
+				$log2.parent().trigger("focus");
+			}
 
         } catch (error) {
             log("Error:", error.message);
@@ -339,7 +370,9 @@ function execDemoFunc() {
 	if (demoOptions.afterExec) {
 	    demoOptions.afterExec();
 	}
-	
+	if (Object.keys(a).length){
+		log2nl(a);
+	}	
     highlightLogComments2();
 
 }
@@ -529,7 +562,7 @@ function initDemo() {
     });
 
 	//быстрые клавиши
-    $(document).keydown(e => {
+    $(document).keyup(e => {
         if (e.keyCode == 109 || e.keyCode == 33) {  //-, pagUP
             accordUtils.selectNextOption($mainSelect, false);
         } else if (e.keyCode == 107 || e.keyCode == 34) { //+, pgDown
@@ -580,6 +613,7 @@ function initDemo() {
 const DT_SELECT = 1;
 const DT_BUTTONS = 2;
 const DT_SELECTORS = 3;
+const DT_SELECT_NO_WP = 4;  //без песочницы
 
 const TEMPLATE_FORM1 = 1;
 const TEMPLATE_FORM2 = 2;
@@ -614,12 +648,20 @@ function initBriefDemo(options) {
 	  case DT_SELECT:
 		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment1.html",null,true);
 	    break;
+		
 		case DT_BUTTONS:
 		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment2.html",null,true);
 		  break;
+		  
 	  case DT_SELECTORS:
 	  accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment3.html",null,true);
 	    break;
+		
+		case DT_SELECT_NO_WP:
+		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment4.html",null,true);
+		  break;
+		
+		
 	  default:
 		console.log(`demoType ${options.demoType} not found.`);
 		return;
@@ -645,7 +687,7 @@ function initBriefDemo(options) {
 	initDemoLogs();
 	initDemo();
 	
-	if (options.demoType==DT_SELECT || options.demoType==DT_SELECTORS) {
+	if (options.demoType==DT_SELECT || options.demoType==DT_SELECT_NO_WP || options.demoType==DT_SELECTORS) {
 		initDemoCodeSelect("#selectors1", mainData);
 		
 //		if (options.selectorsData){

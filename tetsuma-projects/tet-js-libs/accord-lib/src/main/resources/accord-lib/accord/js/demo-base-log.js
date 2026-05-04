@@ -11,15 +11,12 @@ let $log1, $log2, $log3;
 //панель с $log1, $log2...
 let $logPanel;
 
-//настройки, позволяющие включить автоскролинг в первый или второй лог 
-let autoscrollLog1 = false;
-let autoscrollLog2 = true;
 
 
 //преобразовывает объекты в строки, с форматированием, для вывода в лог
 function stringifyObject(o, indent = "", withBraces = false) {
 
-	if (!o){
+	if (o==null){
 		return "";
 	}
 		
@@ -27,6 +24,11 @@ function stringifyObject(o, indent = "", withBraces = false) {
 	if (t=="string" || t=="number" || t=="boolean"){
 		return o;
 	}
+	
+	if (t == 'function') {
+		return String(o);		
+	}
+	
 	
 	//dom-объект
 	if (o instanceof Element){
@@ -130,7 +132,18 @@ function _le($log, exp) {
 	try {
 		let showResult = true;
 		let resultAsJson = false;
+
+		if (exp.startsWith("#")){
+			if (exp.length>2){
+//				exp = exp.substring(2);
+			} else {
+				exp = "";
+			}
+			logMessage($log, exp);
+			return;
+		}
 		
+				
 		//если выражение заканчивается ! - результат выводить не нужно
 		if (exp.endsWith("!")){
 			showResult = false;
@@ -145,7 +158,7 @@ function _le($log, exp) {
 		
 		//выводим в лог выражение
 		let codeNode = logMessage($log, exp);
-		$(codeNode).wrap(greenSpan);
+		$(codeNode).wrap(blueSpan);
 		
 		//вычисляем выражение
 		let val = eval(exp);
@@ -332,7 +345,7 @@ function logMessage($log, ...vals) {
 //	$(lineNode).wrap(greenSpan);
 	
 
-	if (autoscrollLog1 && $log==$log1 || autoscrollLog2 && $log==$log2){
+	if (demoOptions.autoscrollLog1 && $log==$log1 || demoOptions.autoscrollLog2 && $log==$log2){
 		
 		let $p = $log.parent();
 		//scroll to bottom	

@@ -21,6 +21,9 @@ let selectorsData1 = {
 								
 		//вычислить и вывести результат
 		Object.entries(testObject1);
+		
+		//~ - вывести результат как json
+		Object.fromEntries(testMap1);			  ~
 	`,
 
     demo2_function() {
@@ -58,8 +61,13 @@ let selectorsData1 = {
 
 $(document).ready(function() {
 
+
+
+	////DT_BUTTONS, DT_SELECTORS
+	//DT_SELECT_NO_WP - no sandbox
+	//TEMPLATE_FORM2 - пустая форма
 	initBriefDemo(	{
-		demoType: DT_SELECT,
+		demoType: DT_SELECT, 
 		workPanelTemplate: TEMPLATE_FORM1,
 		selectorsData: selectorsData1,
 		selectedOption: "demo1_script",
@@ -67,5 +75,7 @@ $(document).ready(function() {
 			
 		}
 	});	
+	
+	
 	
 });

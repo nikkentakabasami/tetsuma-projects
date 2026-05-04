@@ -27,7 +27,7 @@ let selectorsData1 = {
 	basic_functions(){
 		
 		
-		le2NL(`
+		le2nl(`
 			
 			//основные функции
 
@@ -40,7 +40,7 @@ let selectorsData1 = {
 						
 		`);			
 				
-		lf2NL(()=>{
+		lf2nl(()=>{
 
 			//Object.entries(obj) - возвращает property объекта в виде двумерного массива.
 			//каждый элемент массива - массив вида [property, value]
@@ -97,7 +97,7 @@ let selectorsData1 = {
 	
 	create(){
 		
-		lf2NL(()=>{
+		lf2nl(()=>{
 			//Object.create(proto) - создаёт новый объект, используя существующий как прототип 
 			
 			const person = {
@@ -115,7 +115,7 @@ let selectorsData1 = {
 			currentObject.printIntroduction();			
 		});
 		
-		le2NL(`
+		le2nl(`
 		`);				
 		
 	},	

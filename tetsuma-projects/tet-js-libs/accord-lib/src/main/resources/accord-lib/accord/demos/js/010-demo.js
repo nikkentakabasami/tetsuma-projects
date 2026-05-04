@@ -21,6 +21,9 @@ let selectorsData1 = {
 								
 		//вычислить и вывести результат
 		Object.entries(testObject1);
+		
+		//~ - вывести результат как json
+		Object.fromEntries(testMap1);			  ~
 	`,
 
     demo2_function() {
