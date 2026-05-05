@@ -65,6 +65,7 @@ $(document).ready(function() {
 		demoType: DT_SELECT,
 		workPanelTemplate: TEMPLATE_FORM1,
 		selectorsData: selectorsData1,
+//		lfMode: true,
 		selectedOption: "demo1_script",
 		title: "mytitle",
 		initFunction: ()=>{

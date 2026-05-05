@@ -38,6 +38,7 @@ let demoOptions = {
 	autoscrollLog1: false,
 	autoscrollLog2: false,
 	
+	logObjectsAsJson: true,
 	
 	
 	
@@ -194,7 +195,7 @@ function logCurrentFunc(){
 		    log();
 		    lognl("//функция инициализации:");
 			
-			let code = accordUtils.funcToString(initFunction, true);
+			let code = accordUtils.funcToString(initFunction, false);
 			log(code);
 		}
 	}
@@ -374,7 +375,7 @@ function execDemoFunc() {
 		log2nl(a);
 	}	
     highlightLogComments2();
-
+//	highlightLogComments1();
 }
 
 //инициализация селекта с демками
@@ -562,6 +563,27 @@ function initDemo() {
     });
 
 	//быстрые клавиши
+	$(document).keydown(e => {
+		if (e.keyCode == 112) { //F1
+			e.preventDefault();
+			helpPopup.toggleVisible();
+		} else if (e.ctrlKey &&  e.keyCode == 37) { // <-
+			e.preventDefault();
+			if (siblingPages[0]){
+				location.href = siblingPages[0];
+			}
+			
+		} else if (e.ctrlKey &&  e.keyCode == 39) { // ->
+			e.preventDefault();
+			if (siblingPages[1]){
+				location.href = siblingPages[1];
+			}
+			
+		}
+//	    console.log(e.keyCode);
+	})	
+	
+	
     $(document).keyup(e => {
         if (e.keyCode == 109 || e.keyCode == 33) {  //-, pagUP
             accordUtils.selectNextOption($mainSelect, false);
@@ -571,25 +593,7 @@ function initDemo() {
             $bExecute.trigger("click");
         } else if (e.keyCode == 45 || e.keyCode == 96) { //0
             reloadSandbox()
-        } else if (e.keyCode == 112) { //F1
-			e.preventDefault();
-			helpPopup.toggleVisible();
-		} else if (e.ctrlKey &&  e.keyCode == 37) { // <-
-			e.preventDefault();
-			if (siblingPages[0]){
-				location.href = siblingPages[0];
-			}
-			
-		}else if (e.ctrlKey &&  e.keyCode == 39) { // ->
-			e.preventDefault();
-			if (siblingPages[1]){
-				location.href = siblingPages[1];
-			}
-			
-		}
-		
-		
-        console.log(e.keyCode);
+        }		
     })
 
 	createSiblingPageAnchors();

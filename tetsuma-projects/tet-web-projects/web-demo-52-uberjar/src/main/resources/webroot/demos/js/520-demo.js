@@ -1,7 +1,5 @@
 
-let a = {};
-
-
+let err;
 
 class PropertyError extends Error {
   constructor(property = "none", ...params) {
@@ -41,29 +39,15 @@ function readUser(data) {
 }
 
 
-
-
-
-
-
-
-
-
-
-//тестовые функции
-//возвращают query-объекты, задействованные в тесте: они будут выделены красной рамкой
 let selectorsData1 = {
-
-
 
 
   try_demo: () => {
 		//Пример использования try..catch
-		
 				
 		try {
 		  notExist.readUser();
-//			a.notExist();
+		  //a.notExist();
 		} catch (err) {
 			
 			if (err instanceof ReferenceError) {
@@ -85,31 +69,32 @@ let selectorsData1 = {
 
 	
 	new_error_demo: () => {
+		//Способы кинуть ошибку:
 		
-			try {
-				throw new Error("My error.");
-			} catch (err) {
-			  log2('тестовая ошибка:', err.message);
-				console.error(err.stack);
-			}			
+		try {
+			throw new Error("My error.");
+		} catch (err) {
+		  log2('тестовая ошибка:', err.message);
+			console.error(err.stack);
+		}			
 
-			//Ошибкой может быть String, Number, Boolea, Object
-			try {
-				throw "Too big";
-			} catch (err) {
-			  log2('тестовая ошибка:', err);
-				console.error(err.stack);
-			}			
-			
-			try {
-				throw 500;			
-			} catch (err) {
-			  log2('тестовая ошибка:', err);
-				console.error(err.stack);
-			}			
-			
+		//Ошибкой может быть String, Number, Boolea, Object
+		try {
+			throw "Too big";
+		} catch (err) {
+		  log2('тестовая ошибка:', err);
+			console.error(err.stack);
+		}			
+		
+		try {
+			throw 500;			
+		} catch (err) {
+		  log2('тестовая ошибка:', err);
+			console.error(err.stack);
+		}			
+		
 
-			
+		
 			
 			
 					
@@ -118,6 +103,10 @@ let selectorsData1 = {
 
 	
 	custom_error: () => {
+		//Кастомная ошибка PropertyError:
+		
+		log2nl(String(PropertyError));
+		log2nl();
 		
 		try {
 		  let user = readUser('{ "age": 25 }');
@@ -133,6 +122,7 @@ let selectorsData1 = {
 	},
 	
 	custom_error2: () => {
+		//Ещё раз поймаем PropertyError
 		
 		try {
 		  let user = readUser('{ "age": 5 }');
@@ -148,28 +138,39 @@ let selectorsData1 = {
 	},	
 	
 	
-	err_props: () => {
-		
-		let err = new Error("My error.");
+	err_props:`
+		//Основные свойства Error
 
-		le2("err");
-				
-	},		
+		err = new Error("My error.", { cause: "my cause." });
 	
+		err.name;
+		err.stack;
+		err.cause;
+		err.message;
+		
 	
-	
-	
-	
+	`
 
 }
 
 
+selectorsData1.custom_error.init = readUser;
 
 
 
 $(() => {
-  initDemoCodeSelect("#selectors1", selectorsData1);
 
+	initBriefDemo(	{
+		demoType: DT_SELECT_NO_WP, 
+		workPanelTemplate: 0,
+		selectorsData: selectorsData1,
+		lfMode: true,
+		selectedOption: "err_props",
+		initFunction: ()=>{
+			
+		}
+	});		
+	
 });
 
 

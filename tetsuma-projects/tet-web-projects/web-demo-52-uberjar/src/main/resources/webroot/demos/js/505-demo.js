@@ -194,11 +194,7 @@ let selectorsData1 = {
 		set1.add(pete);
 
 		john = null; // перезаписываем ссылку на объект
-				
-		
-		set1.forEach((value, valueAgain, set) => {
-			log2(value);
-		});
+		// объект john удалён из памяти!
 		
 	},		
 	
@@ -212,7 +208,7 @@ $(() => {
 			demoType: DT_SELECT_NO_WP,
 			workPanelTemplate: 0,
 			selectorsData: selectorsData1,
-			selectedOption: "weak_set",
+//			selectedOption: "weak_set",
 			lfMode: true,
 			autoscrollLog2: false,
 			

@@ -22,7 +22,7 @@ public class TetJettyOptions {
 	
 
 	
-	//дополнительный статический контент
+	//дополнительный статический контент (в classpath)
 	List<String> additionalStatic = new ArrayList<>();
 	
 	

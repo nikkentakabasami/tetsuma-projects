@@ -60,7 +60,9 @@ function stringifyObject(o, indent = "", withBraces = false) {
 		return String(o);		
 	}
 			
-	if ( (t == 'object') && (!Array.isArray(o)) ) {
+	
+	
+	if ( (t == 'object') && (!Array.isArray(o)) && !demoOptions.logObjectsAsJson ) {
 		
 		if (withBraces){
 			result = indent+"{";
@@ -77,7 +79,7 @@ function stringifyObject(o, indent = "", withBraces = false) {
 			if (val instanceof Element){
 				valStr = val.tagName+"#"+val.id;
 			} else if (val instanceof Date){
-				valStr = formatDateTime(val);
+				valStr = accordUtils.formatDateTime(val);
 			} else if (t == "function"){
 				valStr = "func";
 			} else if (Array.isArray(val)){
@@ -109,16 +111,42 @@ function stringifyObject(o, indent = "", withBraces = false) {
 
 
 //выводит в лог заданное выражение, выполняет его через eval(), выводит в лог результат
-function _le($log, exp) {
+//blockMode - не разбивать на линии
+function _le($log, exp, blockMode = false) {
 	if (!exp){
 		return;
 	}
 
 	//многострочное выражение
-	if (exp.includes("\n")){
+	if (!blockMode && exp.includes("\n")){
 		let lines = exp.split("\n");
+		
+		let multiLine = "";
+		let multiMode = false;
 		lines.forEach(line=>{
-			_le($log, line);
+			
+			let at = line.trimLeft().startsWith("@"); 
+			
+			//многострочные выражения окружены собачками
+			if (multiMode){
+				if (at){
+					multiMode = false;
+					_le($log, multiLine, true);
+				} else {
+					multiLine+=line+"\n";
+				}
+				return;
+			}
+			
+			//встретилась собака - включаем многострочный режим.
+			if (at){
+				multiMode = true;
+				multiLine = "";
+				return;
+			}
+
+			_le($log, line);			
+			
 		});
 		return;
 	};
@@ -174,6 +202,7 @@ function _le($log, exp) {
 		}
 	} catch (err) {
 	  console.error('Произошла ошибка:', err.message);
+	  console.error('exp:', exp);
 	  console.error('Стек вызовов:', err.stack);
 		log2('Произошла ошибка:', err.message);
 		return;
@@ -224,14 +253,24 @@ function log3(...vals) {
 //выводит в лог код заданной функции, выполняет её, выводит в лог результат функции
 function _lf($log, func) {
 	let code = accordUtils.funcToString(func,true);
-	let codeNode = logMessage($log, code);
 	
-	//выделяем код зелёным
-	$(codeNode).wrap(greenSpan);
+	//ищем первую строку без комментов
+	let ind = code.search(/^[^\/#]{3}/gm);	
+	
+	let codeNode;
+	if (ind>0){
+		logMessage($log, code.substring(0,ind));
+		codeNode = logMessage($log, code.substring(ind));
+	} else {
+		codeNode = logMessage($log, code);
+	}
+	
+	//выделяем код синим
+	$(codeNode).wrap(blueSpan);
 	
 	let val = func();
 	if (val!=null){
-		logMessage($log, val);
+		logMessage($log, "\n", val);
 		return val;
 	}
 }
