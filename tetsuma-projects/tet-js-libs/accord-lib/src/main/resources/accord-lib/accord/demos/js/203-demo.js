@@ -101,7 +101,7 @@ let selectorsData1 = {
 	regex: `
 		
 		//преобразовывает строку с регулярным выражением в объект RegExp
-		r = accordUtils.stringToRegex("/\\\\d/g");
+		r = accordUtils.stringToRegexp("/\\\\d/g");
 		
 		r.global;
 		

@@ -317,6 +317,21 @@ function reloadSandbox() {
 }
 
 
+//тестирование регулярных выражений
+function testRegExp(re){
+
+	let opts = accordUtils.highlightText({
+		$div: $log1,
+		regex: re,
+		class: "bg-green",
+		matchHandler: match=>{
+			log2("match=",match,", match.index=",match.index);
+		}
+	});
+	
+	
+}
+
 
 //выполняет currentFunc
 function execDemoFunc() {
@@ -329,7 +344,32 @@ function execDemoFunc() {
 	    highlightJquery(val);
 		return;
 	}
+
+	if (demoOptions.regexpMode) {
+		
+		
+		let regexp = $selectorText.val();
+		
+		let v = $mainSelect.val();
+		let exp = mainData[v];
+		let comment = mainDataComments[v];
+
+		clearLog2();
+		if (exp==regexp){
+			log2(comment);
+			log2(exp);
+			highlightLogComments2();	
+		} else {
+			log2(regexp);
+		}
+		log2();
+		
+	    testRegExp(regexp);
+		return;
+	}
 	
+	
+		
 	a = {};
 	if (demoOptions.beforeExec) {
 	    demoOptions.beforeExec();
@@ -391,10 +431,6 @@ function initDemoCodeSelect(selector = "selectors1", data = null) {
 	}
 	
 	
-	
-//	jquerySelectorsMode = Array.isArray(data);
-	
-	
     let $sel = selector;
     if (!selector.jquery) {
         $sel = $(selector);
@@ -421,7 +457,6 @@ function initDemoCodeSelect(selector = "selectors1", data = null) {
 	
 	//обработчик выбора в select
     $sel.change(e => {
-        clearLog();
 		if (demoOptions.reloadSandboxOnChange){
 			reloadSandbox();
 		}
@@ -429,11 +464,22 @@ function initDemoCodeSelect(selector = "selectors1", data = null) {
 
         let v = $sel.val();
 
-		//задан массив jquery-селекторов
-        if (demoOptions.jquerySelectorsMode) {
-//            let exp = $sel.children("option:selected").text();
+		if (demoOptions.regexpMode) {
+			clearLog2();
+
+			let exp = mainData[v];
+			let comment = mainDataComments[v];
+
+			log2(comment);
+			log2(exp);
+			highlightLogComments2();	
+						
+			currentFunc = exp;
+			$selectorText.val(exp);
+						
+		} else if (demoOptions.jquerySelectorsMode) {
+			clearLog();
 			
-//			let ind = Number(v);
 			let exp = mainData[v];
 			let comment = mainDataComments[v];
 			
@@ -444,6 +490,8 @@ function initDemoCodeSelect(selector = "selectors1", data = null) {
 			currentFunc = exp;
 			$selectorText.val(exp);
         } else {
+			clearLog();
+			
             currentFunc = data[v];
 			logCurrentFunc();
 			$selectorText.val(v);
@@ -585,15 +633,23 @@ function initDemo() {
 	
 	
     $(document).keyup(e => {
-        if (e.keyCode == 109 || e.keyCode == 33) {  //-, pagUP
-            accordUtils.selectNextOption($mainSelect, false);
-        } else if (e.keyCode == 107 || e.keyCode == 34) { //+, pgDown
-            accordUtils.selectNextOption($mainSelect, true);
-        } else if (e.keyCode == 13) { //Enter    || e.keyCode == 123
+		//инпут в фокусе
+		let tf = $selectorText.is(':focus');
+		
+		if (!tf){
+			if (e.keyCode == 109 || e.keyCode == 33) {  //-, pagUP
+			    accordUtils.selectNextOption($mainSelect, false);
+			} else if (e.keyCode == 107 || e.keyCode == 34) { //+, pgDown
+			    accordUtils.selectNextOption($mainSelect, true);
+			} else if (e.keyCode == 45 || e.keyCode == 96) { //0
+			    reloadSandbox()
+			}		
+		}
+		
+		if (e.keyCode == 13) { //Enter
             $bExecute.trigger("click");
-        } else if (e.keyCode == 45 || e.keyCode == 96) { //0
-            reloadSandbox()
-        }		
+        }
+				
     })
 
 	createSiblingPageAnchors();
@@ -618,6 +674,9 @@ const DT_SELECT = 1;
 const DT_BUTTONS = 2;
 const DT_SELECTORS = 3;
 const DT_SELECT_NO_WP = 4;  //без песочницы
+const DT_REGEXP = 5;
+
+
 
 const TEMPLATE_FORM1 = 1;
 const TEMPLATE_FORM2 = 2;
@@ -630,6 +689,8 @@ const defaultBruefDemoOptions = {
 	selectedOption: null,
 	afterSandboxReload: null,
 	jquerySelectorsMode: false,
+	regexpMode: false,
+	sampleText: null,
 	reloadSandboxOnChange: true
 }
 
@@ -641,25 +702,26 @@ function initBriefDemo(options) {
 	options = $.extend({}, defaultBruefDemoOptions, options);
 
 	demoOptions = $.extend(demoOptions, options);
-		
-//	demoOptions.afterSandboxReload = options.afterSandboxReload;
-//	demoOptions.jquerySelectorsMode = options.jquerySelectorsMode;
 	
 	parseMainSelectorsData(options.selectorsData);
 	
 	
 	switch (options.demoType) {
-	  case DT_SELECT:
+	case DT_SELECT:
 		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment1.html",null,true);
 	    break;
 		
-		case DT_BUTTONS:
+	case DT_BUTTONS:
 		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment2.html",null,true);
 		  break;
 		  
-	  case DT_SELECTORS:
-	  accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment3.html",null,true);
+	case DT_SELECTORS:
+		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment3.html",null,true);
 	    break;
+		
+	case DT_REGEXP:
+		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment5.html",null,true);
+		break;
 		
 		case DT_SELECT_NO_WP:
 		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment4.html",null,true);
@@ -691,7 +753,11 @@ function initBriefDemo(options) {
 	initDemoLogs();
 	initDemo();
 	
-	if (options.demoType==DT_SELECT || options.demoType==DT_SELECT_NO_WP || options.demoType==DT_SELECTORS) {
+	if (options.demoType==DT_SELECT 
+		|| options.demoType==DT_SELECT_NO_WP 
+		|| options.demoType==DT_SELECTORS
+		|| options.demoType==DT_REGEXP
+	) {
 		initDemoCodeSelect("#selectors1", mainData);
 		
 //		if (options.selectorsData){
@@ -704,6 +770,11 @@ function initBriefDemo(options) {
 		}
 	}
 		  
+	if (options.demoType==DT_REGEXP) {
+		$log1.text(demoOptions.sampleText);
+	}
+	
+	
 	if (options.demoType==DT_BUTTONS) {
 		if (options.selectorsData){
 			//добавляем демо-кнопки

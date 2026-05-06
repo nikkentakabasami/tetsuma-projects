@@ -1,5 +1,4 @@
 
-let a = {};
 let o1,o2,o3,o4, currentObject;
 
 
@@ -13,7 +12,6 @@ let selectorsData1 = {
 
 		log2(String(User));
 		
-				
 		le2(`
 			
 			user = new User("Иван"); ~
@@ -81,9 +79,17 @@ let selectorsData1 = {
 
 
 $(() => {
-  initDemoCodeSelect("#selectors1", selectorsData1);
-
-	$sel1.val("class_basics").trigger("change");
+	
+		initBriefDemo(	{
+			demoType: DT_SELECT_NO_WP,
+			workPanelTemplate: 0,
+			selectorsData: selectorsData1,
+	//		selectedOption: "demo1_script",
+			lfMode: true,
+			initFunction(){
+				
+			},
+		});		
 
 });
 

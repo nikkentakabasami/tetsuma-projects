@@ -5,70 +5,41 @@ let textSample;
 
 
 
-
-function testExpression(text, re){
-	textSample = text;
-	regex = re;
-
-	le2("regex");
-	
-	const matches = textSample.matchAll(regex);
-	for (const match of matches) {
-		log2("match=",match,", match.index=",match.index);
-	}
-	
-}
-
-
-
 function logRegexParams(){
 	le2("textSample");
 	le2("regex");
 }
 
 
-//выполняет все основные функции над заданными выражениями
-function global_and_local_regexp(text, re){
+//выполняет основные функции с заданнымм регулярным выражением
+function testRegexp(text, re, showText = true){
+	
 	textSample = text;
 	regex = re;
+
 	
+	if (showText){
+		le2("textSample");
+	}
+	le2("regex");
+	
+		
 	if (regex.global){
 		
 		
 		le2(`
-			# использование глобального regexp
-			
-			textSample
-			regex
-			
-			# matchAll(regexp) - возвращает iterator по всем совпадениям
-			# Самый универсальный способ поиска!
+			//-------использование глобального regexp---------
 
+			textSample.search(regex)
+						
 			@
 			const matches = textSample.matchAll(regex);
 			for (const match of matches) {
-				log2("match=",match,", match.index=",match.index);
+			  log2("match=",match,", match.index=",match.index);
 			}
 			@
-			#
-			# str.search(regexp) - возвращает позицию первого совпадения или -1, если ничего не найдено.
-			textSample.search(regex)
 
-			# str.match(reg) - возвращает обычный массив из всех совпадений.
 			textSample.match(regex)
-
-			# regexp.test(str) - проверяет, есть ли хоть одно совпадение в строке str.
-			# В глобальных выражениях его можно вызвать несколько  раз
-			regex.test(textSample)
-			regex.lastIndex
-
-			# regexp.exec(str) - устаревшая версия matchAll.
-			@
-			regex.lastIndex = 0;
-			while (result = regex.exec(textSample)) {
-				log2("result=",result,", result.index=",result.index,", regexp.lastIndex=",regex.lastIndex);
-			}
-			@
 
 			#
 			textSample.replace(regex,'A');							
@@ -76,25 +47,19 @@ function global_and_local_regexp(text, re){
 		
 		
 	} else {
-		lc2nl("использование одинарных regexp");
+		
+		le2(`
+			//-------использование одинарных regexp---------
+			
+			textSample.search(regex)
+			
+			result = textSample.match(regex);
+			
+			result.index
+			
+			textSample.replace(regex,'A');							
+			`);		
 
-		logRegexParams();
-
-		le2("textSample.search(regex)");
-		
-		result = le2("textSample.match(regex)");
-		le2nl("result.index");
-		
-		le2("textSample.replace(regex,'A')");
-		
-		le2("regex.test(textSample)");
-		
-		lf2nl(() => {
-			result = regex.exec(textSample)
-			if (result){
-				log2("result=",result,", result.index=",result.index,", regexp.lastIndex=",regex.lastIndex);
-			}
-		});				
 	}
 
 	
@@ -142,6 +107,10 @@ let selectorsData1 = {
 	regex.test(textSample);
 	regex.lastIndex
 
+	//всегда можно сбросить или задать это поле
+	regex.lastIndex = 0;  !
+	
+	
 	//RegExp.escape(string) - помогает эскейпить спецсимволы в строке, чтобы использовать её в паттерне
 	//Поддерживается только в новых браузерах!
 	//s = RegExp.escape("1.2.");
@@ -151,13 +120,43 @@ let selectorsData1 = {
 	
 	`,
 	
+
+	search_test_demo1:`
+
+	# str.search(regexp)
+	#   возвращает позицию первого совпадения или -1, если ничего не найдено.
+	#   Нельзя заставить search искать дальше первого совпадения.
+
+	textSample = textSample4;
+	regex = regexSamples[5];
+
+	textSample.search(regex)
+		
+
+	# regexp.test(str) - проверяет, есть ли хоть одно совпадение в строке str.
+	# Возвращает true/false. Работает так же, как и проверка str.search(reg) != -1
+	# В глобальных выражениях его можно вызвать несколько  раз, при этом он меняет поле lastIndex!
+	# Довольно бесполезная функция...
+
+
+	regex.test(textSample)
+	regex.lastIndex
+
+	regex.test(textSample)
+	regex.lastIndex
+
+	regex.test(textSample)
+	regex.lastIndex
+
+	`,	
+	
+	
+	
 	matchall_demo1:`
 
 	# str.matchAll(regexp) - возвращает iterator по всем совпадениям regexp (включая группы)
 	# Поддерживает только глобальные выражения!
 	# Самый универсальный способ поиска!
-
-
 
 	textSample = textSample2;
 	regex = /ой/ig;
@@ -188,54 +187,56 @@ let selectorsData1 = {
 	
 	match_demo1:`
 
-		# str.match(reg)");
-		# с флагом g - возвращает обычный массив из всех совпадений.
-		# без флага g - возвращает обычный массив, содержащий первое найденное совпадение и результаты поиска групп (частей в круглых скобках).
-		# При этом результат содержит доп. свойства: index – позиция обнаружения, input - строка по которой вёлся поиск
-		# Остальные элементы результата содержат результаты поиска групп
-		# 
-		textSample = textSample2;
-		
-		//поиск повторяющегося паттерна
-		result = textSample.match( /ой/ig );
-		
-		result = textSample.match( /ой/i );
+	# str.match(reg)
+	# с флагом g - возвращает обычный массив из всех совпадений.
+	# без флага g - возвращает обычный массив, содержащий первое найденное совпадение и результаты поиска групп (частей в круглых скобках).
+	# При этом результат содержит доп. свойства: index – позиция обнаружения, input - строка по которой вёлся поиск
+	# Остальные элементы результата содержат результаты поиска групп
+	# 
+	textSample = textSample2;
+	
+	//поиск повторяющегося паттерна
+	result = textSample.match( /ой/ig );
+	
+	result = textSample.match( /ой/i );
 
-		result.index;
-		
-		
-		textSample = textSample3;
+	result.index;
+	
+	
+	textSample = textSample3;
 
-		//ищем все заглавные буквы
-		textSample.match( /[A-Z]/g );
+	//ищем все заглавные буквы
+	textSample.match( /[A-Z]/g );
 
-		//ищем первую заглавную букву
-		result = textSample.match( /[A-Z]/ );
-		
-		result.index;
-		result.input;
-		
-		textSample = "определённо javascript - это такой язык";
+	//ищем первую заглавную букву
+	result = textSample.match( /[A-Z]/ );
+	
+	result.index;
+	result.input;
+	
+	textSample = "определённо javascript - это такой язык";
 
-		//результат поиска групп (частей в круглых скобках) - будет выведен в доп элементах результата поиска
-		result = textSample.match(/JAVA(SCRIPT)/i);
+	//результат поиска групп (частей в круглых скобках) - будет выведен в доп элементах результата поиска
+	result = textSample.match(/JAVA(SCRIPT)/i);
 
-		result.index;
+	result.index;
 
-		textSample = textSample4;
-		regex = regexSamples[1];
-		
-		result = textSample.match(regex);
-		
-		
-		regex = regexSamples[2];
-		
-		result = textSample.match(regex);
-		
-		result.index;
-		result.input;
+	textSample = textSample4;
+	regex = regexSamples[1];
+	
+	result = textSample.match(regex);
+	
+	
+	regex = regexSamples[2];
+	
+	result = textSample.match(regex);
+	
+	result.index;
+	result.input;
 
 	`,
+	
+
 	
 	replace_demo1:`
 	
@@ -277,6 +278,9 @@ let selectorsData1 = {
 	`,
 	
 	replace_demo2:`
+	
+	# str.replace(reg, str/func)
+	#
 	# Замена с использованием функции.
 	# функция получает следующие аргументы:
 	# str 	найденное совпадение,
@@ -308,30 +312,10 @@ let selectorsData1 = {
 	
 	`,
 	
-	test_demo1:`
-	
-	# regexp.test(str) - проверяет, есть ли хоть одно совпадение в строке str.
-	# Возвращает true/false. Работает так же, как и проверка str.search(reg) != -1
-	# В глобальных выражениях его можно вызвать несколько  раз, при этом он меняет поле lastIndex!
-	# Довольно бесполезная функция...
-
-	textSample = textSample4;
-	regex = regexSamples[5];
-
-	regex.test(textSample)
-	regex.lastIndex
-	
-	regex.test(textSample)
-	regex.lastIndex
-	
-	regex.test(textSample)
-	regex.lastIndex
-	
-	`,
 	
 	exec_demo1:`
 	
-	# regexp.exec(str) - устаревшая версия matchAll
+	# regexp.exec(str) - более неуклюжий вариант str.matchAll(regexp)
 	# Если флага g нет, то возвращает первое совпадение
 	# Если флаг g есть - возвращает первое совпадение и записывает в regexp.lastIndex позицию, с которой нужно возобновить поиск.
 	# Последующий поиск он начнёт уже с этой позиции. Если совпадений не найдено, то сбрасывает regexp.lastIndex в ноль.
@@ -342,7 +326,7 @@ let selectorsData1 = {
 	@
 	regex = /ой/gi;
 	while (result = regex.exec(textSample)) {
-		log2("result[0]=",result[0],", result.index=",result.index,", regexp.lastIndex=",regex.lastIndex);
+		log2("result=",result,", result.index=",result.index,", regexp.lastIndex=",regex.lastIndex);
 	}
 	@
 
@@ -352,11 +336,13 @@ let selectorsData1 = {
 	@
 	result = regex.exec(textSample)
 	if (result){
-		log2("result[0]=",result[0],", result.index=",result.index);
+		log2("result=",result,", result.index=",result.index);
 	}
 	@
 
-	# поиск с группами - результат будет содержать так же найденные группы.
+	#
+	//поиск с группами
+	#
 	textSample = textSample4;
 
 	regex = regexSamples[5];
@@ -364,34 +350,37 @@ let selectorsData1 = {
 	result = regex.exec(textSample);
 			
 	result.index
+
+	result = regex.exec(textSample);
+			
+	result.index
 	
+		
 	`,
 	
 
 
-	global_and_local_regexp1: () => {
-		global_and_local_regexp(textSample4, /(\.\d)(\.\d)/g);
-		global_and_local_regexp(textSample4, /(\.\d)(\.\d)/);
+	testRegexp1: () => {
+		testRegexp(textSample4, /(\.\d)(\.\d)/g);
+		testRegexp(textSample4, /(\.\d)(\.\d)/);
 	},
 
-	global_and_local_regexp2: () => {
-		global_and_local_regexp(textSample2, /ой/gi);
-		global_and_local_regexp(textSample2, /ой/i);
+	testRegexp2: () => {
+		testRegexp(textSample2, /ой/gi);
+		testRegexp(textSample2, /ой/i);
 	},
 	
 	
-	expressions1: () => {
-		logTextSample(textSample2);
-		testExpression(textSample2, /ой/gi);
-	},	
-	
 	expressions2: () => {
-		logTextSample(textSample1);
-		lc2("Поиск по файлу 006-demo.js")
 		
-		testExpression(textSample1, /^.*le2.*$/g);
-		testExpression(textSample1, /\(\) *=/g);
-		testExpression(textSample1, / *\/\//g);
+		let s = accordUtils.loadFileAsString("../js/001-demo.js");
+		
+		
+//		testRegexp(s, /^.*le2.*$/g);
+//		testRegexp(s, /\(\) *=/g);
+
+		//ищем комментарии
+		testRegexp(s, /^(\s*)(\/\/).+/gm, false);
 		
 		
 		
@@ -414,10 +403,17 @@ $(() => {
 		workPanelTemplate: 0,
 		selectorsData: selectorsData1,
 		lfMode: false,
-		selectedOption: "global_and_local_regexp1",
+		selectedOption: "testRegexp1",
 		initFunction: ()=>{
 			
+		},
+		beforeExec: ()=>{
+			for(re of regexSamples){
+				re.lastIndex = 0;
+			}
 		}
+		
+		
 	});	
 	
 		

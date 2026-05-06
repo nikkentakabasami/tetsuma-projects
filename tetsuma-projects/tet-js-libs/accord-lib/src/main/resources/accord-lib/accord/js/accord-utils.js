@@ -60,7 +60,7 @@ let accordUtils = {
   random: random,
   randomDate: randomDate,
   cloneObject: cloneObject,
-	stringToRegex: stringToRegex,
+	stringToRegexp: stringToRegexp,
 	escapeHTML: escapeHTML,
 	removeOddIndent: removeOddIndent,
 	funcToString: funcToString,
@@ -232,7 +232,7 @@ function escapeHTML(str) {
 
 
 //преобразовывает строку с регулярным выражением (например "/a{3}/g") в объект RegExp
-function stringToRegex(str){
+function stringToRegexp(str){
 	if (str instanceof RegExp){
 		return str;
 	}
@@ -284,8 +284,10 @@ function highlightText(options){
 	if (options.regex){
 		
 		let regex = options.regex; 
-		regex = stringToRegex(regex);
+		regex = stringToRegexp(regex);
 			
+		
+		
 		if (regex.global){
 			const matches = text.matchAll(regex);
 			for (const match of matches) {

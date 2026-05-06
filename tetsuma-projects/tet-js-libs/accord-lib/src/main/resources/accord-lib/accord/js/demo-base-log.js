@@ -123,17 +123,21 @@ function _le($log, exp, blockMode = false) {
 		
 		let multiLine = "";
 		let multiMode = false;
+		let si = 0;  //чтобы убрать ведущие пробелы
 		lines.forEach(line=>{
-			
-			let at = line.trimLeft().startsWith("@"); 
+
+			let ind = line.indexOf("@"); 
+			let at = ind>=0; 
+//			let at = line.trimLeft().startsWith("@"); 
 			
 			//многострочные выражения окружены собачками
 			if (multiMode){
 				if (at){
 					multiMode = false;
+					si = 0;
 					_le($log, multiLine, true);
 				} else {
-					multiLine+=line+"\n";
+					multiLine+=line.substring(si)+"\n";
 				}
 				return;
 			}
@@ -142,6 +146,7 @@ function _le($log, exp, blockMode = false) {
 			if (at){
 				multiMode = true;
 				multiLine = "";
+				si = ind;
 				return;
 			}
 
@@ -186,7 +191,11 @@ function _le($log, exp, blockMode = false) {
 		
 		//выводим в лог выражение
 		let codeNode = logMessage($log, exp);
-		$(codeNode).wrap(blueSpan);
+		
+		if (codeNode.nodeValue.trim().length){
+			$(codeNode).wrap(blueSpan);
+		}
+		
 		
 		//вычисляем выражение
 		let val = eval(exp);
@@ -264,7 +273,7 @@ function _lf($log, func) {
 	} else {
 		codeNode = logMessage($log, code);
 	}
-	
+		
 	//выделяем код синим
 	$(codeNode).wrap(blueSpan);
 	
@@ -370,8 +379,6 @@ function logMessage($log, ...vals) {
 	
 	let line = vals.map(v=>stringifyObject(v)).join(" ");
 	
-//	$(line).wrap(greenSpan);
-	
 	line = line+"\n";
 	
 	//чтобы избавиться от спецсимволов
@@ -379,10 +386,6 @@ function logMessage($log, ...vals) {
 
 	
 	$log.append(lineNode);
-
-//	$log.append('<div class="green">'+line+'</div>');
-//	$(lineNode).wrap(greenSpan);
-	
 
 	if (demoOptions.autoscrollLog1 && $log==$log1 || demoOptions.autoscrollLog2 && $log==$log2){
 		
@@ -456,7 +459,7 @@ function highlightLogComments($log) {
 			return "";
 		}
 
-		if (line.startsWith('# ')) {
+		if (line.startsWith('#')) {
 			let s = line.substring(2);
 			return grenSpan + s + endSpan;
 		} else if (line.startsWith('//#')) {
