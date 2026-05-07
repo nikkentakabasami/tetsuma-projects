@@ -335,9 +335,6 @@ function testRegExp(re){
 
 //выполняет currentFunc
 function execDemoFunc() {
-    if (!currentFunc) {
-        return;
-    }
 
 	if (demoOptions.jquerySelectorsMode) {
 		let val = $selectorText.val();
@@ -368,6 +365,9 @@ function execDemoFunc() {
 		return;
 	}
 	
+	if (!currentFunc) {
+	    return;
+	}
 	
 		
 	a = {};
@@ -513,10 +513,10 @@ function addDemoButtons(handlers, panelSelector = ".acc-button-panel") {
     }
 }
 
-function addDemoButton(handlerName, handler, panelSelector = ".acc-button-panel") {
+function addDemoButton(buttonTitle, handler, panelSelector = ".acc-button-panel") {
     let $panel = $(panelSelector);
 
-    let $newButton = $(`<button id="b${newButtonNo++}" type="button" class="acc-btn">${handlerName}</button>`);
+    let $newButton = $(`<button id="b${newButtonNo++}" type="button" class="acc-btn">${buttonTitle}</button>`);
     demoButtons.push($newButton);
     $panel.append($newButton);
 
@@ -772,6 +772,10 @@ function initBriefDemo(options) {
 		  
 	if (options.demoType==DT_REGEXP) {
 		$log1.text(demoOptions.sampleText);
+		$("#bTestText").click(()=>{
+			demoOptions.sampleText = prompt("Введите тестовый текст.")
+			$log1.text(demoOptions.sampleText);
+		});
 	}
 	
 	

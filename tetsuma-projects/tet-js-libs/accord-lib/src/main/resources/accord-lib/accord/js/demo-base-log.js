@@ -135,7 +135,9 @@ function _le($log, exp, blockMode = false) {
 				if (at){
 					multiMode = false;
 					si = 0;
+					multiLine+=" !";
 					_le($log, multiLine, true);
+					
 				} else {
 					multiLine+=line.substring(si)+"\n";
 				}
@@ -208,6 +210,8 @@ function _le($log, exp, blockMode = false) {
 			}
 			logMessage($log, " ", val, "\n");
 			return val;
+		} else {
+			logMessage($log);
 		}
 	} catch (err) {
 	  console.error('Произошла ошибка:', err.message);

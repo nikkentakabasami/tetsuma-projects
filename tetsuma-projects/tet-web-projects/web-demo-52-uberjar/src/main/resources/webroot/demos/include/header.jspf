@@ -18,14 +18,13 @@
 
 <!-- jquery 3.1 -->
 <script src="jquery31/js/jquery.js"></script>
-<script src="jquery31/js/jquery.bootpag.min.js"></script>
-<script src="jquery31/js/jquery.form-validator.min.js"></script>
 
 <%--
-<script src="jquery31/js/select2.min.js"></script>
+<script src="jquery31/js/jquery.bootpag.min.js"></script>
+<script src="jquery31/js/jquery.form-validator.min.js"></script>
+<script src="jquery31/js/moment.min.js"></script>
  --%>
 
-<script src="jquery31/js/moment.min.js"></script>
 
 
 <!-- bootstrap3 -->
@@ -39,6 +38,8 @@
 
 
 <link rel="stylesheet" type="text/css" href="demos/css/demo.css">
+
+<link rel="stylesheet" type="text/css" href="accord/css/demo-base.css">
 
 
 </head>

@@ -61,10 +61,9 @@ let selectorsData1 = {
 
 $(document).ready(function() {
 
-
-
 	////DT_BUTTONS, DT_SELECTORS
 	//DT_SELECT_NO_WP - no sandbox
+	//DT_REGEXP = 5 - рег. выражения
 	//TEMPLATE_FORM2 - пустая форма
 	initBriefDemo(	{
 		demoType: DT_SELECT, 
@@ -76,7 +75,5 @@ $(document).ready(function() {
 			
 		}
 	});	
-	
-	
 	
 });

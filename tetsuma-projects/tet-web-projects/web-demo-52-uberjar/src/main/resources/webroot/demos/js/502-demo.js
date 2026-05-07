@@ -129,6 +129,9 @@ let selectorsData1 = {
 		123..toString();
 		
 		//--------Форматирование числа в строку.---------
+		#
+		//через функцию String		
+		String(Math.PI);
 							
 		//num.toString(radix) - Преобразование числа в строку в заданной системе исчисления (2-36)
 		255..toString();
@@ -150,7 +153,11 @@ let selectorsData1 = {
 		n1.toExponential(6);
 				
 				
-		//num.toLocaleString(locales, options) - форматирует строку, используя настройки локализации
+		# Number.toLocaleString([locales [, options]])
+		#   форматирование через локаль и опции. См: Intl.NumberFormat
+		#
+		
+		Math.PI.toLocaleString(	"ru", {maximumFractionDigits: 3});
 		n1.toLocaleString();
 		n1.toLocaleString("ru-RU", {style:"percent"})
 		n1.toLocaleString("en-US", {style:"currency", currency:"USD"})

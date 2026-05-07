@@ -37,10 +37,13 @@ public class DemosScanner {
 		logger.info("MainServletContextListener: search demo pages in '" + DEMOS_PATH + "'");
 
 		//ищем папки с демками
-		List<String> demoFolderNames = TetClasspathUtils.scanClasspathFolder(DEMOS_PATH, (String fileName, boolean isDirectory) -> {
-			return isDirectory && (fileName.startsWith("demos_") || fileName.equals("templates"));
+		List<String> demoFolderNames = TetClasspathUtils.scanClasspathFolder(DEMOS_PATH, 
+				(String fileName, boolean isDirectory) -> {
+			return isDirectory && (fileName.matches("^demos_\\d{3}.+"));
 		});
 
+		demoFolderNames.sort(null);
+		
 		demoFolders = new ArrayList<>();
 		for (String folderName : demoFolderNames) {
 

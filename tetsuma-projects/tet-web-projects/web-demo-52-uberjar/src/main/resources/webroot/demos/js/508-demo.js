@@ -82,6 +82,12 @@ let selectorsData1 = {
 	Date_format: `
 		d1 = new Date();
 
+		# Date.toLocaleString([locales [, options]])
+		#   Форматирование через локаль и опции. См. Intl.DateTimeFormat
+		# 
+		d1.toLocaleString("ru", { year: 'numeric', month: 'numeric', day: "numeric" }); 
+		
+		
 		//Форматирование вручную:
 		accordUtils.formatDate;
 		

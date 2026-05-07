@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="demos/include/header.jspf"%>
 
+<script src="js/index.js"></script>
 
 <div class="acc-2cols">
 
@@ -27,7 +28,7 @@
   <a href="test_js_libs.html" target="jaxrs">test_js_libs.html - check js libs</a>
 
   <a href="demoscan/demoFolders" target="jaxrs">DemosServlet - demoFolders</a>
-  <a href="demoscan/refreshDemoList" target="jaxrs">DemosServlet - refreshDemoList</a>
+  <a href="demoscan/refreshDemoList" target="jaxrs" id="demoscan">DemosServlet - refreshDemoList</a>
 
   <a href="demoscan/siblingPages?pageName=410_jquery_selectors1.html" target="jaxrs">DemosServlet - siblingPages</a>
 
@@ -43,8 +44,7 @@
 	<c:forEach var="folder" items="${demoFolders}" varStatus="loop">
 
     	<div class="acc-anchor-list">
-			<h5 style="color: gray;">${loop.index}- ${folder.name}</h5>
-			<div>${folder.desc}</div>
+			<h4>${folder.desc}<sup class="header-sup">${folder.name}</sup></h4>
 
 			<c:forEach var="page" items="${folder.pages}">
 				<a href="demos/${folder.name}/${page.name}" target="${folder.name}">${page.desc}</a>
