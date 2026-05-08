@@ -37,7 +37,7 @@ let selectorsData1 = {
 		console.log("my object: %o is based",testObject);
 
 		//# info, warn, error
-		
+		//# log выводит сообщения на уровне info
 		console.info("%s numbers %d, %d and %d","hello",1,2,3);
 		console.warn("%s numbers %d, %d and %d","hello",1,2,3);
 		console.error("%s numbers %d, %d and %d","hello",1,2,3);
@@ -90,6 +90,9 @@ let selectorsData1 = {
 	},
 	
 	
+	
+	
+	
 }
 
 $(document).ready(function() {
@@ -99,7 +102,7 @@ $(document).ready(function() {
 		workPanelTemplate: 0,
 		selectorsData: selectorsData1,
 		//		lfMode: true,
-//		selectedOption: "intl_Collator",
+		selectedOption: "location2",
 		initFunction: ()=>{
 			
 		}

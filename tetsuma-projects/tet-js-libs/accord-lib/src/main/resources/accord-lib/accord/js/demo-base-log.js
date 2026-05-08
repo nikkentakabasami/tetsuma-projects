@@ -126,10 +126,15 @@ function _le($log, exp, blockMode = false) {
 		let si = 0;  //чтобы убрать ведущие пробелы
 		lines.forEach(line=>{
 
-			let ind = line.indexOf("@"); 
-			let at = ind>=0; 
-//			let at = line.trimLeft().startsWith("@"); 
 			
+			
+			let ind = line.indexOf("@"); 
+			let at = ind>=0; 	//строка начинается с @ - включаем многострочный режим
+			if (at){
+				//действительно ли @ - первый символ?
+				at = (line.search(/^\s*@/)>=0);
+			}
+						
 			//многострочные выражения окружены собачками
 			if (multiMode){
 				if (at){
@@ -159,7 +164,7 @@ function _le($log, exp, blockMode = false) {
 	};
 	
 	exp = exp.trim();
-	if (exp.startsWith("//")){
+	if (!blockMode && exp.startsWith("//")){
 		let codeNode = logMessage($log, exp);
 		return;
 	}
@@ -476,8 +481,10 @@ function highlightLogComments($log) {
 			}
 		} 
 		
-				
-        let ind = line.indexOf('//');
+	
+		//ищем комменты (но не url)	
+		let ind = line.search(/(?<![:\\])\/\//g);
+//        let ind = line.indexOf('//');
         if (ind >= 0) {
 			let s = line.substring(ind);
             return line.substring(0, ind) + graySpan + s + endSpan;

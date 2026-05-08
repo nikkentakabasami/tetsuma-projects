@@ -122,6 +122,10 @@ let selectorsData1 = `
 //Просмотр вперёд с отрицанием
 /Людовик(?!X)/g
 
+
+//Просмотр назад с отрицанием - ищем комменты, но не url или escape
+/(?<![:\\\\])\\/\\//g
+
 //Просмотр вперёд и назад (ленивая квантификация)
 /(?<=Людовик).+?(?=,)/g
 
@@ -193,8 +197,10 @@ $(document).ready(function() {
 		text_before satori text_after
 		1 индейка стоит 30€
 		1 индейка стоит $50
-		[some. text. (with.) braces.]
-		tenka musou
+		[some. @text. ($with.) braces.]
+		@ hi		
+		//tenka musou
+		http://localhost:8090/demo-52
 		трам-трам-трумтрам-трум-трамтрум.
 		----`,
 	

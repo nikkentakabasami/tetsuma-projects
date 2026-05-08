@@ -70,6 +70,8 @@ function testRegexp(text, re, showText = true){
 let textSample2 = "_ОЙ-Ой-ой";
 let textSample3 = "  The quick brown fox jumps over the lazy dog. It barked.";
 let textSample4 = "then see Chapter 1.2.3.4.5";
+let testUrl = "http://localhost:8090/demo-52/?param1=11&param2=hello";
+
 let s;
 
 let regexSamples = [
@@ -87,6 +89,118 @@ let regexSamples = [
 
 let selectorsData1 = {
 
+	basic_usage_single:`
+
+	# базовые примеры использования регулярных выражений
+	# Поиск одного значения (не глобальный поиск).
+	#
+	
+	testUrl;
+	
+	#
+	# Получение индекса
+	#
+	# str.search(regexp)
+	# str.indexOf(val)
+	# str.lastIndexOf(val)
+	#
+
+	//ищем параметр param1
+	testUrl.search(/(?<=[?&])param1=/);
+	
+	testUrl.indexOf("param1=");
+
+	testUrl.lastIndexOf("param1=");
+		
+	
+	#
+	# Получение значения, групп и индекса
+	#
+	# str.match(reg)
+	# regexp.exec(str)
+	#
+	
+	//имя, значение, индекс первого найденного параметра (через группы)
+	regex = /[?&]([^=]+)=([^&]*)/; !
+	result = testUrl.match(regex);
+	
+	result.index
+
+	result = regex.exec(testUrl);
+	result.index
+
+	
+	//если сделать выражения глобальным -	
+	//можно задать позицию, с которой нужно начать поиск
+	regex = /[?&]([^=]+)=([^&]*)/g; !
+	regex.lastIndex = 35; !
+		
+	result = regex.exec(testUrl);
+	result
+	
+		
+	#
+	# Замена
+	#
+	# str.replace(reg, str/func)
+	#
+
+	//меняем значение первого параметра
+	testUrl.replace(/(?<==)[^&]*/,"newValue");
+
+	//добавить в имя и значение подчёркивания
+	testUrl.replace(/(?<=[?&])([^=]+)=([^&]*)/,"$1_=$2_");
+	
+	
+	//простой строковый поиск
+	testUrl.replace("=11&","=newValue&");
+	
+	`,
+	
+	basic_usage_global:`
+
+	# базовые примеры использования регулярных выражений
+	# Поиск всех значений (глобальный поиск).
+	#
+
+	testUrl;
+
+	#
+	# Получение значения, групп и индекса
+	#
+	# str.matchAll(regexp)
+	#
+
+	@
+	//имена,значения, индексы параметров (через группы)
+	const matches = testUrl.matchAll(/[?&]([^=]+)=([^&]*)/g);
+	for (const match of matches) {
+		log2("match=",match,", match.index=",match.index);
+	}
+	@
+
+	#
+	# Замена
+	#
+	# str.replace(reg, str/func)
+	#
+
+	//меняем значение всех параметров
+	testUrl.replace(/(?<==)[^&]*/g,"newValue");
+
+	@
+	//добавить в имя и значение подчёркивания (через функцию)
+	result = testUrl.replace(/(?<=[?&])([^=]+)=([^&]*)/g,(str,g1,g2,offset)=>{
+	  return g1+"_="+g2+"_";
+	});
+	@	
+	
+	result;
+
+	`,	
+	
+	
+	
 	regexp_fields: `
 	
 	//поля RegExp:
@@ -125,12 +239,15 @@ let selectorsData1 = {
 
 	# str.search(regexp)
 	#   возвращает позицию первого совпадения или -1, если ничего не найдено.
+	#   Аналог indexOf(str), но с регулярными выражениями.
 	#   Нельзя заставить search искать дальше первого совпадения.
 
 	textSample = textSample4;
 	regex = regexSamples[5];
 
 	textSample.search(regex)
+	
+	textSample.indexOf(".2")
 		
 
 	# regexp.test(str) - проверяет, есть ли хоть одно совпадение в строке str.
@@ -189,9 +306,7 @@ let selectorsData1 = {
 
 	# str.match(reg)
 	# с флагом g - возвращает обычный массив из всех совпадений.
-	# без флага g - возвращает обычный массив, содержащий первое найденное совпадение и результаты поиска групп (частей в круглых скобках).
-	# При этом результат содержит доп. свойства: index – позиция обнаружения, input - строка по которой вёлся поиск
-	# Остальные элементы результата содержат результаты поиска групп
+	# без флага g - возвращает первое совпадение (массив вида [result, group1, group2...] с атрибутом index)	
 	# 
 	textSample = textSample2;
 	
@@ -316,7 +431,7 @@ let selectorsData1 = {
 	exec_demo1:`
 	
 	# regexp.exec(str) - более неуклюжий вариант str.matchAll(regexp)
-	# Если флага g нет, то возвращает первое совпадение
+	# Если флага g нет, то возвращает первое совпадение (массив вида [result, group1, group2...] с атрибутом index)
 	# Если флаг g есть - возвращает первое совпадение и записывает в regexp.lastIndex позицию, с которой нужно возобновить поиск.
 	# Последующий поиск он начнёт уже с этой позиции. Если совпадений не найдено, то сбрасывает regexp.lastIndex в ноль.
 					
@@ -403,7 +518,7 @@ $(() => {
 		workPanelTemplate: 0,
 		selectorsData: selectorsData1,
 		lfMode: false,
-		selectedOption: "testRegexp1",
+//		selectedOption: "testRegexp1",
 		initFunction: ()=>{
 			
 		},
@@ -422,40 +537,3 @@ $(() => {
 
 
 
-	/*
-  search_demo2: () => {
-
-		logTextSample(textSample1);
-		
-		
-		lc2("str.search(regexp) - возвращает позицию первого совпадения или -1, если ничего не найдено.");
-
-//		le2("");
-		
-
-
-		let ind = lf2nl(() => {
-			//ищем текст "le2"
-			return textSample1.search(/le2/);
-		});
-		let s = textSample1.substring(ind, ind+20);
-		logTextFragment(s);
-
-		
-		ind = lf2nl(() => {
-			//первая функция
-			return textSample1.search(/\(\) *=/);
-		});
-		s = textSample1.substring(ind, ind+20);
-		logTextFragment(s);
-		
-		ind = lf2nl(() => {
-			//первый коммент
-			return textSample1.search(/ *\/\//);
-		});
-		s = textSample1.substring(ind, ind+20);
-		logTextFragment(s);
-		
-		
-	},
-*/

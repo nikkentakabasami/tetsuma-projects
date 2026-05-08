@@ -65,12 +65,23 @@ let accordUtils = {
 	removeOddIndent: removeOddIndent,
 	funcToString: funcToString,
 	objectToString: objectToString,
+	getRequestParameter: getRequestParameter,
 	
 	
 	  
 
 };
 window.accordUtils = accordUtils;
+
+
+//получение параметра запроса
+function getRequestParameter(name){
+	let re = new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)');
+	let sr = location.search.match(re);
+	if (sr) {
+		return decodeURIComponent(sr[1]);
+	}	
+}
 
 
 //log2(accordUtils.objectToString({id:2033, val: "my val "}))
