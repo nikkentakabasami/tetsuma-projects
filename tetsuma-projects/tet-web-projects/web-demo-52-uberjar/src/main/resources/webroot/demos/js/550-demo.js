@@ -25,25 +25,50 @@ let selectorsData1 = {
 	
 	//основные функции
 
+	# Object.keys/values() возвращает не-символьные ключи/значения с флагом enumerable
+	# 	
 	Object.keys(testObject1);
-	
 	Object.values(testObject1);
-	
+
+	# Object.getOwnPropertyNames(obj) возвращает не-символьные ключи.
+	# Object.getOwnPropertySymbols(obj) возвращает символьные ключи.
+	# 	
+	Object.getOwnPropertyNames(testObject1);
+		
 	#
 	# Object.entries(obj) - возвращает property объекта в виде двумерного массива.
 	# каждый элемент массива - массив вида [property, value]
 	#
-	
 	Object.entries(testObject1);
 
 	for (const [key, value] of Object.entries(testObject1)) { log2(key,":",value); }
-		
+
+	
+	
+	# in - проверяет, содержит ли объект заданное property
+	"name" in testObject1;
+	"light" in testObject1;
+
+	
+	#
+	# for..in перебирает не-символьные ключи с флагом enumerable, а также ключи прототипов.
+	#
+	@
+	for(k in testObject1){
+		log2(k);
+	}
+	@	
+
+
+	
+	
 	#
 	# Object.fromEntries(iterable) - создание объекта на основе двумерного массива (или похожего итерируемого объекта)
 	#
-	
+
 	Object.fromEntries(testMap1);	~
-	
+		
+		
 	`,
 	
 	

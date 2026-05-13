@@ -841,7 +841,11 @@ function parseMainSelectorsData(selectorsData){
 					currComment = line;
 				}
 			} else {
-				currExp = line;
+				if (currExp){
+					currExp+="\n"+line;					
+				} else {
+					currExp = line;
+				}
 			}
 			
 		});//for lines

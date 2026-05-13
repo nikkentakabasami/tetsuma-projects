@@ -99,8 +99,13 @@ let selectorsData1 = {
 	},
 	w8(){
 		
-		//закрытие окна
-		w1.close();
+		w1 = window.open("../demos_200_html_basics/colors.html", 'example', 'width=600,height=400');
+
+		$(w1).click(e=>{
+			//закрытие окна
+			w1.close();
+		})		
+		
 		
 	},
 	w9(){

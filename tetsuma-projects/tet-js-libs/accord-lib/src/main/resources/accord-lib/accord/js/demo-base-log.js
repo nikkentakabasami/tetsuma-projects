@@ -132,7 +132,8 @@ function _le($log, exp, blockMode = false) {
 			let at = ind>=0; 	//строка начинается с @ - включаем многострочный режим
 			if (at){
 				//действительно ли @ - первый символ?
-				at = (line.search(/^\s*@/)>=0);
+				ind = line.search(/^\s*@/);
+				at = (ind>=0);
 			}
 						
 			//многострочные выражения окружены собачками
@@ -140,7 +141,11 @@ function _le($log, exp, blockMode = false) {
 				if (at){
 					multiMode = false;
 					si = 0;
-					multiLine+=" !";
+					
+					if (line.indexOf("!")>0){
+						multiLine+=" !";
+					}
+					
 					_le($log, multiLine, true);
 					
 				} else {
@@ -282,6 +287,7 @@ function _lf($log, func) {
 	} else {
 		codeNode = logMessage($log, code);
 	}
+	$log.append("<hr>");
 		
 	//выделяем код синим
 	$(codeNode).wrap(blueSpan);
@@ -401,7 +407,7 @@ function logMessage($log, ...vals) {
 		let $p = $log.parent();
 		//scroll to bottom	
 		var h = $p.prop('scrollHeight');
-		$p.scrollTop(h);	
+		$p.scrollTop(h);
 		
 	}
 
@@ -499,7 +505,12 @@ function highlightLogComments($log) {
 
 
 
-
+function loghr(){
+	$log1.append("<hr>");	
+}
+function log2hr(){
+	$log2.append("<hr>");	
+}
 
 
 function initDemoLogs(){

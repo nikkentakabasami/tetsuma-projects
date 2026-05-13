@@ -109,6 +109,17 @@ $btn.get(0).getBoundingClientRect()
 #   Значение прокрутки
 #   
 $log1.parent().scrollTop()
+
+
+
+# scrollTop(val)
+#   Прокрутка
+for(let i=0;i<100;i++){
+	log2("mess",i);
+};
+let $p = $log2.parent();
+let h = $p.prop("scrollHeight");
+$p.scrollTop(h);
 	
 
 `;
@@ -122,7 +133,7 @@ $(() => {
   	workPanelTemplate: "../fragments/selectorsSandbox1.html",
   	selectorsData: selectorsData1,
 	jquerySelectorsMode: true,
-	nextPage: "416_jquery.html",
+	afterSandboxReload: ()=> {
 		$btn = $(".B>button.c5");
 	},
   	initFunction: ()=>{

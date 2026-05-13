@@ -70,7 +70,6 @@ function testRegexp(text, re, showText = true){
 let textSample2 = "_ОЙ-Ой-ой";
 let textSample3 = "  The quick brown fox jumps over the lazy dog. It barked.";
 let textSample4 = "then see Chapter 1.2.3.4.5";
-let testUrl = "http://localhost:8090/demo-52/?param1=11&param2=hello";
 
 let s;
 
