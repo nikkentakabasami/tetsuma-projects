@@ -34,7 +34,12 @@ function stringifyObject(o, indent = "", withBraces = false) {
 	if (o instanceof Element){
 		return o.outerHTML;
 	}
-	
+
+	//async функция
+	if (o instanceof Promise){
+		return "";
+	}
+		
 	let result = "";
 	
 	if (o instanceof Map){
@@ -46,6 +51,10 @@ function stringifyObject(o, indent = "", withBraces = false) {
 	if (o instanceof Date){
 		return accordUtils.formatDateTime(o);
 	}
+	
+	if (ArrayBuffer.isView(o)){
+		return String(o);		
+	}	
 	
 	if (o._isAMomentObject){
 		return o.format('DD.MM.YYYY, hh:mm:ss');
@@ -367,13 +376,19 @@ function logObject(o, ...attributes) {
 
 
 //Показ функции в логе
-function logFuncCode(f){
+function logFuncCode(f, withHr = false){
 	let code = accordUtils.funcToString(f);
 	log(code);
+	if (withHr){
+		loghr();
+	}
 }
-function logFuncCode2(f){
+function logFuncCode2(f, withHr = false){
 	let code = accordUtils.funcToString(f);
 	log2(code);
+	if (withHr){
+		log2hr();
+	}
 }
 
 //

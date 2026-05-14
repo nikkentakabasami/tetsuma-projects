@@ -352,7 +352,7 @@ let selectorsData1 = {
 	
 	
 	`,		
-	check:`
+	check_find:`
 		arr1 = testArray2.slice();
 		arr1.indexOf(3);
 		arr1.lastIndexOf(3);

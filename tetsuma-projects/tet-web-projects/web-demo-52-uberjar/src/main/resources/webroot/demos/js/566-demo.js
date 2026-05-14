@@ -2,6 +2,7 @@
 
 let url1,url2,url3,url4;
 let blob1, blob2;
+let arr1;
 
 let selectorsData1 = {
 	
@@ -89,34 +90,39 @@ let selectorsData1 = {
 		
 	},
 		
+	b1:`
+	# Blob
+	#   состоит из необязательной строки type (обычно MIME-тип) и blobParts – последовательности других объектов Blob, строк и BufferSource.
+	# 
+	# new Blob(blobParts, options);
+	#   blobParts – массив значений Blob/BufferSource/String.
+	#   options: 
+	#   type – тип объекта, обычно MIME-тип 
+	#   endings – если указан, то окончания строк будут изменены в соответствии с текущей операционной системой
+	#   
+	#   blob.slice([byteStart], [byteEnd], [contentType]);
+	#   Мы можем получить срез Blob, используя:
+	# 
 	
-	blob1(){
-		
-/*
-		Blob
-		  состоит из необязательной строки type (обычно MIME-тип) и blobParts – последовательности других объектов Blob, строк и BufferSource.
+	// создадим Blob из строки
+	blob1 = new Blob(["<html>…</html>"], {type: 'text/html'}); !
+
+	// создадим Blob из типизированного массива и строк
+	arr1 = new Uint8Array([72, 101, 108, 108, 111]);
+	blob2 = new Blob([arr1, ' ', 'world'], {type: 'text/plain'}); !
 
 
-		new Blob(blobParts, options);
-		  blobParts – массив значений Blob/BufferSource/String.
-		  options: 
-		  type – тип объекта, обычно MIME-тип 
-		  endings – если указан, то окончания строк будут изменены в соответствии с текущей операционной системой
-		  
-		  blob.slice([byteStart], [byteEnd], [contentType]);
-		  Мы можем получить срез Blob, используя:
-		  
-*/
-
-		// создадим Blob из строки
-		blob1 = new Blob(["<html>…</html>"], {type: 'text/html'});
-
-		// создадим Blob из типизированного массива и строк
-		let helloArray = new Uint8Array([72, 101, 108, 108, 111]);    // "hello" в бинарной форме
-		blob2 = new Blob([helloArray, ' ', 'world'], {type: 'text/plain'});
-		
-		
-	},
+	//поля Blob
+	blob1.size;
+	blob1.type;
+	
+	
+	
+	
+	
+	`,
+	
+	
 	blob2(){
 
 		//URL.createObjectURL - создаёт url-ссылку на Blob-объект
@@ -188,8 +194,9 @@ let selectorsData1 = {
 		fileReader.readAsArrayBuffer(blob1);
 
 		fileReader.onload = function(event) {
-		  let arrayBuffer = fileReader.result;
-		  log2(arrayBuffer);
+		  arr1 = new Uint8Array(fileReader.result);		  
+		  
+		  log2(arr1);
 		};		
 		
 	}
@@ -206,8 +213,10 @@ $(document).ready(function() {
 		workPanelTemplate: "../fragments/anchorsSandbox.html",
 		selectorsData: selectorsData1,
 		lfMode: false,
-		selectedOption: "blob2",
+		selectedOption: "b1",
 		initFunction: ()=>{
+		
+			$(".auxPanel").css("height","600px");
 			
 		}
 	});	
