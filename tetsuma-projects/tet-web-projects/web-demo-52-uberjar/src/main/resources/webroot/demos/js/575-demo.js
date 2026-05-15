@@ -32,6 +32,15 @@ function makeDemoPromise(promiseName, timeout, withError = false){
 	});
 }
 
+async function makeAndLogDemoPromise(promiseName, timeout){
+	let r = await makeDemoPromise(promiseName,timeout)
+	log2(r);
+}
+
+
+
+
+
 //загрузка скриптов через прописы
 function loadScript(src) {
   return new Promise(function(resolve, reject) {
@@ -39,15 +48,9 @@ function loadScript(src) {
     script.src = src;
 
     script.onload = () => resolve(script);
-//    script.onerror = () => reject(new Error(`Ошибка загрузки скрипта ${src}`));
-	script.onerror = () => reject(`Ошибка загрузки скрипта ${src}`);
+    script.onerror = () => reject(new Error(`Ошибка загрузки скрипта ${src}`));
 
-	try {
-		document.head.append(script);
-	} catch (err) {
-		//не ловится.
-		reject(err);
-	}
+	document.head.append(script);
 	
   });
 }
@@ -264,23 +267,94 @@ let selectorsData1 = {
 		loadScript("../misc/test_script1.js")
 		  .then(script => loadScript("../misc/test_script2.js"),errorHandler)
 		  .then(script => loadScript("../misc/test_script3.js"),errorHandler)
-//		  .then(script => loadScript("../misc/test_script4.js"),errorHandler);
 				
 		  logFuncCode2(loadScript, true);
-		  
-		
-		
-		
 		
 	},
 		
 
+	pf93: async function(){
+
+		let arr1 = ["shichika","hachi","retsu","hasshin"];
+		
+
+		//обработка строк выполняется не последовательно!
+		arr1.forEach((line,ind)=>{
+			if (ind==1){
+				log2(line);
+				return;
+			}
+			
+			//async функция, содержащая await
+			makeAndLogDemoPromise(line,500);
+		});
+		
+		
+		//и тут тоже!
+		for(let i=0; i<arr1.length;i++){
+			let line = "for: "+arr1[i];
+
+			if (i==1){
+				log2(line);
+				continue;
+			}
+
+			//async функция, содержащая await
+			makeAndLogDemoPromise(line,500);
+						
+		}
+	},
 	
 	
-	
+	pf95(){
+		let arr1 = ["shichika","hachi","retsu","hasshin"];
+		
+		//последовательная обработка через цепочку промисов
+		arr1.reduce((promise, item) => {
+		  const line = "for: " + item;
+		  return promise.then(r => {
+		    log2(r);
+		    if (item === "hachi"){
+		      return line;
+		    }
+		    return makeDemoPromise(line, 800);
+		  });
+		}, Promise.resolve("start"))
+		.then(r=>{
+			//последний элемент
+			log2(r);
+		});
+		
+		
+		
+		
+		
+		
+		/*
+		promise = Promise.resolve("start");
+		arr1.forEach((line,ind)=>{
+			promise = promise.then(r=>{
+				
+				if (ind==1){
+					return line;
+				}
+				let p = makeDemoPromise(line,800);
+				p.then(m=>{
+					log2(r);
+				});
+				
+				return p;
+			});
+		});
+		*/
+		
+	},	
 		
 	
 }
+
+
+
 
 $(document).ready(function() {
 
@@ -289,7 +363,7 @@ $(document).ready(function() {
 		workPanelTemplate: 0,
 		selectorsData: selectorsData1,
 		lfMode: true,
-		selectedOption: "pf92",
+		selectedOption: "pf94",
 		initFunction: ()=>{
 			
 		}

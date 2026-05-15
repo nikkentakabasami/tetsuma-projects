@@ -121,7 +121,7 @@ function stringifyObject(o, indent = "", withBraces = false) {
 
 //выводит в лог заданное выражение, выполняет его через eval(), выводит в лог результат
 //blockMode - не разбивать на линии
-function _le($log, exp, blockMode = false) {
+async function _le($log, exp, blockMode = false) {
 	if (!exp){
 		return;
 	}
@@ -133,6 +133,7 @@ function _le($log, exp, blockMode = false) {
 		let multiLine = "";
 		let multiMode = false;
 		let si = 0;  //чтобы убрать ведущие пробелы
+		
 		lines.forEach(line=>{
 
 			
@@ -171,9 +172,10 @@ function _le($log, exp, blockMode = false) {
 				return;
 			}
 
-			_le($log, line);			
+			_le($log, line);
 			
 		});
+		log2hr();
 		return;
 	};
 	
@@ -222,12 +224,33 @@ function _le($log, exp, blockMode = false) {
 		let val = eval(exp);
 		if (val!=null && showResult){
 			
+			//с промисами - результат придётся выводить в конце
+			if (val instanceof Promise){
+				logMessage($log);
+				val = await val;
+
+				if (!val){
+					return;
+				}
+				
+				//выводим значения промисов в конце блока:				
+				let codeNode = logMessage($log, exp);
+
+				if (codeNode.nodeValue.trim().length){
+					$(codeNode).wrap(blueSpan);
+				}
+
+				logMessage($log, val, "\n");
+				return;
+			}
+			
 			if (resultAsJson){
 				val = JSON.stringify(val);
 			} else if (typeof val === "string") {
 				val = '"'+val+'"';
 			}
-			logMessage($log, " ", val, "\n");
+//			logMessage($log, " ", val, "\n");
+			logMessage($log, val, "\n");
 			return val;
 		} else {
 			logMessage($log);

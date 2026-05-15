@@ -3,6 +3,10 @@ let buffer, view, dataView;
 
 let arr1,arr2,arr3;
 
+
+
+
+
 let selectorsData1 = {
 	
 	
@@ -16,8 +20,8 @@ let selectorsData1 = {
 	# TypedArray - типизированный массив
 	#   Представление буфера как последовательности чисел (байтных, двухбайтных)
 	#   интерпретирует бинарные данные, хранящиеся в ArrayBuffer.
-	# Реализации:
 	#
+	# Реализации:
 	# Uint8Array,Uint16Array,Uint32Array	целые беззнаковые числа
 	# Int8Array, Int16Array, Int32Array 	целые числа со знаком
 	# Float32Array, Float64Array			32/64-битные числа со знаком и плавающей точкой.
@@ -112,9 +116,9 @@ let selectorsData1 = {
 
 	//всегда можно создать новое представление для данных
 	arr2 = new Uint16Array(arr1.buffer);	
-
+	
 	# Проверить на TypedArray можно так:
-
+	# 
 	ArrayBuffer.isView(arr1) && !(arr1 instanceof DataView);
 
 	`,
@@ -122,7 +126,8 @@ let selectorsData1 = {
 	
 	TypedArray4:`
 	
-	# Методы TypedArray
+	# Методы TypedArray.
+	#
 	#   TypedArray содержит большую часть методов из Array.
 	#   Не содержат методы, которые меняют размер массива (splice, push...)
 	#
@@ -186,8 +191,28 @@ let selectorsData1 = {
 	arr2 = new Uint8Array([10, 20, 30, 40, 50]);
 
 	arr2.subarray(1, 4);
+
+	//Пример: функция объединения
+	joinTypedArrays;
 	
+		
 	`,
+	
+	TypedArray6:`
+
+	//Пример: функция объединения типизированных массивов
+	joinTypedArrays;
+
+	arr1 = new Uint8Array([10, 20, 30, 40, 50]);
+	arr2 = new Uint8Array([7,8,9]);
+	arr3 = new Uint8Array([11,12,13]);
+	joinTypedArrays(arr1,arr2,arr3);
+	
+	
+	
+		
+	`,	
+	
 	
 	DataView1:`
 	
@@ -215,6 +240,21 @@ let selectorsData1 = {
 	
 }
 
+
+function joinTypedArrays(...chunks){
+	
+	let totalLength = chunks.reduce((sum, arr) => sum + arr.length, 0);
+	let arr = new Uint8Array(totalLength);
+	let offset = 0;
+	for (let chunk of chunks) {
+	  arr.set(chunk, offset);
+	  offset += chunk.length;
+	}
+	return arr;
+	
+}
+
+
 $(document).ready(function() {
 
 	initBriefDemo(	{
@@ -222,7 +262,7 @@ $(document).ready(function() {
 //		workPanelTemplate: "../fragments/anchorsSandbox.html",
 		selectorsData: selectorsData1,
 		lfMode: true,
-//		selectedOption: "DataView1",
+		selectedOption: "TypedArray6",
 		initFunction: ()=>{
 			
 		}
