@@ -1,7 +1,42 @@
 /**
  * Функционал, использующийся для создания демок, тестирующих js.
  * 
- * Методы для вывода сообщений в лог.
+ * Методы для вывода сообщений в лог:
+ * 
+stringifyObject(o, indent = "", withBraces = false)
+logMessage($log, ...vals)
+
+log(...vals)
+log2(...vals)
+log3(...vals)
+
+_le($log, exp)
+le(exp)
+le2(exp)
+le2nl(exp)
+
+_lf($log, func) - //выводит в лог код функции, выполняет её, выводит в лог результат
+lf(func)
+lf2(func)
+
+clearLog()
+clearLog1()
+clearLog2()
+
+loghr()
+log2hr()
+
+logTitle(title)
+logTitle2(title)
+
+logTextFragment(text, title="found fragment")
+logTextSample(text, title)
+logTextSample2(text, title)
+
+highlightLogComments1()	//подсвечивает комменты в логах
+highlightLogComments2()
+ * 
+ * 
  * 
  */
 
@@ -120,14 +155,13 @@ function stringifyObject(o, indent = "", withBraces = false) {
 
 
 //выводит в лог заданное выражение, выполняет его через eval(), выводит в лог результат
-//blockMode - не разбивать на линии
-async function _le($log, exp, blockMode = false) {
+async function _le($log, exp) {
 	if (!exp){
 		return;
 	}
 
 	//многострочное выражение
-	if (!blockMode && exp.includes("\n")){
+	if (exp.includes("\n")){
 		let lines = exp.split("\n");
 		
 		let multiLine = "";
@@ -135,8 +169,6 @@ async function _le($log, exp, blockMode = false) {
 		let si = 0;  //чтобы убрать ведущие пробелы
 		
 		lines.forEach(line=>{
-
-			
 			
 			let ind = line.indexOf("@"); 
 			let at = ind>=0; 	//строка начинается с @ - включаем многострочный режим
@@ -145,7 +177,7 @@ async function _le($log, exp, blockMode = false) {
 				ind = line.search(/^\s*@/);
 				at = (ind>=0);
 			}
-						
+
 			//многострочные выражения окружены собачками
 			if (multiMode){
 				if (at){
@@ -179,42 +211,42 @@ async function _le($log, exp, blockMode = false) {
 		return;
 	};
 	
+	//------однострочное выражение-------
 	exp = exp.trim();
-	if (!blockMode && exp.startsWith("//")){
+
+	//коммент	
+	if (exp.startsWith("//")){
 		let codeNode = logMessage($log, exp);
+		return;
+	}
+	
+	//коммент-документация
+	if (exp.startsWith("#")){
+		if (exp.length<=2){
+			exp = "";
+		}
+		logMessage($log, exp);
 		return;
 	}
 	
 	try {
 		let showResult = true;
 		let resultAsJson = false;
-
-		if (exp.startsWith("#")){
-			if (exp.length>2){
-//				exp = exp.substring(2);
-			} else {
-				exp = "";
-			}
-			logMessage($log, exp);
-			return;
-		}
-		
 				
-		//если выражение заканчивается ! - результат выводить не нужно
+		//выражение заканчивается ! - результат выводить не нужно
 		if (exp.endsWith("!")){
 			showResult = false;
 			exp = exp.slice(0,-1).trim();
 		}
 		
+		//выражение заканчивается ~ - выводить результат как JSON
 		if (exp.endsWith("~")){
 			resultAsJson = true;
 			exp = exp.slice(0,-1).trim();
 		}
 		
-		
-		//выводим в лог выражение
+		//выводим в лог выражение и подкрашиваем его голубым
 		let codeNode = logMessage($log, exp);
-		
 		if (codeNode.nodeValue.trim().length){
 			$(codeNode).wrap(blueSpan);
 		}
@@ -235,11 +267,9 @@ async function _le($log, exp, blockMode = false) {
 				
 				//выводим значения промисов в конце блока:				
 				let codeNode = logMessage($log, exp);
-
 				if (codeNode.nodeValue.trim().length){
 					$(codeNode).wrap(blueSpan);
 				}
-
 				logMessage($log, val, "\n");
 				return;
 			}
@@ -249,7 +279,6 @@ async function _le($log, exp, blockMode = false) {
 			} else if (typeof val === "string") {
 				val = '"'+val+'"';
 			}
-//			logMessage($log, " ", val, "\n");
 			logMessage($log, val, "\n");
 			return val;
 		} else {
@@ -299,6 +328,14 @@ function log2(...vals) {
 function log3(...vals) {
 	logMessage($log3, ...vals);
 }
+function log2nl(...vals) {
+	log2();
+	log2(...vals);
+}
+function lognl(...vals) {
+	log();
+	log(...vals);
+}
 
 
 
@@ -340,26 +377,6 @@ function lf2nl(func) {
 	log2();
 	return _lf($log2, func);
 }
-function lf2NL(exp) {
-	return lf2nl(exp);
-}
-
-
-
-//вывод комментов
-function lc(comment) {
-	log("//"+comment);
-}
-function lc2(comment) {
-	log2("//"+comment);
-}
-function lc2nl(comment) {
-	log2();
-	log2("//"+comment);
-}
-function lc2NL(comment) {
-	lc2nl(comment);
-}
 
 //вывод ссылки
 function la2(href, mess) {
@@ -367,35 +384,6 @@ function la2(href, mess) {
 }
 
 
-function log2nl(...vals) {
-	log2();
-	log2(...vals);
-}
-function lognl(...vals) {
-	log();
-	log(...vals);
-}
-
-
-//вывод переменных
-function logVal(key, val, ...vals) {
-	val = stringifyObject(val);
-	log(key+": "+val, ...vals);
-}
-function logVal2(key, val, ...vals) {
-	val = stringifyObject(val);
-	log2(key+": "+val, ...vals);
-}
-
-
-//выводит в лог только указанные атрибуты объекта
-function logObject(o, ...attributes) {
-	if (attributes.length>0){
-		o = accordUtils.cloneObject(o, ...attributes);
-	}
-	let s = stringifyObject(o);
-	log(s);
-}
 
 
 //Показ функции в логе
@@ -414,19 +402,6 @@ function logFuncCode2(f, withHr = false){
 	}
 }
 
-//
-function logObject2(object, objectName){
-	if (objectName){
-		log2("# "+objectName+":");
-		highlightLogComments2();		
-	}
-	log2(accordUtils.objectToString(object));	
-}
-
-function logJson2(objectName, data){
-	log2(objectName+":", JSON.stringify(data,"",2));
-}
-
 
 function logMessage($log, ...vals) {
 	
@@ -436,7 +411,6 @@ function logMessage($log, ...vals) {
 	
 	//чтобы избавиться от спецсимволов
 	let lineNode = document.createTextNode(line)
-
 	
 	$log.append(lineNode);
 
@@ -446,10 +420,7 @@ function logMessage($log, ...vals) {
 		//scroll to bottom	
 		var h = $p.prop('scrollHeight');
 		$p.scrollTop(h);
-		
 	}
-
-
 
 	return lineNode;
 }
@@ -465,11 +436,9 @@ function logTitle2(title){
 
 //выводит в лог фрагент найденного текста
 function logTextFragment(text, title="found fragment"){
-	
 	log2("----------"+(title?title:"")+"------------");
 	log2(text);
 	log2("----------------------");
-	
 }
 
 function logTextSample(text, title){
@@ -507,7 +476,6 @@ function highlightLogComments($log) {
 			return line;
 		}
 		
-		
 		if (line=="#"){
 			return "";
 		}
@@ -524,7 +492,6 @@ function highlightLogComments($log) {
 				return "";
 			}
 		} 
-		
 	
 		//ищем комменты (но не url)	
 		let ind = line.search(/(?<![:\\])\/\//g);

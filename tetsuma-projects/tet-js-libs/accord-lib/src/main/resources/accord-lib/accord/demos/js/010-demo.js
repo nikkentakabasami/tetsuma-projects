@@ -28,8 +28,6 @@ let selectorsData1 = {
 
     demo2_function() {
 
-        lc2("test_comment");
-
         result = lf2nl(() => {
             return 775 / 33;
         });
