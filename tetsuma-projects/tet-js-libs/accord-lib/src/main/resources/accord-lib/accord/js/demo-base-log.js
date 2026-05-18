@@ -155,22 +155,43 @@ function stringifyObject(o, indent = "", withBraces = false) {
 
 
 //выводит в лог заданное выражение, выполняет его через eval(), выводит в лог результат
-async function _le($log, exp) {
+async function _le($log, exp, blockMode = false) {
 	if (!exp){
 		return;
 	}
 
 	//многострочное выражение
-	if (exp.includes("\n")){
+	if (!blockMode && exp.includes("\n")){
 		let lines = exp.split("\n");
 		
 		let multiLine = "";
 		let multiMode = false;
+		let multiCommentMode = false;
 		let si = 0;  //чтобы убрать ведущие пробелы
 		
+		
+		
 		lines.forEach(line=>{
+
+			//ищем и просто выводим многострочные комменты
+			let ind = line.search(/^\s*\/\*/);
+			if (ind>=0){
+				multiCommentMode = true;
+				logMessage($log, line);
+				return;
+			}
 			
-			let ind = line.indexOf("@"); 
+			if (multiCommentMode){
+				ind = line.search(/^\s*\*\//);
+				if (ind>=0){
+					multiCommentMode = false;
+				}
+				logMessage($log, line);
+				return;
+			}
+						
+			
+			ind = line.indexOf("@"); 
 			let at = ind>=0; 	//строка начинается с @ - включаем многострочный режим
 			if (at){
 				//действительно ли @ - первый символ?
@@ -215,13 +236,13 @@ async function _le($log, exp) {
 	exp = exp.trim();
 
 	//коммент	
-	if (exp.startsWith("//")){
+	if (!blockMode && exp.startsWith("//")){
 		let codeNode = logMessage($log, exp);
 		return;
 	}
 	
 	//коммент-документация
-	if (exp.startsWith("#")){
+	if (!blockMode && exp.startsWith("#")){
 		if (exp.length<=2){
 			exp = "";
 		}
@@ -359,7 +380,7 @@ function _lf($log, func) {
 	$log.append("<hr>");
 		
 	//выделяем код синим
-	$(codeNode).wrap(blueSpan);
+//	$(codeNode).wrap(blueSpan);
 	
 	let val = func();
 	if (val!=null){
@@ -468,11 +489,17 @@ function highlightLogComments2() {
 }
 function highlightLogComments($log) {
 
-    const text = $log.html();
+    let text = $log.html();
+	
+	//подсвечиваем многострочные комменты
+	text = text.replace(/\/\*[\s\S]*\*\//g,grenSpan+"$&"+endSpan+"\n");
+	
     const lines = text.split('\n');
-
+	
     const processedLines = lines.map(line => {
-		if (line.includes(endSpan)){
+		
+		//строка уже подкрашена
+		if (line.includes(endSpan) || line.includes('<span ')){
 			return line;
 		}
 		
@@ -495,7 +522,6 @@ function highlightLogComments($log) {
 	
 		//ищем комменты (но не url)	
 		let ind = line.search(/(?<![:\\])\/\//g);
-//        let ind = line.indexOf('//');
         if (ind >= 0) {
 			let s = line.substring(ind);
             return line.substring(0, ind) + graySpan + s + endSpan;

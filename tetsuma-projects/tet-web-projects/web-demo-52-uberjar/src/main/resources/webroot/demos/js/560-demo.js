@@ -17,10 +17,11 @@ let selectorsData1 = {
 	
 	console1(){
 		
-		//# console.log
-		//#   Удобный способ вывода отладочной информации.
-		//#   Можно задавать несколько параметров - они будут выведены через пробел
-		//# 
+		/*
+		console.log
+		  Удобный способ вывода отладочной информации.
+		  Можно задавать несколько параметров - они будут выведены через пробел
+		*/
 		console.log("C+pgUp","changes selected tabs.",123,"+++");
 
 		//# Вывод с форматированием
@@ -101,7 +102,7 @@ $(document).ready(function() {
 		demoType: DT_SELECT_NO_WP, 
 		workPanelTemplate: 0,
 		selectorsData: selectorsData1,
-		//		lfMode: true,
+		lfMode: true,
 		selectedOption: "location2",
 		initFunction: ()=>{
 			

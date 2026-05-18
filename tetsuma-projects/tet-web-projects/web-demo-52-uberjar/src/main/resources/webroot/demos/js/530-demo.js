@@ -94,7 +94,7 @@ let selectorsData1 = {
 	# Поиск одного значения (не глобальный поиск).
 	#
 	
-	testUrl;
+	testUrl2;
 	
 	#
 	# Получение индекса
@@ -105,11 +105,11 @@ let selectorsData1 = {
 	#
 
 	//ищем параметр param1
-	testUrl.search(/(?<=[?&])param1=/);
+	testUrl2.search(/(?<=[?&])param1=/);
 	
-	testUrl.indexOf("param1=");
+	testUrl2.indexOf("param1=");
 
-	testUrl.lastIndexOf("param1=");
+	testUrl2.lastIndexOf("param1=");
 		
 	
 	#
@@ -121,11 +121,11 @@ let selectorsData1 = {
 	
 	//имя, значение, индекс первого найденного параметра (через группы)
 	regex = /[?&]([^=]+)=([^&]*)/; !
-	result = testUrl.match(regex);
+	result = testUrl2.match(regex);
 	
 	result.index
 
-	result = regex.exec(testUrl);
+	result = regex.exec(testUrl2);
 	result.index
 
 	
@@ -134,7 +134,7 @@ let selectorsData1 = {
 	regex = /[?&]([^=]+)=([^&]*)/g; !
 	regex.lastIndex = 35; !
 		
-	result = regex.exec(testUrl);
+	result = regex.exec(testUrl2);
 	result
 	
 		
@@ -145,14 +145,14 @@ let selectorsData1 = {
 	#
 
 	//меняем значение первого параметра
-	testUrl.replace(/(?<==)[^&]*/,"newValue");
+	testUrl2.replace(/(?<==)[^&]*/,"newValue");
 
 	//добавить в имя и значение подчёркивания
-	testUrl.replace(/(?<=[?&])([^=]+)=([^&]*)/,"$1_=$2_");
+	testUrl2.replace(/(?<=[?&])([^=]+)=([^&]*)/,"$1_=$2_");
 	
 	
 	//простой строковый поиск
-	testUrl.replace("=11&","=newValue&");
+	testUrl2.replace("=11&","=newValue&");
 	
 	`,
 	
@@ -162,7 +162,7 @@ let selectorsData1 = {
 	# Поиск всех значений (глобальный поиск).
 	#
 
-	testUrl;
+	testUrl2;
 
 	#
 	# Получение значения, групп и индекса
@@ -172,7 +172,7 @@ let selectorsData1 = {
 
 	@
 	//имена,значения, индексы параметров (через группы)
-	const matches = testUrl.matchAll(/[?&]([^=]+)=([^&]*)/g);
+	const matches = testUrl2.matchAll(/[?&]([^=]+)=([^&]*)/g);
 	for (const match of matches) {
 		log2("match=",match,", match.index=",match.index);
 	}
@@ -185,11 +185,11 @@ let selectorsData1 = {
 	#
 
 	//меняем значение всех параметров
-	testUrl.replace(/(?<==)[^&]*/g,"newValue");
+	testUrl2.replace(/(?<==)[^&]*/g,"newValue");
 
 	@
 	//добавить в имя и значение подчёркивания (через функцию)
-	result = testUrl.replace(/(?<=[?&])([^=]+)=([^&]*)/g,(str,g1,g2,offset)=>{
+	result = testUrl2.replace(/(?<=[?&])([^=]+)=([^&]*)/g,(str,g1,g2,offset)=>{
 	  return g1+"_="+g2+"_";
 	});
 	@	

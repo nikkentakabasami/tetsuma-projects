@@ -47,6 +47,11 @@ $(document).ready(function() {
 	//демо-функции.
 	let bh1 = {
 		
+		/*  
+		some comment 1
+		!!!
+		*/
+		
 		test1(){
 			//тестовая функция 1
 			log2("remove first text field")
@@ -57,6 +62,12 @@ $(document).ready(function() {
 		test2(){
 			$inp2.addClass("red-border");
 		},
+		
+		/*  
+		some comment 2
+		???
+		*/
+		
 		test3(){
 			$inp2.addClass("bg-red");
 		},

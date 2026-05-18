@@ -4,10 +4,11 @@ let v1,v2,v3;
 let selectorsData1 = {
 	
 	location_attributes:`
-	
-	# window.location
-	# Атрибуты:
-	#
+
+	/*	
+	window.location
+	Атрибуты:
+	*/
 
 	location.href;			//Полный URL текущей страницы
 	location.protocol		//часть с протоколом
@@ -235,7 +236,7 @@ $(document).ready(function() {
 		workPanelTemplate: 0,
 		selectorsData: selectorsData1,
 		lfMode: true,
-		selectedOption: "location_addParams",
+//		selectedOption: "location_addParams",
 		initFunction: ()=>{
 			
 		}

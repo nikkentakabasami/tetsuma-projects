@@ -15,6 +15,7 @@
  */
 
 let testUrl = "http://api.github.com/zen";
+let testUrl2 = "http://api.github.com/zen?p1=777&p2=888#4";
 
 //опции, определяющий, как будет работать текущая демка
 let demoOptions = {

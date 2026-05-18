@@ -23,6 +23,8 @@ let selectorsData1 = `
 
 # Предопределённые символьные классы
 # . 	Any character
+  Не включает в себя переносы строк!!!
+  Если нужно их включить - задавай [\s\S] 
 # \d 	A digit: [0-9]
 # \D 	A non-digit: [^0-9]
 # \s 	A whitespace character: [ \t\n\x0B\f\r]
