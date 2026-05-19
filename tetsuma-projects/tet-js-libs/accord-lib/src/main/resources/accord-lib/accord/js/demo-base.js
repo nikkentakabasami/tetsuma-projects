@@ -10,12 +10,9 @@
  * addDemoButtons(handlers, panelSelector = ".acc-button-panel") - добавляет набор демо кнопок на панель
  * initDemo()
  * initBriefDemo(options) - инициализация лаконичного демо
- * parseMainSelectorsData(sd) - если демки заданы строкой - он разбивает её на 2 массива
  * 
  */
 
-let testUrl = "http://api.github.com/zen";
-let testUrl2 = "http://api.github.com/zen?p1=777&p2=888#4";
 
 //опции, определяющий, как будет работать текущая демка
 let demoOptions = {
@@ -67,10 +64,6 @@ let showAux = true;
 //кнопка показа/скрытия auxPanel
 let $hideAuxButton;
 
-
-//выбранная демо функция/код/селектор
-let currentFunc = null;
-
 //popup с исходниками страницы
 let helpPopup;
 
@@ -88,11 +81,6 @@ let $sel1, $sel2, $sel3, $sel4;
 //первый селект, обслуживающий демки
 let $mainSelect = null;
 
-//данные первого селекта
-let mainData = null;
-
-//комменты, привязанные к mainData
-let mainDataComments = null;
 
 //кнопка выполнения кода
 let $bExecute;
@@ -183,25 +171,19 @@ function logCurrentFunc(){
 	
 	clearLog1();
 	
-	if (typeof currentFunc == "string") {
-	    currentFunc = accordUtils.removeOddIndent(currentFunc);
-	    log(currentFunc);
-	} else {
-	    let code = accordUtils.funcToString(currentFunc, true);
-	    log(code);
-		
-		let initFunction = currentFunc.init || demoOptions.currentFunc;
+	let fc = parsedScript.formatCode();
+//	log(fc);
+	$log1.html(fc);
+	
+	let initFunction = currentFunc.init || demoOptions.currentFunc;
 
-		//указана доп. функция инициализации - вывести её в лог
-		if (initFunction) {
-		    log();
-		    lognl("//функция инициализации:");
-			
-			let code = accordUtils.funcToString(initFunction, false);
-			log(code);
-		}
+	//указана доп. функция инициализации - вывести её в лог
+	if (initFunction) {
+	    loghr();
+	    log("//функция инициализации:");
+		let code = accordUtils.funcToString(initFunction, false);
+		log(code);
 	}
-	highlightLogComments1();	
 	
 }
 
@@ -357,7 +339,6 @@ function execDemoFunc() {
 		if (exp==regexp){
 			log2(comment);
 			log2(exp);
-			highlightLogComments2();	
 		} else {
 			log2(regexp);
 		}
@@ -370,7 +351,6 @@ function execDemoFunc() {
 	if (!currentFunc) {
 	    return;
 	}
-	
 		
 	a = {};
 	if (demoOptions.beforeExec) {
@@ -382,7 +362,7 @@ function execDemoFunc() {
     clearLog2();
 
     if (typeof currentFunc == "string") {
-        le2(currentFunc);
+		logParsedExpression(parsedScript);
 		$log2.parent().trigger("focus");
     } else {
 
@@ -390,7 +370,17 @@ function execDemoFunc() {
         try {
 			
 			if (demoOptions.lfMode){
-				lf2(currentFunc);
+//				lf2(currentFunc);
+				$log2.append(parsedScript.formatCode());
+				
+				log2hr();
+				
+				r = currentFunc();
+				if (r){
+					log2(val);
+					return val;
+				}
+			
 			} else {
 				r = currentFunc();
 
@@ -416,8 +406,6 @@ function execDemoFunc() {
 	if (Object.keys(a).length){
 		log2nl(a);
 	}	
-    highlightLogComments2();
-//	highlightLogComments1();
 }
 
 //инициализация селекта с демками
@@ -467,37 +455,60 @@ function initDemoCodeSelect(selector = "selectors1", data = null) {
         let v = $sel.val();
 
 		if (demoOptions.regexpMode) {
-			clearLog2();
-
 			let exp = mainData[v];
 			let comment = mainDataComments[v];
-
+			currentFunc = exp;
+			parsedScript = parseShortScript(comment, exp);
+			
+			$selectorText.val(exp);
+			clearLog2();
 			log2(comment);
 			log2(exp);
-			highlightLogComments2();	
-						
-			currentFunc = exp;
-			$selectorText.val(exp);
-						
+			
 		} else if (demoOptions.jquerySelectorsMode) {
-			clearLog();
 			
 			let exp = mainData[v];
 			let comment = mainDataComments[v];
-			
-			log(comment);
-            log(exp);
-			highlightLogComments1();	
-						
+
 			currentFunc = exp;
+			parsedScript = parseShortScript(comment, exp);
+						
+			clearLog();
+			log(comment);
+		    log(exp);
+			
 			$selectorText.val(exp);
-        } else {
+		} else {
+			currentFunc = data[v];
+			
+			try {
+				let currentCode;
+				
+				let funcMode = (typeof currentFunc != "string");
+				
+				if (funcMode) {
+					currentCode = accordUtils.funcToString(currentFunc, true);
+				} else {
+					currentCode = accordUtils.removeOddIndent(currentFunc);
+				}
+				
+				parsedScript = parseScript(currentCode, funcMode);
+				if (demoOptions.debugMode){
+					console.log(parsedScript.toString());
+				}
+			} catch(error){
+				log("Error:", error.message);
+				console.error(error.stack);
+			}			
+			
+			
 			clearLog();
 			
-            currentFunc = data[v];
+			
+			
 			logCurrentFunc();
 			$selectorText.val(v);
-        }
+		}		
 		
 
     });
@@ -796,66 +807,6 @@ function initBriefDemo(options) {
 	
 }
 
-//если демки заданы строкой - он разбивает её на 2 массива: mainData - демки и mainDataComments - связанные с ними комменты
-function parseMainSelectorsData(selectorsData){
-
-	mainData = selectorsData;
-	mainDataComments = null;
-	
-
-	//демки заданы одной большой строкой
-	if (typeof selectorsData == "string") {
-
-		mainDataComments = [];
-		mainData = [];
-
-		let lines = selectorsData.split("\n");
-
-		let ind = 0;
-		let currExp = null;
-		let currComment = null;
-		
-		lines.push("");
-		lines.forEach(line=>{
-			
-			line = line.trim();
-			
-			//пустая строка
-			if (!line){
-				if (!currExp){
-					return;
-				}
-				mainData[ind] = currExp;
-				mainDataComments[ind] = currComment;
-				
-				currExp = null;
-				currComment = null;
-				ind++;
-				return;
-				
-			}
-
-			if (line.startsWith("//") || line.startsWith("# ") || line=="#"){
-				if (currComment){
-					currComment+="\n"+line;					
-				} else {
-					currComment = line;
-				}
-			} else {
-				if (currExp){
-					currExp+="\n"+line;					
-				} else {
-					currExp = line;
-				}
-			}
-			
-		});//for lines
-			
-	}
-	
-
-	
-} 
 
 
 function createSiblingPageAnchors(){

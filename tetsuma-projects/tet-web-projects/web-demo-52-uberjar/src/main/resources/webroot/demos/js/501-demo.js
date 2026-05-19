@@ -130,7 +130,7 @@ let selectorsData1 = {
 		//Возвращает массив найденных значений
 		testString.match(/(?<= )\\w+/g);  //слова, перед которыми пробел
 				
-		//str.split(separator, limit) - разбиение строки
+		//str.split(separator, limit) - разбиение строки (можно и регулярным выражением)
 		testString.split(' ',3);
 				
 		//str.concat(...o) - склеивание строк

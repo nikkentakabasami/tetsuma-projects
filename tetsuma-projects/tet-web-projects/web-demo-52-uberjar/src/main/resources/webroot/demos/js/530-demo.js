@@ -102,8 +102,11 @@ let selectorsData1 = {
 	# str.search(regexp)
 	# str.indexOf(val)
 	# str.lastIndexOf(val)
-	#
+	# str.split([separator[, limit]])
 
+	
+	str.split('/',3);
+	
 	//ищем параметр param1
 	testUrl2.search(/(?<=[?&])param1=/);
 	

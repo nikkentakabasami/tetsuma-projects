@@ -15,6 +15,8 @@ le(exp)
 le2(exp)
 le2nl(exp)
 
+logParsedExpression(pe)
+
 _lf($log, func) - //выводит в лог код функции, выполняет её, выводит в лог результат
 lf(func)
 lf2(func)
@@ -33,8 +35,10 @@ logTextFragment(text, title="found fragment")
 logTextSample(text, title)
 logTextSample2(text, title)
 
-highlightLogComments1()	//подсвечивает комменты в логах
-highlightLogComments2()
+log2Blue(val)
+log2Gray(val)
+log2Green(val)
+
  * 
  * 
  * 
@@ -154,12 +158,96 @@ function stringifyObject(o, indent = "", withBraces = false) {
 }
 
 
+
+//выводит в лог заданное распарсенное выражение
+async function logParsedExpression(pe) {
+	if (!pe || pe.parts.length==0){
+		return;
+	}
+	
+	for(p of pe.parts){
+
+		let exp = p.text.trimRight();
+		
+		
+		if (p.type==ST_COMMENT){
+			exp+="\n";
+			log2Gray(exp);
+			continue;
+		}
+		if (p.type==ST_DOC || p.type==ST_DOC_MULT){
+			exp+="\n\n";
+			log2Green(exp);
+			continue;
+		}
+				
+				
+//		if (p.type==ST_CODE || p.type==ST_CODE_MULT){
+//		}
+
+		try {
+			
+			let ind = exp.indexOf("//");
+			if (ind>0 && exp[ind-1]!=":"){
+				log2Blue(exp.substring(0,ind));
+				log2Gray(exp.substring(ind));
+			} else {
+				log2Blue(exp);
+			}
+			log2();
+			
+			//вычисляем выражение
+			let val = eval(exp);
+			
+			if (val!=null && p.logResult){
+				
+				//с промисами - результат придётся выводить в конце
+				if (val instanceof Promise){
+					log2();
+					val = await val;
+
+					if (!val){
+						continue;
+					}
+					log2();
+					
+					//выводим значения промисов в конце блока:				
+					log2Blue(exp);
+					log2(val, "\n");
+					continue;
+				}
+				
+				if (p.logAsJson){
+					val = JSON.stringify(val);
+				} else if (typeof val === "string") {
+					val = '"'+val+'"';
+				}
+				log2(val, "\n");
+				continue;
+			} else {
+				log2();
+			}
+		} catch (err) {
+		  console.error('Произошла ошибка:', err.message);
+		  console.error('exp:', exp);
+		  console.error('Стек вызовов:', err.stack);
+			log2('Произошла ошибка:', err.message);
+			return;
+		}
+		
+	}//for
+	
+	
+}
+
+
+
 //выводит в лог заданное выражение, выполняет его через eval(), выводит в лог результат
 async function _le($log, exp, blockMode = false) {
 	if (!exp){
 		return;
 	}
-
+	
 	//многострочное выражение
 	if (!blockMode && exp.includes("\n")){
 		let lines = exp.split("\n");
@@ -424,6 +512,24 @@ function logFuncCode2(f, withHr = false){
 }
 
 
+function log2Blue(val) {
+	val = stringifyObject(val);
+	val = sp_blue+val+sp_end;
+	$log2.append(val);
+}
+
+function log2Gray(val) {
+	val = stringifyObject(val);
+	val = sp_gray+val+sp_end;
+	$log2.append(val);
+}
+function log2Green(val) {
+	val = stringifyObject(val);
+	val = sp_green+val+sp_end;
+	$log2.append(val);
+}
+
+
 function logMessage($log, ...vals) {
 	
 	let line = vals.map(v=>stringifyObject(v)).join(" ");
@@ -473,66 +579,6 @@ function logTextSample2(text, title){
 	log2("----------------------");
 }
 
-
-const graySpan = '<span class="gray">';
-const grenSpan = '<span class="green">';
-const endSpan = '</span>';
-
-//$("asdf").wrap('<span class="gray"></span>')
-
-//подсвечивает комменты в логах серым цветом
-function highlightLogComments1() {
-    highlightLogComments($log1);
-}
-function highlightLogComments2() {
-    highlightLogComments($log2);
-}
-function highlightLogComments($log) {
-
-    let text = $log.html();
-	
-	//подсвечиваем многострочные комменты
-	text = text.replace(/\/\*[\s\S]*\*\//g,grenSpan+"$&"+endSpan+"\n");
-	
-    const lines = text.split('\n');
-	
-    const processedLines = lines.map(line => {
-		
-		//строка уже подкрашена
-		if (line.includes(endSpan) || line.includes('<span ')){
-			return line;
-		}
-		
-		if (line=="#"){
-			return "";
-		}
-
-		if (line.startsWith('#')) {
-			let s = line.substring(2);
-			return grenSpan + s + endSpan;
-		} else if (line.startsWith('//#')) {
-			
-			if (line.length>4){
-				let s = line.substring(4);
-				return grenSpan + s + endSpan;
-			} else {
-				return "";
-			}
-		} 
-	
-		//ищем комменты (но не url)	
-		let ind = line.search(/(?<![:\\])\/\//g);
-        if (ind >= 0) {
-			let s = line.substring(ind);
-            return line.substring(0, ind) + graySpan + s + endSpan;
-        }
-		return line;
-    });
-
-    let newText = processedLines.join('\n');
-
-    $log.html(newText);
-}
 
 
 

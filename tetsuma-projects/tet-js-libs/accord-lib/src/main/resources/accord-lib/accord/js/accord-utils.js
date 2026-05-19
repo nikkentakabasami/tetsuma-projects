@@ -24,6 +24,9 @@ let accordUtils = {
   addCssFile: addCssFile,
   addJSToPage: addJSToPage,
   removeJSFromPage: removeJSFromPage,
+  addJSToPagePromise: addJSToPagePromise,
+  addCssToPagePromise: addCssToPagePromise,
+  
   
   //-------ajax ----------
   
@@ -66,12 +69,11 @@ let accordUtils = {
 	funcToString: funcToString,
 	objectToString: objectToString,
 	getRequestParameter: getRequestParameter,
-	
-	
-	  
 
 };
 window.accordUtils = accordUtils;
+
+
 
 
 //получение параметра запроса
@@ -222,6 +224,76 @@ function addJSToPage(jsHref, onload) {
 	
 	return script;
 }
+
+
+
+
+async function addCssToPagePromise(href) {
+
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`link[rel="stylesheet"][href="${href}"]`)) {
+      resolve();
+      return;
+    }
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = href;
+    link.onload = () => resolve();
+    link.onerror = () => reject(new Error(`Ошибка загрузки CSS: ${href}`));
+    document.head.appendChild(link);
+  });
+
+}
+
+async function addJSToPagePromise(src, type) {
+	
+	//Если задан массив ссылок - добавляем их последовательно.
+	if (Array.isArray(src)){
+		
+		while(src.length){
+			
+			let csrc = src.pop();
+			let r = await addJSToPagePromise(csrc);
+			console.log(r);
+		}
+
+		/*		
+		src.forEach(csrc=>{
+			await addJSToPagePrimise(csrc);
+		});
+		*/
+		return true;		
+	}
+	
+	
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) {
+      resolve();
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+	
+	if (type){
+		script.type = type;
+	}
+	
+    script.onload = () => resolve(true);
+    script.onerror = () => reject(new Error(`Ошибка загрузки скрипта: ${src}`));
+    document.head.appendChild(script);
+  });
+}
+
+
+
+
+
+
+
+
+
 
 //удаляет js-файл из документа
 function removeJSFromPage(script) {
