@@ -158,20 +158,19 @@ selectorsData1.custom_error.init = readUser;
 
 
 
-$(() => {
-
-	initBriefDemo(	{
-		demoType: DT_SELECT_NO_WP, 
-		workPanelTemplate: 0,
-		selectorsData: selectorsData1,
-		lfMode: true,
-		selectedOption: "err_props",
-		initFunction: ()=>{
-			
-		}
-	});		
-	
-});
+function getBriefDemoOptions() {
+  return {
+    demoType: DT_SELECT_NO_WP,
+    workPanelTemplate: 0,
+    selectorsData: selectorsData1,
+    lfMode: true,
+    afterSandboxReload: null,
+    selectedOption: null,
+    debugMode: false,
+    initFunction: () => {
+    }
+  };
+}
 
 
 

@@ -12,72 +12,71 @@ let testBlob1 = new Blob(['Hello, world!'], {type: 'text/plain'});
 let selectorsData1 = {
 	
 	File_info:`
-	# File
-	#   наследует от Blob, обладает возможностями по взаимодействию с файловой системой.
-	# 
-	# new File(fileParts, fileName, [options])
-	#   конструктор, похожий на Blob:
-	# fileParts
-	#   массив значений Blob/BufferSource/строки.
-	# fileName
-	#   имя файла
-	# options.lastModified
-	#   дата последнего изменения в формате таймстамп (целое число).
-	
-	`,
+/*
+File
+  наследует от Blob, обладает возможностями по взаимодействию с файловой системой.
+new File(fileParts, fileName, [options])
+  конструктор, похожий на Blob:
+fileParts
+  массив значений Blob/BufferSource/строки.
+fileName
+  имя файла
+options.lastModified
+  дата последнего изменения в формате таймстамп (целое число).
+*/
+
+`,
 	File_get:`
-	
-	//Получаем объекты File из <input type="file">
-	files = $("#if1").get(0).files; !
-	file = files[0]; !
-	
-	file.size;
-	file.type;
-	
-	file.name;
-	file.lastModified;
-	
-	`,
+//Получаем объекты File из <input type="file">
+files = $("#if1").get(0).files; !
+file = files[0]; !
+
+file.size;
+file.type;
+
+file.name;
+file.lastModified;
+
+`,
 	
 	FileReader_info:`
+/*
+FileReader
+  объект для считывания данных из Blob (и File).
+  Данные передаются при помощи событий, так как чтение с диска может занять время.
 
-	# FileReader
-	#   объект для считывания данных из Blob (и File).
-	#   Данные передаются при помощи событий, так как чтение с диска может занять время.
-	# 
-	# fileReader = new FileReader();
-	# 
-	# Основные методы:
-	# fileReader.readAsArrayBuffer(blob)
-	# fileReader.readAsText(blob, [encoding])
-	# fileReader.readAsDataURL(blob)
-	# 
-	# fileReader.abort()
-	#   отменить операцию.
-	# 
-	# В процессе чтения происходят события:
-	# 
-	# load – нет ошибок, чтение окончено.
-	# error – произошла ошибка.
-	# loadstart – чтение начато.
-	# progress – срабатывает во время чтения данных.
-	# abort – вызван abort().
-	# loadend – чтение завершено (успешно или нет).
-	# 
-	# Когда чтение закончено, мы сможем получить результаты через:
-	# 
-	# reader.result - результат чтения (если оно успешно)
-	# reader.error - объект ошибки (при неудаче).
+fileReader = new FileReader();
 
-	`,
-	
-	
+Основные методы:
+fileReader.readAsArrayBuffer(blob)
+fileReader.readAsText(blob, [encoding])
+fileReader.readAsDataURL(blob)
+
+fileReader.abort()
+  отменить операцию.
+
+В процессе чтения происходят события:
+
+load – нет ошибок, чтение окончено.
+error – произошла ошибка.
+loadstart – чтение начато.
+progress – срабатывает во время чтения данных.
+abort – вызван abort().
+loadend – чтение завершено (успешно или нет).
+
+Когда чтение закончено, мы сможем получить результаты через:
+
+reader.result - результат чтения (если оно успешно)
+reader.error - объект ошибки (при неудаче).
+*/
+`,
 	
 	fileReader_readAsArrayBuffer(){
+		/*
+		fileReader.readAsArrayBuffer(blob)
+		  считать данные как ArrayBuffer
+		*/
 		
-		//# fileReader.readAsArrayBuffer(blob)
-		//#   считать данные как ArrayBuffer
-		//# 
 		//получаем блоб
 		files = $("#if1").get(0).files;
 		if (files.length>0){
@@ -100,10 +99,11 @@ let selectorsData1 = {
 	
 	fileReader_readAsText(){
 		
-		//# reader.readAsText(blob, [encoding])
-		//#   считать данные как строку (default encoding: utf-8)
-		//#   альтернатива TextDecoder
-		//# 
+		/*
+		reader.readAsText(blob, [encoding])
+		  считать данные как строку (default encoding: utf-8)
+		  альтернатива TextDecoder
+		*/
 		
 		//получаем блоб
 		files = $("#if1").get(0).files;
@@ -112,7 +112,6 @@ let selectorsData1 = {
 		} else {
 			file = testBlob1;
 		}
-		
 
 		fileReader = new FileReader();
 		fileReader.readAsText(file);
@@ -129,14 +128,17 @@ let selectorsData1 = {
 	},	
 	
 	fileReader_readAsDataURL(){
-		//# fileReader.readAsDataURL(blob)
-		//#   конвертация Blob-объекта в url-строку с кодировкой base64.
-		//# 
-		//# Эта кодировка представляет двоичные данные в виде строки с безопасными для чтения символами.
-		//# data url имеет форму data:[<mediatype>][;base64],<data>.
-		//# Мы можем использовать такой url где угодно наряду с «обычным» url.
+		/*
+		fileReader.readAsDataURL(blob)
+		  конвертация Blob-объекта в url-строку с кодировкой base64.
+		
+		Эта кодировка представляет двоичные данные в виде строки с безопасными для чтения символами.
+		data url имеет форму data:[<mediatype>][;base64],<data>.
+		Мы можем использовать такой url где угодно наряду с «обычным» url.
+		*/
 				
-		let $link = $("#link1"); 
+		let $link = $("#link1");
+		$link.text("download hello-file")
 		$link.attr("download","hello.txt")
 		
 		fileReader = new FileReader();
@@ -148,28 +150,24 @@ let selectorsData1 = {
 		
 	},
 	
-	
-	
-	
-	
 
 	
 }
 
-$(document).ready(function() {
-
-	initBriefDemo(	{
-		demoType: DT_SELECT, 
-		workPanelTemplate: "../fragments/anchorsSandbox.html",
-		selectorsData: selectorsData1,
-		lfMode: true,
-//		selectedOption: "s4",
-		initFunction: ()=>{
-			$(".auxPanel").css("height","600px");
-		}
-	});	
-	
-});
+function getBriefDemoOptions() {
+  return {
+	demoType: DT_SELECT, 
+	workPanelTemplate: "../fragments/anchorsSandbox.html",
+    selectorsData: selectorsData1,
+    lfMode: true,
+    afterSandboxReload: null,
+    selectedOption: null,
+    debugMode: false,
+    initFunction: () => {
+		$(".auxPanel").css("height","600px");
+    }
+  };
+}
 
 
 

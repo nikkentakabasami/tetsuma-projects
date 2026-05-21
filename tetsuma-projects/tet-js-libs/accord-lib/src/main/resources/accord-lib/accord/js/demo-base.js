@@ -172,8 +172,8 @@ function logCurrentFunc(){
 	clearLog1();
 	
 	let fc = parsedScript.formatCode();
-//	log(fc);
 	$log1.html(fc);
+	log();
 	
 	let initFunction = currentFunc.init || demoOptions.currentFunc;
 
@@ -352,7 +352,6 @@ function execDemoFunc() {
 	    return;
 	}
 		
-	a = {};
 	if (demoOptions.beforeExec) {
 	    demoOptions.beforeExec();
 	}
@@ -377,8 +376,8 @@ function execDemoFunc() {
 				
 				r = currentFunc();
 				if (r){
-					log2(val);
-					return val;
+					log2(r);
+					return r;
 				}
 			
 			} else {
@@ -390,7 +389,7 @@ function execDemoFunc() {
 				    logMess += "elements found: " + r.length;
 				}
 				log2(logMess);
-				$log2.parent().trigger("focus");
+//				$log2.parent().trigger("focus");
 			}
 
         } catch (error) {
@@ -403,9 +402,11 @@ function execDemoFunc() {
 	if (demoOptions.afterExec) {
 	    demoOptions.afterExec();
 	}
-	if (Object.keys(a).length){
-		log2nl(a);
-	}	
+	
+	setTimeout(()=>{
+		$log2.parent().trigger("focus");
+	},100);	
+	
 }
 
 //инициализация селекта с демками
@@ -503,8 +504,6 @@ function initDemoCodeSelect(selector = "selectors1", data = null) {
 			
 			
 			clearLog();
-			
-			
 			
 			logCurrentFunc();
 			$selectorText.val(v);

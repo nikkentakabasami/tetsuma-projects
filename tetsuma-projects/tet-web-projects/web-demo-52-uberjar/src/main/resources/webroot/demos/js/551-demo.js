@@ -77,23 +77,19 @@ let selectorsData1 = {
 
 
 
-
-$(() => {
-	
-		initBriefDemo(	{
-			demoType: DT_SELECT_NO_WP,
-			workPanelTemplate: 0,
-			selectorsData: selectorsData1,
-	//		selectedOption: "demo1_script",
-			lfMode: true,
-			initFunction(){
-				
-			},
-		});		
-
-});
-
-
+function getBriefDemoOptions() {
+  return {
+    demoType: DT_SELECT_NO_WP,
+    workPanelTemplate: 0,
+    selectorsData: selectorsData1,
+    lfMode: true,
+    afterSandboxReload: null,
+    selectedOption: null,
+    debugMode: false,
+    initFunction: () => {
+    }
+  };
+}
 
 
 

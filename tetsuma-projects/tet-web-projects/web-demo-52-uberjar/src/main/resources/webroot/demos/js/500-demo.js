@@ -6,10 +6,11 @@ let n1, n2, n3, n4;
 let selectorsData1 = {
 
 	
-	scr1:`
-	
-	# ?? - Оператор нулевого слияния
-	#   аналог nvl - проверка на null и undefined
+	nvl:`
+	/*
+	?? - Оператор нулевого слияния
+	  аналог nvl - проверка на null и undefined
+	*/
 
 	r = null ?? "default string";
 
@@ -25,24 +26,28 @@ let selectorsData1 = {
 
 	
 	`,
-	scr2:`
+	comma:`
 
-	# оператор запятая
-	#   выполняются все команды, возвращается результат последней
-	# 
+	/*
+	оператор запятая
+	  выполняются все команды, возвращается результат последней
+	*/
+	
 	n1=10,n2=33,n3=n1*n2;
 	
 	n4 = (n1=10,n2=33,n3=n1*n2);
 	
 	`,
-	scr3:`
+	optional:`
 	
-	# ?. - Опциональная цепочка  
-	#   безопасное получение атрибутов и функций.
-	#   останавливает вычисление и возвращает undefined, если часть перед ?. имеет значение undefined или null.
-	#   нельзя использовать для присваивания значений!
+	/*
+	?. - Опциональная цепочка  
+	  безопасное получение атрибутов и функций.
+	  останавливает вычисление и возвращает undefined, если часть перед ?. имеет значение undefined или null.
+	  нельзя использовать для присваивания значений!
+	*/
 
-	r = {}; 
+	r = {}; !
 	r?.address?.street;
 	r?.["some attr"];
 
@@ -59,10 +64,12 @@ let selectorsData1 = {
 	`,
 		
 
-	s1(){
+	destruct_assign(){
 		
-		// Деструктурирующее присваивание
-		//  упрощённое создание переменных
+		/*
+		Деструктурирующее присваивание
+		  упрощённое создание переменных
+		*/
 
 		let options = {
 		  title: "Menu",
@@ -90,7 +97,7 @@ let selectorsData1 = {
 		log2nl("id, name, age:", id, name, age)
 				
 	},	
-	s2(){
+	destruct_assign_arrays(){
 
 		//Деструктуризация массивов
 		let arr = [7,12,53]
@@ -110,7 +117,7 @@ let selectorsData1 = {
 				
 		
 	},	
-	s3(){
+	destruct_assign_arrays2(){
 		//Деструктуризация массивов 2
 		let arr = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
 		
@@ -130,39 +137,22 @@ let selectorsData1 = {
 		
 		
 	},	
-	s4(){
-		
-		
-	},	
-	s5(){
-	},	
-	
-
-	
-	
-	
-	
-	
-	
 	
 }
 
-$(document).ready(function() {
-
-	initBriefDemo(	{
-		demoType: DT_SELECT_NO_WP, 
-		workPanelTemplate: 0,
-		selectorsData: selectorsData1,
-		lfMode: true,
-		selectedOption: "scr1",
-		initFunction: ()=>{
-			
-		}
-	});	
-	
-});
-
-
+function getBriefDemoOptions() {
+  return {
+    demoType: DT_SELECT_NO_WP,
+    workPanelTemplate: 0,
+    selectorsData: selectorsData1,
+    lfMode: true,
+    afterSandboxReload: null,
+    selectedOption: null,
+    debugMode: false,
+    initFunction: () => {
+    }
+  };
+}
 
 
 

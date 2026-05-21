@@ -10,10 +10,7 @@ log(...vals)
 log2(...vals)
 log3(...vals)
 
-_le($log, exp)
 le(exp)
-le2(exp)
-le2nl(exp)
 
 logParsedExpression(pe)
 
@@ -203,21 +200,27 @@ async function logParsedExpression(pe) {
 				
 				//с промисами - результат придётся выводить в конце
 				if (val instanceof Promise){
-					log2();
 					val = await val;
-
 					if (!val){
 						continue;
 					}
+					
+					log2(val, "\n");
+					/*
 					log2();
 					
 					//выводим значения промисов в конце блока:				
 					log2Blue(exp);
-					log2(val, "\n");
+					log2("\npromiseVal:", val, "\n");
+					*/
+					
+					
 					continue;
 				}
 				
-				if (p.logAsJson){
+				if (p.logAsString){
+					val = String(val);
+				} else if (p.logAsJson){
 					val = JSON.stringify(val);
 				} else if (typeof val === "string") {
 					val = '"'+val+'"';
@@ -237,182 +240,16 @@ async function logParsedExpression(pe) {
 		
 	}//for
 	
-	
 }
 
 
 
-//выводит в лог заданное выражение, выполняет его через eval(), выводит в лог результат
-async function _le($log, exp, blockMode = false) {
-	if (!exp){
-		return;
-	}
-	
-	//многострочное выражение
-	if (!blockMode && exp.includes("\n")){
-		let lines = exp.split("\n");
-		
-		let multiLine = "";
-		let multiMode = false;
-		let multiCommentMode = false;
-		let si = 0;  //чтобы убрать ведущие пробелы
-		
-		
-		
-		lines.forEach(line=>{
-
-			//ищем и просто выводим многострочные комменты
-			let ind = line.search(/^\s*\/\*/);
-			if (ind>=0){
-				multiCommentMode = true;
-				logMessage($log, line);
-				return;
-			}
-			
-			if (multiCommentMode){
-				ind = line.search(/^\s*\*\//);
-				if (ind>=0){
-					multiCommentMode = false;
-				}
-				logMessage($log, line);
-				return;
-			}
-						
-			
-			ind = line.indexOf("@"); 
-			let at = ind>=0; 	//строка начинается с @ - включаем многострочный режим
-			if (at){
-				//действительно ли @ - первый символ?
-				ind = line.search(/^\s*@/);
-				at = (ind>=0);
-			}
-
-			//многострочные выражения окружены собачками
-			if (multiMode){
-				if (at){
-					multiMode = false;
-					si = 0;
-					
-					if (line.indexOf("!")>0){
-						multiLine+=" !";
-					}
-					
-					_le($log, multiLine, true);
-					
-				} else {
-					multiLine+=line.substring(si)+"\n";
-				}
-				return;
-			}
-			
-			//встретилась собака - включаем многострочный режим.
-			if (at){
-				multiMode = true;
-				multiLine = "";
-				si = ind;
-				return;
-			}
-
-			_le($log, line);
-			
-		});
-		log2hr();
-		return;
-	};
-	
-	//------однострочное выражение-------
-	exp = exp.trim();
-
-	//коммент	
-	if (!blockMode && exp.startsWith("//")){
-		let codeNode = logMessage($log, exp);
-		return;
-	}
-	
-	//коммент-документация
-	if (!blockMode && exp.startsWith("#")){
-		if (exp.length<=2){
-			exp = "";
-		}
-		logMessage($log, exp);
-		return;
-	}
-	
-	try {
-		let showResult = true;
-		let resultAsJson = false;
-				
-		//выражение заканчивается ! - результат выводить не нужно
-		if (exp.endsWith("!")){
-			showResult = false;
-			exp = exp.slice(0,-1).trim();
-		}
-		
-		//выражение заканчивается ~ - выводить результат как JSON
-		if (exp.endsWith("~")){
-			resultAsJson = true;
-			exp = exp.slice(0,-1).trim();
-		}
-		
-		//выводим в лог выражение и подкрашиваем его голубым
-		let codeNode = logMessage($log, exp);
-		if (codeNode.nodeValue.trim().length){
-			$(codeNode).wrap(blueSpan);
-		}
-		
-		
-		//вычисляем выражение
-		let val = eval(exp);
-		if (val!=null && showResult){
-			
-			//с промисами - результат придётся выводить в конце
-			if (val instanceof Promise){
-				logMessage($log);
-				val = await val;
-
-				if (!val){
-					return;
-				}
-				
-				//выводим значения промисов в конце блока:				
-				let codeNode = logMessage($log, exp);
-				if (codeNode.nodeValue.trim().length){
-					$(codeNode).wrap(blueSpan);
-				}
-				logMessage($log, val, "\n");
-				return;
-			}
-			
-			if (resultAsJson){
-				val = JSON.stringify(val);
-			} else if (typeof val === "string") {
-				val = '"'+val+'"';
-			}
-			logMessage($log, val, "\n");
-			return val;
-		} else {
-			logMessage($log);
-		}
-	} catch (err) {
-	  console.error('Произошла ошибка:', err.message);
-	  console.error('exp:', exp);
-	  console.error('Стек вызовов:', err.stack);
-		log2('Произошла ошибка:', err.message);
-		return;
-	}
-	
+async function le(exp) {
+	exp = accordUtils.removeOddIndent(exp);
+	let pe = parseScript(exp);
+	logParsedExpression(pe);
+	$log2.parent().trigger("focus");
 }
-function le(exp) {
-	return _le($log1, exp)
-}
-function le2(exp) {
-	return _le($log2, exp)
-}
-function le2nl(exp) {
-	log2();
-	return _le($log2, exp)
-}
-
 
 
 //очистка логов
@@ -514,17 +351,20 @@ function logFuncCode2(f, withHr = false){
 
 function log2Blue(val) {
 	val = stringifyObject(val);
+	val = accordUtils.escapeHTML(val);
 	val = sp_blue+val+sp_end;
 	$log2.append(val);
 }
 
 function log2Gray(val) {
 	val = stringifyObject(val);
+	val = accordUtils.escapeHTML(val);
 	val = sp_gray+val+sp_end;
 	$log2.append(val);
 }
 function log2Green(val) {
 	val = stringifyObject(val);
+	val = accordUtils.escapeHTML(val);
 	val = sp_green+val+sp_end;
 	$log2.append(val);
 }
@@ -538,7 +378,6 @@ function logMessage($log, ...vals) {
 	
 	//чтобы избавиться от спецсимволов
 	let lineNode = document.createTextNode(line)
-	
 	$log.append(lineNode);
 
 	if (demoOptions.autoscrollLog1 && $log==$log1 || demoOptions.autoscrollLog2 && $log==$log2){

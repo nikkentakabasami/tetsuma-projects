@@ -511,31 +511,23 @@ let selectorsData1 = {
 }
 
 
-
-
-$(() => {
-
-	initBriefDemo(	{
-		demoType: DT_SELECT_NO_WP, 
-		workPanelTemplate: 0,
-		selectorsData: selectorsData1,
-		lfMode: false,
-//		selectedOption: "testRegexp1",
-		initFunction: ()=>{
-			
-		},
-		beforeExec: ()=>{
-			for(re of regexSamples){
-				re.lastIndex = 0;
-			}
+function getBriefDemoOptions() {
+  return {
+    demoType: DT_SELECT_NO_WP,
+    workPanelTemplate: 0,
+    selectorsData: selectorsData1,
+    lfMode: true,
+    afterSandboxReload: null,
+    selectedOption: null,
+    debugMode: false,
+    initFunction: () => {
+    },
+	beforeExec: ()=>{
+		for(re of regexSamples){
+			re.lastIndex = 0;
 		}
-		
-		
-	});	
-	
-		
-
-});
-
+	}
+  };
+}
 
 

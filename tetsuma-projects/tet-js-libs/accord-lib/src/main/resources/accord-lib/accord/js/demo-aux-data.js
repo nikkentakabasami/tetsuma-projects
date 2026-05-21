@@ -1,5 +1,5 @@
 /**
- * Вспомогательные данные, строки и объекты.
+ * Вспомогательные данные, строки, объекты, функции.
  * 
  */
 
@@ -10,6 +10,15 @@ let testObject = {
     id: 123,
     name: "bob"
 }
+
+
+const particleObject = {
+  name: "electron",
+  size: 345,
+  hasWeight: true,
+};
+
+
 
 function heavyTask() {
     let result = 0;

@@ -34,11 +34,8 @@ let selectorsData1 = `
 
 `;
 
-
-
-$(document).ready(function() {
-
-	initBriefDemo(	{
+function getBriefDemoOptions() {
+  return {
 	demoType: DT_REGEXP,
 	selectorsData: selectorsData1,
 	regexpMode: true,
@@ -73,14 +70,12 @@ $(document).ready(function() {
 		},
 		
 	}
-	
-	
+
+
 		----`,
-	
+
 	initFunction: ()=>{
 		
 	}
-	});	
-	
-});
-
+  };
+}

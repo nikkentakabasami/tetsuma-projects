@@ -63,17 +63,18 @@ function errorHandler(error){
 let selectorsData1 = {
 
 
-	pf1(){
-		//Promise
-		//  Класс для выполнения длительных, асинхронных задач, 
-		// которые надо отслеживать и получить в конце результат
-		//  Сделаны для более читаемого кода, без коллбэков
+	Promise_then(){
+		/*
+		Promise
+		  Класс для выполнения длительных, асинхронных задач, 
+		 которые надо отслеживать и получить в конце результат
+		  Сделаны для более читаемого кода, без коллбэков
 
-		//promise.then(onFulfilled, onRejected)
-		//  Обработка результата выполнения
-		//  Можно вызывать несколько раз, добавляя разные обработчики.
-		//  Возвращает Promise, что позволяет создавать цепочку промосов.
-		
+		promise.then(onFulfilled, onRejected)
+		  Обработка результата выполнения
+		  Можно вызывать несколько раз, добавляя разные обработчики.
+		  Возвращает Promise, что позволяет создавать цепочку промосов.
+		*/
 		
 		doTestOperation().then(
 			result => {
@@ -86,8 +87,7 @@ let selectorsData1 = {
 		
 		logFuncCode2(doTestOperation, true);
 	},
-	pf2(){
-		
+	Promise_then2(){
 
 		//Альтернативный способ задания обработчиков	
 		doTestOperation()
@@ -104,12 +104,14 @@ let selectorsData1 = {
 		logFuncCode2(doTestOperation, true);		
 		
 	},
-	pf3(){
+	Promise_all(){
 		
-		//let promise = Promise.all([...промисы...]);
-		//   Возвращает промис, который сработает когда будут завершены все заданные промисы.
-		//   Вернёт массив результатов.
-		//   Если один из них завершится ошибкой - вернёт ошибку
+		/*
+		let promise = Promise.all([...промисы...]);
+		   Возвращает промис, который сработает когда будут завершены все заданные промисы.
+		   Вернёт массив результатов.
+		   Если один из них завершится ошибкой - вернёт ошибку
+		*/
 
 		Promise.all([
 			makeDemoPromise("Porcia",1500),
@@ -129,12 +131,14 @@ let selectorsData1 = {
 			});
 		});
 	},
-	pf4(){
+	Promise_allSettled(){
 		
-		//let promise = Promise.allSettled([...промисы...]);
-		//   Возвращает промис, который сработает когда будут завершены все заданные промисы.
-		//   Вернёт массив объектов вида: {"status": "fulfilled","value":"..."}
-		//   Если один из них завершится ошибкой - вернёт ошибку
+		/*
+		let promise = Promise.allSettled([...промисы...]);
+		   Возвращает промис, который сработает когда будут завершены все заданные промисы.
+		   Вернёт массив объектов вида: {"status": "fulfilled","value":"..."}
+		   Если один из них завершится ошибкой - вернёт ошибку
+		*/
 
 		Promise.allSettled([
 			makeDemoPromise("Porcia",1500),
@@ -144,9 +148,11 @@ let selectorsData1 = {
 			log2nl("promise finished:",result);	
 		});
 	},
-	pf5(){
-		//Promise.race
-		//  ждёт только первый выполненный промис, из которого берёт результат (или ошибку).
+	Promise_race(){
+		/*
+		let promise = Promise.race([...промисы...]);
+		  ждёт только первый выполненный промис, из которого берёт результат (или ошибку).
+		*/
 		
 		Promise.race([
 			makeDemoPromise("Porcia",1500),
@@ -157,15 +163,17 @@ let selectorsData1 = {
 		});
 		
 	},
-	pf6: async function(){
-		//await
-		//  Ключевое слово await заставит интерпретатор JavaScript ждать до тех пор, пока промис справа от await не выполнится.
-		//  После чего оно вернёт его результат, и выполнение кода продолжится.
-		//  можно использовать только в функциях с async.
-		//  При ошибках - кинет исключение. Ошибки перехватываются через try catch
-		//
-		//Пока промис не выполнится, JS-движок может заниматься другими задачами: выполнять прочие скрипты, обрабатывать события!
-		//Последовательность действий сохраняется только в async-методах!
+	Promise_await: async function(){
+		/*
+		await
+		  Ключевое слово await заставит интерпретатор JavaScript ждать до тех пор, пока промис справа от await не выполнится.
+		  После чего оно вернёт его результат, и выполнение кода продолжится.
+		  можно использовать только в функциях с async.
+		  При ошибках - кинет исключение. Ошибки перехватываются через try catch
+		
+		Пока промис не выполнится, JS-движок может заниматься другими задачами: выполнять прочие скрипты, обрабатывать события!
+		Последовательность действий сохраняется только в async-методах!
+		*/
 		
 		try {
 
@@ -181,13 +189,15 @@ let selectorsData1 = {
 		
 		
 	},
-	pf7(){
-		
-		//async
-		//  ключевое слово для функций
-		//  отмеченная функция всегда возвращает промис
-		//  Значения других типов оборачиваются в завершившийся успешно промис автоматически.
+	Promise_async(){
 
+		/*		
+		async
+		  ключевое слово для функций
+		  отмеченная функция всегда возвращает промис
+		  Значения других типов оборачиваются в завершившийся успешно промис автоматически.
+		*/
+		
 		async function f() {
 		  return "async function result.";
 		}
@@ -195,12 +205,12 @@ let selectorsData1 = {
 		f().then(r=>log2(r));
 		
 		
-		
 	},
-	pf8: async function(){
+	Promise_fetch: async function(){
 
-				
-		//fetch() возвращает промис, который можно ожидать с помощью await.
+		/*
+		fetch() возвращает промис, который можно ожидать с помощью await.
+		*/				
 				
 		try {
 		  const response = await fetch("../fragments/anchorsSandbox.html");
@@ -213,12 +223,14 @@ let selectorsData1 = {
 		}		
 		
 	},
-	pf9(){
+	Promise_chain(){
 		
-		//promise.then(onFulfilled, onRejected)
-		//  Возвращает Promise, что позволяет создавать цепочку промисов.
-
-		//цепочка позволяет выполнять асинхронные задачи последовательно, без излишней вложенности
+		/*
+		Цепочка промисов.
+		  promise.then() сам возвращает Promise, что позволяет создавать цепочку промисов.
+		  
+		Цепочка позволяет выполнять асинхронные задачи последовательно, без излишней вложенности
+		*/				
 				
 		//пример с простыми значениями
 		makeDemoPromise("Porcia",700)
@@ -238,7 +250,7 @@ let selectorsData1 = {
 
 				
 	},
-	pf91(){
+	Promise_chain2(){
 
 		//пример с длительными промисами
 		//добавляем в пример обработчик ошибок errorHandler
@@ -261,7 +273,7 @@ let selectorsData1 = {
 		
 		
 	},
-	pf92(){
+	Promise_chain3(){
 		
 		//последовательная загрузка скриптов
 		loadScript("../misc/test_script1.js")
@@ -273,10 +285,8 @@ let selectorsData1 = {
 	},
 		
 
-	pf93: async function(){
-
+	Promise_chain_array: async function(){
 		let arr1 = ["shichika","hachi","retsu","hasshin"];
-		
 
 		//обработка строк выполняется не последовательно!
 		arr1.forEach((line,ind)=>{
@@ -284,29 +294,24 @@ let selectorsData1 = {
 				log2(line);
 				return;
 			}
-			
 			//async функция, содержащая await
 			makeAndLogDemoPromise(line,500);
 		});
 		
-		
 		//и тут тоже!
 		for(let i=0; i<arr1.length;i++){
 			let line = "for: "+arr1[i];
-
 			if (i==1){
 				log2(line);
 				continue;
 			}
-
 			//async функция, содержащая await
 			makeAndLogDemoPromise(line,500);
-						
 		}
 	},
 	
 	
-	pf95(){
+	Promise_chain_array2(){
 		let arr1 = ["shichika","hachi","retsu","hasshin"];
 		
 		//последовательная обработка через цепочку промисов
@@ -325,29 +330,6 @@ let selectorsData1 = {
 			log2(r);
 		});
 		
-		
-		
-		
-		
-		
-		/*
-		promise = Promise.resolve("start");
-		arr1.forEach((line,ind)=>{
-			promise = promise.then(r=>{
-				
-				if (ind==1){
-					return line;
-				}
-				let p = makeDemoPromise(line,800);
-				p.then(m=>{
-					log2(r);
-				});
-				
-				return p;
-			});
-		});
-		*/
-		
 	},	
 		
 	
@@ -356,20 +338,20 @@ let selectorsData1 = {
 
 
 
-$(document).ready(function() {
+function getBriefDemoOptions() {
+  return {
+    demoType: DT_SELECT_NO_WP,
+    workPanelTemplate: 0,
+    selectorsData: selectorsData1,
+    lfMode: true,
+    afterSandboxReload: null,
+    selectedOption: "Promise_chain_array",
+    debugMode: false,
+    initFunction: () => {
 
-	initBriefDemo(	{
-		demoType: DT_SELECT_NO_WP, 
-		workPanelTemplate: 0,
-		selectorsData: selectorsData1,
-		lfMode: true,
-		selectedOption: "pf94",
-		initFunction: ()=>{
-			
-		}
-	});	
-	
-});
+    }
+  };
+}
 
 
 

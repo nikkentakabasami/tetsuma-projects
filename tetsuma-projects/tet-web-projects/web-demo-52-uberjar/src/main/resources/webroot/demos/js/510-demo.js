@@ -131,21 +131,19 @@ let selectorsData1 = {
 }
 
 
-$(()=>{
-	
-	initBriefDemo(	{
-		demoType: DT_SELECT_NO_WP, 
-		workPanelTemplate: 0,
-		selectorsData: selectorsData1,
-		selectedOption: "json_stringify_replacer",
-		lfMode: true,
-		autoscrollLog2: false,
-		initFunction: ()=>{
-			
-		}
-	});	
-
-});
+function getBriefDemoOptions() {
+  return {
+    demoType: DT_SELECT_NO_WP,
+    workPanelTemplate: 0,
+    selectorsData: selectorsData1,
+    lfMode: true,
+    afterSandboxReload: null,
+    selectedOption: null,
+    debugMode: false,
+    initFunction: () => {
+    }
+  };
+}
 
 
 

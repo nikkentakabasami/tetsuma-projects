@@ -4,10 +4,11 @@
 let selectorsData1 = {
 
 	blob_stream(){
-		//#   
-		//# blob.stream()
-		//#   Возвращает ReadableStream с данными блоба
-		//#   
+		  
+		/*
+		blob.stream()
+		  Возвращает ReadableStream с данными блоба
+		*/
 		
 		arr1 = new Uint8Array([72, 101, 108, 108, 111]);
 		blob1 = new Blob(["<html>",arr1,"</html>"], {type: 'text/html'});
@@ -46,15 +47,10 @@ let selectorsData1 = {
 	},	
 	
 	stream2(){
-		//# ReadableStream
-		//#   поток байтовых данных. 
-		
-		
-		
-		
-		
-		
-		
+		/*
+		ReadableStream
+		  поток байтовых данных. 
+		*/
 	},
 	stream3(){
 	},
@@ -63,44 +59,26 @@ let selectorsData1 = {
 	
 	
 	
-	
-	
-	
-	
-	
-	s1:`
-	`,
-	s2:`
-	`,
-	s3:`
-	`,
-	s4:`
-	`,
-	
-	
-	
-
-	
 }
 
 
 
 
 
-$(document).ready(function() {
+function getBriefDemoOptions() {
+  return {
+    demoType: DT_SELECT_NO_WP,
+    workPanelTemplate: 0,
+    selectorsData: selectorsData1,
+    lfMode: true,
+    afterSandboxReload: null,
+    selectedOption: null,
+    debugMode: false,
+    initFunction: () => {
 
-	initBriefDemo(	{
-		demoType: DT_SELECT_NO_WP, 
-//		workPanelTemplate: "../fragments/anchorsSandbox.html",
-		selectorsData: selectorsData1,
-		lfMode: true,
-//		selectedOption: "TypedArray6",
-		initFunction: ()=>{
-			
-		}
-	});	
-	
-});
+    }
+  };
+}
 
 
 

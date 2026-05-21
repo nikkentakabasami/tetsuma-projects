@@ -3,6 +3,8 @@
  * 
  * 
  * parseMainSelectorsData(sd) - если демки заданы строкой - он разбивает её на 2 массива
+ * parseScript(script, funcMode = false)
+ * 
  */
 
 
@@ -104,6 +106,10 @@ function parseScript(script, funcMode = false){
 				if (tl.endsWith("~")){
 					r.currPart.logAsJson = true;
 				}
+				if (tl.endsWith("$")){
+					r.currPart.logAsString = true;
+				}
+				
 				r.newPart();
 			} else {
 				r.addLine(line);
@@ -120,16 +126,28 @@ function parseScript(script, funcMode = false){
 		}		
 		
 		//дококоммент: # 
-//		ind = line.search(/(?<=^\s*)#/);
-//		if (ind>=0){
-		if (tl.startsWith("#")){
+		if (tl.startsWith("# ")){
 			if (!r.isDoc()){
 				r.newPart();
 				r.setDoc();
 			}
-			r.addLine(tl.length>2?tl.substring(2):"");
+			tl = tl.substring(2).trim();
+			if (tl.length<=1){
+				tl = "";
+			} 
+			r.addLine(tl);
 			return;
 		}
+		if (tl=="#"){
+			if (!r.isDoc()){
+				r.newPart();
+				r.setDoc();
+			}
+			r.addLine("");
+			return;
+		}
+		
+		
 		//дококоммент: //# 
 //		ind = line.search(/(?<=^\s*)\/\/#/);
 //		if (ind>=0){
@@ -175,6 +193,11 @@ function parseScript(script, funcMode = false){
 				line = line.slice(0,-1).trimRight();
 				r.currPart.logAsJson = true;
 			}
+			if (tl.endsWith("$")){
+				line = line.slice(0,-1).trimRight();
+				r.currPart.logAsString = true;
+			}
+			
 			r.addLine(line);
 						
 		}
@@ -237,7 +260,7 @@ class ParsedScript {
 	
 	//Выводит код в отформатированном виде (с подсветкой элементов)
 	formatCode(){
-		return this.parts.map(p=>p.formatCode()).join("\n\n");
+		return this.parts.map(p=>p.formatCode()).join("\n");
 	}
 	
 		
@@ -278,7 +301,11 @@ class ScriptPart {
 	
 	//выражение заканчивается ~ - выводить результат как JSON
 	logAsJson = false;
+
+	//выражение заканчивается $ - выводить результат как String
+	logAsString = false;
 	
+		
 	constructor(type){
 		this.type = type;
 	}
@@ -306,18 +333,19 @@ class ScriptPart {
 	//Выводит код в отформатированном виде (с подсветкой элементов)
 	formatCode(){
 		
-		let r = this.text;
+		let r = accordUtils.escapeHTML(this.text);
+		
 		switch (this.type){
 		case ST_CODE:
 		case ST_CODE_MULT:
-			r = sp_blue + r + sp_end;
+			r = sp_blue + r + sp_end+"\n";
 			break;
 		case ST_COMMENT:
 			r = sp_gray + r + sp_end;
 			break;
 		case ST_DOC_MULT:
 		case ST_DOC:
-			r = sp_green + r + sp_end;
+			r = sp_green + r + sp_end+"\n";
 			break;
 		default:
 		}

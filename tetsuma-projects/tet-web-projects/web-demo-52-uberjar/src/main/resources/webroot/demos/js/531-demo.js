@@ -186,30 +186,25 @@ let selectorsData1 = `
 
 
 
-$(document).ready(function() {
-
-	initBriefDemo(	{
+function getBriefDemoOptions() {
+  return {
 	demoType: DT_REGEXP,
 	selectorsData: selectorsData1,
 	regexpMode: true,
 	sampleText: `ЛюдовикXV, ЛюдовикXVI, ЛюдовикXVIII,
-		ЛюдовикV, ЛюдовикVI, ЛюдовикVIII, ЛюдовикLXVII, ЛюдовикXXL
-		aaa aaa
-		Сергей Иванов, Игорь Иванов
-		text_before satori text_after
-		1 индейка стоит 30€
-		1 индейка стоит $50
-		[some. @text. ($with.) braces.]
-		@ hi		
-		//tenka musou
-		http://localhost:8090/demo-52
-		трам-трам-трумтрам-трум-трамтрум.
-		----`,
-	
-	initFunction: ()=>{
-		
-	}
-	});	
-	
-});
-
+ЛюдовикV, ЛюдовикVI, ЛюдовикVIII, ЛюдовикLXVII, ЛюдовикXXL
+aaa aaa
+Сергей Иванов, Игорь Иванов
+text_before satori text_after
+1 индейка стоит 30€
+1 индейка стоит $50
+[some. @text. ($with.) braces.]
+@ hi		
+//tenka musou
+http://localhost:8090/demo-52
+трам-трам-трумтрам-трум-трамтрум.
+----`,
+    initFunction: () => {
+    }
+  };
+}

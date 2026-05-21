@@ -395,20 +395,17 @@ let selectorsData1 = {
 	
 }
 
-$(() => {
-	
-		initBriefDemo(	{
-			demoType: DT_SELECT_NO_WP,
-			workPanelTemplate: 0,
-			selectorsData: selectorsData1,
-			selectedOption: "mutate1",
-			lfMode: true,
-			autoscrollLog2: false,
-			
-			initFunction(){
-				initArrays();
-			},
-		});		
-  
-});
+function getBriefDemoOptions() {
+  return {
+    demoType: DT_SELECT_NO_WP,
+    workPanelTemplate: 0,
+    selectorsData: selectorsData1,
+    lfMode: true,
+    afterSandboxReload: null,
+    selectedOption: null,
+    debugMode: false,
+    initFunction: () => {
+    }
+  };
+}
 
