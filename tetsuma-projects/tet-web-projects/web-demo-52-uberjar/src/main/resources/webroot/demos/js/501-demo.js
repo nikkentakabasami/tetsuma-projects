@@ -1,10 +1,10 @@
 
 
-let testString = "  Seishun tte a to iu ma to iu koto.";
-let testString2;
+let s1,s2;
 
 let n1, n2, n3, n4;
 
+let matches;
 
 //тестовые функции
 //возвращают query-объекты, задействованные в тесте: они будут выделены красной рамкой
@@ -18,37 +18,37 @@ let selectorsData1 = {
 		a.s4 = String ("моя строка 3");
 
 		//возвращает объект String, а не примитив!
-		a.s5 = new String ("моя строка 3");
+		a.s5 = new String ("моя строка 5");
 
 		//String(x) - конвертирует аргумент в строку
-		a.s5 = String(22);
-		a.s6 = String(false);
+		a.s10 = String(22);
+		a.s11 = String(false);
 
 		//Переноc строки
-		a.s7 = "Hello \n\
+		a.s12 = "Hello \n\
 			World!";
 
 		//Template Strings - обратные кавычки.
 		//позволяют выполнять перенос строк (multiline string), использовать любые кавычки
-		a.s11 = `Это очень длинная строка,
+		a.s20 = `Это очень длинная строка,
 				которая продолжается на следующей строке.`;
 
 		//позволяют встраивать выражения в строку, заключая их в ${…}
 		let name = "Иван";
-		a.s12 = `Привет, ${name}!`;
-		a.s13 = `результат: ${1 + 2}`;
+		a.s21 = `Привет, ${name}!`;
+		a.s22 = `результат: ${1 + 2}`;
 		
 	},
 
 	String_escape(){
 		
 		//backslash escape character - Экранирование спецсимволов
-		a.s10= 'It\'s alright.\\';
+		a.s1= 'It\'s alright.\\';
 
-		a.s11 = "I'm a JavaScript \"programmer\".";
+		a.s2 = "I'm a JavaScript \"programmer\".";
 					
 		//escape sequences
-		a.s12= "\n-New Line,\r-Carriage Return,\t-tab";
+		a.s3= "\n-New Line,\r-Carriage Return,\t-tab";
 		
 	},
 	
@@ -71,89 +71,208 @@ let selectorsData1 = {
 	},
 	
 	String_encoding_func: `
-		//String.fromCharCode() - создание строк из кодов UTF-16.
-		//Работает только с кодами в диапазоне от 0 до 65535.
-		//Не поддерживает эмодзи или исторические символы, у которых кодовые точки выше 0xFFFF.
-		String.fromCharCode(189, 43, 190, 61);
+/*
+String.fromCharCode()
+  создание строк из кодов UTF-16.
+  Работает только с кодами в диапазоне от 0 до 65535.
+  Не поддерживает эмодзи или исторические символы, у которых кодовые точки выше 0xFFFF.
+*/
+  
+String.fromCharCode(189, 43, 190, 61);
 
-		//String.fromCodePoint() - то же что и fromCharCode, но поддерживает значения выше 0xFFFF.
-		String.fromCodePoint(189, 43, 190, 61);
-		String.fromCodePoint(9731, 9733, 9842, 0x2f804)
+/*
+String.fromCodePoint()
+  то же что и fromCharCode, но поддерживает значения выше 0xFFFF.
+*/
+String.fromCodePoint(189, 43, 190, 61);
+String.fromCodePoint(9731, 9733, 9842, 0x2f804)
 
-		//str.charCodeAt(pos) - Возвращает код символа на позиции pos (0-65535)
-		testString.charCodeAt(0);
+/*
+str.charCodeAt(pos)
+  Возвращает код символа на позиции pos (0-65535)
+*/
 
-		//str.codePointAt(pos) - Возвращает полный код символа на позиции.
-		//Этот код может стостоять из двух суррогатных пар
-		testString.codePointAt(0);			
-	`,
-	
+testString1;
+
+testString1.charCodeAt(0);
+
+/*
+str.codePointAt(pos)
+  Возвращает полный код символа на позиции.
+  Этот код может стостоять из двух суррогатных пар
+*/
+
+testString1.codePointAt(2);			
+`,
 	
 	String_functions: `
-		testString;
-		testString.length;
-				
-		//str.charAt(ind) - Получение символа по индексу.
-		//В JavaScript нет отдельного типа «символ», так что charAt возвращает строку, состоящую из выбранного символа.
-		//Символ так же можно получить квадратными скобками, как в массиве.
-		testString.charAt(5);
-		testString[5];
 
-		//str.at(ind) - Аналог charAt, но поддерживает отрицательный индекс.
-		//(-1 - последний символ)
-		testString.at(-1);
-		testString.at(-5);
-						
-		testString.toLowerCase();
-		testString.toUpperCase();
-				
-		//str.indexOf(searchValue, fromIndex)
-		testString.indexOf('to');
-				
-		//str.lastIndexOf(searchValue, fromIndex)
-		testString.lastIndexOf('to');
-				
-		testString.substring(5,10);
-				
-		//str.slice(start, end) - аналог substring, но удобнее.
-		//Отличие: Отрицательные значения отсчитываются от конца строки (-1 - последний символ)
-		testString.slice(-5);  //5 последних символов
-		testString.slice(1,-1);  //убрать первый и последний символы
-				
-		testString.replace('to','AA');
-		testString.replaceAll('to','AA');
-		
-		//Чтобы заменить все значения - можно использовать регулярные выражения
-		testString.replace(/to/g,'AA');
-				
-		//str.match(re) - поиск регулярным выражением.
-		//Возвращает массив найденных значений
-		testString.match(/(?<= )\\w+/g);  //слова, перед которыми пробел
-				
-		//str.split(separator, limit) - разбиение строки (можно и регулярным выражением)
-		testString.split(' ',3);
-				
-		//str.concat(...o) - склеивание строк
-		'ae'.concat(true,'-',66);
-				
-		testString.trim();
-		testString.trimEnd();
-		testString.trimStart();
-				
-		//str.toWellFormed() - устраняет некорректные последовательности символов Unicode
-		testString2 = "Hello World \uD800";
-		
-		testString2.isWellFormed();
-		testString2 = testString2.toWellFormed();
-		testString2.isWellFormed();
-				
-		//padStart(targetLength, padString), padEnd(...) - дополнят строку до нужной длины повтором заданной строки
-		testString.padStart(40,'*');
-		testString.padEnd(40,'*#');
-		'hello_'.repeat(5);
-		
-	`,
+//базовые функции:
+testString1;
+testString1.length;
+testString1.toLowerCase();
+testString1.toUpperCase();
+testString1.trim();
+testString1.trimEnd();
+testString1.trimStart();
+
+/*
+str.charAt(ind)
+  Получение символа по индексу.
+  В JavaScript нет типа «символ», так что charAt возвращает строку.
+  Символ так же можно получить квадратными скобками, как в массиве.
+
+str.at(ind)
+  Аналог charAt, но поддерживает отрицательный индекс.
+  (-1 - последний символ)
+  
+*/
+testString1.charAt(5);
+testString1[5];
+
+testString1.at(-1);
+testString1.at(-5);
+
+
+/*
+str.substring(start, end)
+  получение подстроки
+
+str.slice(start, end)
+  аналог substring, но можно задавать индексы от конца строки (-1 - последний символ)
+*/
+testString1.substring(5,10);
+
+testString1.slice(-5);  //5 последних символов
+testString1.slice(1,-1);  //убрать первый и последний символы
+
+/*
+str.split(separator/regexp, limit)
+  разбиение строки (можно и регулярным выражением)
+*/
+testString1.split(' ',3);
+testString1.split(/ ?to ?/,3);
+
+/*
+str.concat(...o)
+  склеивание строк
+*/
+'ae'.concat(true,'-',66);
+
+/*
+string.isWellFormed()
+  строка не содержит некорректных последовательностей
+  
+str.toWellFormed()
+  устраняет некорректные последовательности символов Unicode
+
+*/
+s1 = "Hello World \uD800";
+
+s1.isWellFormed();
+s1 = s1.toWellFormed();
+s1.isWellFormed();
+
+/*
+str.padStart(targetLength, padString)
+str.padEnd(targetLength, padString)
+  дополнят строку до нужной длины повтором заданной строки
+  
+str.repeat(count)
+  дублирует строку заданное число раз.
+*/
+testString1.padStart(40,'*');
+testString1.padEnd(40,'*#');
+'hello_'.repeat(5);
+
+`,	
 	
+
+String_functions_search: `
+
+testString1;
+
+# str.indexOf(val, fromIndex)
+testString1.indexOf('to');
+
+testString1.indexOf('to',18);
+
+
+# str.lastIndexOf(val, fromIndex)
+testString1.lastIndexOf('to');
+
+/*
+str.search(regexp)
+возвращает позицию первого совпадения или -1
+Аналог indexOf(str), но с регулярным выражением.
+*/
+
+testString1.search(/(to )\\w+/);
+
+/*
+str.match(regexp)
+  с флагом g - возвращает обычный массив из всех совпадений.
+  без флага g - возвращает первое совпадение (массив вида [result, group1, group2...] с атрибутом index)
+*/
+
+testString1.match(/(to )\\w+/);
+
+testString1.match(/(to )\\w+/g);
+
+//слова, перед которыми пробел
+testString1.match(/(?<= )\\w+/g);
+
+
+/*
+str.matchAll(regexp)
+  возвращает iterator по всем совпадениям regexp (включая группы)
+  Поддерживает только глобальные выражения!
+*/
+@
+matches = testString1.matchAll(/(to )\\w+/g);
+for (const match of matches) {
+  log2("match=",match,", match.index=",match.index);
+}
+@!
+
+//получить данные массивом
+@
+matches = testString1.matchAll(/(?<= )\\w+/g);
+Array.from(matches, m => m.index);
+@
+
+/*
+str.replace(val/regexp, newVal)
+  Замена одного значения.
+  searchValue - строка или RegExp
+  Если RegExp глобальный - заменит все значения.
+*/
+
+testString1.replace('to','AA');
+testString1.replace(/to/g,'AA');
+
+/*
+str.replaceAll(val/regexp, newVal/func)
+  Замена всех значений.
+  searchValue - строка или глобальный RegExp
+  newValue - может быть функцией.
+*/
+
+testString1.replaceAll('to','AA');
+testString1.replaceAll(/to/g,'AA');
+testString1.replaceAll('to',x=>x.toUpperCase());
+
+
+
+
+
+
+
+
+
+
+`,	
+
 	
 }
 
@@ -166,10 +285,12 @@ function getBriefDemoOptions() {
     selectorsData: selectorsData1,
     lfMode: true,
     afterSandboxReload: null,
-    selectedOption: null,
+    selectedOption: "String_functions",
     debugMode: false,
+//	logObjectsAsJson: true,
     initFunction: () => {
     }
+	
   };
 }
 

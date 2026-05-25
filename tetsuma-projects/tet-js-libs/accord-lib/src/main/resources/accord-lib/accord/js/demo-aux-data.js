@@ -6,11 +6,44 @@
 let testUrl = "http://api.github.com/zen";
 let testUrl2 = "http://api.github.com/zen?p1=777&p2=888#4";
 
+let testString1 = "  Seishun tte a to iu ma to koto.\t";
+
+let namesString = 'Маша, Петя, Марина, Василий';
+
+let jsonString1 = '{ "name": "Вася", "age": 35, "isAdmin": false, "friends": [10,11,12,13] }';
+
+
+let testArray1 = ["Яблоко", "Апельсин", "Слива", "Груша", "Финик", "Вишня"];
+let testArray2 = new Array(11, 3, 5, 2, 7, 9, 13, 3, 33);
+let testArray3 = Array.from({ length: 9 }, (el, index) => index);	// [0, 1, 2, 3...]
+
+
+
+
+
+let testMap1 = new Map([
+  [1, "a"],
+  [2, "b"],
+  [3, "c"],
+]);
+
+
+
 let testObject = {
     id: 123,
-    name: "bob"
+    name: "bob",
+	age: 30
 }
 
+let testEvent1 = {
+  title: "Конференция",
+  date: "сегодня",
+  user: {
+	id: 50,
+	name: "Patrik"
+  },
+  id: 123
+};
 
 const particleObject = {
   name: "electron",

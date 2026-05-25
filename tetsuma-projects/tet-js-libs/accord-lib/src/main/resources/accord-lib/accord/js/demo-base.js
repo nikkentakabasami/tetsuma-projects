@@ -6,7 +6,7 @@
  * highlightJquery(val) - выделяет объекты с заданным селектором красной рамкой
  * reloadSandbox() - очищает .workPanel и загружает в неё элементы из #template1
  * execDemoFunc() - выполняет currentFunc
- * initDemoCodeSelect(selector, data) - инициализация селекта с демками
+ * initDemoCodeSelect(selector) - инициализация селекта с демками
  * addDemoButtons(handlers, panelSelector = ".acc-button-panel") - добавляет набор демо кнопок на панель
  * initDemo()
  * initBriefDemo(options) - инициализация лаконичного демо
@@ -14,34 +14,57 @@
  */
 
 
-//опции, определяющий, как будет работать текущая демка
-let demoOptions = {
+const DT_SELECT = 1;
+const DT_BUTTONS = 2;
+const DT_SELECTORS = 3;
+const DT_SELECT_NO_WP = 4;  //без песочницы
+const DT_REGEXP = 5;
 
-    //выполняются до и после выполнения currentFunc/демо-кнопок
-    beforeExec: null,
-    afterExec: null,
 
-    //функция инициализации всего кода: выводить её при нажатии каждой демо-кнопки
-    initFunction: null,
+
+const TEMPLATE_FORM1 = 1;
+const TEMPLATE_FORM2 = 2;
+
+
+
+//опции, определяющие, как будет работать текущая демка
+let demoOptions = {};
+
+const defaultBruefDemoOptions = {
+	demoType: DT_SELECT,
+	workPanelTemplate: TEMPLATE_FORM1,
+	selectorsData: null,
+	selectedOption: null,
+	regexpMode: false,
+	sampleText: null,
+	reloadSandboxOnChange: true,
 	
+	
+	//выполняются до и после выполнения currentFunc/демо-кнопок
+	beforeExec: null,
+	afterExec: null,
+
+	//функция инициализации всего кода: выводить её при нажатии каждой демо-кнопки
+	initFunction: null,
+
 	//функция, выполняющаяся после reloadSandbox
 	afterSandboxReload: null,
 
 	//режим тестирования jquery функций (входные данные - это массив селекторов и jquery-запросов)
 	jquerySelectorsMode: false,
-	
-	//выполнять ли функции в режиме lf2 (с выводом тела и результата во второй лог)
+
+	//выводить ли демо-функции во второй лог при выполнении
 	lfMode: false,
-	
+
 	//настройки, позволяющие включить автоскролинг в первый или второй лог 
 	autoscrollLog1: false,
 	autoscrollLog2: false,
+
+	//выводить объекты в лог в json-виде
+//	logObjectsAsJson: true,
 	
-	logObjectsAsJson: true,
-	
-	
-	
-};
+}
+
 
 
 
@@ -151,29 +174,26 @@ function addTitlePanelButtons() {
         $tp.append('<a id="mainsrc" href="#">Исходники (F1)</a>');
     }
 
-	/*
-	if (demoOptions.nextPage) {
-	    $tp.append(`<a href="${demoOptions.nextPage}">Next demo (*)</a>`);
-	}
-	*/
-
-
 }
 
 
 
 
 //вывод currentFunc в лог1 
-function logCurrentFunc(){
+function logCurrentFunc($log){
 	if (!currentFunc){
 		return;
 	}
 	
-	clearLog1();
+	if ($log==null){
+		$log = $log1;
+	}
+	
+//	clearLog1();
 	
 	let fc = parsedScript.formatCode();
-	$log1.html(fc);
-	log();
+	$log.html(fc);
+//	log();
 	
 	let initFunction = currentFunc.init || demoOptions.currentFunc;
 
@@ -250,7 +270,8 @@ function highlightJquery(val) {
 	    demoOptions.afterExec();
 	}
 	if (Object.keys(a).length){
-		log2nl(a);
+		let as = stringifyObject(a, "", false, false)
+		log2nl(as);
 	}
 	
 
@@ -332,12 +353,14 @@ function execDemoFunc() {
 		let regexp = $selectorText.val();
 		
 		let v = $mainSelect.val();
-		let exp = mainData[v];
-		let comment = mainDataComments[v];
+//		let exp = mainData[v];
+//		let comment = mainDataComments[v];
+		let exp = parsedScript.getCode();
+
 
 		clearLog2();
 		if (exp==regexp){
-			log2(comment);
+//			log2(comment);
 			log2(exp);
 		} else {
 			log2(regexp);
@@ -352,6 +375,7 @@ function execDemoFunc() {
 	    return;
 	}
 		
+	a = {};
 	if (demoOptions.beforeExec) {
 	    demoOptions.beforeExec();
 	}
@@ -403,6 +427,13 @@ function execDemoFunc() {
 	    demoOptions.afterExec();
 	}
 	
+	
+	
+	if (Object.keys(a).length){
+		let as = stringifyObject(a, "", false, false)
+		log2nl(as);
+	}
+	
 	setTimeout(()=>{
 		$log2.parent().trigger("focus");
 	},100);	
@@ -410,16 +441,7 @@ function execDemoFunc() {
 }
 
 //инициализация селекта с демками
-function initDemoCodeSelect(selector = "selectors1", data = null) {
-
-	if (!data){
-		
-		if (typeof selectorsData1 !=undefined){
-			data = selectorsData1;
-		} else {
-			return;
-		}
-	}
+function initDemoCodeSelect(selector = "selectors1") {
 	
 	
     let $sel = selector;
@@ -434,13 +456,13 @@ function initDemoCodeSelect(selector = "selectors1", data = null) {
 
 	//заполняем select
 	let opts = {
-	    data: data,
+	    data: mainData,
 	    withNullOption: true,
 	    selectedValue: null,
 	    contentIsValue: true,
 	    valueIsIndex: false
 	};
-	if (Array.isArray(data)) {
+	if (Array.isArray(mainData)) {
 	    opts.valueIsIndex = true;
 	    opts.contentIsValue = false;
 	}
@@ -454,17 +476,48 @@ function initDemoCodeSelect(selector = "selectors1", data = null) {
 		currentFunc = null;
 
         let v = $sel.val();
+		currentFunc = mainData[v];
+		
+		try {
 
+			let currentCode;
+			let funcMode = (typeof currentFunc != "string");
+			if (funcMode) {
+				currentCode = accordUtils.funcToString(currentFunc, true);
+			} else {
+				currentCode = accordUtils.removeOddIndent(currentFunc);
+			}
+						
+			parsedScript = parseScript(currentCode, funcMode);
+			if (demoOptions.debugMode){
+				console.log(parsedScript.toString());
+			}
+		} catch(error){
+			log("Error:", error.message);
+			console.error(error.stack);
+		}			
+		
+		
+		
+		
 		if (demoOptions.regexpMode) {
+			/*
 			let exp = mainData[v];
 			let comment = mainDataComments[v];
 			currentFunc = exp;
 			parsedScript = parseShortScript(comment, exp);
-			
 			$selectorText.val(exp);
 			clearLog2();
 			log2(comment);
 			log2(exp);
+			*/
+			
+			clearLog2();
+			let exp = parsedScript.getCode();
+			$selectorText.val(exp);
+			
+			logCurrentFunc($log2);
+			
 			
 		} else if (demoOptions.jquerySelectorsMode) {
 			
@@ -480,32 +533,13 @@ function initDemoCodeSelect(selector = "selectors1", data = null) {
 			
 			$selectorText.val(exp);
 		} else {
-			currentFunc = data[v];
 			
-			try {
-				let currentCode;
-				
-				let funcMode = (typeof currentFunc != "string");
-				
-				if (funcMode) {
-					currentCode = accordUtils.funcToString(currentFunc, true);
-				} else {
-					currentCode = accordUtils.removeOddIndent(currentFunc);
-				}
-				
-				parsedScript = parseScript(currentCode, funcMode);
-				if (demoOptions.debugMode){
-					console.log(parsedScript.toString());
-				}
-			} catch(error){
-				log("Error:", error.message);
-				console.error(error.stack);
-			}			
 			
 			
 			clearLog();
-			
 			logCurrentFunc();
+			
+			
 			$selectorText.val(v);
 		}		
 		
@@ -682,43 +716,22 @@ function initDemo() {
 
 
 
-const DT_SELECT = 1;
-const DT_BUTTONS = 2;
-const DT_SELECTORS = 3;
-const DT_SELECT_NO_WP = 4;  //без песочницы
-const DT_REGEXP = 5;
 
 
-
-const TEMPLATE_FORM1 = 1;
-const TEMPLATE_FORM2 = 2;
-
-const defaultBruefDemoOptions = {
-	demoType: DT_SELECT,
-	workPanelTemplate: TEMPLATE_FORM1,
-	initFunction: null,
-	selectorsData: null,
-	selectedOption: null,
-	afterSandboxReload: null,
-	jquerySelectorsMode: false,
-	regexpMode: false,
-	sampleText: null,
-	reloadSandboxOnChange: true
-}
 
 //инициализация лаконичного демо
 function initBriefDemo(options) {
 	
 	$(document.body).addClass("acc-default-font");
 	
-	options = $.extend({}, defaultBruefDemoOptions, options);
+	demoOptions = $.extend({}, defaultBruefDemoOptions, options);
 
-	demoOptions = $.extend(demoOptions, options);
+//	demoOptions = $.extend(demoOptions, options);
 	
-	parseMainSelectorsData(options.selectorsData);
+	parseStringSelectorsData(demoOptions.selectorsData);
 	
 	
-	switch (options.demoType) {
+	switch (demoOptions.demoType) {
 	case DT_SELECT:
 		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment1.html",null,true);
 	    break;
@@ -741,15 +754,15 @@ function initBriefDemo(options) {
 		
 		
 	  default:
-		console.log(`demoType ${options.demoType} not found.`);
+		console.log(`demoType ${demoOptions.demoType} not found.`);
 		return;
 	}	
 		
-	if (typeof options.workPanelTemplate == "string"){
-		accordUtils.loadHtmlFragmentXHR(options.workPanelTemplate,null,false);
+	if (typeof demoOptions.workPanelTemplate == "string"){
+		accordUtils.loadHtmlFragmentXHR(demoOptions.workPanelTemplate,null,false);
 	} else {
 		
-		switch (options.workPanelTemplate) {
+		switch (demoOptions.workPanelTemplate) {
 		  case TEMPLATE_FORM1:
 			accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate1.html",null,true);
 		    break;
@@ -765,24 +778,21 @@ function initBriefDemo(options) {
 	initDemoLogs();
 	initDemo();
 	
-	if (options.demoType==DT_SELECT 
-		|| options.demoType==DT_SELECT_NO_WP 
-		|| options.demoType==DT_SELECTORS
-		|| options.demoType==DT_REGEXP
+	if (demoOptions.demoType==DT_SELECT 
+		|| demoOptions.demoType==DT_SELECT_NO_WP 
+		|| demoOptions.demoType==DT_SELECTORS
+		|| demoOptions.demoType==DT_REGEXP
 	) {
-		initDemoCodeSelect("#selectors1", mainData);
+		initDemoCodeSelect("#selectors1");
 		
-//		if (options.selectorsData){
-//			initDemoCodeSelect("#selectors1", options.selectorsData);
-//		}
 
-		if (options.selectedOption){
+		if (demoOptions.selectedOption){
 			//выбрать опцию после загрузки страницы 
 			$("#selectors1").val(options.selectedOption).trigger("change");
 		}
 	}
 		  
-	if (options.demoType==DT_REGEXP) {
+	if (demoOptions.demoType==DT_REGEXP) {
 		$log1.text(demoOptions.sampleText);
 		$("#bTestText").click(()=>{
 			demoOptions.sampleText = prompt("Введите тестовый текст.")
@@ -791,16 +801,16 @@ function initBriefDemo(options) {
 	}
 	
 	
-	if (options.demoType==DT_BUTTONS) {
-		if (options.selectorsData){
+	if (demoOptions.demoType==DT_BUTTONS) {
+		if (demoOptions.selectorsData){
 			//добавляем демо-кнопки
 			//addDemoButtons(options.selectorsData)
 			addDemoButtons(mainData);
 		}
 	}
 	
-	if (options.initFunction){
-		options.initFunction();
+	if (demoOptions.initFunction){
+		demoOptions.initFunction();
 	}
 	
 	

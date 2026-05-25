@@ -106,7 +106,7 @@ let selectorsData1 = {
 		//Кастомная ошибка PropertyError:
 		
 		log2nl(String(PropertyError));
-		log2nl();
+		log2hr();
 		
 		try {
 		  let user = readUser('{ "age": 25 }');

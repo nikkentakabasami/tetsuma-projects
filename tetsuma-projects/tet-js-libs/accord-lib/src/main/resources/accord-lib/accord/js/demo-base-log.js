@@ -50,7 +50,7 @@ let $logPanel;
 
 
 //преобразовывает объекты в строки, с форматированием, для вывода в лог
-function stringifyObject(o, indent = "", withBraces = false) {
+function stringifyObject(o, indent = "", withBraces = false, asJson = true) {
 
 	if (o==null){
 		return "";
@@ -107,7 +107,7 @@ function stringifyObject(o, indent = "", withBraces = false) {
 			
 	
 	
-	if ( (t == 'object') && (!Array.isArray(o)) && !demoOptions.logObjectsAsJson ) {
+	if ( (t == 'object') && (!Array.isArray(o)) && !asJson) {
 		
 		if (withBraces){
 			result = indent+"{";
@@ -177,10 +177,13 @@ async function logParsedExpression(pe) {
 			log2Green(exp);
 			continue;
 		}
-				
-				
-//		if (p.type==ST_CODE || p.type==ST_CODE_MULT){
-//		}
+		
+		//горизонтальная линия
+		if (p.type==ST_HR){
+			exp = p.formatCode();
+			$log2.append(exp);
+			continue;
+		}
 
 		try {
 			

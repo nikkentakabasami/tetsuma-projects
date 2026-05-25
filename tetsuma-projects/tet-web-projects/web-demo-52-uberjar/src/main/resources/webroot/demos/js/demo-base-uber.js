@@ -69,12 +69,11 @@ $(document).ready(function() {
   //загружаем все недостающие js и css
   demoAllPromise = Promise.all([
     accordUtils.addJSToPagePromise("../../accord/js/accord-publish.js", "module"),
+	accordUtils.addJSToPagePromise("../../accord/js/demo-base-classes.js"),
     accordUtils.addJSToPagePromise("../../accord/js/demo-base-log.js"),
     accordUtils.addJSToPagePromise("../../accord/js/demo-base.js"),
     accordUtils.addJSToPagePromise("../../accord/js/demo-aux-data.js"),
     accordUtils.addJSToPagePromise("../../accord/js/demo-base-parse.js"),
-
-
     accordUtils.addCssToPagePromise("../../accord/css/accord.css"),
     accordUtils.addCssToPagePromise("../../accord/css/tabbed-panel.css"),
     accordUtils.addCssToPagePromise("../../accord/css/demo-base.css"),
