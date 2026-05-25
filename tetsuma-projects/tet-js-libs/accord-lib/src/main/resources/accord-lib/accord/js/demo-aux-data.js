@@ -3,6 +3,12 @@
  * 
  */
 
+//для выделения элементов
+let boldTag = "<b></b>";
+let testHtmlSnippet = "<b>appended text</b>";
+let greenBorderDivSnippet = '<div class="green-border"></div>';
+
+
 let testUrl = "http://api.github.com/zen";
 let testUrl2 = "http://api.github.com/zen?p1=777&p2=888#4";
 
@@ -29,11 +35,16 @@ let testMap1 = new Map([
 
 
 
-let testObject = {
+let testObject1 = {
     id: 123,
     name: "bob",
-	age: 30
+	age: 30,
+	active: true,
 }
+
+let karma = Symbol("karma");
+testObject1[karma] = "lawful evil";
+
 
 let testEvent1 = {
   title: "Конференция",

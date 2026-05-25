@@ -6,13 +6,17 @@
 stringifyObject(o, indent = "", withBraces = false)
 logMessage($log, ...vals)
 
+
+logParsedExpression(pe)
+logCurrentScript($log)
+
+
 log(...vals)
 log2(...vals)
 log3(...vals)
 
 le(exp)
 
-logParsedExpression(pe)
 
 _lf($log, func) - //выводит в лог код функции, выполняет её, выводит в лог результат
 lf(func)
@@ -47,6 +51,34 @@ let $log1, $log2, $log3;
 //панель с $log1, $log2...
 let $logPanel;
 
+
+//вывод currentScript в лог 
+function logCurrentScript($log){
+	if (!currentScript){
+		return;
+	}
+	
+	if ($log==null){
+		$log = $log1;
+	}
+	
+//	clearLog1();
+	
+	let fc = currentScript.formatCode();
+	$log.html(fc);
+//	log();
+	
+	let initFunction = currentScript?.func?.init;
+
+	//указана доп. функция инициализации - вывести её в лог
+	if (initFunction) {
+	    loghr();
+	    log("//функция инициализации:");
+		let code = accordUtils.funcToString(initFunction, false);
+		log(code);
+	}
+	
+}
 
 
 //преобразовывает объекты в строки, с форматированием, для вывода в лог
@@ -306,9 +338,6 @@ function _lf($log, func) {
 		codeNode = logMessage($log, code);
 	}
 	$log.append("<hr>");
-		
-	//выделяем код синим
-//	$(codeNode).wrap(blueSpan);
 	
 	let val = func();
 	if (val!=null){

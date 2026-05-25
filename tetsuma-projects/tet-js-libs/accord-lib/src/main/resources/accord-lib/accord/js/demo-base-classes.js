@@ -23,6 +23,9 @@ class ParsedScript {
 	
 	currPart = null;
 	
+	//функция-исходник (если этот скрипт задан функцией)
+	func = null;
+	
 	constructor(){
 		this.currPart = new ScriptPart(0);
 	}

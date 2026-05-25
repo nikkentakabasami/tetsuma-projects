@@ -2,10 +2,9 @@
  * Функционал, использующийся для создания демок, тестирующих js.
  * 
  * Основные функции:
- * logCurrentFunc - вывод currentFunc в лог1 
  * highlightJquery(val) - выделяет объекты с заданным селектором красной рамкой
  * reloadSandbox() - очищает .workPanel и загружает в неё элементы из #template1
- * execDemoFunc() - выполняет currentFunc
+ * execDemoFunc() - выполняет currentScript
  * initDemoCodeSelect(selector) - инициализация селекта с демками
  * addDemoButtons(handlers, panelSelector = ".acc-button-panel") - добавляет набор демо кнопок на панель
  * initDemo()
@@ -40,7 +39,7 @@ const defaultBruefDemoOptions = {
 	reloadSandboxOnChange: true,
 	
 	
-	//выполняются до и после выполнения currentFunc/демо-кнопок
+	//выполняются до и после выполнения currentScript/демо-кнопок
 	beforeExec: null,
 	afterExec: null,
 
@@ -76,6 +75,7 @@ let a = {};
 //вспомогательная переменная
 let result;
 
+//ссылка на js-файл с исходниками текущей демки (показывается на F1)
 let mainJsHref = null;
 
 //предыдущая и следующая страницы
@@ -98,12 +98,8 @@ let $btn1, $btn2, $inp1, $inp2, $inp3, $inp4, $testBtn1, $testBtn2, $btnSubmit;
 let formDiv1, formDiv2;
 let $form1, $form2, $formPanel;
 
-//селекты с демками
-let $sel1, $sel2, $sel3, $sel4;
-
-//первый селект, обслуживающий демки
+//селект, обслуживающий демки
 let $mainSelect = null;
-
 
 //кнопка выполнения кода
 let $bExecute;
@@ -116,17 +112,8 @@ let $selectorText;
 //демо-кнопки
 let demoButtons = [];
 
-
-
 //Содержит ли #template1 - используется ли песочница
 let hasSandbox = false;
-
-let greenSpan = '<span class="green"></span>';
-let blueSpan = '<span class="blue"></span>';
-let boldTag = "<b></b>";
-let testHtmlSnippet = "<b>appended text</b>";
-let greenBorderDivSnippet = '<div class="green-border"></div>';
-
 
 
 //счётчик для добавления новых демо-кнопок
@@ -177,35 +164,6 @@ function addTitlePanelButtons() {
 }
 
 
-
-
-//вывод currentFunc в лог1 
-function logCurrentFunc($log){
-	if (!currentFunc){
-		return;
-	}
-	
-	if ($log==null){
-		$log = $log1;
-	}
-	
-//	clearLog1();
-	
-	let fc = parsedScript.formatCode();
-	$log.html(fc);
-//	log();
-	
-	let initFunction = currentFunc.init || demoOptions.currentFunc;
-
-	//указана доп. функция инициализации - вывести её в лог
-	if (initFunction) {
-	    loghr();
-	    log("//функция инициализации:");
-		let code = accordUtils.funcToString(initFunction, false);
-		log(code);
-	}
-	
-}
 
 
 function elementToString(el){
@@ -338,7 +296,6 @@ function testRegExp(re){
 }
 
 
-//выполняет currentFunc
 function execDemoFunc() {
 
 	if (demoOptions.jquerySelectorsMode) {
@@ -348,30 +305,13 @@ function execDemoFunc() {
 	}
 
 	if (demoOptions.regexpMode) {
-		
-		
 		let regexp = $selectorText.val();
-		
-		let v = $mainSelect.val();
-//		let exp = mainData[v];
-//		let comment = mainDataComments[v];
-		let exp = parsedScript.getCode();
-
-
-		clearLog2();
-		if (exp==regexp){
-//			log2(comment);
-			log2(exp);
-		} else {
-			log2(regexp);
-		}
 		log2();
-		
 	    testRegExp(regexp);
 		return;
 	}
 	
-	if (!currentFunc) {
+	if (!currentScript) {
 	    return;
 	}
 		
@@ -384,28 +324,27 @@ function execDemoFunc() {
 
     clearLog2();
 
-    if (typeof currentFunc == "string") {
-		logParsedExpression(parsedScript);
-		$log2.parent().trigger("focus");
+	
+    if (!currentScript.func) {
+		logParsedExpression(currentScript);
     } else {
 
         let r = null;
         try {
 			
 			if (demoOptions.lfMode){
-//				lf2(currentFunc);
-				$log2.append(parsedScript.formatCode());
+				$log2.append(currentScript.formatCode());
 				
 				log2hr();
 				
-				r = currentFunc();
+				r = currentScript.func();
 				if (r){
 					log2(r);
 					return r;
 				}
 			
 			} else {
-				r = currentFunc();
+				r = currentScript.func();
 
 				let logMess = '\nexecuted. ';
 				if (r && r.jquery) {
@@ -426,9 +365,8 @@ function execDemoFunc() {
 	if (demoOptions.afterExec) {
 	    demoOptions.afterExec();
 	}
-	
-	
-	
+
+	//Выводим поля переменной а, если они были заданы
 	if (Object.keys(a).length){
 		let as = stringifyObject(a, "", false, false)
 		log2nl(as);
@@ -441,19 +379,9 @@ function execDemoFunc() {
 }
 
 //инициализация селекта с демками
-function initDemoCodeSelect(selector = "selectors1") {
+function initDemoCodeSelect() {
 	
 	
-    let $sel = selector;
-    if (!selector.jquery) {
-        $sel = $(selector);
-    }
-
-	//заполняем вспомогательные переменные
-    if (!$mainSelect) {
-        $mainSelect = $sel;
-    }
-
 	//заполняем select
 	let opts = {
 	    data: mainData,
@@ -462,85 +390,43 @@ function initDemoCodeSelect(selector = "selectors1") {
 	    contentIsValue: true,
 	    valueIsIndex: false
 	};
-	if (Array.isArray(mainData)) {
+	
+	if (demoOptions.regexpMode || demoOptions.jquerySelectorsMode) {
+		opts.data = Object.values(mainDataParsed).map(ps=>ps.getCode());
+	}
+	
+	if (Array.isArray(opts.data)) {
 	    opts.valueIsIndex = true;
 	    opts.contentIsValue = false;
 	}
-	accordUtils.fillSelect($sel, opts);
+	accordUtils.fillSelect($mainSelect, opts);
 	
 	//обработчик выбора в select
-    $sel.change(e => {
+    $mainSelect.change(e => {
 		if (demoOptions.reloadSandboxOnChange){
 			reloadSandbox();
 		}
-		currentFunc = null;
 
-        let v = $sel.val();
-		currentFunc = mainData[v];
-		
-		try {
-
-			let currentCode;
-			let funcMode = (typeof currentFunc != "string");
-			if (funcMode) {
-				currentCode = accordUtils.funcToString(currentFunc, true);
-			} else {
-				currentCode = accordUtils.removeOddIndent(currentFunc);
-			}
-						
-			parsedScript = parseScript(currentCode, funcMode);
-			if (demoOptions.debugMode){
-				console.log(parsedScript.toString());
-			}
-		} catch(error){
-			log("Error:", error.message);
-			console.error(error.stack);
-		}			
-		
-		
+        let v = $mainSelect.val();
+				
+		currentScript = mainDataParsed[v];
+		if (!currentScript){
+			clearLog();
+			return;
+		}
 		
 		
 		if (demoOptions.regexpMode) {
-			/*
-			let exp = mainData[v];
-			let comment = mainDataComments[v];
-			currentFunc = exp;
-			parsedScript = parseShortScript(comment, exp);
+			let exp = currentScript.getCode();
 			$selectorText.val(exp);
-			clearLog2();
-			log2(comment);
-			log2(exp);
-			*/
-			
-			clearLog2();
-			let exp = parsedScript.getCode();
-			$selectorText.val(exp);
-			
-			logCurrentFunc($log2);
-			
+			logCurrentScript($log2);
 			
 		} else if (demoOptions.jquerySelectorsMode) {
-			
-			let exp = mainData[v];
-			let comment = mainDataComments[v];
-
-			currentFunc = exp;
-			parsedScript = parseShortScript(comment, exp);
-						
-			clearLog();
-			log(comment);
-		    log(exp);
-			
+			let exp = currentScript.getCode();
 			$selectorText.val(exp);
+			logCurrentScript($log1);
 		} else {
-			
-			
-			
-			clearLog();
-			logCurrentFunc();
-			
-			
-			$selectorText.val(v);
+			logCurrentScript();
 		}		
 		
 
@@ -572,9 +458,6 @@ function addDemoButton(buttonTitle, handler, panelSelector = ".acc-button-panel"
 		$panel.find("button").removeClass("blue-border");
 		$newButton.addClass("blue-border");
 
-		currentFunc = handler;
-		
-		logCurrentFunc();
 		execDemoFunc();
 		
     });
@@ -586,10 +469,7 @@ function initDemo() {
 
 	//вспомогательные переменные
 	hasSandbox = $("#template1").length>0;
-    $sel1 = $("#selectors1");
-    $sel2 = $("#selectors2");
-    $sel3 = $("#selectors3");
-    $sel4 = $("#selectors4");
+    $mainSelect = $("#selectors1");
     $workPanel = $(".workPanel");
     $selectorText = $("#selectorText");
 
@@ -645,7 +525,7 @@ function initDemo() {
 
     $bExecute = $("#bExecute");
     $bExecute.click(e => {
-        execDemoFunc(currentFunc);
+        execDemoFunc();
     });
 
     $("#bClearLog").click(e => {
@@ -725,10 +605,9 @@ function initBriefDemo(options) {
 	$(document.body).addClass("acc-default-font");
 	
 	demoOptions = $.extend({}, defaultBruefDemoOptions, options);
-
-//	demoOptions = $.extend(demoOptions, options);
 	
-	parseStringSelectorsData(demoOptions.selectorsData);
+	//Парсим все скрипты/функции в selectorsData, помещая результат в mainDataParsed
+	parseSelectorsData(demoOptions.selectorsData);
 	
 	
 	switch (demoOptions.demoType) {
