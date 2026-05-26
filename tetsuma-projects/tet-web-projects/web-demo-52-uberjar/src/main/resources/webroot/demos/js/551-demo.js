@@ -8,65 +8,69 @@ let o1,o2,o3,o4, currentObject;
 //возвращают query-объекты, задействованные в тесте: они будут выделены красной рамкой
 let selectorsData1 = {
 
-	class_basics(){
+class_basics:`
 
-		log2(String(User));
-		
-		le2(`
-			
-			user = new User("Иван"); ~
-			
-			//using getter
-			user.age;
-			user.fullName;
-			
-			//using setter
-			user.age = 33; !
-			user.password = "orbital"; !
-			
-			user.age = 2;   //Ошибочное значение !
+@
+clearLog1();
+logFuncCode(User, true, $log1);
+@!
 
-			
-			
-						
-			user.name = "Коля"; !
-			user.sayHi();
-			
-			user.printpw();
-			
-			user; ~
+user = new User("Иван"); ~
 
-			//bad constructor			
-			user = new User("Иван","ss"); ~
-			
-			
-			
-			//статические методы
-			User.staticMethod1();
-			User.staticMethod2();
-			User.createBob(); ~
-			
-			//Статические свойства
-			User.desc;
-			
-		`);		
-		
-	},
-		
+
+//получение атрибута объекта
+user.name;
+
+//получение атрибутов, используя getter-ы
+user.age;
+user.fullName;
+
+//запись атрибута объекта
+user.name = "Коля"; !
+
+//использование setter-ов
+user.age = 33; !
+user.password = "orbital"; !
+
+user.age = 2;   //Ошибочное значение !
+
+//вызов методов объекта			
+user.sayHi();
+user.printpw();
+
+user; ~
+
+//bad constructor			
+user = new User("Иван","ss"); ~
+
+
+
+//статические методы
+User.staticMethod1();
+User.staticMethod2();
+User.createBob(); ~
+
+//Статические свойства
+User.desc;
+
+
+`,	
+class_inheritance:`
+
+@
+clearLog1();
+logFuncCode(Animal, true, $log1);
+logFuncCode(Rabbit, true, $log1);
+@!
+
+rabbit = new Rabbit("Белый кролик", 10); !
+rabbit.run(5); !
+rabbit.stop(); !
+
+
+`,	
 	
-	class_inheritance(){
-
-		log2(String(Animal));
-		log2(String(Rabbit));
-		
-				
-		le2(`
-			rabbit = new Rabbit("Белый кролик", 10); !
-			rabbit.run(5); !
-			rabbit.stop(); !
-		`);		
-		
-	},	
+	
 	
 	
 	
@@ -86,6 +90,7 @@ function getBriefDemoOptions() {
     afterSandboxReload: null,
     selectedOption: null,
     debugMode: false,
+	exitOnError: false,  //тестируем ошибки
     initFunction: () => {
     }
   };

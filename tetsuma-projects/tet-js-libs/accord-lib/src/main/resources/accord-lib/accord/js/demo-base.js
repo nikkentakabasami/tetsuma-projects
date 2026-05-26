@@ -13,6 +13,7 @@
  */
 
 
+//demoType
 const DT_SELECT = 1;
 const DT_BUTTONS = 2;
 const DT_SELECTORS = 3;
@@ -20,10 +21,9 @@ const DT_SELECT_NO_WP = 4;  //без песочницы
 const DT_REGEXP = 5;
 
 
-
+//workPanelTemplate
 const TEMPLATE_FORM1 = 1;
 const TEMPLATE_FORM2 = 2;
-
 
 
 //опции, определяющие, как будет работать текущая демка
@@ -38,6 +38,7 @@ const defaultBruefDemoOptions = {
 	sampleText: null,
 	reloadSandboxOnChange: true,
 	
+	exitOnError: true,		//прекращать выполнение при ошибках
 	
 	//выполняются до и после выполнения currentScript/демо-кнопок
 	beforeExec: null,
@@ -60,7 +61,7 @@ const defaultBruefDemoOptions = {
 	autoscrollLog2: false,
 
 	//выводить объекты в лог в json-виде
-//	logObjectsAsJson: true,
+	logObjectsAsJson: true,
 	
 }
 
@@ -195,7 +196,8 @@ function highlightJquery(val) {
 	reloadSandbox();
 
 	clearLog2();
-    log2(val);
+    log2Blue(val);
+	log2();
 	
 	a = {};
 	if (demoOptions.beforeExec) {
@@ -206,7 +208,7 @@ function highlightJquery(val) {
 
         val = eval(val);
         if (!val.jquery) {
-            log(val);
+            log2(val);
             return;
         }
 
@@ -216,7 +218,7 @@ function highlightJquery(val) {
 
 	
 	log2();
-    logVal2("elements found: ", val.length);
+    log2("elements found: ", val.length);
 	log2();
 	val.each((ind,el)=>{
 	  log2(elementToString(el));
@@ -346,13 +348,12 @@ function execDemoFunc() {
 			} else {
 				r = currentScript.func();
 
-				let logMess = '\nexecuted. ';
+				let logMess = '';
 				if (r && r.jquery) {
 				    r.addClass("red-border");
 				    logMess += "elements found: " + r.length;
 				}
 				log2(logMess);
-//				$log2.parent().trigger("focus");
 			}
 
         } catch (error) {
@@ -373,7 +374,9 @@ function execDemoFunc() {
 	}
 	
 	setTimeout(()=>{
-		$log2.parent().trigger("focus");
+		
+		let $l = demoOptions.lfMode?$log2:$log1;
+		$l.parent().trigger("focus");
 	},100);	
 	
 }
@@ -407,24 +410,27 @@ function initDemoCodeSelect() {
 			reloadSandbox();
 		}
 
+		//снимаем фокус (иначе будут глюки при нажатии на pgUp/pgDown)
+		$mainSelect.blur();
+
+		//получаем текущий скрипт		
         let v = $mainSelect.val();
-				
 		currentScript = mainDataParsed[v];
 		if (!currentScript){
 			clearLog();
 			return;
 		}
 		
+		//выводим в поле ввода код скрипта (без комментов)
+		if ($selectorText.length){
+			$selectorText.val(currentScript.getCode());
+		}
+
+		clearLog2();
 		
+		//выводим скрипт в первый лог (во второй, если тестируются регулярные выражения)		
 		if (demoOptions.regexpMode) {
-			let exp = currentScript.getCode();
-			$selectorText.val(exp);
 			logCurrentScript($log2);
-			
-		} else if (demoOptions.jquerySelectorsMode) {
-			let exp = currentScript.getCode();
-			$selectorText.val(exp);
-			logCurrentScript($log1);
 		} else {
 			logCurrentScript();
 		}		

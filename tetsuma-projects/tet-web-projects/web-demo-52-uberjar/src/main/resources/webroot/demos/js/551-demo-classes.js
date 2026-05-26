@@ -44,8 +44,8 @@ class User {
     }
 
     //чтобы получать доступ к this в обработчиках - необходимо использовать синтакис "() => {"
-    $sel2.change(() => {
-      le2("$sel2.val()");
+    $log1.click(() => {
+      log1("log clicked: "+this.name);
     });
 
     User.staticMethod2 = () => {
@@ -119,6 +119,7 @@ class Rabbit extends Animal {
     this.earLength = earLength;
   }
 
+  //добавение метода
   hide() {
     log2(`${this.name} прячется!`);
   }

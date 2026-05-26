@@ -85,7 +85,7 @@ let selectorsData1 = {
 			}
 		);
 		
-		logFuncCode2(doTestOperation, true);
+		logFuncCode(doTestOperation, true);
 	},
 	Promise_then2(){
 
@@ -101,7 +101,7 @@ let selectorsData1 = {
 				log2("finally.");	
 			})
 
-		logFuncCode2(doTestOperation, true);		
+		logFuncCode(doTestOperation, true);		
 		
 	},
 	Promise_all(){
@@ -280,7 +280,7 @@ let selectorsData1 = {
 		  .then(script => loadScript("../misc/test_script2.js"),errorHandler)
 		  .then(script => loadScript("../misc/test_script3.js"),errorHandler)
 				
-		  logFuncCode2(loadScript, true);
+		  logFuncCode(loadScript, true);
 		
 	},
 		

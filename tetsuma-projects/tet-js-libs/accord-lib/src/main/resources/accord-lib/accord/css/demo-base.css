@@ -75,7 +75,7 @@ p {
 }
 
 .auxPanel {
-    height: 400px;
+    height: 450px;
     display: flex;
     flex-grow: 0;
 }

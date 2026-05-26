@@ -77,7 +77,9 @@ $(document).ready(function() {
     accordUtils.addCssToPagePromise("../../accord/css/accord.css"),
     accordUtils.addCssToPagePromise("../../accord/css/tabbed-panel.css"),
     accordUtils.addCssToPagePromise("../../accord/css/demo-base.css"),
-
+	accordUtils.addCssToPagePromise("../../accord/css/acc-form-elements.css"),
+	
+	
   ]);
 
   demoAllPromise.then(r => {

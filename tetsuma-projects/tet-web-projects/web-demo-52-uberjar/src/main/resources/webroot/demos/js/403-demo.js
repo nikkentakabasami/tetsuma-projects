@@ -26,8 +26,10 @@ const updateFilterUrl = "../../testAjax/updateTasksFilter";
 let selectorsData1 = {
 
 	templates: function() {
-		
-	//# Примеры типичных ajax-запросов
+	
+	/*	
+	Примеры типичных ajax-запросов
+	*/
 		
 	//get запрос с получением json
 	$.get({
@@ -37,6 +39,7 @@ let selectorsData1 = {
 	  success: (data, textStatus)=>{
 	    log2("textStatus: ", textStatus);
 	    log2("data1: ", data);
+		log2hr();
 	  },
 	  error: (jqXHR, textStatus, errorThrown)=>{
 	    log2("textStatus:", textStatus);
@@ -52,6 +55,7 @@ let selectorsData1 = {
 	  success: (data, textStatus)=>{
 	    log2("textStatus: ", textStatus);
 	    log2("data2: ", data);
+		log2hr();
 	  },
 	  error: (jqXHR, textStatus, errorThrown)=>{
 	    log2("textStatus:", textStatus);
@@ -66,6 +70,7 @@ let selectorsData1 = {
 	  success: (data, textStatus)=>{
 	    log2("textStatus: ", textStatus);
 	    log2("data3: ", data);
+		log2hr();
 	  },
 	  error: (jqXHR, textStatus, errorThrown)=>{
 	    log2("textStatus:", textStatus);
@@ -79,7 +84,9 @@ let selectorsData1 = {
 	
 	
   ajax_get_json_file: function() {
-	//# $.ajax(settings)
+	/*
+	$.ajax(settings)
+	*/
 	
 	//получаем json из файла
 	$.ajax({
@@ -187,8 +194,11 @@ let selectorsData1 = {
   
   
   xhr_get_sync: function() {
-	//# XMLHttpRequest - встроенный в браузер класс, который даёт возможность делать ajax-запросы
-
+	/*
+	XMLHttpRequest
+	  встроенный в браузер класс, который даёт возможность делать ajax-запросы.
+	*/
+	
 	//GET-запрос с использованием XMLHttpRequest. 
 	//Синхронный запрос
 	let xhr = new XMLHttpRequest();
@@ -249,8 +259,12 @@ let selectorsData1 = {
 
   fetch_get_sync: async function() {
 
-	//# fetch - Современная замена XMLHttpRequest. Доступен как глобальная функция. 
-	//# Не использует коллбэки, основан на promise.
+	/*
+	fetch
+	  Современная замена XMLHttpRequest. 
+	  Доступен как глобальная функция. 
+	  Не использует коллбэки, основан на promise.
+	*/
 	
 	//get-запрос в синхронном стиле
 	try {
@@ -352,12 +366,13 @@ let selectorsData1 = {
   },
 
   short_format: function() {
-	
-	//# $.post( url [, data ] [, success ] [, dataType ] )
-	//# $.get( url [, data ] [, success ] [, dataType ] )
-	//# $.post(settings)
-	//# $.get(settings)
-	//#   Являются сокращением метода ajax.
+	/*
+	$.post( url [, data ] [, success ] [, dataType ] )
+	$.get( url [, data ] [, success ] [, dataType ] )
+	$.post(settings)
+	$.get(settings)
+	  Являются сокращением метода ajax.
+	*/
 	
 	$.get({
 	  url: testJsonUrl,
@@ -391,23 +406,22 @@ let selectorsData1 = {
 
 
 
-
-
-$(() => {
-
-	initBriefDemo(	{
-		demoType: DT_SELECT,
-		workPanelTemplate: TEMPLATE_FORM1,
-		selectorsData: selectorsData1,
-		selectedOption: "templates",
-		initFunction: ()=>{
-			
-		}
-	});	
 	
 
-
+function getBriefDemoOptions() {
+  return {
+    demoType: DT_SELECT,
+    workPanelTemplate: TEMPLATE_FORM1,
+    selectorsData: selectorsData1,
+	//	jquerySelectorsMode: true,
+    lfMode: false,
+    afterSandboxReload: null,
+    selectedOption: "custom",
+    debugMode: false,
+	autoscrollLog2: true,
+    initFunction: () => {
+    }
+  };
+}
   
   
-
-});

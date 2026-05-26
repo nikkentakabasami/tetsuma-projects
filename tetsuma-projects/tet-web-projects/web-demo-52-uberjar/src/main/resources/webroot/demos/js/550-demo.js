@@ -122,6 +122,9 @@ accordUtils.cloneObject(source, ...attributes)
 
 accordUtils.cloneObject(testObject1, "name", "fresh"); ~
 
+accordUtils.cloneObject;
+
+
 `,
 	
 

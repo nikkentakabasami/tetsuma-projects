@@ -13,6 +13,12 @@
 	font-family: "Josefin Sans", sans-serif;
 }
 
+.form-group-sm {
+	margin-bottom: 0px;
+	font-family: "Josefin Sans", sans-serif;
+}
+
+
 
 /* класс acc-form-style1 придаёт элементам ввода приличный вид */
 
@@ -43,7 +49,7 @@
 
 
 .acc-form-style1 input[type="text"], .acc-form-style1 input[type="number"], .acc-form-style1 input[type="date"],
-.acc-form-style1>label, .form-group>label,
+.acc-form-style1>label, .form-group>label, .form-group-sm>label,
 .acc-form-style1 select,
 	.acc-form-style1 progress, .acc-form-style1 meter {
 	display: block;

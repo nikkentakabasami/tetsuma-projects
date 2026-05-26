@@ -112,13 +112,9 @@ function debugSuccessHandler(data, textStatus) {
   log2("textStatus: ", textStatus);
   log2("data type:", type);
   
-  if (type=="object"){
-	logJson2("data", data);
-  } else {
-	log2("data: ", data);
-  }
-  
-  highlightLogComments2();
+  log2("data: ", data);
+  log2hr();
+    
   
 //  logObject2(data, "data")  
   
@@ -129,7 +125,7 @@ function debugErrorHandler(jqXHR, textStatus, errorThrown) {
 	log2("# debugErrorHandler");
   log2("textStatus:", textStatus);
   log2("errorThrown:", errorThrown);
-  highlightLogComments2();
+  log2hr();
 }
 
 
@@ -138,7 +134,7 @@ function debugErrorHandler(jqXHR, textStatus, errorThrown) {
 function debugCompleteHandler(jqXHR, textStatus) {
   log2("# debugCompleteHandler");
   log2("textStatus:", textStatus);
-  highlightLogComments2();
+  log2hr();
 }
 
 

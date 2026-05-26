@@ -3,13 +3,15 @@
  * 
  * Методы для вывода сообщений в лог:
  * 
-stringifyObject(o, indent = "", withBraces = false)
+stringifyObject(o, indent = "", withBraces = false, asJson = true)
 logMessage($log, ...vals)
 
 
 logParsedExpression(pe)
 logCurrentScript($log)
 
+logFuncCode(f, withHr = false)
+logFuncCode2(f, withHr = false)
 
 log(...vals)
 log2(...vals)
@@ -52,6 +54,9 @@ let $log1, $log2, $log3;
 let $logPanel;
 
 
+
+
+
 //вывод currentScript в лог 
 function logCurrentScript($log){
 	if (!currentScript){
@@ -62,11 +67,8 @@ function logCurrentScript($log){
 		$log = $log1;
 	}
 	
-//	clearLog1();
-	
 	let fc = currentScript.formatCode();
 	$log.html(fc);
-//	log();
 	
 	let initFunction = currentScript?.func?.init;
 
@@ -138,6 +140,7 @@ function stringifyObject(o, indent = "", withBraces = false, asJson = true) {
 	}
 			
 	
+	asJson = asJson || demoOptions.logObjectsAsJson;
 	
 	if ( (t == 'object') && (!Array.isArray(o)) && !asJson) {
 		
@@ -269,8 +272,10 @@ async function logParsedExpression(pe) {
 		  console.error('Произошла ошибка:', err.message);
 		  console.error('exp:', exp);
 		  console.error('Стек вызовов:', err.stack);
-			log2('Произошла ошибка:', err.message);
+		  log2('Произошла ошибка:', err.message,'\n');
+		  if (demoOptions.exitOnError){
 			return;
+		  }
 		}
 		
 	}//for
@@ -364,19 +369,20 @@ function la2(href, mess) {
 
 
 
-//Показ функции в логе
-function logFuncCode(f, withHr = false){
+//Показ функции в логе (с форматированием и подсветкой)
+function logFuncCode(f, withHr = false, $log = null){
+	
+	if (!$log){
+		$log = $log2;
+	}
+	
 	let code = accordUtils.funcToString(f);
-	log(code);
+	let script = parseScript(code, true);
+	let fc = script.formatCode();
+	$log.append(fc);
+	
 	if (withHr){
 		loghr();
-	}
-}
-function logFuncCode2(f, withHr = false){
-	let code = accordUtils.funcToString(f);
-	log2(code);
-	if (withHr){
-		log2hr();
 	}
 }
 
