@@ -71,10 +71,10 @@ function logCurrentScript($log){
 	$log.html(fc);
 	
 	let initFunction = currentScript?.func?.init;
+	loghr();
 
 	//указана доп. функция инициализации - вывести её в лог
 	if (initFunction) {
-	    loghr();
 	    log("//функция инициализации:");
 		let code = accordUtils.funcToString(initFunction, false);
 		log(code);

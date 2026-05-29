@@ -23,8 +23,7 @@ let testArray1 = ["Яблоко", "Апельсин", "Слива", "Груша"
 let testArray2 = new Array(11, 3, 5, 2, 7, 9, 13, 3, 33);
 let testArray3 = Array.from({ length: 9 }, (el, index) => index);	// [0, 1, 2, 3...]
 
-
-
+let testSelectData1 = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
 
 
 let testMap1 = new Map([

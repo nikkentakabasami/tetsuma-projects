@@ -19,6 +19,7 @@ const DT_BUTTONS = 2;
 const DT_SELECTORS = 3;
 const DT_SELECT_NO_WP = 4;  //без песочницы
 const DT_REGEXP = 5;
+const DT_SELECT_SINGLE_LOG = 6;  //только один лог, много место для html-кода
 
 
 //workPanelTemplate
@@ -30,39 +31,39 @@ const TEMPLATE_FORM2 = 2;
 let demoOptions = {};
 
 const defaultBruefDemoOptions = {
-	demoType: DT_SELECT,
-	workPanelTemplate: TEMPLATE_FORM1,
-	selectorsData: null,
-	selectedOption: null,
-	regexpMode: false,
-	sampleText: null,
-	reloadSandboxOnChange: true,
-	
-	exitOnError: true,		//прекращать выполнение при ошибках
-	
-	//выполняются до и после выполнения currentScript/демо-кнопок
-	beforeExec: null,
-	afterExec: null,
+  demoType: DT_SELECT,
+  workPanelTemplate: TEMPLATE_FORM1,
+  selectorsData: null,
+  selectedOption: null,
+  regexpMode: false,
+  sampleText: null,
+  reloadSandboxOnChange: true,
 
-	//функция инициализации всего кода: выводить её при нажатии каждой демо-кнопки
-	initFunction: null,
+  exitOnError: true,		//прекращать выполнение при ошибках
 
-	//функция, выполняющаяся после reloadSandbox
-	afterSandboxReload: null,
+  //выполняются до и после выполнения currentScript/демо-кнопок
+  beforeExec: null,
+  afterExec: null,
 
-	//режим тестирования jquery функций (входные данные - это массив селекторов и jquery-запросов)
-	jquerySelectorsMode: false,
+  //функция инициализации всего кода: выводить её при нажатии каждой демо-кнопки
+  initFunction: null,
 
-	//выводить ли демо-функции во второй лог при выполнении
-	lfMode: false,
+  //функция, выполняющаяся после reloadSandbox
+  afterSandboxReload: null,
 
-	//настройки, позволяющие включить автоскролинг в первый или второй лог 
-	autoscrollLog1: false,
-	autoscrollLog2: false,
+  //режим тестирования jquery функций (входные данные - это массив селекторов и jquery-запросов)
+  jquerySelectorsMode: false,
 
-	//выводить объекты в лог в json-виде
-	logObjectsAsJson: true,
-	
+  //выводить ли демо-функции во второй лог при выполнении
+  lfMode: false,
+
+  //настройки, позволяющие включить автоскролинг в первый или второй лог 
+  autoscrollLog1: false,
+  autoscrollLog2: false,
+
+  //выводить объекты в лог в json-виде
+  logObjectsAsJson: true,
+
 }
 
 
@@ -95,10 +96,10 @@ let helpPopup;
 let $workPanel;
 
 //элементы песочницы - вспомогательные переменные
-let $btn1, $btn2, $inp1, $inp2, $inp3, $inp4, $testBtn1, $testBtn2, $btnSubmit;
+let $btn1, $btn2, $btn3, $inp1, $inp2, $inp3, $inp4, $testBtn1, $testBtn2, $btnSubmit;
 let formDiv1, formDiv2;
 let $form1, $form2, $formPanel;
-
+let $sel1, $sel2, $sel3;
 //селект, обслуживающий демки
 let $mainSelect = null;
 
@@ -124,19 +125,19 @@ let newButtonNo = 1;
 //возвращает ссылку на главный js-файл этой демки
 function findMainJs() {
 
-    const scripts = document.querySelectorAll('script[src]');
+  const scripts = document.querySelectorAll('script[src]');
 
 
-    const jsFiles = Array.from(scripts).forEach(script => {
-        let src = script.src;
-        if (!src.endsWith("-demo.js")) {
-            return;
-        }
-        mainJsHref = src;
-    });
+  const jsFiles = Array.from(scripts).forEach(script => {
+    let src = script.src;
+    if (!src.endsWith("-demo.js")) {
+      return;
+    }
+    mainJsHref = src;
+  });
 
-    console.log("mainJs=" + mainJsHref);
-    return mainJsHref;
+  console.log("mainJs=" + mainJsHref);
+  return mainJsHref;
 }
 
 
@@ -144,43 +145,44 @@ function findMainJs() {
 //добавляет в демку недостающие доп. элементы
 function addTitlePanelButtons() {
 
-    let $tp = $(".titlePanel");
+	let $tp = $(".titlePanel, .titlePanel2");
+	if (demoOptions.demoType!=DT_SELECT_SINGLE_LOG){
+		if (!$tp.children("#hideAuxButton").length) {
+		  $tp.append('<button id="hideAuxButton" type="button" class="acc-btn">Скрыть описание</button>');
+		}
+	}	
 
-    if (!$tp.children("#hideAuxButton").length) {
-        $tp.append('<button id="hideAuxButton" type="button" class="acc-btn">Скрыть описание</button>');
-    }
+  if (!$("#bClearLog").length) {
+    $tp.append('<button id="bClearLog" type="button" class="acc-btn">Очистить логи</button>');
+  }
 
-    if (!$("#bClearLog").length) {
-        $tp.append('<button id="bClearLog" type="button" class="acc-btn">Очистить логи</button>');
-    }
+  if (!$("#bReload").length && $("#template1").length) {
+    $tp.append('<button id="bReload" type="button" class="acc-btn">Перезагрузить песочницу (0)</button>');
+  }
 
-    if (!$("#bReload").length && $("#template1").length) {
-        $tp.append('<button id="bReload" type="button" class="acc-btn">Перезагрузить песочницу (0)</button>');
-    }
-
-    if (!$tp.children("a").length) {
-        $tp.append('<a id="mainsrc" href="#">Исходники (F1)</a>');
-    }
+  if (!$tp.children("a").length) {
+    $tp.append('<a id="mainsrc" href="#">Исходники (F1)</a>');
+  }
 
 }
 
 
 
 
-function elementToString(el){
-	let r = "";
-	if (el.nodeName){
-		r = el.nodeName.toLowerCase()+" ";
-	}
-	
-	if (el.id){
-		r+="#"+el.id+" ";
-	}
-	if (el.className){
-		let cl = el.className.replace(/ +/g,".")
-		r+="."+cl+" ";
-	}
-	return r;
+function elementToString(el) {
+  let r = "";
+  if (el.nodeName) {
+    r = el.nodeName.toLowerCase() + " ";
+  }
+
+  if (el.id) {
+    r += "#" + el.id + " ";
+  }
+  if (el.className) {
+    let cl = el.className.replace(/ +/g, ".")
+    r += "." + cl + " ";
+  }
+  return r;
 }
 
 
@@ -189,254 +191,261 @@ function elementToString(el){
 //выделяет объекты с заданным селектором красной рамкой
 //выводит в лог значение выражения (или число найденных элементов)
 function highlightJquery(val) {
-    if (!val) {
-        return;
+  if (!val) {
+    return;
+  }
+
+  reloadSandbox();
+
+  clearLog2();
+  log2Blue(val);
+  log2();
+
+  a = {};
+  if (demoOptions.beforeExec) {
+    demoOptions.beforeExec();
+  }
+
+  if (val.indexOf("$") >= 0 && val.indexOf("$=") < 0) {
+
+    val = eval(val);
+    if (!val.jquery) {
+      log2(val);
+      return;
     }
 
-	reloadSandbox();
+  } else {
+    val = $(val);
+  }
 
-	clearLog2();
-    log2Blue(val);
-	log2();
-	
-	a = {};
-	if (demoOptions.beforeExec) {
-	    demoOptions.beforeExec();
-	}
-	
-    if (val.indexOf("$") >= 0 && val.indexOf("$=") < 0) {
 
-        val = eval(val);
-        if (!val.jquery) {
-            log2(val);
-            return;
-        }
+  log2();
+  log2("elements found: ", val.length);
+  log2();
+  val.each((ind, el) => {
+    log2(elementToString(el));
+  });
 
-    } else {
-        val = $(val);
-    }
+  val.addClass("red-border");
 
-	
-	log2();
-    log2("elements found: ", val.length);
-	log2();
-	val.each((ind,el)=>{
-	  log2(elementToString(el));
-	});
-	
-	val.addClass("red-border");
-	
-	if (demoOptions.afterExec) {
-	    demoOptions.afterExec();
-	}
-	if (Object.keys(a).length){
-		let as = stringifyObject(a, "", false, false)
-		log2nl(as);
-	}
-	
+  if (demoOptions.afterExec) {
+    demoOptions.afterExec();
+  }
+  if (Object.keys(a).length) {
+    let as = stringifyObject(a, "", false, false)
+    log2nl(as);
+  }
+
 
 }
 
 //очищает .workPanel и загружает в неё элементы из #template1
 function reloadSandbox() {
 
-	$workPanel.empty();
-	if (!hasSandbox){
-		return;
-	}
-	
-
-    let $sandboxPanels = accordUtils.cloneTemplate("#template1");
-    $sandboxPanels.appendTo($workPanel);
-
-	$btnSubmit = $("#btnSubmit");
-
-    $btn1 = $("#btn1");
-    $btn2 = $("#btn2");
-    $inp1 = $("#inp1");
-    $inp2 = $("#inp2");
-    $inp3 = $("#inp3");
-    $inp4 = $("#inp4");
-
-    $testBtn1 = $("#testBtn1");
-    $testBtn2 = $("#testBtn2");
-
-    $formDiv1 = $("#formDiv1");
-    $formDiv2 = $("#formDiv2");
-
-    $form1 = $("#form1");
-    $form2 = $("#form2");
-
-	$formPanel = $(".form-panel");
-	
-	
-//    $panel1 = $("#formDiv1");
-//    $panel2 = $("#formDiv2");
+  $workPanel.empty();
+  if (!hasSandbox) {
+    return;
+  }
 
 
-    if (demoOptions.afterSandboxReload) {
-        demoOptions.afterSandboxReload();
-    }
+  let $sandboxPanels = accordUtils.cloneTemplate("#template1");
+  $sandboxPanels.appendTo($workPanel);
+
+  $btnSubmit = $("#btnSubmit");
+
+  $btn1 = $("#btn1");
+  $btn2 = $("#btn2");
+  $btn3 = $("#btn3");
+  $inp1 = $("#inp1");
+  $inp2 = $("#inp2");
+  $inp3 = $("#inp3");
+  $inp4 = $("#inp4");
+
+  $testBtn1 = $("#testBtn1");
+  $testBtn2 = $("#testBtn2");
+
+  $formDiv1 = $("#formDiv1");
+  $formDiv2 = $("#formDiv2");
+
+  $form1 = $("#form1");
+  $form2 = $("#form2");
+
+  
+  $sel1 = $("#select1");
+  $sel2 = $("#select2");
+  $sel3 = $("#select3");
+  
+  
+  $formPanel = $(".form-panel");
+
+
+  //    $panel1 = $("#formDiv1");
+  //    $panel2 = $("#formDiv2");
+
+
+  if (demoOptions.afterSandboxReload) {
+    demoOptions.afterSandboxReload();
+  }
 
 
 }
 
 
 //тестирование регулярных выражений
-function testRegExp(re){
+function testRegExp(re) {
 
-	let opts = accordUtils.highlightText({
-		$div: $log1,
-		regex: re,
-		class: "bg-green",
-		matchHandler: match=>{
-			log2("match=",match,", match.index=",match.index);
-		}
-	});
-	
-	
+  let opts = accordUtils.highlightText({
+    $div: $log1,
+    regex: re,
+    class: "bg-green",
+    matchHandler: match => {
+      log2("match=", match, ", match.index=", match.index);
+    }
+  });
+
+
 }
 
 
 function execDemoFunc() {
 
-	if (demoOptions.jquerySelectorsMode) {
-		let val = $selectorText.val();
-	    highlightJquery(val);
-		return;
-	}
+  if (demoOptions.jquerySelectorsMode) {
+    let val = $selectorText.val();
+    highlightJquery(val);
+    return;
+  }
 
-	if (demoOptions.regexpMode) {
-		let regexp = $selectorText.val();
-		log2();
-	    testRegExp(regexp);
-		return;
-	}
-	
-	if (!currentScript) {
-	    return;
-	}
-		
-	a = {};
-	if (demoOptions.beforeExec) {
-	    demoOptions.beforeExec();
-	}
-	
-    $(".workPanel *").removeClass("red-border");
+  if (demoOptions.regexpMode) {
+    let regexp = $selectorText.val();
+    log2();
+    testRegExp(regexp);
+    return;
+  }
 
-    clearLog2();
+  if (!currentScript) {
+    return;
+  }
 
-	
-    if (!currentScript.func) {
-		logParsedExpression(currentScript);
-    } else {
+  a = {};
+  if (demoOptions.beforeExec) {
+    demoOptions.beforeExec();
+  }
 
-        let r = null;
-        try {
-			
-			if (demoOptions.lfMode){
-				$log2.append(currentScript.formatCode());
-				
-				log2hr();
-				
-				r = currentScript.func();
-				if (r){
-					log2(r);
-					return r;
-				}
-			
-			} else {
-				r = currentScript.func();
+  $(".workPanel *").removeClass("red-border");
 
-				let logMess = '';
-				if (r && r.jquery) {
-				    r.addClass("red-border");
-				    logMess += "elements found: " + r.length;
-				}
-				log2(logMess);
-			}
+  clearLog2();
 
-        } catch (error) {
-            log("Error:", error.message);
-            console.error(error.stack);
+
+  if (!currentScript.func) {
+    logParsedExpression(currentScript);
+  } else {
+
+    let r = null;
+    try {
+
+      if (demoOptions.lfMode) {
+        $log2.append(currentScript.formatCode());
+
+        log2hr();
+
+        r = currentScript.func();
+        if (r) {
+          log2(r);
+          return r;
         }
 
+      } else {
+        r = currentScript.func();
+
+        let logMess = '';
+        if (r && r.jquery) {
+          r.addClass("red-border");
+          logMess += "elements found: " + r.length;
+        }
+        log2(logMess);
+      }
+
+    } catch (error) {
+      log("Error:", error.message);
+      console.error(error.stack);
     }
 
-	if (demoOptions.afterExec) {
-	    demoOptions.afterExec();
-	}
+  }
 
-	//Выводим поля переменной а, если они были заданы
-	if (Object.keys(a).length){
-		let as = stringifyObject(a, "", false, false)
-		log2nl(as);
-	}
-	
-	setTimeout(()=>{
-		
-		let $l = demoOptions.lfMode?$log2:$log1;
-		$l.parent().trigger("focus");
-	},100);	
-	
+  if (demoOptions.afterExec) {
+    demoOptions.afterExec();
+  }
+
+  //Выводим поля переменной а, если они были заданы
+  if (Object.keys(a).length) {
+    let as = stringifyObject(a, "", false, false)
+    log2nl(as);
+  }
+
+  setTimeout(() => {
+
+    let $l = demoOptions.lfMode ? $log2 : $log1;
+    $l.parent().trigger("focus");
+  }, 100);
+
 }
 
 //инициализация селекта с демками
 function initDemoCodeSelect() {
-	
-	
-	//заполняем select
-	let opts = {
-	    data: mainData,
-	    withNullOption: true,
-	    selectedValue: null,
-	    contentIsValue: true,
-	    valueIsIndex: false
-	};
-	
-	if (demoOptions.regexpMode || demoOptions.jquerySelectorsMode) {
-		opts.data = Object.values(mainDataParsed).map(ps=>ps.getCode());
-	}
-	
-	if (Array.isArray(opts.data)) {
-	    opts.valueIsIndex = true;
-	    opts.contentIsValue = false;
-	}
-	accordUtils.fillSelect($mainSelect, opts);
-	
-	//обработчик выбора в select
-    $mainSelect.change(e => {
-		if (demoOptions.reloadSandboxOnChange){
-			reloadSandbox();
-		}
 
-		//снимаем фокус (иначе будут глюки при нажатии на pgUp/pgDown)
-		$mainSelect.blur();
 
-		//получаем текущий скрипт		
-        let v = $mainSelect.val();
-		currentScript = mainDataParsed[v];
-		if (!currentScript){
-			clearLog();
-			return;
-		}
-		
-		//выводим в поле ввода код скрипта (без комментов)
-		if ($selectorText.length){
-			$selectorText.val(currentScript.getCode());
-		}
+  //заполняем select
+  let opts = {
+    data: mainData,
+    withNullOption: true,
+    selectedValue: null,
+    contentIsValue: true,
+    valueIsIndex: false
+  };
 
-		clearLog2();
-		
-		//выводим скрипт в первый лог (во второй, если тестируются регулярные выражения)		
-		if (demoOptions.regexpMode) {
-			logCurrentScript($log2);
-		} else {
-			logCurrentScript();
-		}		
-		
+  if (demoOptions.regexpMode || demoOptions.jquerySelectorsMode) {
+    opts.data = Object.values(mainDataParsed).map(ps => ps.getCode());
+  }
 
-    });
+  if (Array.isArray(opts.data)) {
+    opts.valueIsIndex = true;
+    opts.contentIsValue = false;
+  }
+  accordUtils.fillSelect($mainSelect, opts);
+
+  //обработчик выбора в select
+  $mainSelect.change(e => {
+    if (demoOptions.reloadSandboxOnChange) {
+      reloadSandbox();
+    }
+
+    //снимаем фокус (иначе будут глюки при нажатии на pgUp/pgDown)
+    $mainSelect.blur();
+
+    //получаем текущий скрипт		
+    let v = $mainSelect.val();
+    currentScript = mainDataParsed[v];
+    if (!currentScript) {
+      clearLog();
+      return;
+    }
+
+    //выводим в поле ввода код скрипта (без комментов)
+    if ($selectorText.length) {
+      $selectorText.val(currentScript.getCode());
+    }
+
+    clearLog2();
+
+    //выводим скрипт в первый лог (во второй, если тестируются регулярные выражения)		
+    if (demoOptions.regexpMode) {
+      logCurrentScript($log2);
+    } else {
+      logCurrentScript();
+    }
+
+
+  });
 
 }
 
@@ -445,157 +454,174 @@ function initDemoCodeSelect() {
 //при клике на кнопку - показывает код демо-функции и выполняет её
 function addDemoButtons(handlers, panelSelector = ".acc-button-panel") {
 
-    for (let handlerName in handlers) {
-        let handler = handlers[handlerName];
-        addDemoButton(handlerName, handler, panelSelector);
-    }
+  for (let handlerName in handlers) {
+    let handler = handlers[handlerName];
+    addDemoButton(handlerName, handler, panelSelector);
+  }
 }
 
 function addDemoButton(buttonTitle, handler, panelSelector = ".acc-button-panel") {
-    let $panel = $(panelSelector);
+  let $panel = $(panelSelector);
 
-    let $newButton = $(`<button id="b${newButtonNo++}" type="button" class="acc-btn">${buttonTitle}</button>`);
-    demoButtons.push($newButton);
-    $panel.append($newButton);
+  let $newButton = $(`<button id="b${newButtonNo++}" type="button" class="acc-btn">${buttonTitle}</button>`);
+  demoButtons.push($newButton);
+  $panel.append($newButton);
 
-    $newButton.click(event => {
-		
-		//выделяем последнюю нажатую кнопку
-		$panel.find("button").removeClass("blue-border");
-		$newButton.addClass("blue-border");
+  $newButton.click(event => {
 
-		execDemoFunc();
-		
-    });
+    //выделяем последнюю нажатую кнопку
+    $panel.find("button").removeClass("blue-border");
+    $newButton.addClass("blue-border");
+	
+	currentScript = mainDataParsed[buttonTitle];
+	if (!currentScript) {
+	  clearLog();
+	  return;
+	}
+
+	clearLog2();
+	logCurrentScript();
+	
+    execDemoFunc();
+
+  });
 
 }
 
 
 function initDemo() {
 
-	//вспомогательные переменные
-	hasSandbox = $("#template1").length>0;
-    $mainSelect = $("#selectors1");
-    $workPanel = $(".workPanel");
-    $selectorText = $("#selectorText");
+  //Парсим все скрипты/функции в selectorsData, помещая результат в mainDataParsed
+  parseSelectorsData(demoOptions.selectorsData);
 
-	//добавление кнопок, если их нет 
-    addTitlePanelButtons();
-	
-	//прописываем ссылку на главный js-файл в ссылке в заголовке
-	let src = findMainJs();
-	if (src) {
-		$("a#mainsrc").attr("href", src);
+  //вспомогательные переменные
+  hasSandbox = $("#template1").length > 0;
+  $mainSelect = $("#selectors1");
+  $workPanel = $(".workPanel");
+  $selectorText = $("#selectorText");
+
+  //добавление кнопок, если их нет 
+  addTitlePanelButtons();
+
+  //прописываем ссылку на главный js-файл в ссылке в заголовке
+  let src = findMainJs();
+  if (src) {
+    $("a#mainsrc").attr("href", src);
+  }
+
+  let options = {
+    draggable: false,
+    contentTextUrl: mainJsHref,
+    hideOnDblclick: true,
+    fullScreen: true,
+    cssClass: "help-panel",
+    panelExtraClasses: "acc-popup"
+  }
+  helpPopup = new AccPopup(options);
+
+
+  $hideAuxButton = $("#hideAuxButton");
+  if ($log1.parents(".auxPanel").children().length >= 2) {
+    new AccSplitter({
+      panelSelector: ".auxPanel",
+      startLeftPanelWidth: 600
+    });
+  }
+
+  //показывать исходники при нажатии на ссылку
+  $("a#mainsrc").click(e => {
+    e.preventDefault();
+    helpPopup.show();
+  });
+
+  //кнопка скрытия панели с логами
+  $hideAuxButton.click(e => {
+    showAux = !showAux;
+    if (showAux) {
+      $("div.auxPanel").css("display", "flex");
+      $hideAuxButton.text("скрыть описание");
+    } else {
+      $("div.auxPanel").css("display", "none");
+      $hideAuxButton.text("показать описание");
+    }
+  });
+
+
+  let tp = new TabbedPanel("#tabbedPanel1");
+  new TabbedPanel("#tabbedPanel2");
+
+  $bExecute = $("#bExecute");
+  $bExecute.click(e => {
+    execDemoFunc();
+  });
+
+  $("#bClearLog").click(e => {
+	if ($log2.length){
+	    clearLog2();
+	} else {
+		clearLog();		
 	}
 	
-	let options = {
-	    draggable: false,
-	    contentTextUrl: mainJsHref,
-	    hideOnDblclick: true,
-	    fullScreen: true,
-	    cssClass: "help-panel",
-	    panelExtraClasses: "acc-popup"
-	}
-	helpPopup = new AccPopup(options);
-	
-	
-    $hideAuxButton = $("#hideAuxButton");
-    if ($log1.parents(".auxPanel").children().length >= 2) {
-        new AccSplitter({
-            panelSelector: ".auxPanel",
-            startLeftPanelWidth: 600
-        });
+  });
+
+  $("#bReload").click(e => {
+    reloadSandbox();
+  });
+
+  //быстрые клавиши
+  $(document).keydown(e => {
+    if (e.keyCode == 112) { //F1
+      e.preventDefault();
+      helpPopup.toggleVisible();
+    } else if (e.ctrlKey && e.keyCode == 37) { // <-
+      e.preventDefault();
+      if (siblingPages[0]) {
+        location.href = siblingPages[0];
+      }
+
+    } else if (e.ctrlKey && e.keyCode == 39) { // ->
+      e.preventDefault();
+      if (siblingPages[1]) {
+        location.href = siblingPages[1];
+      }
+
+    }
+    //	    console.log(e.keyCode);
+  })
+
+
+  $(document).keyup(e => {
+    //инпут в фокусе
+    let tf = $selectorText.is(':focus');
+
+    if (!tf) {
+      if (e.keyCode == 109 || e.keyCode == 33) {  //-, pagUP
+        accordUtils.selectNextOption($mainSelect, false);
+      } else if (e.keyCode == 107 || e.keyCode == 34) { //+, pgDown
+        accordUtils.selectNextOption($mainSelect, true);
+      } else if (e.keyCode == 45 || e.keyCode == 96) { //0
+        reloadSandbox()
+      }
     }
 
-    //показывать исходники при нажатии на ссылку
-    $("a#mainsrc").click(e => {
-        e.preventDefault();
-        helpPopup.show();
-    });
+    if (e.keyCode == 13) { //Enter
+      $bExecute.trigger("click");
+    }
 
-	//кнопка скрытия панели с логами
-    $hideAuxButton.click(e => {
-        showAux = !showAux;
-        if (showAux) {
-            $("div.auxPanel").css("display", "flex");
-            $hideAuxButton.text("скрыть описание");
-        } else {
-            $("div.auxPanel").css("display", "none");
-            $hideAuxButton.text("показать описание");
-        }
-    });
+  })
+
+  createSiblingPageAnchors();
+
+  //задаём заголовок страницы (берём его из <title>)
+  let title = $("title").text()
+  if (title) {
+    $(".titlePanel h2").text(title);
+  }
 
 
-    let tp = new TabbedPanel("#tabbedPanel1");
-    new TabbedPanel("#tabbedPanel2");
 
-    $bExecute = $("#bExecute");
-    $bExecute.click(e => {
-        execDemoFunc();
-    });
 
-    $("#bClearLog").click(e => {
-        clearLog2();
-    });
-
-    $("#bReload").click(e => {
-        reloadSandbox();
-    });
-
-	//быстрые клавиши
-	$(document).keydown(e => {
-		if (e.keyCode == 112) { //F1
-			e.preventDefault();
-			helpPopup.toggleVisible();
-		} else if (e.ctrlKey &&  e.keyCode == 37) { // <-
-			e.preventDefault();
-			if (siblingPages[0]){
-				location.href = siblingPages[0];
-			}
-			
-		} else if (e.ctrlKey &&  e.keyCode == 39) { // ->
-			e.preventDefault();
-			if (siblingPages[1]){
-				location.href = siblingPages[1];
-			}
-			
-		}
-//	    console.log(e.keyCode);
-	})	
-	
-	
-    $(document).keyup(e => {
-		//инпут в фокусе
-		let tf = $selectorText.is(':focus');
-		
-		if (!tf){
-			if (e.keyCode == 109 || e.keyCode == 33) {  //-, pagUP
-			    accordUtils.selectNextOption($mainSelect, false);
-			} else if (e.keyCode == 107 || e.keyCode == 34) { //+, pgDown
-			    accordUtils.selectNextOption($mainSelect, true);
-			} else if (e.keyCode == 45 || e.keyCode == 96) { //0
-			    reloadSandbox()
-			}		
-		}
-		
-		if (e.keyCode == 13) { //Enter
-            $bExecute.trigger("click");
-        }
-				
-    })
-
-	createSiblingPageAnchors();
-
-	//задаём заголовок страницы (берём его из <title>)
-	let title = $("title").text()
-	if (title){
-		$(".titlePanel h2").text(title);
-	}
-	
-		
-	
-		
-	reloadSandbox();			
+  reloadSandbox();
 
 }
 
@@ -607,145 +633,149 @@ function initDemo() {
 
 //инициализация лаконичного демо
 function initBriefDemo(options) {
-	
-	$(document.body).addClass("acc-default-font");
-	
-	demoOptions = $.extend({}, defaultBruefDemoOptions, options);
-	
-	//Парсим все скрипты/функции в selectorsData, помещая результат в mainDataParsed
-	parseSelectorsData(demoOptions.selectorsData);
-	
-	
-	switch (demoOptions.demoType) {
-	case DT_SELECT:
-		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment1.html",null,true);
-	    break;
-		
-	case DT_BUTTONS:
-		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment2.html",null,true);
-		  break;
-		  
-	case DT_SELECTORS:
-		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment3.html",null,true);
-	    break;
-		
-	case DT_REGEXP:
-		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment5.html",null,true);
-		break;
-		
-		case DT_SELECT_NO_WP:
-		accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment4.html",null,true);
-		  break;
-		
-		
-	  default:
-		console.log(`demoType ${demoOptions.demoType} not found.`);
-		return;
-	}	
-		
-	if (typeof demoOptions.workPanelTemplate == "string"){
-		accordUtils.loadHtmlFragmentXHR(demoOptions.workPanelTemplate,null,false);
-	} else {
-		
-		switch (demoOptions.workPanelTemplate) {
-		  case TEMPLATE_FORM1:
-			accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate1.html",null,true);
-		    break;
-			case TEMPLATE_FORM2:
-			accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate2.html",null,true);
-			  break;
-		  default:
-		}	
-		
-	}
-	
-		
-	initDemoLogs();
-	initDemo();
-	
-	if (demoOptions.demoType==DT_SELECT 
-		|| demoOptions.demoType==DT_SELECT_NO_WP 
-		|| demoOptions.demoType==DT_SELECTORS
-		|| demoOptions.demoType==DT_REGEXP
-	) {
-		initDemoCodeSelect("#selectors1");
-		
 
-		if (demoOptions.selectedOption){
-			//выбрать опцию после загрузки страницы 
-			$("#selectors1").val(options.selectedOption).trigger("change");
-		}
-	}
-		  
-	if (demoOptions.demoType==DT_REGEXP) {
-		$log1.text(demoOptions.sampleText);
-		$("#bTestText").click(()=>{
-			demoOptions.sampleText = prompt("Введите тестовый текст.")
-			$log1.text(demoOptions.sampleText);
-		});
-	}
-	
-	
-	if (demoOptions.demoType==DT_BUTTONS) {
-		if (demoOptions.selectorsData){
-			//добавляем демо-кнопки
-			//addDemoButtons(options.selectorsData)
-			addDemoButtons(mainData);
-		}
-	}
-	
-	if (demoOptions.initFunction){
-		demoOptions.initFunction();
-	}
-	
-	
+  $(document.body).addClass("acc-default-font");
+
+  demoOptions = $.extend({}, defaultBruefDemoOptions, options);
+
+
+
+  switch (demoOptions.demoType) {
+    case DT_SELECT:
+      accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment1.html", null, true);
+      break;
+
+    case DT_BUTTONS:
+      accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment2.html", null, true);
+      break;
+
+    case DT_SELECTORS:
+      accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment3.html", null, true);
+      break;
+
+
+    case DT_SELECT_NO_WP:
+      accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment4.html", null, true);
+      break;
+
+    case DT_REGEXP:
+      accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment5.html", null, true);
+      break;
+
+  case DT_SELECT_SINGLE_LOG:
+    accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment6.html", null, true);
+    break;
+	  	  
+	  
+    default:
+      console.log(`demoType ${demoOptions.demoType} not found.`);
+      return;
+  }
+
+  if (typeof demoOptions.workPanelTemplate == "string") {
+    accordUtils.loadHtmlFragmentXHR(demoOptions.workPanelTemplate, null, false);
+  } else {
+
+    switch (demoOptions.workPanelTemplate) {
+      case TEMPLATE_FORM1:
+        accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate1.html", null, true);
+        break;
+      case TEMPLATE_FORM2:
+        accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate2.html", null, true);
+        break;
+      default:
+    }
+
+  }
+
+
+  initDemoLogs();
+  initDemo();
+
+  if (demoOptions.demoType == DT_SELECT
+    || demoOptions.demoType == DT_SELECT_NO_WP
+    || demoOptions.demoType == DT_SELECTORS
+    || demoOptions.demoType == DT_REGEXP
+	|| demoOptions.demoType == DT_SELECT_SINGLE_LOG
+  ) {
+    initDemoCodeSelect("#selectors1");
+
+
+    if (demoOptions.selectedOption) {
+      //выбрать опцию после загрузки страницы 
+      $("#selectors1").val(options.selectedOption).trigger("change");
+    }
+  }
+
+  if (demoOptions.demoType == DT_REGEXP) {
+    $log1.text(demoOptions.sampleText);
+    $("#bTestText").click(() => {
+      demoOptions.sampleText = prompt("Введите тестовый текст.")
+      $log1.text(demoOptions.sampleText);
+    });
+  }
+
+
+  if (demoOptions.demoType == DT_BUTTONS) {
+    if (demoOptions.selectorsData) {
+      //добавляем демо-кнопки
+      //addDemoButtons(options.selectorsData)
+      addDemoButtons(mainData);
+    }
+  }
+
+  if (demoOptions.initFunction) {
+    demoOptions.initFunction();
+  }
+
+
 }
 
 
 
-function createSiblingPageAnchors(){
+function createSiblingPageAnchors() {
 
-	let ind = location.pathname.lastIndexOf("/");
-		
-	let pageName = location.pathname.substring(ind+1);
-	
-	$.get({
-	  url: "../../demoscan/siblingPages",
-	  data: { 'pageName': pageName },
-	  success: function(data, status, request){
-		
-		if (!data){
-			console.log("siblings not found");
-			return;
-		}
+  let ind = location.pathname.lastIndexOf("/");
 
-		siblingPages = data;
-		
-		let $tp = $(".titlePanel");
-		if (siblingPages[0]){
-			$tp.append(`<a href="${data[0]}">Prev demo (Ctrl+left)</a>`);
-		}
-		if (siblingPages[1]){
-			$tp.append(`<a href="${data[1]}">Next demo (Ctrl+right)</a>`);
-		}
-		
-//		console.log(data);
-				
-	  }
-	});
+  let pageName = location.pathname.substring(ind + 1);
 
-	
-	
-	
-	
+  $.get({
+    url: "../../demoscan/siblingPages",
+    data: { 'pageName': pageName },
+    success: function(data, status, request) {
+
+      if (!data) {
+        console.log("siblings not found");
+        return;
+      }
+
+      siblingPages = data;
+
+      let $tp = $(".titlePanel");
+      if (siblingPages[0]) {
+        $tp.append(`<a href="${data[0]}">Prev demo (Ctrl+left)</a>`);
+      }
+      if (siblingPages[1]) {
+        $tp.append(`<a href="${data[1]}">Next demo (Ctrl+right)</a>`);
+      }
+
+      //		console.log(data);
+
+    }
+  });
+
+
+
+
+
 }
 
 
 $(function() {
 
-	if ($("div.basePanel").length){
-		initDemo();
-	}
+  if ($("div.basePanel").length) {
+    initDemo();
+  }
 
 
 });

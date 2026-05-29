@@ -1,19 +1,4 @@
 
-let a = {};
-
-let testMap1 = new Map([
-    [1, "a"],
-    [2, "b"],
-    [3, "c"],
-]);
-
-const testObject1 = {
-    name: "some string",
-    age: 42,
-    fresh: true
-};
-
-
 
 //тестовые функции
 //возвращают query-объекты, задействованные в тесте: они будут выделены красной рамкой
@@ -49,7 +34,7 @@ let selectorsData1 = {
 
         //le2 - построчно интерпретировать заданный скрипт, выводя результаты во второй лог
         testObject1.name = "Jim";
-        le2nl(`
+        le(`
 			Object.entries(testObject1);
 			
 			//создание объекта на основе двумерного массива
@@ -80,9 +65,7 @@ let selectorsData1 = {
     },
 
     demo3_function() {
-
         //устаревший подход
-        a = {};
 
         //Создание многомерных массивов
         a.arr0 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
@@ -93,7 +76,6 @@ let selectorsData1 = {
         //генерация массива
         a.arr13 = Array.from({ length: 5 }, (el, index) => index);
 
-        log2(a);
     },
 
     test1() {
@@ -142,26 +124,22 @@ let selectorsData1 = {
 
 
 
-$(() => {
-    initDemoCodeSelect("#selectors1", selectorsData1);
-
-    //выбрать опцию после загрузки страницы 
-    $("#selectors1").val("le_demo2").trigger("change");
-
-	//код, который будет выполняться перед каждой демо-функцией
-	demoOptions.beforeExec = ()=>{
-		
-		//очищает .workPanel и загружает в неё элементы из #template1
-		reloadSandbox();
-	};
-
-	//и после неё
-	demoOptions.afterExec = ()=>{
-	};
-	
-    reloadSandbox();
-
-});
 
 
+function getBriefDemoOptions() {
+  return {
+    demoType: DT_SELECT,
+    workPanelTemplate: TEMPLATE_FORM1,
+    selectorsData: selectorsData1,
+//	jquerySelectorsMode: true,
+    lfMode: false,
+    afterSandboxReload: null,
+    selectedOption: null,
+    debugMode: false,
+	autoscrollLog2: true,
+	logObjectsAsJson: false,
+    initFunction: () => {
+    }
+  };
+}
 
