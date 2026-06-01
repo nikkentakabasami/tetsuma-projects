@@ -48,7 +48,7 @@ log2Green(val)
  */
 
 //панели-логи. В них выводятся сообщения.
-let $log1, $log2, $log3;
+let $log1, $log2, $log3, $logExp;
 
 //панель с $log1, $log2...
 let $logPanel;
@@ -82,6 +82,14 @@ function logCurrentScript($log){
 	
 }
 
+function stringifyJson(val){
+	if (demoOptions.formattedJson){
+		val = JSON.stringify(val,"",2);
+	} else {
+		val = JSON.stringify(val);
+	}
+	return val;
+}
 
 //преобразовывает объекты в строки, с форматированием, для вывода в лог
 function stringifyObject(o, indent = "", withBraces = false, asJson = true) {
@@ -163,7 +171,7 @@ function stringifyObject(o, indent = "", withBraces = false, asJson = true) {
 			} else if (t == "function"){
 				valStr = "func";
 			} else if (Array.isArray(val)){
-				valStr = JSON.stringify(val);
+				valStr = stringifyJson(val);
 			} else if (val instanceof Map || val instanceof Set){
 				valStr = stringifyObject(val);
 			} else if (t == "object"){
@@ -184,7 +192,7 @@ function stringifyObject(o, indent = "", withBraces = false, asJson = true) {
 		}
 		
 	} else {
-		result = JSON.stringify(o);
+		result = stringifyJson(o);
 	}
 	return result;	
 }
@@ -216,7 +224,7 @@ async function logParsedExpression(pe) {
 		//горизонтальная линия
 		if (p.type==ST_HR){
 			exp = p.formatCode();
-			$log2.append(exp);
+			$logExp.append(exp);
 			continue;
 		}
 
@@ -244,22 +252,13 @@ async function logParsedExpression(pe) {
 					}
 					
 					log2(val, "\n");
-					/*
-					log2();
-					
-					//выводим значения промисов в конце блока:				
-					log2Blue(exp);
-					log2("\npromiseVal:", val, "\n");
-					*/
-					
-					
 					continue;
 				}
 				
 				if (p.logAsString){
 					val = String(val);
 				} else if (p.logAsJson){
-					val = JSON.stringify(val);
+					val = stringifyJson(val);
 				} else if (typeof val === "string") {
 					val = '"'+val+'"';
 				}
@@ -309,7 +308,7 @@ function log(...vals) {
 	logMessage($log1, ...vals);
 }
 function log2(...vals) {
-	logMessage($log2, ...vals);
+	logMessage($logExp, ...vals);
 }
 function log3(...vals) {
 	logMessage($log3, ...vals);
@@ -362,8 +361,8 @@ function lf2nl(func) {
 }
 
 //вывод ссылки
-function la2(href, mess) {
-	$log2.append(`<a href="${href}" target="logref">${mess}</a> \n`);
+function la(href, mess) {
+	$logExp.append(`<a href="${href}" target="logref">${mess}</a> \n`);
 }
 
 
@@ -391,20 +390,20 @@ function log2Blue(val) {
 	val = stringifyObject(val);
 	val = accordUtils.escapeHTML(val);
 	val = sp_blue+val+sp_end;
-	$log2.append(val);
+	$logExp.append(val);
 }
 
 function log2Gray(val) {
 	val = stringifyObject(val);
 	val = accordUtils.escapeHTML(val);
 	val = sp_gray+val+sp_end;
-	$log2.append(val);
+	$logExp.append(val);
 }
 function log2Green(val) {
 	val = stringifyObject(val);
 	val = accordUtils.escapeHTML(val);
 	val = sp_green+val+sp_end;
-	$log2.append(val);
+	$logExp.append(val);
 }
 
 
@@ -472,6 +471,10 @@ function initDemoLogs(){
 	$log2 = $('#log2');
 	$log3 = $('#log3');
 	$logPanel = $('.logPanel');
+	
+	//лог для выражений
+	$logExp = $log2.length?$log2:$log1;
+	
 }
 
 

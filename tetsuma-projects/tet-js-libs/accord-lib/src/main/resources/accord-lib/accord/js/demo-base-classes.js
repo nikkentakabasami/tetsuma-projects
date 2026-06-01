@@ -96,7 +96,7 @@ class ScriptPart {
 	
 	//выражение заканчивается ~ - выводить результат как JSON
 	logAsJson = false;
-
+	
 	//выражение заканчивается $ - выводить результат как String
 	logAsString = false;
 	

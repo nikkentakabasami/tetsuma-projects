@@ -22,9 +22,9 @@ const DT_REGEXP = 5;
 const DT_SELECT_SINGLE_LOG = 6;  //только один лог, много место для html-кода
 
 
-//workPanelTemplate
-const TEMPLATE_FORM1 = 1;
-const TEMPLATE_FORM2 = 2;
+//workPanelTemplate - шаблон для песочницы
+const TEMPLATE_FORM1 = 1;	//formTemplate1.html (2 текстовых инпута, 1 select)
+const TEMPLATE_FORM2 = 2;	//formTemplate2.html (пустая форма)
 
 
 //опции, определяющие, как будет работать текущая демка
@@ -63,6 +63,9 @@ const defaultBruefDemoOptions = {
 
   //выводить объекты в лог в json-виде
   logObjectsAsJson: true,
+	
+	//форматировать json
+	formattedJson: false,
 
 }
 
