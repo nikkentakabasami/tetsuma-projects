@@ -20,6 +20,7 @@ const DT_SELECTORS = 3;
 const DT_SELECT_NO_WP = 4;  //без песочницы
 const DT_REGEXP = 5;
 const DT_SELECT_SINGLE_LOG = 6;  //только один лог, много место для html-кода
+const DT_OPENLAYERS = 7;  //для тестирования openlayers
 
 
 //workPanelTemplate - шаблон для песочницы
@@ -149,7 +150,8 @@ function findMainJs() {
 function addTitlePanelButtons() {
 
 	let $tp = $(".titlePanel, .titlePanel2");
-	if (demoOptions.demoType!=DT_SELECT_SINGLE_LOG){
+	if (demoOptions.demoType!=DT_SELECT_SINGLE_LOG && demoOptions.demoType!=DT_OPENLAYERS){
+		
 		if (!$tp.children("#hideAuxButton").length) {
 		  $tp.append('<button id="hideAuxButton" type="button" class="acc-btn">Скрыть описание</button>');
 		}
@@ -668,7 +670,12 @@ function initBriefDemo(options) {
   case DT_SELECT_SINGLE_LOG:
     accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment6.html", null, true);
     break;
+		case DT_OPENLAYERS:
+		  accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment8.html", null, true);
+		  break;
 	  	  
+		
+		
 	  
     default:
       console.log(`demoType ${demoOptions.demoType} not found.`);
@@ -700,6 +707,8 @@ function initBriefDemo(options) {
     || demoOptions.demoType == DT_SELECTORS
     || demoOptions.demoType == DT_REGEXP
 	|| demoOptions.demoType == DT_SELECT_SINGLE_LOG
+	|| demoOptions.demoType == DT_OPENLAYERS
+	
   ) {
     initDemoCodeSelect("#selectors1");
 

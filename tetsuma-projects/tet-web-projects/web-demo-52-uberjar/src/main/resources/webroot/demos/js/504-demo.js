@@ -179,9 +179,13 @@ arr1 = Array.from(document.querySelectorAll("button"),el=>el.id)
 # 
 
 arr1 = [7,8]; !
+arr2 = [70,80]; !
 
 //push - добавляет элементы в конец массива и возвращает его новую длину
 newLength = arr1.push(5,6); arr1;
+
+//так можно добавить сразу всё содержимое массива 2
+arr1.push(...arr2); arr1;
 
 //pop- Удаляет последний элемент из массива и возвращает его
 v = arr1.pop(); arr1;

@@ -1,3 +1,9 @@
+openlayers
+как собрать
+
+/home/tetsuma/work/tmp/ol/
+
+
 выбранная демка - задавать через параметр запроса.
 
 изучить по js:
@@ -5,4 +11,18 @@
 ReadableStream
 URL - blob
 
+--------------
+скрытый элемент:
+      a.skiplink {
+        position: absolute;
+        clip: rect(1px, 1px, 1px, 1px);
+        padding: 0;
+        border: 0;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+      }
 
+gifler lib
+https://openlayers.org/en/latest/examples/animated-gif.html      
+      

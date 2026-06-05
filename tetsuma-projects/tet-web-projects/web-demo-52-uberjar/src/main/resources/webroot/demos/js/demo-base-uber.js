@@ -66,41 +66,66 @@ function makeDefaultOptions() {
 
 $(document).ready(function() {
 
-  //загружаем все недостающие js и css
-  demoAllPromise = Promise.all([
-    accordUtils.addJSToPagePromise("../../accord/js/accord-publish.js", "module"),
-	accordUtils.addJSToPagePromise("../../accord/js/demo-base-classes.js"),
-    accordUtils.addJSToPagePromise("../../accord/js/demo-base-log.js"),
-    accordUtils.addJSToPagePromise("../../accord/js/demo-base.js"),
-    accordUtils.addJSToPagePromise("../../accord/js/demo-aux-data.js"),
-    accordUtils.addJSToPagePromise("../../accord/js/demo-base-parse.js"),
-    accordUtils.addCssToPagePromise("../../accord/css/accord.css"),
-    accordUtils.addCssToPagePromise("../../accord/css/tabbed-panel.css"),
-    accordUtils.addCssToPagePromise("../../accord/css/demo-base.css"),
-	accordUtils.addCssToPagePromise("../../accord/css/acc-form-elements.css"),
-	
-	
-  ]);
-
-  demoAllPromise.then(r => {
-
-    let options;
-    if (typeof getBriefDemoOptions != 'undefined') {
-      options = getBriefDemoOptions();
-    } else {
-      options = makeDefaultOptions();
-    }
-
-    initBriefDemo(options);
-
+	//чтобы загрузить константы, которые будут использоваться в getBriefDemoOptions()
+  accordUtils.addJSToPagePromise("../../accord/js/demo-base.js").then(r => {
+		initUberDemo();
   });
-
-  window.demoAllPromise = demoAllPromise;
 
 
 });
 
 
+function initUberDemo(){
+	
+	let options;
+	if (typeof getBriefDemoOptions != 'undefined') {
+	  options = getBriefDemoOptions();
+	} else {
+	  options = makeDefaultOptions();
+	}
 
+
+	let promises = [
+	  accordUtils.addJSToPagePromise("../../accord/js/accord-publish.js", "module"),
+	  accordUtils.addJSToPagePromise("../../accord/js/demo-base-classes.js"),
+	  accordUtils.addJSToPagePromise("../../accord/js/demo-base-log.js"),
+	  //    accordUtils.addJSToPagePromise("../../accord/js/demo-base.js"),
+	  accordUtils.addJSToPagePromise("../../accord/js/demo-aux-data.js"),
+	  accordUtils.addJSToPagePromise("../../accord/js/demo-base-parse.js"),
+	  accordUtils.addCssToPagePromise("../../accord/css/accord.css"),
+	  accordUtils.addCssToPagePromise("../../accord/css/tabbed-panel.css"),
+	  accordUtils.addCssToPagePromise("../../accord/css/demo-base.css"),
+	  accordUtils.addCssToPagePromise("../../accord/css/acc-form-elements.css"),
+	];
+
+	if (options.demoType == DT_OPENLAYERS) {
+
+	  promises.push(
+	    accordUtils.addJSToPagePromise("../../openlayers10/ol.js"),
+	    accordUtils.addCssToPagePromise("../../openlayers10/ol.css"),
+	    accordUtils.addCssToPagePromise("../css/openlayers10-demo.css"),
+	  );
+		
+		if (!options.moduleMode) {
+			promises.push(
+				accordUtils.addJSToPagePromise("../js/ol-demo-base.js")
+			);
+		}
+		
+		
+	}
+
+	//загружаем все недостающие js и css
+	demoAllPromise = Promise.all(promises);
+
+	demoAllPromise.then(r => {
+	  initBriefDemo(options);
+
+	});
+
+	window.demoAllPromise = demoAllPromise;
+	
+	
+}
 
 

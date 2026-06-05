@@ -1,0 +1,13 @@
+/*
+@import "node_modules/ol/ol.css";
+
+стили для демок с картами.
+
+
+*/
+
+.map {
+	width: 100%;
+	border: 1px solid black;
+}
+

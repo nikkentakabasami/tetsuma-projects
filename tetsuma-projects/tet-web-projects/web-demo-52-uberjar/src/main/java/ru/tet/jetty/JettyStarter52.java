@@ -13,7 +13,7 @@ public class JettyStarter52 extends JettyStarter {
 
 	@Override
 	public void init() throws Exception {
-		options.setPort(8090);
+		options.setPort(8091);
 		options.setContextPath("/demo-52");
 		options.setWelcomeFiles(null);
 

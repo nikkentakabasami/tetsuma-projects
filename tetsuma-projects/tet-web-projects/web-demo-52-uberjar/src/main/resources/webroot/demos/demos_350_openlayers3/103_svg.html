@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+
+<script src="../../jquery31/js/jquery.js"></script>
+
+
+<link rel="stylesheet" href="../../openlayers3/ol.css" type="text/css">
+<script src="../../openlayers3/ol.js"></script>
+<script src="../../openlayers3/proj4.js"></script>
+
+
+<link rel="stylesheet" href="../css/openlayers3-demo.css"
+	type="text/css">
+<script src="../js/102-demo.js"></script>
+
+
+
+
+</head>
+<body>
+
+
+	<div id="map" class="map"></div>
+
+
+	<div id="debugInfoPanel">
+		<br>
+		<select id="objectType">
+			<option value="transformer1" selected>Trasformer</option>
+			<option value="grounding">Grounding</option>
+			<option value="grounding90">Grounding 90</option>
+			<option value="grounding180">Grounding 180</option>
+			<option value="grounding270">Grounding 270</option>
+			<option value="resist">resist</option>
+
+		</select>
+
+
+		<br>coord:<span id="coord-span"></span> <br>Выбранный
+		объект:<span id="selectedId"></span>
+	</div>
+
+
+
+
+
+</body>
+</html>
