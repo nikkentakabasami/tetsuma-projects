@@ -1,4 +1,4 @@
-import * as old from './ol-demo-base2.js';
+import * as old from './ol-demo-base.js';
 import * as olu from "./ol-demo-utils.js";
 
 let olDemo;
@@ -36,9 +36,20 @@ class MyOLDemo extends old.OLDemo {
 	}
 
 	initMap() {
-		super.initMap();
-		
-	}	
+	  super.initMap();
+
+	  olu.addSelectInteractions(this);
+	  olu.addShowCoordHandler(this);
+
+	  this.select.on("select", e => {
+	    clearLog();
+
+	    if (e.selected.length) {
+	      olu.logFeature(e.selected[0]);
+	    }
+
+	  });
+	}
 	
 
 }
@@ -52,6 +63,10 @@ function initMap() {
   });
 
   olDemo.initMap();
+	
+	olu.addShowCoordHandler(olDemo);
+	
+	
 
 }
 

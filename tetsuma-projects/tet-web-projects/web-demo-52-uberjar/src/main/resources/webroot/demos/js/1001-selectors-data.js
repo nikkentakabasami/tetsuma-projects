@@ -1,5 +1,5 @@
 
-import {olDemo} from "./1001-demo.js";
+import {OLDemo} from './ol-demo-base.js';
 
 
 export const selectorsData1 = {
@@ -17,25 +17,31 @@ export const selectorsData1 = {
     Либо позже:		
     map.addInteraction(select);
   	
-		
-		
-		ol.interaction.defaults
-		  Набор действий по умолчанию. Его можно сконфигурировать опциями:
-		
-		onFocusOnly - карта активна только когда в фокусе. (default false) 	
-		doubleClickZoom - зумить при двойном клике. boolean (default true) 	
-		keyboard - можно использовать клавиатуру (default true) Вроде нужен фокус ввода.. 	
-		mouseWheelZoom - (default true) 	
-		shiftDragZoom - (default true) 	
-		zoomDuration - время zoom-анимации в миллисекундах 	
-		
-		
+  	
+  	
+    ol.interaction.defaults
+      Набор действий по умолчанию. Его можно сконфигурировать опциями:
+  	
+    onFocusOnly
+      карта активна только когда в фокусе. (default false) 	
+    doubleClickZoom
+      зумить при двойном клике. boolean (default true) 	
+    keyboard
+      можно использовать клавиатуру (default true) Вроде нужен фокус ввода.. 	
+    mouseWheelZoom
+      (default true) 	
+    shiftDragZoom
+      (default true) 	
+    zoomDuration
+      время zoom-анимации в миллисекундах 	
+  	
     */
+	 log(olDemoGlobal.createInteractions);
 
 
   },
 
-	
+
   select_options() {
 
     /*
@@ -43,6 +49,14 @@ export const selectorsData1 = {
       позволяет выделять векторные фичи. По умолчанию они выделяются при клике на них.
 
     Опции:
+		
+		сondition
+		  выделение (default singleClick)
+
+		toggleCondition
+		  добавление/удаление из выделения (default shiftKeyOnly)
+			То есть через shift+click можно выбрать несколько фич.
+							
     layers - массив слоёв, фичи из которых нужно выделить. Или можно задать функцию фильтрации.
 
     style - стиль выбранных фич. По умолчанию делает линии голубыми, а закраску прозрачно-белой.
@@ -52,93 +66,178 @@ export const selectorsData1 = {
     features - коллекция, в которой будут храниться выделенные фичи.
 
     filter - функция фильтрации, определяющая, какие фичи можно выделять
-		
-		События:
-		select - при изменении выделения 
-		
+  	
+    События:
+    select
+		  при изменении выделения.
+			Если выбрано несколько фич - будет вызван несколько раз! 
+  	
     */
-		log(olDemoGlobal.createSelect);
+    log(olDemoGlobal.createSelect);
   },
   select_methods() {
-		/*
+    /*
 
-		Методы Select:
+    Методы Select:
 
-		selectFeature(feature)
-		  выделение
+    selectFeature(feature)
+      выделение
 
-		clearSelection()
-		deselectFeature(feature)
-		  снятие выделение
+    clearSelection()
+    deselectFeature(feature)
+      снятие выделение
 
-		toggleFeature(feature)
-		  переключает выделение
-		  
-		getFeatures()
-		  выделенные фичи (коллекция)
+    toggleFeature(feature)
+      переключает выделение
+      
+    getFeatures()
+      выделенные фичи (коллекция)
 
-		setActive(active)
-		  позволяет деактивировать select
+    setActive(active)
+      позволяет деактивировать select
 
-		setHitTolerance(hitTolerance)
-		  чувствительность к выделению в пикселях. (default 0)			
-		*/		
-		
-		//снять выделение
-		olDemo.select.clearSelection();
-		
+    setHitTolerance(hitTolerance)
+      чувствительность к выделению в пикселях. (default 0)			
+    */
+
+    //снять выделение
+    olDemoGlobal.select.clearSelection();
+
   },
   selectAll() {
 
-		//выделить всё		
-		vectorSource.getFeatures().forEach(f=>{
-			olDemo.select.selectFeature(f);
-		});
-		
-  },
-  t5() {
-		/*
-		ol.interaction.DragBox
-		  Позволяет рисовать прямоугольную область (при нажатии на Ctrl).
-		Используется для выделения или зума.
-		
-		Опции:
-		className
-		  CSS-класс области
-			(defaults 'ol-dragbox')
-			
+    //выделить всё		
+    vectorSource.getFeatures().forEach(f => {
+      olDemoGlobal.select.selectFeature(f);
+    });
 
-		minArea
-		  минимальная площать области
-		 	(defaults 64) 	
-
-		onBoxEnd
-		  обработчик, вызываемый прямо перед событием boxend
-
-		condition
-		  функция, решающая, обрабатывать ли MapBrowserEvent 	
-			
-			
-	  События:
-		boxstart
-		boxdrag
-		boxend - окончание прорисовки.
-		*/
-		
-		
   },
-  t6() {
-		/*
-		getGeometry()
-		  geometry прорисованной области.
-		
-		setActive(active)
-		
-		
-		*/
-		
-		
+  DragBox() {
+    /*
+    ol.interaction.DragBox
+      Позволяет рисовать прямоугольную область (при нажатии на Ctrl).
+    Используется для выделения или зума.
+  	
+    Опции:
+    className
+      CSS-класс области
+      (defaults 'ol-dragbox')
+
+    minArea
+      минимальная площать области
+        (defaults 64) 	
+
+    onBoxEnd
+      обработчик, вызываемый прямо перед событием boxend
+
+    condition
+		  (default mouseActionButton)
+    	
+    	
+    События:
+    boxstart
+    boxdrag
+    boxend - окончание прорисовки.
+  	
+    Методы DragBox:
+
+    getGeometry()
+      geometry прорисованной области.
+
+    setActive(active)
+      позволяет деактивировать DragBox
+  	
+    */
+    log(olDemoGlobal.createDragBox);
+
+
   },
+  Modify() {
+    /*
+    ol.interaction.Modify
+      Модификация существующих фич.
+    Умеет перетаскивать вершины.
+  	
+    condition
+      добавление/перемещение вершин  (default primaryAction)
+
+    deleteCondition
+      удаление вершин (default: alt+click)
+  	
+    insertVertexCondition 	Condition | 
+      Вставка новой вершины (default always)
+    	
+    pixelTolerance
+      чувствительность к изменениям. (default 10) 		
+  	
+    style
+      стиль для точки модификации
+      	
+    source
+      vectorSource с фичами, которые можно модифицировать
+  	
+    features
+      коллекция фич, которые можно модифицировать
+  	
+
+    filter
+      функция, решающая, можно ли модифицировать фичу.
+
+    События:
+      modifystart	
+      modifyend
+
+    Методы:
+  	
+    insertPoint(coordinate)
+    removePoint(coordinate)
+  	
+    */
+    log(olDemoGlobal.createModify);
+
+  },
+
+  /*
+  ol.events.condition
+    Условия, которые можно назначать на действия.
+    Определяют, при каких событиях будет срабатывать действие.
+  	
+	Пример: рисовать область только если нажат Ctrl	
+		this.dragBox = new ol.interaction.DragBox({
+		  condition: ol.events.condition.platformModifierKeyOnly
+		});		
+		
+		
+  always
+  never
+	
+	noModifierKeys
+  altKeyOnly
+  altShiftKeysOnly
+	shiftKeyOnly
+	platformModifierKeyOnly
+	
+  platformModifierKey	- ctrl
+
+	pointerMove
+	 
+	primaryAction
+  click
+	singleClick
+  doubleClick
+	
+  focus
+  mouseOnly
+    событие мыши
+	
+
+  */
+
+
+
+
+
+
 
 
 

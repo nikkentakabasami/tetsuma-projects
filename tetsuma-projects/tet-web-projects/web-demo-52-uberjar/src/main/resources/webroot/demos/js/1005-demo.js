@@ -1,7 +1,7 @@
 
 
 
-import * as old from './ol-demo-base2.js';
+import * as old from './ol-demo-base.js';
 import * as olu from "./ol-demo-utils.js";
 
 

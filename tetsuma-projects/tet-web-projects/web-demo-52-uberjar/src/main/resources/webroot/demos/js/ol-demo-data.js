@@ -3,7 +3,24 @@
 */
 
 
-const demoGeojsonObject = {
+//массив объектов, на основе которых будут созданы фичи
+export const demoObjects2 = [
+  {
+    id: "line1",
+    name: "линия 1",
+    coords: [
+      [4e6, -2e6],
+      [8e6, 2e6],
+      [9e6, 2e6],
+    ]
+  }
+
+
+
+];
+
+
+export const demoGeojsonObject1 = {
   'type': 'FeatureCollection',
   'crs': {
     'type': 'name',
@@ -15,6 +32,7 @@ const demoGeojsonObject = {
 
     {
       'type': 'Feature',
+			'id' : 'f1',
       'geometry': {
         'type': 'Point',
         'coordinates': [0, 0],
@@ -23,6 +41,7 @@ const demoGeojsonObject = {
 
     {
       'type': 'Feature',
+			'id' : 'f2',
       'geometry': {
         'type': 'LineString',
         'coordinates': [
@@ -36,6 +55,7 @@ const demoGeojsonObject = {
     //двойной треугольник
     {
       'type': 'Feature',
+			'id' : 'f3',
       'geometry': {
         'type': 'Polygon',
         'coordinates': [
@@ -60,6 +80,7 @@ const demoGeojsonObject = {
       'type': 'Feature',
       'geometry': {
         'type': 'MultiLineString',
+				'id' : 'f4',
         'coordinates': [
 
           //вертикальная слева
@@ -90,9 +111,10 @@ const demoGeojsonObject = {
     },
 
 
-		//3 четырёхугольника
+    //3 четырёхугольника
     {
       'type': 'Feature',
+			'id' : 'f5',
       'geometry': {
         'type': 'MultiPolygon',
         'coordinates': [

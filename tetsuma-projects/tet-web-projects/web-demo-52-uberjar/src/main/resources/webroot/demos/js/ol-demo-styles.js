@@ -1,9 +1,11 @@
 
 
+export {defaultVectorStyle,defaultSelectStyle,defaultStyleFunction,defaultSelectStyleFunction};
+
 const circleImage = new ol.style.Circle({
   radius: 5,
   fill: null,
-  stroke: new ol.style.Stroke({ color: 'orange', width: 2 }),
+  stroke: new ol.style.Stroke({ color: 'rgb(64, 64, 64)', width: 2 }),
 });
 
 
@@ -38,6 +40,17 @@ const defaultSelectStyle = new ol.style.Style({
   image: circleImageSelected,
 });
 
+//оранжевый
+const selectStyle2 = new ol.style.Style({
+  stroke: new ol.style.Stroke({
+    color: 'rgb(255, 153, 51)',
+    width: 3,
+  }),
+  fill: new ol.style.Fill({
+    color: 'rgba(255, 153, 51, 0.2)',
+  }),
+  image: circleImageSelected,
+});
 
 
 

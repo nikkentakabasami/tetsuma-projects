@@ -1,4 +1,4 @@
-import * as old from './ol-demo-base2.js';
+import * as old from './ol-demo-base.js';
 import * as olu from "./ol-demo-utils.js";
 
 import { selectorsData1 } from "./1001-selectors-data.js";
@@ -55,7 +55,7 @@ export class MyOLDemo extends old.OLDemo {
   }
 
 
-	//-----------------Select---------------------
+  //-----------------Select---------------------
   createSelect() {
     this.select = new ol.interaction.Select({
       //можно выбирать несколько фич
@@ -68,50 +68,81 @@ export class MyOLDemo extends old.OLDemo {
       style: function(feature) {
         return old.defaultSelectStyle;
       },
+
+
     });
-		//чтобы удобнее выделять
-		this.select.setHitTolerance(5);
-		
-		this.select.on("select",e=>{
-			log("selected:",e.selected.length);
-		});
+    //чтобы удобнее выделять
+    this.select.setHitTolerance(5);
+
+    this.select.on("select", e => {
+      log("selected:", e.selected.length);
+    });
   }
-	
-	
-	//-----------------DragBox---------------------
+
+
+  //-----------------DragBox---------------------
   createDragBox() {
     this.dragBox = new ol.interaction.DragBox({
-			//рисовать область только если нажат Ctrl
+      //рисовать область только если нажат Ctrl
       condition: ol.events.condition.platformModifierKeyOnly,
     });
 
     this.dragBox.on('boxend', e => {
 
       const boxExtent = this.dragBox.getGeometry().getExtent();
-      log("dragBox extent:", boxExtent);
+      olu.logCoord(boxExtent);
 
       const boxFeatures = vectorSource.getFeaturesInExtent(boxExtent);
       log("boxFeatures:", boxFeatures.length);
 
-			//выделяем все фичи в области
-      this.select.clearSelection();
+      //выделяем все фичи в области
       boxFeatures.forEach((feature) => {
         this.select.selectFeature(feature);
       });
 
+    });
 
+    this.dragBox.on('boxstart', () => {
+      this.select.clearSelection();
     });
 
 
+
   }
+
+  createModify() {
+
+    this.modify = new ol.interaction.Modify({
+      features: this.select.getFeatures(),
+      deleteCondition: event => {
+        //удалять вершины при нажатии shift+click
+        return ol.events.condition.shiftKeyOnly(event) && ol.events.condition.singleClick(event);
+      },
+      insertVertexCondition: event => {
+        //не добавлять новые вершины
+        return ol.events.condition.never(event);
+      },
+
+
+    });
+
+    //организует прилипание новых точек к существующим
+    this.snap = new ol.interaction.Snap({ source: this.vectorSource });
+
+  }
+
+
 
 
   createInteractions() {
     this.createSelect();
     this.createDragBox();
+    this.createModify();
 
-    let ir = super.createInteractions();
-    return ir.extend([this.select, this.dragBox]);
+    return ol.interaction.defaults.defaults({
+      doubleClickZoom: false
+    }).extend([this.select, this.dragBox, this.modify, this.snap]);
+
   }
 
 
