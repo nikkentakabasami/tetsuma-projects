@@ -60,12 +60,10 @@ function initMap() {
   olDemo = new MyOLDemo({
     withVectorLayer: true,
     withTileLayer: true,
+		debug: true
   });
 
   olDemo.initMap();
-	
-	olu.addShowCoordHandler(olDemo);
-	
 	
 
 }

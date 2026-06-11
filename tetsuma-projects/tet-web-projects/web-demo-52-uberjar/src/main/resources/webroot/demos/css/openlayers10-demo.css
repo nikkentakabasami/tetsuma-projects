@@ -5,9 +5,56 @@
 
 
 */
-
 .map {
 	width: 100%;
 	border: 1px solid black;
 }
+
+/* DebugInfoControl */
+.debug-info-control {
+	position: absolute;
+	bottom: 20px;
+	right: 10px;
+	width: 500px;
+	height: 100px;
+	background: #ffffff;
+	padding: 5px;
+	border: 2px solid black;
+	color: #000000;
+}
+
+/* CurrentZoomControl */
+.olt-zoom {
+	position: absolute;
+	bottom: 45px;
+  left: 10px;	
+	display: flex;
+	flex-direction: row;
+	
+}
+
+.olt-zoom-btn {
+	background: #7d9abf;
+	color: #fff;
+	padding: 2px;
+	text-align: center;
+	width: 25px;
+	height: 23px;
+	font-size: 1.14em;
+	font-weight: 700;
+	border: 1px solid black;
+	border-radius: 6px;
+	margin: 0px 2px;
+}
+
+
+/* OverviewMap */
+
+.ol-overviewmap {
+    left: 0.5em;
+    top: 0.5em;
+    bottom: unset;
+}
+
+
 

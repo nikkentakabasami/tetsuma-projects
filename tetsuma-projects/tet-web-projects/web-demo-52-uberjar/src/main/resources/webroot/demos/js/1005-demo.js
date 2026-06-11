@@ -3,49 +3,11 @@
 
 import * as old from './ol-demo-base.js';
 import * as olu from "./ol-demo-utils.js";
-
+import { selectorsData1 } from './1005-selectors-data.js'
 
 let olDemo;
 
 
-let selectorsData1 = {
-
-
-	fit1() {
-		const feature = vectorSource.getFeatures()[0];
-		const polygon = feature.getGeometry();
-
-		//позиционировать карту так, чтобы показывался заданная геометрия, с заданными опциями
-		mapView.fit(polygon, { padding: [170, 50, 30, 150] });
-		
-	},
-	fit2() {
-		const feature = vectorSource.getFeatures()[1];
-		const point = feature.getGeometry();
-
-		//точка будет показана в центре карты
-		mapView.fit(point, { padding: [170, 50, 30, 150], minResolution: 50 });
-		
-	},
-	centerOn() {
-		const feature = vectorSource.getFeatures()[1];
-		const point = feature.getGeometry();
-		const size = map.getSize();
-		mapView.centerOn(point.getCoordinates(), size, [570, 500]);
-	},
-
-	zoomIn() {
-		const zoom = mapView.getZoom();
-		mapView.setZoom(zoom + 1);
-		
-	},
-	zoomOut() {
-		const zoom = mapView.getZoom();
-		mapView.setZoom(zoom - 1);
-		
-	},
-
-}
 
 
 window.getBriefDemoOptions = () => {
@@ -65,56 +27,31 @@ window.getBriefDemoOptions = () => {
 
 class MyOLDemo extends old.OLDemo {
 
-	attribution;	
-	
-  createVectorSource() {
-    //olu.createDemoVectorSource1(this);
-    olu.createDemoVectorSource2(this);
-  }
-
-	/*
-  getVectorStyle() {
-    return {
-      'fill-color': 'rgba(255, 255, 255, 0.6)',
-      'stroke-width': 1,
-      'stroke-color': '#319FD3',
-      'circle-radius': 5,
-      'circle-fill-color': 'rgba(255, 255, 255, 0.6)',
-      'circle-stroke-width': 1,
-      'circle-stroke-color': '#319FD3',
-    };
-  }
-	*/
-
-  createControls() {
-    //ol.control.Attribution
-    //  Элемент управления для показа инфы по карте в правом нижнем углу.
-    this.attribution = new ol.control.Attribution({
-      collapsible: false,
+  createView() {
+    this.mapView = new ol.View({
+      center: [877350, 6000000],
+      zoom: 5,
+      //      projection: 'EPSG:4326',
+      projection: 'EPSG:3857',
     });
 
-    return ol.control.defaults.defaults({ attribution: false }).extend([this.attribution]);
-	}
+    this.mapView.on(["change:center", "change:resolution", "change:rotation"], event => {
+      console.log(event.type);
+    });
 
-	initMap() {
-		super.initMap();
-		this.map.on('change:size', checkSize);
-		this.checkSize();
-	}	
-	
 
-	
-	
-	
+  }
+
+
+  initMap() {
+    super.initMap();
+
+    olu.addShowCoordHandler(this);
+
+  }
 
 }
 
-
-function checkSize() {
-  const small = olDemo.map.getSize()[0] < 600;
-  olDemo.attribution.setCollapsible(small);
-  olDemo.attribution.setCollapsed(small);
-}
 
 
 function initMap() {
@@ -122,6 +59,7 @@ function initMap() {
   olDemo = new MyOLDemo({
     withVectorLayer: true,
     withTileLayer: true,
+    debug: true
   });
 
   olDemo.initMap();

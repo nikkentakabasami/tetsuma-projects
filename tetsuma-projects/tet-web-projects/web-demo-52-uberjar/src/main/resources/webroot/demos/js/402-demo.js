@@ -72,6 +72,9 @@ let selectorsData1 = {
 	  log2(`keydown, key=${event.key}, keyCode=${event.keyCode}`);
 	});
 
+	//Задание функции объекта в качестве обработчика
+	$btn1.click(showKeys.bind(this));
+	
 	$inp1.mousedown(event => {
 	  log2("mousedown, button="+event.button);
 	});
@@ -435,6 +438,12 @@ let selectorsData1 = {
 }
 
 
+function showKeys(){
+	let keys = Object.keys(this);
+	log2(keys);
+}
+
+
 
 function getBriefDemoOptions() {
   return {
@@ -444,7 +453,7 @@ function getBriefDemoOptions() {
 //	jquerySelectorsMode: true,
     lfMode: false,
     afterSandboxReload: null,
-    selectedOption: "custom",
+    selectedOption: "templates",
     debugMode: false,
 	autoscrollLog2: true,
     initFunction: () => {

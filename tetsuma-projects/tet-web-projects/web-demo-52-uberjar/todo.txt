@@ -1,5 +1,10 @@
 openlayers
-как собрать
+
+baseobject
+
+
+
+
 
 /home/tetsuma/work/tmp/ol/
 

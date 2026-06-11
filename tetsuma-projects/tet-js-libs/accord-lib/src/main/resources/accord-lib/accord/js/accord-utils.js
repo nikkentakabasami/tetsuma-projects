@@ -721,8 +721,6 @@ function loadHtmlFragmentXHR(fragmentUrl, $target, relativeToAccord = false) {
     url = this.accordPath + url;
   }
 
-  //	let url = relativeToAccord?(this.accordPath+fragmentUrl):fragmentUrl;
-
   xhr.open("GET", url, false); // false для синхронного вызова
   xhr.send();
 

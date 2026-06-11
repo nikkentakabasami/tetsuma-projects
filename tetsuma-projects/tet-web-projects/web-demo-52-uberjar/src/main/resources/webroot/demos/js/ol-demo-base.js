@@ -3,6 +3,7 @@
 */
 
 import * as olu from "./ol-demo-utils.js";
+import { DebugInfoControl, CurrentZoomControl } from "./ol-controls2.js"
 
 import {
   defaultVectorStyle, defaultSelectStyle,
@@ -17,6 +18,7 @@ export { OLDemo, defaultSelectStyleFunction, defaultSelectStyle };
 const olDemoDefaultOptions = {
   withVectorLayer: true,
   withTileLayer: true,
+	debug: false  //показывает контрол с отладочной инфой
 
 }
 
@@ -36,6 +38,10 @@ class OLDemo {
 
   options;
 
+	debugInfoControl;
+	currentZoomControl;
+	
+	
   constructor(options) {
 
     this.options = $.extend({}, olDemoDefaultOptions, options);
@@ -55,7 +61,7 @@ class OLDemo {
 
   //Источник данных для векторного слоя по умолчанию
   createVectorSource() {
-    olu.createDemoVectorSource1(this);
+    olu.createDemoVectorSource2(this);
   }
 
   //векторный слой по умолчанию
@@ -95,8 +101,16 @@ class OLDemo {
   }
 
 	//задание control при создании карты
-	createControls(){
-		return ol.control.defaults.defaults();
+	createControls() {
+		
+		let scaleLine = new ol.control.ScaleLine({
+		});
+		
+	  return ol.control.defaults.defaults({
+	    attribution: false,
+	    rotate: true,
+	    zoom: false
+	  }).extend([scaleLine]);
 	}
 	
 
@@ -131,6 +145,20 @@ class OLDemo {
     });
 
     this.initGlobalVars();
+		
+		if (this.options.debug){
+			//панель для показа отладочной информации
+			this.debugInfoControl = new DebugInfoControl();
+			this.map.addControl(this.debugInfoControl);
+			this.debugInfoControl.addShowBaseDebugInfoHandler();
+		}
+		
+		//Аналог Zoom. Но содержит панель для показа текущего зума
+		this.currentZoomControl = new CurrentZoomControl();
+		this.map.addControl(this.currentZoomControl);
+		this.currentZoomControl.init();
+		
+		
 
   }
 

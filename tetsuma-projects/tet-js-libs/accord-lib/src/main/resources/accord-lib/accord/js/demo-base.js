@@ -342,6 +342,11 @@ function execDemoFunc() {
 
 
   if (!currentScript.func) {
+		
+		if (!$log2.length){
+			clearLog1()
+		}
+		
     logParsedExpression(currentScript);
   } else {
 

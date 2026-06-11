@@ -262,15 +262,6 @@ testString1.replaceAll('to','AA');
 testString1.replaceAll(/to/g,'AA');
 testString1.replaceAll('to',x=>x.toUpperCase());
 
-
-
-
-
-
-
-
-
-
 `,	
 
 	
