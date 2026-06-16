@@ -46,7 +46,7 @@ class MyOLDemo extends old.OLDemo {
   initMap() {
     super.initMap();
 
-    olu.addShowCoordHandler(this);
+    olu.addShowCoordHandler(this.map);
 
   }
 

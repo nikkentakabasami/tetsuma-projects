@@ -9,17 +9,6 @@ import { DebugInfoControl, CurrentZoomControl } from "./ol-controls2.js"
 let olDemo;
 
 
-window.getBriefDemoOptions = () => {
-  return {
-    demoType: DT_OPENLAYERS,
-    selectorsData: selectorsData1,
-    //    selectedOption: "init3",
-    autoscrollLog1: false,
-    formattedJson: true,
-    moduleMode: true,
-    initFunction: initMap,
-  };
-}
 
 class MyOLDemo extends old.OLDemo {
 
@@ -36,11 +25,24 @@ class MyOLDemo extends old.OLDemo {
       zoom: 1,
     });
   }
+	
+	
+	createControls() {
+		
+		let scaleLine = new ol.control.ScaleLine({
+		});
+		let fs = new ol.control.FullScreen();
+		
+	  return ol.control.defaults.defaults({
+	    attribution: false,
+	    rotate: true,
+	    zoom: false
+	  }).extend([scaleLine, fs]);
+	}
+		
 
   initMap() {
     super.initMap();
-
-
 
     //линейка с текущим маштабом
     this.scaleLine = new ol.control.ScaleLine({
@@ -50,13 +52,13 @@ class MyOLDemo extends old.OLDemo {
       maxWidth: 256,
 
     })
-    map.addControl(this.scaleLine);
+    this.map.addControl(this.scaleLine);
 
     //ссылка на источник текущего тайлового слоя
     let attribution = new ol.control.Attribution({
       collapsible: false,
     });
-    map.addControl(attribution);
+    this.map.addControl(attribution);
 
 
 		//миникарта большего маштаба в левом нижнем углу
@@ -67,28 +69,30 @@ class MyOLDemo extends old.OLDemo {
         }),
       ],
     });
-		map.addControl(overviewMap);
+		this.map.addControl(overviewMap);
 
 
 
 
   }
 
-	createControls() {
-		
-		let scaleLine = new ol.control.ScaleLine({
-		});
-		let fs = new ol.control.FullScreen();
-		
-	  return ol.control.defaults.defaults({
-	    attribution: false,
-	    rotate: false,
-	    zoom: false
-	  }).extend([scaleLine, fs]);
-	}
 
 
 
+
+}
+
+
+window.getBriefDemoOptions = () => {
+  return {
+    demoType: DT_OPENLAYERS,
+    selectorsData: selectorsData1,
+    selectedOption: "custom_control",
+    autoscrollLog1: false,
+    formattedJson: true,
+    moduleMode: true,
+    initFunction: initMap,
+  };
 }
 
 

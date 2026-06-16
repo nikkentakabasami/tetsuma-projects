@@ -8,7 +8,8 @@ export let selectorsData1 = {
 	  Содержит координаты центра, зум, проекцию.
 
 
-	События
+	События:
+	
 	change:center
 	change:resolution
 	change:rotation
@@ -72,6 +73,10 @@ export let selectorsData1 = {
 Для основных опций имеются соотетствующие get/set-методы!
 */	
 
+mapView.getResolution();
+
+mapView.getResolutionForZoom(5);
+
 mapView.getCenter();
 mapView.getZoom();
 mapView.setRotation(0.5);
@@ -79,8 +84,8 @@ mapView.setRotation(0.5);
 `,
   adjustCenter() {
     /*
-    adjustCenter(deltaCoordinates)
-      добавляет относительную координату к центру
+    adjustCenter(deltaCoordinate)
+		  Сдвигает центр на относительную координату
     */
     mapView.adjustCenter([50000, 50000]);
 

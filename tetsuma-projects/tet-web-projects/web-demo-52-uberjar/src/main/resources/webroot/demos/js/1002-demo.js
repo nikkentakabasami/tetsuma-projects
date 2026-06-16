@@ -37,10 +37,9 @@ export class MyOLDemo extends old.OLDemo {
   draw;
 
   createVectorSource() {
-		olDemo.vectorSource = new ol.source.Vector({
-		});
-		
-//    olu.createDemoVectorSource1(this);
+    olDemo.vectorSource = new ol.source.Vector({
+    });
+    //    olu.createDemoVectorSource1(this);
   }
 
   createView() {
@@ -53,12 +52,7 @@ export class MyOLDemo extends old.OLDemo {
 
   initMap() {
     super.initMap();
-
-
     this.addDrawInteraction("Point");
-//		olu.addSelectInteractions(this);
-
-
   }
 
   removeDrawInteraction() {
@@ -75,22 +69,18 @@ export class MyOLDemo extends old.OLDemo {
     this.draw = new ol.interaction.Draw({
       source: this.vectorSource,
       type: type,
-			//рисовать только при нажатом Ctrl
-			condition: ol.events.condition.platformModifierKeyOnly,
+      //рисовать только при нажатом Ctrl
+      condition: ol.events.condition.platformModifierKeyOnly,
     });
-		this.draw.on("drawend",e=>{
-			//Задаём id для созданных фич
-			e.feature.setId(counter++);
-		});
-		
-		
-    this.map.addInteraction(this.draw);
+    this.draw.on("drawend", e => {
+      //Задаём id для созданных фич
+      e.feature.setId(counter++);
+    });
+		this.map.addInteraction(this.draw);
 
-    //организует прилипание новых точек к существующим, при рисовании
-    this.snap = new ol.interaction.Snap({ source: this.vectorSource });
-    this.map.addInteraction(this.snap);
-
-
+		//организует прилипание новых точек к существующим, при рисовании
+		this.snap = new ol.interaction.Snap({ source: this.vectorSource });
+		this.map.addInteraction(this.snap);
   }
 
 
@@ -106,7 +96,7 @@ let selectorsData1 = {
     ol.interaction.Draw
       Умеет создавать новые фичи
 
-		Параметры:
+    Параметры:
     type
       Тип рисуемых фич ('Point', 'LineString', 'Polygon', 'MultiPoint', 'MultiLineString', 'MultiPolygon' or 'Circle').
 
@@ -119,40 +109,31 @@ let selectorsData1 = {
     geometryFunction
       Вызывается при изменении координат фичи.
     Может использоваться чтобы задать свои координаты.
-		
-		
-		maxPoints 	
-		minPoints
-		
-		style
-		  стиль фич рисования.
-			
-			
-		condition
+  	
+  	
+    maxPoints 	
+    minPoints
+  	
+    style
+      стиль фич рисования.
+    	
+    	
+    condition
 
-		События:
-		
-		drawstart
-		drawend
-				
-			
+    События:
+  	
+    drawstart
+    drawend
+      	
+
+    Вместе с ним можно использовавать ol.interaction.Snap,
+    чтобы организовать прилипание новых точек к существующим, при рисовании
     */
 
-		log(olDemo.addDrawInteraction);
-  },
-  t2() {
-
-  },
-  t3() {
-
+    log(olDemo.addDrawInteraction);
+    log(olDemo.initMap);
   },
 
-
-
-
-  setPoint() {
-    olDemo.addDrawInteraction("Point");
-  },
   setLine() {
     olDemo.addDrawInteraction("LineString");
   },
@@ -162,6 +143,19 @@ let selectorsData1 = {
   setCircle() {
     olDemo.addDrawInteraction("Circle");
   },
+	setPoint() {
+	  olDemo.addDrawInteraction("Point");
+	  log(olDemo.addDrawInteraction);
+	},
+
+  t2() {
+
+  },
+  t3() {
+
+  },
+
+
 }
 
 

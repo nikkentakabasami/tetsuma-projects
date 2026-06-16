@@ -39,7 +39,7 @@ class MyOLDemo extends old.OLDemo {
 	  super.initMap();
 
 	  olu.addSelectInteractions(this);
-	  olu.addShowCoordHandler(this);
+	  olu.addShowCoordHandler(this.map);
 
 	  this.select.on("select", e => {
 	    clearLog();

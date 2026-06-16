@@ -10,9 +10,9 @@ let $copyDiv;
 let scriptSrc = import.meta.url;
 let accordUtils = {
   accordPath: scriptSrc.substring(0, scriptSrc.lastIndexOf('/js/') + 1),
-  
+
   //-------dom ----------
-  
+
   alignToCenter: alignToCenter,
   getHiddenContainer: getHiddenContainer,
   openDownloadUrl: openDownloadUrl,
@@ -20,31 +20,31 @@ let accordUtils = {
   calcElementPosition: calcElementPosition,
   cloneTemplate: cloneTemplate,
   highlightText: highlightText,
-  
+
   addCssFile: addCssFile,
   addJSToPage: addJSToPage,
   removeJSFromPage: removeJSFromPage,
   addJSToPagePromise: addJSToPagePromise,
   addCssToPagePromise: addCssToPagePromise,
-  
-  
+
+
   //-------ajax ----------
-  
+
   loadHtmlFragmentXHR: loadHtmlFragmentXHR,
   loadHtmlFragmentFetch: loadHtmlFragmentFetch,
   loadFileAsString: loadFileAsString,
 
   //-------select ----------
-  
+
   generateSelect: generateSelect,
   generateBooleanSelect: generateBooleanSelect,
   fillSelect: fillSelect,
   generateSelectOptions: generateSelectOptions,
   generateDatalist: generateDatalist,
   selectNextOption: selectNextOption,
-  
+
   //-------select ----------
-    
+
   deleteAllCookies: deleteAllCookies,
   deleteAllCookiesAndReload: deleteAllCookiesAndReload,
   copyTextToBuffer: copyTextToBuffer,
@@ -56,19 +56,19 @@ let accordUtils = {
   formatTime: formatTime,
   formatDateTime: formatDateTime,
   parseDate: parseDate,
-  
+
   //-------misc ----------
-      
+
   jsonCopy: jsonCopy,
   random: random,
   randomDate: randomDate,
   cloneObject: cloneObject,
-	stringToRegexp: stringToRegexp,
-	escapeHTML: escapeHTML,
-	removeOddIndent: removeOddIndent,
-	funcToString: funcToString,
-	objectToString: objectToString,
-	getRequestParameter: getRequestParameter,
+  stringToRegexp: stringToRegexp,
+  escapeHTML: escapeHTML,
+  removeOddIndent: removeOddIndent,
+  funcToString: funcToString,
+  objectToString: objectToString,
+  getRequestParameter: getRequestParameter,
 
 };
 window.accordUtils = accordUtils;
@@ -77,12 +77,12 @@ window.accordUtils = accordUtils;
 
 
 //получение параметра запроса
-function getRequestParameter(name){
-	let re = new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)');
-	let sr = location.search.match(re);
-	if (sr) {
-		return decodeURIComponent(sr[1]);
-	}	
+function getRequestParameter(name) {
+  let re = new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)');
+  let sr = location.search.match(re);
+  if (sr) {
+    return decodeURIComponent(sr[1]);
+  }
 }
 
 
@@ -92,87 +92,88 @@ function getRequestParameter(name){
 //выполняет форматирование, убирает лишние кавычки.
 function objectToString(object) {
 
-	let code =	JSON.stringify(object,"",2);
-	
-	let ind1 = code.indexOf("{");
-	let ind2 = code.lastIndexOf("}");
-	code = code.substring(ind1 + 1, ind2-1);
-	
-//	code = removeOddIndent(code);
+  let code = JSON.stringify(object, "", 2);
 
-	//убираем кавычки у полей и ведущие пробелы в строках
-	//поисковое выражение с тремя группами, $2 - содержимое второй группы (то что внутри кавычек)
-	code = code.replace(/^(\s*")([^"]+)(")/gm,'$2');	
-	
-	return code;	
+  let ind1 = code.indexOf("{");
+  let ind2 = code.lastIndexOf("}");
+  code = code.substring(ind1 + 1, ind2 - 1);
+
+  //	code = removeOddIndent(code);
+
+  //убираем кавычки у полей и ведущие пробелы в строках
+  //поисковое выражение с тремя группами, $2 - содержимое второй группы (то что внутри кавычек)
+  code = code.replace(/^(\s*")([^"]+)(")/gm, '$2');
+
+  return code;
 }
 
 //возвращает код функции в виде строки.
 //убирает лишние отступы, может убрать её объявление
 function funcToString(func, removeDeclaration = false) {
-	
-	let code = String(func);
 
-	if (removeDeclaration){
-		let ind1 = code.indexOf("{");
-		let ind2 = code.lastIndexOf("}");
-		code = code.substring(ind1 + 1, ind2);
-	}
-	
-	code = removeOddIndent(code);
-	return code;	
+  let code = String(func);
+
+  if (removeDeclaration) {
+    let ind1 = code.indexOf("{");
+    let ind2 = code.lastIndexOf("}");
+    code = code.substring(ind1 + 1, ind2);
+  }
+
+  code = removeOddIndent(code);
+  return code;
 }
 
 
 //убирает лишние отступы в коде, а так же пустые строки в начале и конце
 function removeOddIndent(code) {
 
-    let lines = code.split("\n")
-    if (lines.length == 1) {
-        return code.trim();
+  let lines = code.split("\n")
+  if (lines.length == 1) {
+    return code.trim();
+  }
+
+  lines = lines.map(line => line.replaceAll("\t", "  ").trimRight());
+
+  //убираем пустые строки в начале	
+  while (lines.length > 0 && lines[0].length == 0) {
+    lines.shift();
+  }
+
+  //убираем пустые строки в конце	
+  while (lines.length > 0 && lines[lines.length - 1].length == 0) {
+    lines.pop();
+  }
+
+
+  let minIndent = 0;
+  for (let i = 0;i < lines.length;i++) {
+    let line = lines[i];
+
+    if (line.length == 0) {
+      continue;
     }
 
-    lines = lines.map(line => line.replaceAll("\t", "  ").trimRight());
-
-    //убираем пустые строки в начале	
-    while (lines.length > 0 && lines[0].length == 0) {
-        lines.shift();
+    let r = line.match(/^ +/i);
+    if (r) {
+      let indent = r[0].length;
+      if (!minIndent) {
+        minIndent = indent;
+        continue;
+      }
+      if (indent < minIndent) {
+        minIndent = indent;
+      }
+    } else {
+      minIndent = 0;
+			break;
     }
+  }
 
-    //убираем пустые строки в конце	
-    while (lines.length > 0 && lines[lines.length - 1].length == 0) {
-        lines.pop();
-    }
+  if (minIndent) {
+    lines = lines.map(line => line.substring(minIndent));
+  }
 
-
-    let minIndent = 0;
-    for (let i = 0;i < lines.length;i++) {
-        let line = lines[i];
-		
-        if (line.length == 0) {
-            continue;
-        }
-
-        let r = line.match(/^ +/i);
-        if (r) {
-            let indent = r[0].length;
-            if (!minIndent) {
-                minIndent = indent;
-                continue;
-            }
-            if (indent < minIndent) {
-                minIndent = indent;
-            }
-        } else {
-			minIndent = 0;
-		}
-    }
-
-    if (minIndent) {
-        lines = lines.map(line => line.substring(minIndent));
-    }
-
-    return lines.join("\n");
+  return lines.join("\n");
 
 }
 
@@ -184,21 +185,21 @@ function removeOddIndent(code) {
 
 
 //выбирает следующую/предыдущую опцию в <select>
-function selectNextOption($select, next = true){
-	
-	let $opt = $select.find('option:selected');
-	
-	
-	if (!$opt.length){
-		$opt = $select.find('option:first');
-	}
-	
-	let $nextOption = next?$opt.next('option'):$opt.prev('option');
+function selectNextOption($select, next = true) {
 
-	if ($nextOption.length) {
-	    $select.val($nextOption.val()).trigger('change');
-	}	
-	
+  let $opt = $select.find('option:selected');
+
+
+  if (!$opt.length) {
+    $opt = $select.find('option:first');
+  }
+
+  let $nextOption = next ? $opt.next('option') : $opt.prev('option');
+
+  if ($nextOption.length) {
+    $select.val($nextOption.val()).trigger('change');
+  }
+
 }
 
 
@@ -206,23 +207,23 @@ function selectNextOption($select, next = true){
 
 //добавляет в документ js-файл (и выполняет его)
 function addJSToPage(jsHref, onload) {
-	
-	const script = document.createElement('script');
+
+  const script = document.createElement('script');
   script.src = jsHref;
   script.type = 'text/javascript';
 
   script.onload = () => {
-		if (onload){
-			onload();
-		}
-		
-    console.log(jsHref+' added and executed');
+    if (onload) {
+      onload();
+    }
+
+    console.log(jsHref + ' added and executed');
   };
 
   // Добавляем элемент в DOM, обычно в head или body
-  document.body.appendChild(script);	
-	
-	return script;
+  document.body.appendChild(script);
+
+  return script;
 }
 
 
@@ -247,26 +248,26 @@ async function addCssToPagePromise(href) {
 }
 
 async function addJSToPagePromise(src, type) {
-	
-	//Если задан массив ссылок - добавляем их последовательно.
-	if (Array.isArray(src)){
-		
-		while(src.length){
-			
-			let csrc = src.pop();
-			let r = await addJSToPagePromise(csrc);
-			console.log(r);
-		}
 
-		/*		
-		src.forEach(csrc=>{
-			await addJSToPagePrimise(csrc);
-		});
-		*/
-		return true;		
-	}
-	
-	
+  //Если задан массив ссылок - добавляем их последовательно.
+  if (Array.isArray(src)) {
+
+    while (src.length) {
+
+      let csrc = src.pop();
+      let r = await addJSToPagePromise(csrc);
+      console.log(r);
+    }
+
+    /*		
+    src.forEach(csrc=>{
+      await addJSToPagePrimise(csrc);
+    });
+    */
+    return true;
+  }
+
+
   return new Promise((resolve, reject) => {
     if (document.querySelector(`script[src="${src}"]`)) {
       resolve();
@@ -275,11 +276,11 @@ async function addJSToPagePromise(src, type) {
     const script = document.createElement('script');
     script.src = src;
     script.async = true;
-	
-	if (type){
-		script.type = type;
-	}
-	
+
+    if (type) {
+      script.type = type;
+    }
+
     script.onload = () => resolve(true);
     script.onerror = () => reject(new Error(`Ошибка загрузки скрипта: ${src}`));
     document.head.appendChild(script);
@@ -297,135 +298,135 @@ async function addJSToPagePromise(src, type) {
 
 //удаляет js-файл из документа
 function removeJSFromPage(script) {
-	
-	if (script){
-		document.body.removeChild(script);
-		console.log(`${script.src} removed!`);
-	}
-	
+
+  if (script) {
+    document.body.removeChild(script);
+    console.log(`${script.src} removed!`);
+  }
+
 }
 
 
 //экранирует спецсимволы в тексте (для вставки его в html) 
 function escapeHTML(str) {
-    const temp = document.createElement('div');
-    temp.textContent = str;
-    return temp.innerHTML;
+  const temp = document.createElement('div');
+  temp.textContent = str;
+  return temp.innerHTML;
 }
 
 
 //преобразовывает строку с регулярным выражением (например "/a{3}/g") в объект RegExp
-function stringToRegexp(str){
-	if (str instanceof RegExp){
-		return str;
-	}
-	
-	const match = str.match(/^\/(.*)\/([a-z]*)$/);
-	if (match) {
-	  const pattern = match[1];
-	  const flags = match[2];
-		
-	  const regex = new RegExp(pattern, flags);
-		return regex;
-	} else {
-		throw new Error("Строка не в правильном формате");
-	}	
+function stringToRegexp(str) {
+  if (str instanceof RegExp) {
+    return str;
+  }
+
+  const match = str.match(/^\/(.*)\/([a-z]*)$/);
+  if (match) {
+    const pattern = match[1];
+    const flags = match[2];
+
+    const regex = new RegExp(pattern, flags);
+    return regex;
+  } else {
+    throw new Error("Строка не в правильном формате");
+  }
 }
 
 
 const defaultHighlightOptions = {
-	regex: null,
-	class: "green",
-	startIndex: -1,
-	length: -1,
-	sections: null,  //массив из пар [index, length]
-	text: null,
-	$div: null,
-	matchHandler: null
-	
+  regex: null,
+  class: "green",
+  startIndex: -1,
+  length: -1,
+  sections: null,  //массив из пар [index, length]
+  text: null,
+  $div: null,
+  matchHandler: null
+
 }
 
 //подсвечивает текст в заданном div, заданным цветовым классом.
 //области подсветки можно задавать регулярным выражением или массивом sections.
 //возвращает результат поиска и модифицированный текст (в формате options)
-function highlightText(options){
-	
-	options = $.extend({}, defaultHighlightOptions, options);
-	let sections = options.sections;
-	if (!sections){
-		sections = [];
-	}
-	
-	let $div = options.$div;
-	
-	let text = options.text?options.text:$div.text();
+function highlightText(options) {
 
-	if (options.startIndex>0 && options.length>0){
-		sections.push([options.startIndex, options.length]);
-	}
-	
-	if (options.regex){
-		
-		let regex = options.regex; 
-		regex = stringToRegexp(regex);
-			
-		
-		
-		if (regex.global){
-			const matches = text.matchAll(regex);
-			for (const match of matches) {
-				sections.push([match.index,match[0].length]);
-				if (options.matchHandler){
-					options.matchHandler(match);
-				}
-			}
-		} else {
-			const match = text.match(regex);
-			if (match){
-				sections.push([match.index,match[0].length]);
-				if (options.matchHandler){
-					options.matchHandler(match);
-				}
-			}
-		}
-	}
-		
-	sections.sort((a, b) => a[0]>b[0]).reverse();
-	
-	sections.forEach(section=>{
-		let startIndex = section[0];
-		let endIndex = startIndex+section[1];
-		text = text.substring(0, startIndex) 
-			+ '<span class="'+options.class+'">'+ text.substring(startIndex,endIndex) + '</span>'
-			+ text.substring(endIndex);
-	});
-	
-	if ($div){
-		$div.html(text);
-	}
-	
-	options.text = text;
-	delete options.startIndex;
-	delete options.length;
-	
-	return options;
-	
+  options = $.extend({}, defaultHighlightOptions, options);
+  let sections = options.sections;
+  if (!sections) {
+    sections = [];
+  }
+
+  let $div = options.$div;
+
+  let text = options.text ? options.text : $div.text();
+
+  if (options.startIndex > 0 && options.length > 0) {
+    sections.push([options.startIndex, options.length]);
+  }
+
+  if (options.regex) {
+
+    let regex = options.regex;
+    regex = stringToRegexp(regex);
+
+
+
+    if (regex.global) {
+      const matches = text.matchAll(regex);
+      for (const match of matches) {
+        sections.push([match.index, match[0].length]);
+        if (options.matchHandler) {
+          options.matchHandler(match);
+        }
+      }
+    } else {
+      const match = text.match(regex);
+      if (match) {
+        sections.push([match.index, match[0].length]);
+        if (options.matchHandler) {
+          options.matchHandler(match);
+        }
+      }
+    }
+  }
+
+  sections.sort((a, b) => a[0] > b[0]).reverse();
+
+  sections.forEach(section => {
+    let startIndex = section[0];
+    let endIndex = startIndex + section[1];
+    text = text.substring(0, startIndex)
+      + '<span class="' + options.class + '">' + text.substring(startIndex, endIndex) + '</span>'
+      + text.substring(endIndex);
+  });
+
+  if ($div) {
+    $div.html(text);
+  }
+
+  options.text = text;
+  delete options.startIndex;
+  delete options.length;
+
+  return options;
+
 }
 
 //поверхностное клонирование объекта
 //Обычно проще использовать Object.assign({}, o2); или structuredClone(o2);
-function cloneObject(source, ...attributes){
-	
-	let clone = {};
-	for (let key in source) {
-		if (attributes.length>0){
-			if (!attributes.includes(key)){
-				continue;
-			}
-		}
-	  clone[key] = source[key];
-	}
-	return clone;
+function cloneObject(source, ...attributes) {
+
+  let clone = {};
+  for (let key in source) {
+    if (attributes.length > 0) {
+      if (!attributes.includes(key)) {
+        continue;
+      }
+    }
+    clone[key] = source[key];
+  }
+  return clone;
 }
 
 
@@ -433,27 +434,27 @@ function cloneObject(source, ...attributes){
 
 
 //Находит <template> и клонирует его содержимое
-function cloneTemplate(selector){
-	
-	let $template = $(selector);
-	let cont = $template.prop('content');
-	if (cont){
-		return $(cont).clone();
-	}
-	return null;
-	
+function cloneTemplate(selector) {
+
+  let $template = $(selector);
+  let cont = $template.prop('content');
+  if (cont) {
+    return $(cont).clone();
+  }
+  return null;
+
 }
 
 //возвращает случайное целое число в заданном диапазоне
 // пример: random(5)
 function random(max, min = 0) {
-	return Math.floor(Math.random() * (max - min)) + min;
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
 //возвращает случайную дату в заданном диапазоне
-function randomDate(minYear = 2020, maxYear=2025){
-	let yearDiapazon = maxYear - minYear;
-	return new Date(minYear+random(yearDiapazon), random(13), random(30));
+function randomDate(minYear = 2020, maxYear = 2025) {
+  let yearDiapazon = maxYear - minYear;
+  return new Date(minYear + random(yearDiapazon), random(13), random(30));
 }
 
 
@@ -463,55 +464,55 @@ function formatDate(date) {
   let d = date.getDate();
   let m = date.getMonth() + 1;
   let y = date.getFullYear();
-  return (d <= 9 ? '0' + d : d) + '.' + (m<=9 ? '0' + m : m) + '.' + y;
+  return (d <= 9 ? '0' + d : d) + '.' + (m <= 9 ? '0' + m : m) + '.' + y;
 }
 
 //простое форматирование времени: hh.mm.ss
 function formatTime(date) {
-    let h = date.getHours();
-    let m = date.getMinutes();
-    let s = date.getSeconds();
-    return (h <= 9 ? '0' + h : h) + ':' + (m <= 9 ? '0' + m : m) + ':' + (s <= 9 ? '0' + s : s);
+  let h = date.getHours();
+  let m = date.getMinutes();
+  let s = date.getSeconds();
+  return (h <= 9 ? '0' + h : h) + ':' + (m <= 9 ? '0' + m : m) + ':' + (s <= 9 ? '0' + s : s);
 }
 
 function formatDateTime(date) {
-    let r = formatDate(date);
-    let t = formatTime(date);
-    if (t != "00:00:00") {
-        r = r + " " + t;
-    }
-    return r;
+  let r = formatDate(date);
+  let t = formatTime(date);
+  if (t != "00:00:00") {
+    r = r + " " + t;
+  }
+  return r;
 }
 
 
 //простой парсинг даты: dd.mm.yyy
 function parseDate(dateStr) {
-  let d=dateStr.substring(0,2);
-  let m=dateStr.substring(3,5);
-  let y=dateStr.substring(6,10);
+  let d = dateStr.substring(0, 2);
+  let m = dateStr.substring(3, 5);
+  let y = dateStr.substring(6, 10);
   m--;
-  let c = new Date(y, m, d, 1, 1); 
-  return c;  
+  let c = new Date(y, m, d, 1, 1);
+  return c;
 }
 
 
 
 const defaultGsoOptions = {
-	data: null, 
-	withNullOption: false, 
-	selectedValue: null,
-	
-	
-	valueField: "id",
-	contentField: "name",
+  data: null,
+  withNullOption: false,
+  selectedValue: null,
 
-	//текстом будет значение
-	contentIsValue: false,
-	
-	valueIsIndex: false,
-		
-	//множественное выделение
-	multi: false
+
+  valueField: "id",
+  contentField: "name",
+
+  //текстом будет значение
+  contentIsValue: false,
+
+  valueIsIndex: false,
+
+  //множественное выделение
+  multi: false
 }
 
 /**
@@ -523,125 +524,125 @@ const defaultGsoOptions = {
  */
 //function generateSelect(name, data, withNullOption = true, multi = false, selectedValue = null) {
 function generateSelect(name, options) {
-	
-	//упрощённое объявление
-	if (Array.isArray(options)){
-		options = {
-			data: options
-		};
-	}
-	
-	let $select = $(`select[name='${name}']`);
-	if ($select.length==0){
-		$select = $(`<select name="${name}"></select>`);
-	}
 
-	if (options.multi){
-		$select.attr("multiple","multiple");
-	}
-		
-	fillSelect($select, options);
-	
-	return $select;	
+  //упрощённое объявление
+  if (Array.isArray(options)) {
+    options = {
+      data: options
+    };
+  }
+
+  let $select = $(`select[name='${name}']`);
+  if ($select.length == 0) {
+    $select = $(`<select name="${name}"></select>`);
+  }
+
+  if (options.multi) {
+    $select.attr("multiple", "multiple");
+  }
+
+  fillSelect($select, options);
+
+  return $select;
 }
 
 function fillSelect($select, options) {
-	let optionsCode = generateSelectOptions(options); 
-	$select.append(optionsCode);
-	return $select;	
+  let optionsCode = generateSelectOptions(options);
+  $select.append(optionsCode);
+  return $select;
 }
 
-	
-	
+
+
 function generateSelectOptions(options) {
 
-	options = $.extend({}, defaultGsoOptions, options);
-	
-	
-	let optionsCode = options.withNullOption?'<option value="">-</option>':'';
-	if (!options.data){
-		return optionsCode;
-	}
-	
-	
-	
-	if (Array.isArray(options.data)){
-		options.data.forEach((item, ind)=>{
-			
-			let name = escapeHTML(item);
-			let id = name;
-			
-			if (options.contentIsValue){
-				name = id;
-			}
-			
-			if (options.valueIsIndex){
-				id = String(ind);
-			}
-			
-			if (typeof item=="object"){
-				id = item[options.valueField];
-				name = item[options.contentField];
-			}
-			
-			
-			let selectedAttr = '';
-			if (options.selectedValue && id==options.selectedValue){
-				selectedAttr = ' selected="selected"';
-			}
-			optionsCode+=`<option value="${id}"${selectedAttr}>${name}</option>`;
-		});		
-	} else {
-		
-		//данные заданы объектом. Ключи будут его полями.
-		let ind = 0;
-		for (let id in options.data) {
-		  let name = String(options.data[id]);
-		  
-		  if (options.contentIsValue){
-				name = id;
-		  }
-		  
-		  if (options.valueIsIndex){
-		  	id = String(ind++);
-		  }
-		  
-		  let selectedAttr = '';
-		  if (options.selectedValue && id==options.selectedValue){
-		  	selectedAttr = ' selected="selected"';
-		  }
-		  optionsCode+=`<option value="${id}"${selectedAttr}>${name}</option>`;
-		  
-		}//for
-		
-	}
-	
-	return optionsCode;
+  options = $.extend({}, defaultGsoOptions, options);
+
+
+  let optionsCode = options.withNullOption ? '<option value="">-</option>' : '';
+  if (!options.data) {
+    return optionsCode;
+  }
+
+
+
+  if (Array.isArray(options.data)) {
+    options.data.forEach((item, ind) => {
+
+      let name = escapeHTML(item);
+      let id = name;
+
+      if (options.contentIsValue) {
+        name = id;
+      }
+
+      if (options.valueIsIndex) {
+        id = String(ind);
+      }
+
+      if (typeof item == "object") {
+        id = item[options.valueField];
+        name = item[options.contentField];
+      }
+
+
+      let selectedAttr = '';
+      if (options.selectedValue && id == options.selectedValue) {
+        selectedAttr = ' selected="selected"';
+      }
+      optionsCode += `<option value="${id}"${selectedAttr}>${name}</option>`;
+    });
+  } else {
+
+    //данные заданы объектом. Ключи будут его полями.
+    let ind = 0;
+    for (let id in options.data) {
+      let name = String(options.data[id]);
+
+      if (options.contentIsValue) {
+        name = id;
+      }
+
+      if (options.valueIsIndex) {
+        id = String(ind++);
+      }
+
+      let selectedAttr = '';
+      if (options.selectedValue && id == options.selectedValue) {
+        selectedAttr = ' selected="selected"';
+      }
+      optionsCode += `<option value="${id}"${selectedAttr}>${name}</option>`;
+
+    }//for
+
+  }
+
+  return optionsCode;
 }
 
 
 function generateBooleanSelect(name, withNullOption = true) {
-	let data = [
-		{id: "true",name: "Да"},
-		{id: "false",name: "Нет"},
-	];
-	return generateSelect(name,{
-		data: data,
-		withNullOption: withNullOption
-	});
+  let data = [
+    { id: "true", name: "Да" },
+    { id: "false", name: "Нет" },
+  ];
+  return generateSelect(name, {
+    data: data,
+    withNullOption: withNullOption
+  });
 }
 
 
 function generateDatalist(id, data) {
-	
-	let $select = $(`datalist[id='${id}']`);
-	if ($select.length==0){
-		$select = $(`<datalist id="${id}"></select>`);
-	}
-	fillSelect($select, {
-		data: data,
-	});
-	return $select;	
+
+  let $select = $(`datalist[id='${id}']`);
+  if ($select.length == 0) {
+    $select = $(`<datalist id="${id}"></select>`);
+  }
+  fillSelect($select, {
+    data: data,
+  });
+  return $select;
 }
 
 
@@ -694,19 +695,19 @@ function addCssFile(filename) {
 }
 
 //синхронная загрузка файла в виде строки
-function loadFileAsString(fileUrl){
-	
-	let xhr = new XMLHttpRequest();
-	xhr.open("GET", fileUrl, false); // false для синхронного вызова
-	xhr.send();
+function loadFileAsString(fileUrl) {
 
-	console.log(`status: ${xhr.status}, statusText: ${xhr.statusText}`);
-	if (xhr.status === 200) {
-		return xhr.responseText;
-	} else {
-	  console.log("Ошибка загрузки");
-	}
-	
+  let xhr = new XMLHttpRequest();
+  xhr.open("GET", fileUrl, false); // false для синхронного вызова
+  xhr.send();
+
+  console.log(`status: ${xhr.status}, statusText: ${xhr.statusText}`);
+  if (xhr.status === 200) {
+    return xhr.responseText;
+  } else {
+    console.log("Ошибка загрузки");
+  }
+
 };
 
 
@@ -797,9 +798,9 @@ function deleteAllCookiesAndReload(event) {
 //Закидывает заданный текст в буфер обмена
 function copyTextToBuffer(textValue) {
   window.getSelection().removeAllRanges();
-	if (!$copyDiv){
-		$copyDiv = $('<div id="copyDiv" style="height: 0px;"></div>').appendTo(document.body);
-	}	
+  if (!$copyDiv) {
+    $copyDiv = $('<div id="copyDiv" style="height: 0px;"></div>').appendTo(document.body);
+  }
   $copyDiv.text(textValue);
   let range = document.createRange();
   range.selectNode($copyDiv.get(0));
@@ -818,7 +819,7 @@ function copyTextToBuffer(textValue) {
 //Скачиваться будет только если на сервере задан заголовок:
 //Content-Disposition: attachment; filename="testFragment.html"
 function openDownloadUrl(url) {
-	let l = document.createElement('a');
+  let l = document.createElement('a');
   // l.download = 'test.ext';
   l.href = url;
   document.body.appendChild(l);
@@ -877,38 +878,38 @@ function decorInput($input, options) {
 
     $input.wrap('<div class="acc-button-panel-tight"></div>');
     if (options.placeButtonBefore) {
-	  //вставляем кнопку перед $input
+      //вставляем кнопку перед $input
       $input.before($calButton)
     } else {
       $input.after($calButton)
     }
 
-	return $input.parent();
-	
+    return $input.parent();
+
   }
 
 
 }
 
 //вычисляет положение заданного тега в окне
-function calcElementPosition(e){
-	var left = 0
-	var top  = 0
+function calcElementPosition(e) {
+  var left = 0
+  var top = 0
 
-	if (e.jquery){
-		e = e.get(0);
-	}
-	
-	while (e.offsetParent){
-		left += e.offsetLeft
-		top  += e.offsetTop
-		e	 = e.offsetParent
-	}
+  if (e.jquery) {
+    e = e.get(0);
+  }
 
-	left += e.offsetLeft
-	top  += e.offsetTop
+  while (e.offsetParent) {
+    left += e.offsetLeft
+    top += e.offsetTop
+    e = e.offsetParent
+  }
 
-	return {x:left, y:top}
+  left += e.offsetLeft
+  top += e.offsetTop
+
+  return { x: left, y: top }
 }
 
 

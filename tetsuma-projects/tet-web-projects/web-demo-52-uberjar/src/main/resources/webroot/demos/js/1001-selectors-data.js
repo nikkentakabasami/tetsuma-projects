@@ -22,16 +22,16 @@ export const selectorsData1 = {
     ol.interaction.defaults
       Набор действий по умолчанию. Его можно сконфигурировать опциями:
   	
-    onFocusOnly
-      карта активна только когда в фокусе. (default false) 	
-    doubleClickZoom
-      зумить при двойном клике. boolean (default true) 	
-    keyboard
-      можно использовать клавиатуру (default true) Вроде нужен фокус ввода.. 	
-    mouseWheelZoom
-      (default true) 	
-    shiftDragZoom
-      (default true) 	
+    onFocusOnly (default false)
+      карта активна только когда в фокусе. 	
+    doubleClickZoom (default true)
+      зумить при двойном клике. 	
+    keyboard (default true)
+      можно использовать клавиатуру. Вроде нужен фокус ввода.. 	
+    mouseWheelZoom (default true)
+		
+    shiftDragZoom (default true)
+		
     zoomDuration
       время zoom-анимации в миллисекундах 	
   	
@@ -50,8 +50,8 @@ export const selectorsData1 = {
 
     Опции:
 		
-		сondition
-		  выделение (default singleClick)
+		сondition (default singleClick)
+		  выделение
 
 		toggleCondition
 		  добавление/удаление из выделения (default shiftKeyOnly)
@@ -197,41 +197,6 @@ export const selectorsData1 = {
 
   },
 
-  /*
-  ol.events.condition
-    Условия, которые можно назначать на действия.
-    Определяют, при каких событиях будет срабатывать действие.
-  	
-	Пример: рисовать область только если нажат Ctrl	
-		this.dragBox = new ol.interaction.DragBox({
-		  condition: ol.events.condition.platformModifierKeyOnly
-		});		
-		
-		
-  always
-  never
-	
-	noModifierKeys
-  altKeyOnly
-  altShiftKeysOnly
-	shiftKeyOnly
-	platformModifierKeyOnly
-	
-  platformModifierKey	- ctrl
-
-	pointerMove
-	 
-	primaryAction
-  click
-	singleClick
-  doubleClick
-	
-  focus
-  mouseOnly
-    событие мыши
-	
-
-  */
 
 
 

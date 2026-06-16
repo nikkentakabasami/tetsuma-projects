@@ -97,6 +97,14 @@ function stringifyObject(o, indent = "", withBraces = false, asJson = true) {
 	if (o==null){
 		return "";
 	}
+	
+	if (demoOptions.customFormatter){
+		let r = demoOptions.customFormatter(o);
+		if (r){
+			return r;
+		}
+	}
+	
 		
 	let t = (typeof o);
 	if (t=="string" || t=="number" || t=="boolean"){

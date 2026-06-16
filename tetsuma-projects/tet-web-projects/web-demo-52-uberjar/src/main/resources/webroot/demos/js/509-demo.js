@@ -244,6 +244,14 @@ minimumFractionDigits
 maximumFractionDigits
 minimumSignificantDigits
 maximumSignificantDigits
+
+useGrouping
+  показывать разделители тысяч
+	
+signDisplay
+показывать знак
+	
+
 */
 
 @
@@ -261,13 +269,16 @@ formatter3 = new Intl.NumberFormat("ru", {
   maximumFractionDigits: 6
 });
 
-@	
+@	!
 
 formatter1.format(1234567890.123);
 
 formatter2.format(1234.5);	  
 
 formatter3.format(Math.PI);	  
+
+//задать символы группировки можно разве что так
+formatter3.format(1234567).replace(/\\s/g, '_');	  
 
 	`,
 	

@@ -1,5 +1,7 @@
 import {DebugInfoControl,CurrentZoomControl} from "./ol-controls2.js"
 
+import {RotateNorthControl} from './1003-controls.js';
+
 
 export let selectorsData1 = {
   default_controls() {
@@ -120,7 +122,15 @@ export let selectorsData1 = {
 		
 		
   },
-  t6() {
+  custom_control() {
+		
+		//custom control
+		let rnc = new RotateNorthControl();
+		olDemoGlobal.map.addControl(rnc);
+		
+		log(RotateNorthControl);
+		
+		
   },
 }
 

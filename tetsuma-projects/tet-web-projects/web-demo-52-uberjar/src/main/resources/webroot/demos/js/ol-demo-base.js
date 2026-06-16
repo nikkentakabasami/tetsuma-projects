@@ -1,5 +1,5 @@
 /*
-Основные вспомогательные методы и переменные для демок openlayers.
+Класс OLDemo, позволяющий удобно создавать карту.
 */
 
 import * as olu from "./ol-demo-utils.js";
@@ -11,14 +11,14 @@ import {
 } from './ol-demo-styles.js';
 
 
-export { OLDemo, defaultSelectStyleFunction, defaultSelectStyle };
+export { OLDemo, defaultSelectStyleFunction, defaultSelectStyle, defaultVectorStyle };
 
 
 
 const olDemoDefaultOptions = {
   withVectorLayer: true,
   withTileLayer: true,
-	debug: false  //показывает контрол с отладочной инфой
+  debug: false  //показывает контрол с отладочной инфой
 
 }
 
@@ -38,15 +38,11 @@ class OLDemo {
 
   options;
 
-	debugInfoControl;
-	currentZoomControl;
-	
-	
+  debugInfoControl;
+  currentZoomControl;
+
   constructor(options) {
-
     this.options = $.extend({}, olDemoDefaultOptions, options);
-
-
   }
 
 
@@ -66,9 +62,7 @@ class OLDemo {
 
   //векторный слой по умолчанию
   createVectorLayer() {
-
     this.createVectorSource();
-
     this.vectorLayer = new ol.layer.Vector({
       source: this.vectorSource,
       //background: 'rgba(255, 179, 179, 0.1)',  //можно задать цвет на задний фон
@@ -89,7 +83,7 @@ class OLDemo {
     });
   }
 
-	//задание interaction при создании карты
+  //задание interaction при создании карты
   createInteractions() {
 
     return ol.interaction.defaults.defaults({
@@ -100,19 +94,19 @@ class OLDemo {
 
   }
 
-	//задание control при создании карты
-	createControls() {
-		
-		let scaleLine = new ol.control.ScaleLine({
-		});
-		
-	  return ol.control.defaults.defaults({
-	    attribution: false,
-	    rotate: true,
-	    zoom: false
-	  }).extend([scaleLine]);
-	}
-	
+  //задание control при создании карты
+  createControls() {
+    //шкала, показывающая текущий маштаб
+    let scaleLine = new ol.control.ScaleLine({
+    });
+
+    return ol.control.defaults.defaults({
+      attribution: false,
+      rotate: true,
+      zoom: false
+    }).extend([scaleLine]);
+  }
+
 
   initMap() {
 
@@ -141,29 +135,29 @@ class OLDemo {
       layers: layers,
       view: this.mapView,
       interactions: this.createInteractions(),
-			controls: this.createControls(),
+      controls: this.createControls(),
     });
 
     this.initGlobalVars();
-		
-		if (this.options.debug){
-			//панель для показа отладочной информации
-			this.debugInfoControl = new DebugInfoControl();
-			this.map.addControl(this.debugInfoControl);
-			this.debugInfoControl.addShowBaseDebugInfoHandler();
-		}
-		
-		//Аналог Zoom. Но содержит панель для показа текущего зума
-		this.currentZoomControl = new CurrentZoomControl();
-		this.map.addControl(this.currentZoomControl);
-		this.currentZoomControl.init();
-		
-		
+
+    if (this.options.debug) {
+      //панель для показа отладочной информации
+      this.debugInfoControl = new DebugInfoControl();
+      this.map.addControl(this.debugInfoControl);
+      this.debugInfoControl.addShowBaseDebugInfoHandler();
+    }
+
+    //Аналог Zoom. Но содержит панель для показа текущего зума
+    this.currentZoomControl = new CurrentZoomControl();
+    this.map.addControl(this.currentZoomControl);
+    this.currentZoomControl.init();
+
+
 
   }
 
 
-  //Вспомогательные переменные для удобства отладки
+  //Вспомогательные глобальные переменные для удобства отладки
   initGlobalVars() {
 
     window.olDemoGlobal = this;

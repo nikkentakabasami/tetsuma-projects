@@ -52,6 +52,10 @@ export class MyOLDemo extends old.OLDemo {
   initMap() {
     super.initMap();
 
+    this.createSelect();
+    this.createDragBox();
+    this.createModify();
+
   }
 
 
@@ -77,6 +81,9 @@ export class MyOLDemo extends old.OLDemo {
     this.select.on("select", e => {
       log("selected:", e.selected.length);
     });
+
+    this.map.addInteraction(this.select);
+
   }
 
 
@@ -106,7 +113,7 @@ export class MyOLDemo extends old.OLDemo {
       this.select.clearSelection();
     });
 
-
+    this.map.addInteraction(this.dragBox);
 
   }
 
@@ -129,21 +136,12 @@ export class MyOLDemo extends old.OLDemo {
     //организует прилипание новых точек к существующим
     this.snap = new ol.interaction.Snap({ source: this.vectorSource });
 
+    this.map.addInteraction(this.modify);
+    this.map.addInteraction(this.snap);
   }
 
 
 
-
-  createInteractions() {
-    this.createSelect();
-    this.createDragBox();
-    this.createModify();
-
-    return ol.interaction.defaults.defaults({
-      doubleClickZoom: false
-    }).extend([this.select, this.dragBox, this.modify, this.snap]);
-
-  }
 
 
 }

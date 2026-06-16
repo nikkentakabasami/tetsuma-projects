@@ -89,7 +89,6 @@ function initUberDemo(){
 	  accordUtils.addJSToPagePromise("../../accord/js/accord-publish.js", "module"),
 	  accordUtils.addJSToPagePromise("../../accord/js/demo-base-classes.js"),
 	  accordUtils.addJSToPagePromise("../../accord/js/demo-base-log.js"),
-	  //    accordUtils.addJSToPagePromise("../../accord/js/demo-base.js"),
 	  accordUtils.addJSToPagePromise("../../accord/js/demo-aux-data.js"),
 	  accordUtils.addJSToPagePromise("../../accord/js/demo-base-parse.js"),
 	  accordUtils.addCssToPagePromise("../../accord/css/accord.css"),
@@ -102,6 +101,7 @@ function initUberDemo(){
 
 	  promises.push(
 	    accordUtils.addJSToPagePromise("../../openlayers10/ol.js"),
+			accordUtils.addJSToPagePromise("../../openlayers10/proj4-src.js"),
 	    accordUtils.addCssToPagePromise("../../openlayers10/ol.css"),
 	    accordUtils.addCssToPagePromise("../css/openlayers10-demo.css"),
 	  );

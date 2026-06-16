@@ -67,6 +67,9 @@ const defaultBruefDemoOptions = {
 	
 	//форматировать json
 	formattedJson: false,
+	
+	//кастомная функция, форматирующая значения для вывода в лог
+	customFormatter: null,
 
 }
 
@@ -625,7 +628,7 @@ function initDemo() {
   //задаём заголовок страницы (берём его из <title>)
   let title = $("title").text()
   if (title) {
-    $(".titlePanel h2").text(title);
+    $(".titlePanel h2, .titlePanel2 h2").text(title);
   }
 
 

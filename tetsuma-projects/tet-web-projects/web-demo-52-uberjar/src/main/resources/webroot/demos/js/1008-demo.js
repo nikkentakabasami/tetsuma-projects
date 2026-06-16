@@ -1,10 +1,17 @@
 import * as old from './ol-demo-base.js';
 import * as olu from "./ol-demo-utils.js";
 
+import {DistanceMeasure} from "./1008-measure.js";
+
+
 let olDemo;
+let measure;
+
 
 let selectorsData1 = {
 	t1(){
+		measure.setActive(true);
+		
 	},
 	t2(){
 	},
@@ -24,10 +31,6 @@ window.getBriefDemoOptions = () => {
 
 class MyOLDemo extends old.OLDemo {
 	
-  createVectorSource() {
-    olu.createDemoVectorSource1(this);
-  }
-	
 	createView() {
 	  this.mapView = new ol.View({
 	    center: [0, 0],
@@ -36,9 +39,13 @@ class MyOLDemo extends old.OLDemo {
 	}
 
 	initMap() {
-		super.initMap();
+	  super.initMap();
+
+
+		measure = new DistanceMeasure(this.map);		
 		
-	}	
+		
+	}
 	
 
 }
@@ -49,9 +56,11 @@ function initMap() {
   olDemo = new MyOLDemo({
     withVectorLayer: true,
     withTileLayer: true,
+		debug: true
   });
 
   olDemo.initMap();
+	
 
 }
 

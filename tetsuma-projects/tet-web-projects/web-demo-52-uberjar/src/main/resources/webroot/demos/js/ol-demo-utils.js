@@ -15,30 +15,57 @@ export function logFeature(f){
 //вывод координаты в лог
 export function logCoord(coord){
 	
-	
-	let r = coord.map(el=>fcp(el)).join(", ");
+	let r = formatCoord(coord);
+	if (!r){
+		return;
+	}
 	
 	if (coord.length==2){
 		let c2 = ol.proj.toLonLat(coord);
-		r+="["+c2.map(el=>el.toLocaleString("en", {maximumFractionDigits: 1})).join(", ")+"]";
+		r+="  wgs:"+formatCoord(c2,1);
 	}
 	
 	log(r);
 }
 
-//форматирование дробного числа, с округлением
-function fcp(d, mfd = 0){
-	return d.toLocaleString("ru", {maximumFractionDigits: mfd});
+//делаем функцию глобальной
+window.formatCoord = formatCoord;
+
+
+export function formatCoord(coord, mfd = 0){
+	if (!Array.isArray(coord) || coord.length>4){
+		return null;
+	}
+	return "[ "+coord.map(el=>fcp(el,mfd)).join(", ")+" ]";
 }
 
 
 
-export function addShowCoordHandler(olDemo) {
+//форматирование координатного числа (округляем, добавляем разделение на группы)
+function fcp(d, mfd = 0){
+	if (!Number.isFinite(d)){
+		return String(d);
+	}
+	
+	//координата в градусах
+	if (Math.abs(d)<180){
+		return d.toLocaleString("en", {maximumFractionDigits: 4})
+	}
+	
+	
+	let r = d.toLocaleString("ru", {maximumFractionDigits: mfd});
+	
+	return r.replace(/\s/g, '_');
+}
+
+
+
+export function addShowCoordHandler(map) {
 	
 	//При двойном клике - показываем координаты
-	olDemo.map.on('dblclick', function(evt) {
+	map.on('dblclick', function(evt) {
 		if (evt.originalEvent.ctrlKey){
-			let coord = olDemo.map.getCoordinateFromPixel(evt.pixel);
+			let coord = map.getCoordinateFromPixel(evt.pixel);
 			logCoord(coord);
 		}
 		
@@ -66,7 +93,7 @@ export function createDemoVectorSource1(olDemo) {
   });
 }
 
-//граници швейцарии
+//границы швейцарии
 export function createDemoVectorSource2(olDemo) {
 
   olDemo.vectorSource = new ol.source.Vector({

@@ -10,7 +10,8 @@ let selectorsData1 = {
     /*
     ol.Feature
       Представляет векторный объект.
-      Может содержать индивидальный стиль (иначе используется стиль векторного слоя).
+      Может содержать индивидуальный стиль (иначе используется стиль векторного слоя).
+			extend ol.Object, так что содержит properties.
 
     В конструктор можно передать геометрию или properties	
   	
@@ -32,7 +33,7 @@ let selectorsData1 = {
     let f4 = new ol.Feature(
       new ol.geom.Polygon([[[900923, 5295031], [1139449, 5292597], [1027488, 5049257]]]));
 
-    //id приходится задавать явно.
+    //id не задать в конструкторе, приходится задавать явно.
     f1.setId("f1");
     f2.setId("f2");
     f3.setId("f3");
@@ -56,7 +57,6 @@ let selectorsData1 = {
     get(propName)
     set(key, value, silent)
       доступ к properties
-
 
     clone()
       Клонирует фичу, но не задаёт id		
@@ -105,8 +105,8 @@ class MyOLDemo extends old.OLDemo {
 
   createView() {
     this.mapView = new ol.View({
-      center: [0, 0],
-      zoom: 1,
+      center: [705_191, 5_781_298],
+      zoom: 5,
     });
   }
 
@@ -114,7 +114,7 @@ class MyOLDemo extends old.OLDemo {
     super.initMap();
 
     olu.addSelectInteractions(this);
-    olu.addShowCoordHandler(this);
+    olu.addShowCoordHandler(this.map);
 
     this.select.on("select", e => {
       clearLog();
