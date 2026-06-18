@@ -27,10 +27,9 @@
 .olt-zoom {
 	position: absolute;
 	bottom: 45px;
-  left: 10px;	
+	left: 10px;
 	display: flex;
 	flex-direction: row;
-	
 }
 
 .olt-zoom-btn {
@@ -47,28 +46,43 @@
 	margin: 0px 2px;
 }
 
-
 /* тестовый контрол поворота */
 .test-rotate-control {
 	position: absolute;
 	top: 10px;
-  left: 100px;	
-	
+	left: 100px;
 }
 
 /* стандартный контрол, отменяющий поворот */
 .ol-rotate {
-    top: 4em;
+	top: 4em;
 }
-
 
 /* OverviewMap */
-
 .ol-overviewmap {
-    left: 0.5em;
-    top: 0.5em;
-    bottom: unset;
+	left: 0.5em;
+	top: 0.5em;
+	bottom: unset;
 }
 
+/* distance measure styles */
+.tooltip-measure {
+	background-color: #ffcc33;
+	color: black;
+	border: 1px solid white;
+	border-radius: 4px;
+	padding: 4px 8px;
+	white-space: nowrap;
+}
 
+.tooltip-measure:before {
+	border-top: 6px solid #ffcc33;
+	border-right: 6px solid transparent;
+	border-left: 6px solid transparent;
+	content: "";
+	position: absolute;
+	bottom: -6px;
+	margin-left: -7px;
+	left: 50%;
+}
 

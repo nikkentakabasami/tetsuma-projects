@@ -3,6 +3,27 @@
 */
 
 
+
+//----------тестовые фичи-----------------
+
+
+export let testFeatures = {
+
+  pointFeature: new ol.Feature(new ol.geom.Point([1000, 1000])),
+
+  lineFeature: new ol.Feature(
+    new ol.geom.LineString([[-1e7, 1e6], [-1e6, 3e6]])),
+
+  polygonFeature: new ol.Feature(
+    new ol.geom.Polygon([[[-3e6, -1e6], [-3e6, 1e6],
+    [-1e6, 1e6], [-1e6, -1e6], [-3e6, -1e6]]])),
+
+  circleFeature: new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6)),
+
+};
+
+
+
 //массив объектов, на основе которых будут созданы фичи
 export const demoObjects2 = [
   {
@@ -32,7 +53,7 @@ export const demoGeojsonObject1 = {
 
     {
       'type': 'Feature',
-			'id' : 'f1',
+      'id': 'f1',
       'geometry': {
         'type': 'Point',
         'coordinates': [0, 0],
@@ -41,7 +62,7 @@ export const demoGeojsonObject1 = {
 
     {
       'type': 'Feature',
-			'id' : 'f2',
+      'id': 'f2',
       'geometry': {
         'type': 'LineString',
         'coordinates': [
@@ -55,7 +76,7 @@ export const demoGeojsonObject1 = {
     //двойной треугольник
     {
       'type': 'Feature',
-			'id' : 'f3',
+      'id': 'f3',
       'geometry': {
         'type': 'Polygon',
         'coordinates': [
@@ -80,7 +101,7 @@ export const demoGeojsonObject1 = {
       'type': 'Feature',
       'geometry': {
         'type': 'MultiLineString',
-				'id' : 'f4',
+        'id': 'f4',
         'coordinates': [
 
           //вертикальная слева
@@ -114,7 +135,7 @@ export const demoGeojsonObject1 = {
     //3 четырёхугольника
     {
       'type': 'Feature',
-			'id' : 'f5',
+      'id': 'f5',
       'geometry': {
         'type': 'MultiPolygon',
         'coordinates': [

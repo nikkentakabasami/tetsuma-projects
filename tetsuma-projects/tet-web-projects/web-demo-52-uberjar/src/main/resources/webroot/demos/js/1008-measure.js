@@ -1,3 +1,4 @@
+import * as olu from "./ol-demo-utils.js";
 
 
 let measureStyle = new ol.style.Style({
@@ -37,88 +38,74 @@ let drawStyle = new ol.style.Style({
 });
 
 
-
+/**
+ * interaction для измерения расстояний.
+ */
 export class DistanceMeasure {
 
   map;
   vectorSource;
   vectorLayer;
-  draw;
-  sketch;
-  geomChangeListener;
+  geomChangeListenerKey;
 
-  tooltipCoord;
+  drawInteraction;
+  tooltipOverlay;
 
   _active = false;
-
 
   constructor(map) {
 
     this.map = map;
-    this.vectorSource = new ol.source.Vector();
 
+    //добавляем отдельный слой для измерителя		
+    this.vectorSource = new ol.source.Vector();
     this.vectorLayer = new ol.layer.Vector({
       source: this.vectorSource,
-      style: measureStyle
+      style: measureStyle,
     });
+    this.map.addLayer(this.vectorLayer);
 
-		this.createDrawInteraction();
-		
+    this.createDrawInteraction();
+    this.createTooltipOverlay();
   }
 
-
-  setActive(v) {
-    this._active = v;
-		
-		if (v){
-			this.map.addInteraction(this.draw);
-		} else {
-			this.map.removeInteraction(this.draw);
-		}
-		
-
-
+  createTooltipOverlay() {
+    let el = document.createElement('div');
+    el.className = 'tooltip-measure';
+    this.tooltipOverlay = new ol.Overlay({
+      element: el,
+      offset: [0, -10],
+      stopEvent: false,
+      positioning: 'bottom-center'
+    });
   }
-
 
 
   createDrawInteraction() {
-
-    //Создаём оверлеи (для показа текущей длины линии и для показа подсказки)
-    //	  createMeasureTooltip();
-    //	  createHelpTooltip();
-
-
     //Создаём интеракшн, рисующий линии
-    this.draw = new ol.interaction.Draw({
+    this.drawInteraction = new ol.interaction.Draw({
       source: this.vectorSource,
       type: 'LineString',
       style: drawStyle
     });
 
-
-
     //При начале рисования
-    this.draw.on('drawstart', evt => {
-
+    this.drawInteraction.on('drawstart', evt => {
       this.vectorSource.clear();
-      this.sketch = evt.feature;
-      this.tooltipCoord = evt.coordinate;
 
+      if (this.tooltipOverlay.getMap() == null) {
+        this.map.addOverlay(this.tooltipOverlay);
+      }
 
-      //При изменении создаваемой линии - обновляем положение (и содержимое) оверлея с текущей длиной линии
-      this.geomChangeListener = this.sketch.getGeometry().on('change', function(evt) {
+      //При изменении создаваемой линии - обновляем положение (и содержимое) tooltipOverlay
+      this.geomChangeListenerKey = evt.feature.getGeometry().on('change', evt => {
         var geom = evt.target;
-        this.tooltipCoord = geom.getLastCoordinate();
+        let tooltipCoord = geom.getLastCoordinate();
+				
+        let s = makeLineLengthStr(geom);
 
-
-        /*				
-        let output = makeLineLengthStr(geom);
-      	
-        measureTooltipElement.innerHTML = output;
-        measureTooltip.setPosition(this.tooltipCoord);
-        */
-
+        this.tooltipOverlay.getElement().innerHTML = s;
+        this.tooltipOverlay.setPosition(tooltipCoord);
       });
 
 
@@ -126,34 +113,53 @@ export class DistanceMeasure {
 
 
     //При окончании рисования
-    this.draw.on('drawend', function() {
-
-      /*
-      //закрепляем элемент с длиной линии
-      measureTooltipElement.className = 'tooltip tooltip-static';
-      measureTooltip.setOffset([0, -7]);
-*/
-
-      // unset sketch
-      this.sketch = null;
+    this.drawInteraction.on('drawend', () => {
 
       //Убираем обработчик, меняющий положение оверлея measureTooltip
-      ol.Observable.unByKey(this.geomChangeListener);
+      ol.Observable.unByKey(this.geomChangeListenerKey);
     });  //on drawend
-
   }
 
+	setActive(v) {
+	  this._active = v;
 
-
-
-
+	  if (v && this.draw.getMap() == null) {
+	    this.map.addInteraction(this.drawInteraction);
+	  } else {
+	    this.map.removeInteraction(this.drawInteraction);
+	    this.map.removeOverlay(this.tooltipOverlay);
+	    this.vectorSource.clear();
+	  }
+	}
 
 }
 
+var makeLineLengthStr = function(lineGeom) {
+  var coords = lineGeom.getCoordinates();
 
+  var lastSectionLength = olu.calcDistance(coords[coords.length - 1], coords[coords.length - 2]);
+  var lastSectionLengthStr = formatLinerLength(lastSectionLength);
 
+  if (coords.length == 2) {
+    return lastSectionLengthStr;
+  } else {
 
+    var l = ol.sphere.getLength(lineGeom);
+    var fullLengthStr = formatLinerLength(l);
+    return "S=" + fullLengthStr + ", L=" + lastSectionLengthStr;
 
+  }
+};
+
+function formatLinerLength(length) {
+  var output;
+  if (length > 100) {
+    output = (Math.round(length / 1000 * 100) / 100) + ' ' + 'км';
+  } else {
+    output = (Math.round(length * 100) / 100) + ' ' + 'м';
+  }
+  return output;
+}
 
 
 

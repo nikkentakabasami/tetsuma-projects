@@ -5,15 +5,19 @@ import {DistanceMeasure} from "./1008-measure.js";
 
 
 let olDemo;
-let measure;
 
 
 let selectorsData1 = {
 	t1(){
-		measure.setActive(true);
+		
+		//DistanceMeasure - кастомный компонент для удобного измерения расстояний
+		olDemo.measure.setActive(true);
+		log(DistanceMeasure);
 		
 	},
 	t2(){
+		olDemo.measure.setActive(false);
+		log(DistanceMeasure);
 	},
 }
 
@@ -21,7 +25,7 @@ window.getBriefDemoOptions = () => {
   return {
     demoType: DT_OPENLAYERS,
     selectorsData: selectorsData1,
-    //    selectedOption: "init3",
+    selectedOption: "t1",
     autoscrollLog1: true,
     formattedJson: true,
     moduleMode: true,
@@ -31,10 +35,13 @@ window.getBriefDemoOptions = () => {
 
 class MyOLDemo extends old.OLDemo {
 	
+	measure;
+	
+	
 	createView() {
 	  this.mapView = new ol.View({
-	    center: [0, 0],
-	    zoom: 1,
+	    center: [ 871_399, 5_630_237],
+	    zoom: 5,
 	  });
 	}
 
@@ -42,8 +49,9 @@ class MyOLDemo extends old.OLDemo {
 	  super.initMap();
 
 
-		measure = new DistanceMeasure(this.map);		
+		this.measure = new DistanceMeasure(this.map);		
 		
+		olu.addShowCoordHandler(this.map);
 		
 	}
 	

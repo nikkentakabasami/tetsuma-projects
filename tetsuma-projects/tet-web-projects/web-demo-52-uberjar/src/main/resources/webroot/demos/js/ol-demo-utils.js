@@ -4,6 +4,26 @@ import { demoGeojsonObject1 } from './ol-demo-data.js';
 import * as olds from './ol-demo-styles.js';
 
 
+
+
+
+export function calcDistance(coord1, coord2, precision){
+	
+	coord1 = ol.proj.toLonLat(coord1);  
+	coord2 = ol.proj.toLonLat(coord2);  
+	let r = ol.sphere.getDistance(coord1,coord2)
+  
+  if (precision){
+    var pv = Math.pow(10,precision);
+    r = Math.round(r*pv)/pv;
+  }
+
+  return r;
+}
+  
+
+
+
 export function logFeature(f){
 	
 	let name = f.getProperties().name;
@@ -101,6 +121,7 @@ export function createDemoVectorSource2(olDemo) {
 		format: new ol.format.GeoJSON(),
   });
 }
+
 
 //-----------interactions--------------------
 
