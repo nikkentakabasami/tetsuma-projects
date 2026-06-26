@@ -45,6 +45,7 @@ const defaultBruefDemoOptions = {
   //выполняются до и после выполнения currentScript/демо-кнопок
   beforeExec: null,
   afterExec: null,
+	afterSelectChange: null,
 
   //функция инициализации всего кода: выводить её при нажатии каждой демо-кнопки
   initFunction: null,
@@ -431,6 +432,12 @@ function initDemoCodeSelect() {
     if (demoOptions.reloadSandboxOnChange) {
       reloadSandbox();
     }
+		
+		if (demoOptions.afterSelectChange) {
+		  demoOptions.afterSelectChange();
+		}
+		
+		
 
     //снимаем фокус (иначе будут глюки при нажатии на pgUp/pgDown)
     $mainSelect.blur();
