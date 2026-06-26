@@ -31,11 +31,11 @@ export class DebugInfoControl extends ol.control.Control {
   addShowBaseDebugInfoHandler() {
     let view = this.getMap().getView();
     this.getMap().on('moveend', () => {
-			
-			let zs = view.getZoom().toLocaleString("ru", {maximumFractionDigits: 0});
-			let rs = view.getResolution().toLocaleString("ru", {maximumFractionDigits: 1});
-			
-			
+
+      let zs = view.getZoom().toLocaleString("ru", { maximumFractionDigits: 0 });
+      let rs = view.getResolution().toLocaleString("ru", { maximumFractionDigits: 1 });
+
+
       this.setLines(`zoom: ${zs}, resolution: ${rs} map units/pixel`);
     });
   }
@@ -82,19 +82,19 @@ export class CurrentZoomControl extends ol.control.Control {
         this.$zoomDiv.text(this.currentZoom);
       }
     });
-
+		
+		map.dispatchEvent("moveend");
+		
     this.$element.find(".olt-zoom-in").click(event => {
-			this.zoom(this.currentZoom + 1);
-//      this.getMap().getView().setZoom(this.currentZoom + 1);
+      this.zoom(this.currentZoom + 1);
     });
     this.$element.find(".olt-zoom-out").click(event => {
-			this.zoom(this.currentZoom - 1);
-//      this.getMap().getView().setZoom(this.currentZoom - 1);
+      this.zoom(this.currentZoom - 1);
     });
   }
 
   zoom(newZoom) {
-		//зум с анимацией
+    //зум с анимацией
     this.getMap().getView().animate({
       zoom: newZoom,
       duration: 200,

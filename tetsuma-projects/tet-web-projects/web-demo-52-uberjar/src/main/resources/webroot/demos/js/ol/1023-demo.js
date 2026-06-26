@@ -36,22 +36,16 @@ ol.sphere.getArea(geom1);
 		
 `,
   sp3: `
+/*
+getLength(geometry, options)
+  Общая длина геометрии
+
+options: projection, radius
+
+*/
+geom1 = new ol.geom.LineString([[0, 0], [1000, 1000], [1000, 2000]]); !
+ol.sphere.getLength(geom1);
 `,
-
-
-
-
-
-  s1() {
-
-  },
-
-  s2() {
-
-  },
-  s3() {
-
-  },
 
 
 }

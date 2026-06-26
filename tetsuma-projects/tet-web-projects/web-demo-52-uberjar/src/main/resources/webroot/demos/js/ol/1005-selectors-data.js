@@ -6,20 +6,30 @@ export let selectorsData1 = {
 	ol.View
 	  2D вид карты.
 	  Содержит координаты центра, зум, проекцию.
-
-
-	События:
-	
-	change:center
-	change:resolution
-	change:rotation
-	  кидаются при изменении properties: center,resolution,rotation
-		Кидаются очень часто, лучше использовать map.on('moveend')
-	 
 	*/
 	log(olDemoGlobal.createView);
 	},
-	options() {
+	
+	events(){
+		/*
+		События View:
+
+		change:center
+		change:resolution
+		change:rotation
+		  кидаются при изменении properties: center,resolution,rotation
+			Кидаются очень часто, лучше использовать map.on('moveend')
+		 
+		*/
+
+		this.mapView.on(["change:center", "change:resolution", "change:rotation"], event => {
+		  console.log(event.type);
+		});
+		
+	},
+	
+	
+	view_options() {
 		/*
 		Опции:
 			
@@ -73,42 +83,53 @@ export let selectorsData1 = {
 Для основных опций имеются соотетствующие get/set-методы!
 */	
 
-mapView.getResolution();
+mapView.getKeys();
 
+mapView.getResolution();
 mapView.getResolutionForZoom(5);
 
 mapView.getCenter();
 mapView.getZoom();
+
+mapView.getProjection().getCode();
+
+
 mapView.setRotation(0.5);
 		
 `,
-  adjustCenter() {
-    /*
-    adjustCenter(deltaCoordinate)
-		  Сдвигает центр на относительную координату
-    */
-    mapView.adjustCenter([50000, 50000]);
 
-  },
+setZoom() {
+  const zoom = mapView.getZoom();
+  mapView.setZoom(zoom + 1);
+},
+
+
+adjustMethods:`
+/*
+adjust-методы меняют основные параметры на дельту:
+
+adjustCenter(deltaCoordinate)
+  Сдвигает центр на относительную координату
+
+adjustResolution(ratio, anchor)
+  умножает текущий resolution на ratio
+
+djustRotation(delta, anchor) 	
+  Поворачивает на заданный угол в радианах
+
+adjustZoom(delta, anchor);
+*/
+mapView.adjustCenter([50000, 50000]);
+`,
+
   adjustResolution() {
-    /*
-    adjustResolution(ratio, anchor)
-      умножает текущий resolution на ratio
-    */
     mapView.adjustResolution(2);
   },
   adjustRotation() {
-    /*
-    adjustRotation(delta, anchor) 	
-      Поворачивает на заданный угол в радианах
-    */
     mapView.adjustRotation(1);
   },
 
   adjustZoom() {
-    /*
-    adjustZoom(delta, anchor);
-    */
     mapView.adjustZoom(2);
   },
   animate() {
@@ -126,16 +147,16 @@ mapView.setRotation(0.5);
 
   },
 
-
   centerOn() {
     /*
     centerOn(coordinate, size, position)
-      Center on coordinate and view position.
+		  Показывает регион, размером size, по заданной координате coordinate.
+			С относительным сдвигом position.
+			Не меняет zoom.
     */
-    const feature = vectorSource.getFeatures()[1];
-    const point = feature.getGeometry();
-    const size = map.getSize();
-    mapView.centerOn(point.getCoordinates(), size, [570, 500]);
+	 
+		//Показать точку pointFeature со сдвигом в 100 пикселей
+    mapView.centerOn(pointFeature.getGeometry().getCoordinates(), map.getSize(), [100, 100]);
   },
 
 
@@ -143,13 +164,17 @@ mapView.setRotation(0.5);
 		/*
 	  fit(geometryOrExtent, options)
 		  Показать на карте заданную геометрию или экстент
+		Опции:
+		
+		padding - [top, right, bottom, left]
+		maxZoom 
+		duration - длительность анимации
+			
+			
 		*/
 		
-    const feature = vectorSource.getFeatures()[0];
-    const polygon = feature.getGeometry();
-
     //позиционировать карту так, чтобы показывался заданная геометрия, с заданными опциями
-    mapView.fit(polygon, { padding: [170, 50, 30, 150] });
+    mapView.fit(polygonFeature.getGeometry(), { padding: [170, 50, 30, 150] });
 
   },
   fit2() {
@@ -163,10 +188,6 @@ mapView.setRotation(0.5);
 
 
 
-
-
-
-
   calc_methods: `
 /*
 calculateExtent(size)
@@ -177,32 +198,9 @@ calculateExtent(size)
 mapView.calculateExtent();
 
 mapView.calculateExtent([100,100]);
-
-mapView.getResolutionForZoom(5);
-
-mapView.getResolution();
-
 	
 `,
 
-  view4: `
-`,
 
-
-
-
-
-
-
-
-  setZoom() {
-
-    const zoom = mapView.getZoom();
-    mapView.setZoom(zoom + 1);
-
-
-
-
-  },
 
 }

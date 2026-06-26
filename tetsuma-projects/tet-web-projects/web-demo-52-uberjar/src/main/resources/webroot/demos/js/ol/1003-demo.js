@@ -51,17 +51,6 @@ ol.Overlay
 */
 `,
 
-  ol_desc2: `
-`,
-
-  ol1() {
-
-  },
-  ol2() {
-  },
-
-
-
   add_overlay1() {
     //добавление ссылки в локацию на карте
     olDemo.addOverlay1();
@@ -87,17 +76,6 @@ ol.Overlay
   },
 }
 
-window.getBriefDemoOptions = () => {
-  return {
-    demoType: DT_OPENLAYERS,
-    selectorsData: selectorsData1,
-    selectedOption: "add_overlay2",
-    autoscrollLog1: true,
-    formattedJson: true,
-    moduleMode: true,
-    initFunction: initMap,
-  };
-}
 
 class MyOLDemo extends old.OLDemo {
 
@@ -116,6 +94,7 @@ class MyOLDemo extends old.OLDemo {
   }
 
   addOverlay1() {
+		//показ ссылки
     this.ol1 = new ol.Overlay({
       id: "vienna_overlay",
       position: [2_148_583, 6_126_159],
@@ -126,10 +105,9 @@ class MyOLDemo extends old.OLDemo {
   }
 
   addOverlay2() {
-
+		//показ координаты при ctrl+click
     let element = $('<div id="ol2"></div>').get(0);
 
-    //показывает координату при клике.
     this.ol2 = new ol.Overlay({
       element: element,
       positioning: 'bottom-center',
@@ -150,11 +128,13 @@ class MyOLDemo extends old.OLDemo {
       }
 
       var coord = event.coordinate;
-      var degrees = ol.proj.toLonLat(coord);
+      var coordString = ol.coordinate.toStringXY(coord);
 
+      var degrees = ol.proj.toLonLat(coord);
       var hdms = ol.coordinate.toStringHDMS(degrees);
+
       var element = this.ol2.getElement();
-      element.innerHTML = hdms;
+      element.innerHTML = "(" + coordString + ") <br>" + hdms;
 
       this.ol2.setPosition(coord);
     });
@@ -163,13 +143,12 @@ class MyOLDemo extends old.OLDemo {
 
 
   addOverlay3() {
-
     //Кружок-пометка на карту
     let element = $('<div id="marker"></div>').get(0);
 
     this.ol3 = new ol.Overlay({
       position: [2_112_359, 6_849_366],
-			className: "marker111",
+      className: "marker111",
       element: element
     });
 
@@ -178,13 +157,12 @@ class MyOLDemo extends old.OLDemo {
 
 
   addOverlay4() {
+		//показывает координату при клике.
 
     let element = $('<div id="fetureTooltipOverlay"></div>').get(0);
 
-    //показывает координату при клике.
     this.ol4 = new ol.Overlay({
       element: element,
-      //      positioning: 'bottom-right',
       positioning: 'bottom-left',
       stopEvent: false,
       offset: [10, -10]
@@ -192,7 +170,7 @@ class MyOLDemo extends old.OLDemo {
     this.map.addOverlay(this.ol4);
 
 
-    this.map.on('click', function(event) {
+    this.map.on('click', event => {
       var coord = event.coordinate;
       this.ol4.getElement().innerHTML = ol.coordinate.toStringXY(coord, 2);
       this.ol4.setPosition(coord);
@@ -222,6 +200,17 @@ function initMap() {
 }
 
 
+window.getBriefDemoOptions = () => {
+  return {
+    demoType: DT_OPENLAYERS,
+    selectorsData: selectorsData1,
+    //selectedOption: "add_overlay2",
+    autoscrollLog1: true,
+    formattedJson: true,
+    moduleMode: true,
+    initFunction: initMap,
+  };
+}
 
 
 

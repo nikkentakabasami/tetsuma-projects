@@ -123,7 +123,7 @@ export class DistanceMeasure {
 	setActive(v) {
 	  this._active = v;
 
-	  if (v && this.draw.getMap() == null) {
+	  if (v && this.drawInteraction.getMap() == null) {
 	    this.map.addInteraction(this.drawInteraction);
 	  } else {
 	    this.map.removeInteraction(this.drawInteraction);

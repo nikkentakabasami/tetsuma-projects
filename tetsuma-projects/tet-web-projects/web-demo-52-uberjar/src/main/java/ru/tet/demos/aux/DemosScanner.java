@@ -66,6 +66,9 @@ public class DemosScanner {
 				//ищем числовой идентификатор, который может быть в начале имени файла
 				String id = null;
 				int ind = pageName.indexOf('_');
+				if (ind<0) {
+					ind = pageName.indexOf('.');
+				}
 				if (ind>0) {
 					id = pageName.substring(0, ind);
 					if (!id.matches("\\d+")) {

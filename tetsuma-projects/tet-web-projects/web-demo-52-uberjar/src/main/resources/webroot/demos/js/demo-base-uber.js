@@ -108,7 +108,7 @@ function initUberDemo(){
 		
 		if (!options.moduleMode) {
 			promises.push(
-				accordUtils.addJSToPagePromise("../js/ol-demo-base.js")
+				accordUtils.addJSToPagePromise("../js/ol/ol-demo-base.js")
 			);
 		}
 		

@@ -18,7 +18,9 @@ export { OLDemo, defaultSelectStyleFunction, defaultSelectStyle, defaultVectorSt
 const olDemoDefaultOptions = {
   withVectorLayer: true,
   withTileLayer: true,
-  debug: false  //показывает контрол с отладочной инфой
+  withFeatues: true,
+  debug: false,  //показывает контрол с отладочной инфой
+  withDefaultControls: true,
 
 }
 
@@ -57,7 +59,14 @@ class OLDemo {
 
   //Источник данных для векторного слоя по умолчанию
   createVectorSource() {
-    olu.createDemoVectorSource2(this);
+
+    if (this.options.withFeatues) {
+      olu.createDemoVectorSource2(this);
+    } else {
+      this.vectorSource = new ol.source.Vector();
+    }
+
+
   }
 
   //векторный слой по умолчанию
@@ -147,10 +156,14 @@ class OLDemo {
       this.debugInfoControl.addShowBaseDebugInfoHandler();
     }
 
-    //Аналог Zoom. Но содержит панель для показа текущего зума
-    this.currentZoomControl = new CurrentZoomControl();
-    this.map.addControl(this.currentZoomControl);
-    this.currentZoomControl.init();
+    if (this.options.withDefaultControls) {
+      //Аналог Zoom. Но содержит панель для показа текущего зума
+      this.currentZoomControl = new CurrentZoomControl();
+      this.map.addControl(this.currentZoomControl);
+      this.currentZoomControl.init();
+    }
+
+
 
 
 

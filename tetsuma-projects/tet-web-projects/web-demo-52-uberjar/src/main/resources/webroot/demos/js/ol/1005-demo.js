@@ -8,13 +8,11 @@ import { selectorsData1 } from './1005-selectors-data.js'
 let olDemo;
 
 
-
-
 window.getBriefDemoOptions = () => {
   return {
     demoType: DT_OPENLAYERS,
     selectorsData: selectorsData1,
-    //    selectedOption: "init3",
+    selectedOption: "centerOn",
     autoscrollLog1: true,
     formattedJson: true,
 
@@ -34,11 +32,6 @@ class MyOLDemo extends old.OLDemo {
       //      projection: 'EPSG:4326',
       projection: 'EPSG:3857',
     });
-
-    this.mapView.on(["change:center", "change:resolution", "change:rotation"], event => {
-      console.log(event.type);
-    });
-
 
   }
 

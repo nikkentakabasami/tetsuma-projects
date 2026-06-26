@@ -53,11 +53,30 @@ window.formatCoord = formatCoord;
 
 
 export function formatCoord(coord, mfd = 0){
-	if (!Array.isArray(coord) || coord.length>4){
-		return null;
+	if (Array.isArray(coord) && coord.length<=4){
+		return "[ "+coord.map(el=>fcp(el,mfd)).join(", ")+" ]";
 	}
-	return "[ "+coord.map(el=>fcp(el,mfd)).join(", ")+" ]";
+	return null;
+	
 }
+
+
+export function formatOL(o){
+	if (Array.isArray(o) && o.length<=4){
+		return "[ "+o.map(el=>fcp(el,0)).join(", ")+" ]";
+	}
+	
+	if (o instanceof ol.geom.Geometry){
+		let coordString = JSON.stringify(o.getCoordinates());
+		return `${o.getType()} coordinates: ${coordString}`; 
+	}	
+	
+	return null;
+	
+	
+	
+}
+
 
 
 
@@ -111,6 +130,12 @@ export function createDemoVectorSource1(olDemo) {
   olDemo.vectorSource = new ol.source.Vector({
     features: features
   });
+	
+	//вспомогательные переменные для тестов
+	window.pointFeature = olDemo.vectorSource.getFeatureById("f1");
+	window.lineFeature = olDemo.vectorSource.getFeatureById("f2");
+	window.polygonFeature = olDemo.vectorSource.getFeatureById("f3");
+	
 }
 
 //границы швейцарии
@@ -120,6 +145,16 @@ export function createDemoVectorSource2(olDemo) {
 		url: 'misc/switzerland.geojson',
 		format: new ol.format.GeoJSON(),
   });
+
+	olDemo.vectorSource.on("featuresloadend",e=>{
+		//вспомогательные переменные для тестов
+		window.pointFeature = olDemo.vectorSource.getFeatureById("LSNE");
+		window.lineFeature = olDemo.vectorSource.getFeatureById("l1");
+		window.polygonFeature = olDemo.vectorSource.getFeatureById("CHE");
+	})
+	
+	
+	
 }
 
 

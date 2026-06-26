@@ -86,3 +86,12 @@
 	left: 50%;
 }
 
+
+.bw {
+	filter: grayscale(100%);
+}
+
+.blur {
+	filter: blur(1px);
+}
+

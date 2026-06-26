@@ -1,5 +1,5 @@
 
-import {OLDemo} from './ol-demo-base.js';
+import { OLDemo } from './ol-demo-base.js';
 
 
 export const selectorsData1 = {
@@ -16,9 +16,26 @@ export const selectorsData1 = {
 
     Либо позже:		
     map.addInteraction(select);
+		
+		Если вызвать addInteraction несколько раз подряд - select будет дублироваться!
+		Необходима проверка!
+		
   	
+		------------------------------------
+    ol.interaction.Interaction
+      Родительский класс 
+
+    Методы:
+		getMap();
+		setMap(map);
+		
+    getActive()
+    setActive(active)
+		
+		Событие:
+		change:active
   	
-  	
+		------------------------------------
     ol.interaction.defaults
       Набор действий по умолчанию. Его можно сконфигурировать опциями:
   	
@@ -29,14 +46,14 @@ export const selectorsData1 = {
     keyboard (default true)
       можно использовать клавиатуру. Вроде нужен фокус ввода.. 	
     mouseWheelZoom (default true)
-		
+  	
     shiftDragZoom (default true)
-		
+  	
     zoomDuration
       время zoom-анимации в миллисекундах 	
   	
     */
-	 log(olDemoGlobal.createInteractions);
+    log(olDemoGlobal.createInteractions);
 
 
   },
@@ -49,14 +66,14 @@ export const selectorsData1 = {
       позволяет выделять векторные фичи. По умолчанию они выделяются при клике на них.
 
     Опции:
-		
-		сondition (default singleClick)
-		  выделение
+  	
+    сondition (default singleClick)
+      выделение
 
-		toggleCondition
-		  добавление/удаление из выделения (default shiftKeyOnly)
-			То есть через shift+click можно выбрать несколько фич.
-							
+    toggleCondition
+      добавление/удаление из выделения (default shiftKeyOnly)
+      То есть через shift+click можно выбрать несколько фич.
+            	
     layers - массив слоёв, фичи из которых нужно выделить. Или можно задать функцию фильтрации.
 
     style - стиль выбранных фич. По умолчанию делает линии голубыми, а закраску прозрачно-белой.
@@ -69,8 +86,8 @@ export const selectorsData1 = {
   	
     События:
     select
-		  при изменении выделения.
-			Если выбрано несколько фич - будет вызван несколько раз! 
+      при изменении выделения.
+      Если выбрано несколько фич - будет вызван несколько раз! 
   	
     */
     log(olDemoGlobal.createSelect);
@@ -131,7 +148,7 @@ export const selectorsData1 = {
       обработчик, вызываемый прямо перед событием boxend
 
     condition
-		  (default mouseActionButton)
+      (default mouseActionButton)
     	
     	
     События:

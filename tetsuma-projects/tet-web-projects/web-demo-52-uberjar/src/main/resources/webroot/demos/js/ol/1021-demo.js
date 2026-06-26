@@ -151,13 +151,14 @@ ol.proj.transformExtent(extent, source, destination){ol.Extent}
 
   Extent1: `
 /*
+ol.extent
+  функции для работы с экстентами.
+
 Extent
   Прямоугольный регион на карте.
   Массив из 4-х чисел: 2 склеенные координаты.
 	[minx, miny, maxx, maxy]. Ось y направлена вверх!
 
-ol.extent
-  функции для работы с экстентами.
 
 --Создание экстентов
 
@@ -251,6 +252,10 @@ ol.extent.containsCoordinate(ext1, [120,120]);
 
   coord1: `
 /*
+ol.coordinate
+  утилиты для работы с координатами.
+
+
 ol.coordinate.add(coordinate, delta)
   добавляет к координате дельту
 */
@@ -259,16 +264,11 @@ coord1 = [7.85, 47.9]; !
 ol.coordinate.add(coord1, [-2, 4]);
 
 
-
-
 /*
 rotate(coordinate, angle)
   вращает координату относительно 0,0
 */
 ol.coordinate.rotate(coord1, Math.PI / 2);
-
-
-
 
 `,
   coord2: `
@@ -301,13 +301,11 @@ toStringHDMS(coordinate, fractionDigits)
 ol.coordinate.toStringHDMS(coord1);
 
 
-
 /*
 createStringXY(fractionDigits = 0)
   Возвращает функцию (CoordinateFormat) для форматирования координаты в строку.
 
 */
-
 
 
 func1 = ol.coordinate.createStringXY(); !
@@ -329,12 +327,9 @@ func1(coord1);
      библиотека, которая позволяет работать с системой координат и преобразовывать их между разными проекциями (картографическими системами координат). 
      Она помогает определить новые системы координат или использовать уже существующие, чтобы точно отображать карты и геоданные.
 
-
      Пример: объявление новой системы координат
      Указываются параметры трансформации, такие как сдвиги (+x_0, +y_0) и параметры для выравнивания с другими системами (+towgs84), 
      что позволяет точно преобразовывать координаты.
-  	
-  	
     */
 
     proj4.defs(
@@ -366,7 +361,7 @@ function getBriefDemoOptions() {
     selectorsData: selectorsData1,
     lfMode: true,
     afterSandboxReload: null,
-    selectedOption: "coord1",
+    //selectedOption: "coord1",
     debugMode: false,
     logObjectsAsJson: true,
     customFormatter: formatCoord,

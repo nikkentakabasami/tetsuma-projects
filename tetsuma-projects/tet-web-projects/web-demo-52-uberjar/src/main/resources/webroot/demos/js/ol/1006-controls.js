@@ -5,6 +5,8 @@
 //компонент с кнопкой, которая поворачивает карту прямо
 export class RotateNorthControl extends ol.control.Control {
 
+	north = true;
+	
   constructor(opt_options) {
     const options = opt_options || {};
 
@@ -24,8 +26,10 @@ export class RotateNorthControl extends ol.control.Control {
   }
 
   handleRotate() {
+		this.north = !this.north;
+		
 		//повернуть карту наискосок
-		this.getMap().getView().setRotation(Math.PI / 2.6);
+		this.getMap().getView().setRotation(this.north?0:Math.PI / 2.6);
   }
 }
 

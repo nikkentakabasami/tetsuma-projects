@@ -3,31 +3,21 @@ import * as olu from "./ol-demo-utils.js";
 import * as olt from "./ol-template.js";
 
 
+//объявляем глобальные переменные
+"testLayer,map,vectorLayer,vectorSource,tileLayer,tileSource".split(",").forEach(name => window[name] = null);
+
+
 let selectorsData1 = {
   t1() {
-
     let f1 = new ol.Feature(new ol.geom.Point([640_950, 5_567_518]));
     vectorSource.addFeature(f1);
-
-
   },
   t2() {
-
-    let l1 = new ol.layer.Image({
-      extent: [-13884991, 2870341, -7455066, 6338219],
-      source: new ol.source.ImageWMS({
-//        url: 'https://ahocevar.com/geoserver/wms',
-				url: '../images/topp-states.png',
-				
-        params: { 'LAYERS': 'topp:states' },
-        ratio: 1,
-        serverType: 'geoserver',
-      }),
+    testLayer = new ol.layer.Tile({
+      source: new ol.source.OSM(),
+      className: 'bw',  //сделаем стиль чёрно-белым
     });
-
-    map.addLayer(l1);
-
-
+    map.addLayer(testLayer);
   },
 }
 
@@ -35,13 +25,20 @@ window.getBriefDemoOptions = () => {
   return {
     demoType: DT_OPENLAYERS,
     selectorsData: selectorsData1,
-    //    selectedOption: "init3",
+    //selectedOption: "init3",
     autoscrollLog1: true,
     formattedJson: true,
     moduleMode: true,
+    customFormatter: olu.formatCoord,
     beforeExec: () => {
-      destroyMap();
-      createMap();
+      //      destroyMap();
+      //      createMap();
+    },
+    afterSelectChange: () => {
+      if (testLayer) {
+        map.removeLayer(testLayer);
+        testLayer = null;
+      }
     },
     initFunction: () => {
       createMap();
@@ -51,13 +48,6 @@ window.getBriefDemoOptions = () => {
 }
 
 
-
-
-
-
-
-
-let map, vectorLayer, vectorSource;
 
 
 function destroyMap() {
@@ -73,9 +63,9 @@ function createMap() {
   destroyMap();
 
   //тайловый слой
-  let tileSource = new ol.source.OSM();
+  tileSource = new ol.source.OSM();
 
-  let tileLayer = new ol.layer.Tile({
+  tileLayer = new ol.layer.Tile({
     source: tileSource
   });
 
@@ -95,7 +85,7 @@ function createMap() {
     target: 'map',
     layers: [tileLayer, vectorLayer],
     view: new ol.View({
-      center: [-11_408_273, 5_479_657],
+      center: [845_697, 5_927_579],
       zoom: 5,
     }),
     interactions: ol.interaction.defaults.defaults({

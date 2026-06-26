@@ -9,7 +9,7 @@
 
 export let testFeatures = {
 
-  pointFeature: new ol.Feature(new ol.geom.Point([1000, 1000])),
+  pointFeature: new ol.Feature(new ol.geom.Point([100000, 100000])),
 
   lineFeature: new ol.Feature(
     new ol.geom.LineString([[-1e7, 1e6], [-1e6, 3e6]])),
@@ -21,7 +21,6 @@ export let testFeatures = {
   circleFeature: new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6)),
 
 };
-
 
 
 //массив объектов, на основе которых будут созданы фичи

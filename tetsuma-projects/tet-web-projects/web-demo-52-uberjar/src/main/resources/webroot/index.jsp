@@ -40,14 +40,14 @@
 	
 	
 
-<%-- переменную demoFolders заполняет MainServletContextListener  --%>
+<%-- переменную demoFolders заполняет DemosScanner  --%>
 	<c:forEach var="folder" items="${demoFolders}" varStatus="loop">
 
     	<div class="acc-anchor-list">
 			<h4>${folder.desc}<sup class="header-sup">${folder.name}</sup></h4>
 
 			<c:forEach var="page" items="${folder.pages}">
-				<a href="demos/${folder.name}/${page.name}" target="${folder.name}">${page.desc}</a>
+				<a href="demos/${folder.name}/${page.name}" target="${page.id}">${page.desc}</a>
 			</c:forEach>
 
 		</div>

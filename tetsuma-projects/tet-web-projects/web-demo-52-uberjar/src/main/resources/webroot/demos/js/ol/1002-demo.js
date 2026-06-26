@@ -11,7 +11,7 @@ window.getBriefDemoOptions = () => {
   return {
     demoType: DT_OPENLAYERS,
     selectorsData: selectorsData1,
-    //    selectedOption: "init3",
+    //selectedOption: "init3",
     autoscrollLog1: true,
     formattedJson: true,
     moduleMode: true,
@@ -76,11 +76,11 @@ export class MyOLDemo extends old.OLDemo {
       //Задаём id для созданных фич
       e.feature.setId(counter++);
     });
-		this.map.addInteraction(this.draw);
+    this.map.addInteraction(this.draw);
 
-		//организует прилипание новых точек к существующим, при рисовании
-		this.snap = new ol.interaction.Snap({ source: this.vectorSource });
-		this.map.addInteraction(this.snap);
+    //организует прилипание новых точек к существующим, при рисовании
+    this.snap = new ol.interaction.Snap({ source: this.vectorSource });
+    this.map.addInteraction(this.snap);
   }
 
 
@@ -91,7 +91,7 @@ export class MyOLDemo extends old.OLDemo {
 
 let selectorsData1 = {
 
-  t1() {
+  Draw() {
     /*
     ol.interaction.Draw
       Умеет создавать новые фичи
@@ -130,6 +130,7 @@ let selectorsData1 = {
     чтобы организовать прилипание новых точек к существующим, при рисовании
     */
 
+		//olDemo.addDrawInteraction("Point");
     log(olDemo.addDrawInteraction);
     log(olDemo.initMap);
   },
@@ -143,10 +144,10 @@ let selectorsData1 = {
   setCircle() {
     olDemo.addDrawInteraction("Circle");
   },
-	setPoint() {
-	  olDemo.addDrawInteraction("Point");
-	  log(olDemo.addDrawInteraction);
-	},
+  setPoint() {
+    olDemo.addDrawInteraction("Point");
+    log(olDemo.addDrawInteraction);
+  },
 
   t2() {
 
