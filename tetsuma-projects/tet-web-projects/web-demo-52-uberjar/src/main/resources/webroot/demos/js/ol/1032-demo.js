@@ -4,39 +4,90 @@ import * as demodata from "./ol-demo-data.js";
 
 let olDemo;
 
+let hlLayer;
+
 //объявляем глобальные переменные
 "f1,f2,f3,f4".split(",").forEach(name => window[name] = null);
 
 let selectorsData1 = {
   t1() {
     /*
+		Добавим слой для выделений, будем подсвечивать в нём фичи, над которыми курсор.
     */
+		
+		//слой для выделений
+		hlLayer = new ol.layer.Vector({
+			map: map,
+		  source: new ol.source.Vector(),
+		  style: {
+		    'stroke-color': 'rgb(255, 153, 51)',
+		    'stroke-width': 2,
+				'fill-color': 'rgba(255, 153, 51, 0.2)',
+		  },
+		});
+		
+
+    map.on('pointermove', function(evt) {
+      if (evt.dragging) {
+        return;
+      }
+      highlightFeature(evt.pixel);
+    });
+
+    map.on('click', function(evt) {
+      highlightFeature(evt.pixel);
+    });
+
   },
   t2() {
     /*
     */
   },
-	doc1:`
-/*
-*/
-`,
-	doc2:`
-/*
-*/
-`,
 }
+
+
+
+let highlight;
+const highlightFeature = function(pixel) {
+  vectorLayer.getFeatures(pixel).then(function(features) {
+    const feature = features.length ? features[0] : null;
+
+    if (feature !== highlight) {
+      if (highlight) {
+        hlLayer.getSource().removeFeature(highlight);
+      }
+      if (feature) {
+        hlLayer.getSource().addFeature(feature);
+      }
+      highlight = feature;
+			
+			if (feature) {
+			  olDemo.debugInfoControl.setLines(feature.getId());
+			} else {
+			  olDemo.debugInfoControl.clear();
+			}
+			
+			
+			
+    }
+  });
+};
+
+
+
+
 
 
 class MyOLDemo extends old.OLDemo {
 
   createVectorSource() {
-    olu.createDemoVectorSource1(this);
+    olu.createDemoVectorSource2(this);
   }
 
   createView() {
     this.mapView = new ol.View({
-      center: [0, 0],
-      zoom: 1,
+      center: [729_891, 5_659_451],
+      zoom: 6,
     });
   }
 
@@ -55,6 +106,7 @@ class MyOLDemo extends old.OLDemo {
       }
 
     });
+
   }
 
 
@@ -88,8 +140,8 @@ window.getBriefDemoOptions = () => {
     initFunction: initMap,
     beforeExec: () => {
     },
-		afterSelectChange: () => {
-		},
+    afterSelectChange: () => {
+    },
   };
 }
 

@@ -1,6 +1,13 @@
 openlayers
 
 
+vectorLayer.getFeatures(pixel)
+map.hasFeatureAtPixel(e.pixel);
+
+
+
+---------------------
+
 
 
 /home/tetsuma/work/tmp/ol/

@@ -26,10 +26,25 @@ export function calcDistance(coord1, coord2, precision){
 
 export function logFeature(f){
 	
-	let name = f.getProperties().name;
+	let lines = [];
+//	log(`id:${f.getId()}, geometry:${f.getGeometry().getType()}`);
+	lines.push(`id:${f.getId()}, geometry:${f.getGeometry().getType()}`);
 	
-	log("id:",f.getId(),", name:"+name);
+	let coord = f.getGeometry().getFlatCoordinates();
 	
+	if (coord){
+		let coordString = formatCoord(coord);
+		lines.push(`flatCoordinates: ${coordString}`);
+	} else {
+		coord = f.getGeometry().getCoordinates();
+		let coordString = formatCoord(coord);
+		lines.push(`coordinates: ${coordString}`);
+	}
+
+	
+	olDemoGlobal.debugInfoControl.setLines(lines)				
+	
+		
 }
 
 //вывод координаты в лог
@@ -52,15 +67,16 @@ export function logCoord(coord){
 window.formatCoord = formatCoord;
 
 
+//форматирование координаты
 export function formatCoord(coord, mfd = 0){
-	if (Array.isArray(coord) && coord.length<=4){
+	if (Array.isArray(coord)){
 		return "[ "+coord.map(el=>fcp(el,mfd)).join(", ")+" ]";
 	}
 	return null;
 	
 }
 
-
+//форматирование объектов из OL
 export function formatOL(o){
 	if (Array.isArray(o) && o.length<=4){
 		return "[ "+o.map(el=>fcp(el,0)).join(", ")+" ]";
@@ -72,16 +88,11 @@ export function formatOL(o){
 	}	
 	
 	return null;
-	
-	
-	
 }
 
 
-
-
 //форматирование координатного числа (округляем, добавляем разделение на группы)
-function fcp(d, mfd = 0){
+export function fcp(d, mfd = 0){
 	if (!Number.isFinite(d)){
 		return String(d);
 	}
@@ -98,7 +109,7 @@ function fcp(d, mfd = 0){
 }
 
 
-
+//добавляет обработчик, показывающий координату при Ctrl+dbclick
 export function addShowCoordHandler(map) {
 	
 	//При двойном клике - показываем координаты
@@ -146,11 +157,22 @@ export function createDemoVectorSource2(olDemo) {
 		format: new ol.format.GeoJSON(),
   });
 
+	
+	//geojson не поддерживает круги
+	window.circleFeature = new ol.Feature({
+	  geometry: new ol.geom.Circle([ 500_000, 6_000_000 ], 50000),
+	});
+	circleFeature.setId("testCircle");
+	circleFeature.set("name","testCircle")
+	olDemo.vectorSource.addFeature(circleFeature);
+	
 	olDemo.vectorSource.on("featuresloadend",e=>{
 		//вспомогательные переменные для тестов
 		window.pointFeature = olDemo.vectorSource.getFeatureById("LSNE");
 		window.lineFeature = olDemo.vectorSource.getFeatureById("l1");
 		window.polygonFeature = olDemo.vectorSource.getFeatureById("CHE");
+		
+		
 	})
 	
 	

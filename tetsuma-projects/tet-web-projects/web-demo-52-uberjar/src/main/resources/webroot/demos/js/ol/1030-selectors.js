@@ -11,178 +11,221 @@ import * as demodata from "./ol-demo-data.js";
 export let selectorsData1 = {
 
 
-  Layer() {
-    /*
-    ol.layer.Layer
-  	
-    ---Опции---
-  	
-    map 	
-      Задаёт слой как покрытие поверх карты.
-    Карта не будет содержать этот слой в своей коллекции слоёв.
-      Удобно для временных слоёв.
-  	
-  	
-    className
-    CSS class name for layer element
-  	
-    background
-    Цвет заднего плана
-  	
-    vectorLayer.setBackground("rgba(255,0,0,0.1)");
-      	
-    opacity
-    непрозрачность (default 1) 	
+  Source: `
 
-    visible
-    (default true) 	
+/*
+ol.source.Source
+  Основа источников данных слоёв.
+
+Опции:
+
+attributions
+  панелька с информацией по слою
+
+attributionsCollapsible
+  (default true) 	
+
+projection
+  Проекция
+
+state
+  (default 'ready') 	
+  Состояние: undefined, loading, ready, error
+
+wrapX
+  (default false) 	
+
+interpolate
+  (default false) 	
+
+
+--------------	
+	
+ol.source.Image
+
+ol.source.Tile
+	ol/source/DataTile			
+  	ol/source/ImageTile
+		  ol.source.TileDebug
+		
+	ol.source.TileImage
+	  ol.source.XYZ
+  	  ol.source.OSM
+
+ol.source.Vector
+*/
+`,
+  Tile: `
+
+/*
+ol.source.Tile
+
+
+
+tileGrid 	
+  объект TileGrid - Параметры сетки
+
+transition
+key
+zDirection
+
+----------------------
+ol.source.TileImage
+  (A)Предоставляет картинки, разделённые на плитки
+
+tileClass 	
+
+tileLoadFunction
+
+url
+
+----------------------
+ol.source.XYZ
+
+
+
+ol.source.Tile
+	ol/source/DataTile			
+  	ol/source/ImageTile
+		  ol.source.TileDebug
+	ol.source.TileImage
+	  ol.source.XYZ
+  	  ol.source.OSM
+
+
+*/
+
+
+`,
+  TileGrid: `
+
+/*
+new TileGrid(options)
+  Параметры сетки
+
+extent 	
+
+minZoom 	
+
+origin
+координата нулевой точки 	
+
+sizes
+строк и столбцов для каждого зума
+
+tileSize
+размер тайла
+Default [256, 256].
+
+
+
+origins 	
+tileSizes 	
+resolutions
+
+*/
+
+`,
+  Layer: `
+
+/*
+ol.layer.Layer
+  Основа слоёв.
+
+---Опции---
+
+map 	
+  Задаёт слой как покрытие поверх карты.
+Карта не будет содержать этот слой в своей коллекции слоёв.
+  Удобно для временных слоёв.
+
+source
+  источник данных 	
+	
+className
+  CSS class name for layer element
+
+background
+  Цвет заднего плана
+
+vectorLayer.setBackground("rgba(255,0,0,0.1)");
   	
-    zIndex
+opacity
+  непрозрачность (default 1) 	
 
-    extent
-    область, в которой будет прорисовываться сетка
+visible
+  (default true) 	
 
-    minResolution 	
-    maxResolution 	
-    minZoom 	
-    maxZoom 	
-    зумы, в которой будет прорисовываться сетка
+zIndex
+
+extent
+  область, в которой будет прорисовываться сетка
+
+minResolution 	
+maxResolution 	
+minZoom 	
+maxZoom
+  зумы, в которые будет прорисовываться слой
+
+
+render
+  RenderFunction
+  Своя функция прорисовки, возвращающая HTML element.
+
+---События---
   	
-    source
-    источник данных 	
+change:visible (ObjectEvent)
+postrender
+prerender
+ 
+*/
 
-    render
-    RenderFunction
-    Своя функция прорисовки, возвращающая HTML element.
 
-    ---События---
-      	
-    change:visible (ObjectEvent)
-    postrender
-    prerender
-  	
+`,
+  VectorLayer: `
+/*
+ol.layer.Vector
+  Векторный слой, прорисовывающий фичи.
 
-    BaseImageLayer
-    BaseTileLayer
-    BaseVectorLayer
-     
-    */
+---Опции---
+
+style
+  Стили для фич
+
+*/
+olDemoGlobal.createVectorLayer
+`,
+  TileLayer: `
+/*
+ol.layer.Tile
+  Слой для источников, предоставляющих пререндеренные изображения-плитки.
+
+preload
+  Default 0
+  Загружать тайлы низкого разрешения
+
+
+*/
+`,
+
+  TileLayerExample1() {
 
     testLayer = new ol.layer.Tile({
       source: new ol.source.OSM(),
       //className: 'bw',  //сделаем стиль чёрно-белым
-			className: 'blur'  //размытость
-			
-			
+      className: 'blur'  //размытость
+
+
     });
     map.addLayer(testLayer);
 
   },
-  VectorLayer() {
-    /*
-    ol.layer.Vector
-  	
-    ---Опции---
-  	
-    style
-    Стиль слоя
 
-  	
-  	
-  	
-    */
-    log(olDemoGlobal.createVectorLayer);
-
-
-  },
-
-  graticule() {
-    /*
-    ol.Graticule
-      Рисует координатную сетку поверх карты.
-    	
-    ---Опции---
-	
-    strokeStyle
-      Стиль линий 	
-
-    targetSize
-    Размер ячеек сетки, в пикселях
-    (default 100)     	
-  	
-  	
-    showLabels
-    (defaults to false)
-    Рисовать метки с широтой/долготой каждой линии
-
-    lonLabelFormatter
-    latLabelFormatter 	
-    форматер меток
-
-    lonLabelPosition  (defaults to 0) 	
-    latLabelPosition  (defaults to 1) 	
-    Положение меток в ячйках: (0..1)
-
-    lonLabelStyle
-    latLabelStyle
-    Стиль меток: (new Text()) 	
-
-  	
-  	
-  	
-    	
-    */
-
-    let strokeStyle = new ol.style.Stroke({
-      color: 'rgba(255,120,0,0.9)',
-      width: 2,
-      lineDash: [0.5, 4],
-    });
-
-    testLayer = new ol.layer.Graticule({
-      strokeStyle: strokeStyle,
-      showLabels: true,
-      extent: [-1_168_908, 2_669_028, 6_211_154, 8_952_054],
-      targetSize: 50,  //размер ячеек
-      wrapX: false,
-      lonLabelFormatter: (p1) => {
-        return p1;
-      },
-      background: 'rgba(255, 179, 179, 0.1)',  //цвет на задний фон
-    });
-
-    map.addLayer(testLayer);
-
-  },
-  Tile() {
-    /*
-    ol.layer.Tile
-    Для источников, предоставляющих пререндеренные изображения-плитки для заданного зума.
-  	
-    preload
-    Default 0
-    Загружать тайлы низкого разрешения
-  	
-  	
-    */
-
-
-    testLayer = new ol.layer.Tile({
-      source: new ol.source.TileDebug(),
-    });
-    map.addLayer(testLayer);
-
-
-
-  },
-  XYZ() {
-    /*
-    ttt
-    */
+  TileLayerExample2() {
 
     testLayer = new ol.layer.Tile({
       source: new ol.source.XYZ({
-        url: "https://server.arcgisonline.com/ArcGIS/rest/services/" + "World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+        url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
       }),
     });
     map.addLayer(testLayer);
@@ -190,40 +233,94 @@ export let selectorsData1 = {
 
   },
 
+  Cluster: `
+/*
+ol.source.Cluster
+  Источник векторных данных, позволяющий кластеризовать фичи.
+То есть при крупном маштабе, фичи, находящиеся близко, будут объединяться.
+  Таким образом на крупном маштабе мы увидим несколько объектов, а на мелком - тысячи.
+При этом одновременно не будет прорисовано слишком много фич.
+  Умеет объединять только точки!
+
+	
+---Опции---	
+		
+source	ol.source.Vector
+  Базовый векторынй источник данных.
+
+distance	number
+  Минимальное расстояние между кластерами в пикселях.
+  Чем меньше - тем больше фич мы будем видеть на больших маштабах.
+Default is 20.
+
+minDistance
+(default 0) 	
+Минимальное расстояние между кластерными фичами.
+
+geometryFunction	function
+  Функция, которая принимает ol.Feature как аргумент и возвращает ol.geom.Point как cluster calculation point.
+Если фичу не надо кластеризовать - нужно вернуть null. 
+  По умолчанию работает только если нижестоящий источник содержит только точки.
+
+*/
+`,
 
 
+  Cluster2() {
 
-  OGCMapTile() {
-    /*
-    OGC (растровые тайлы)
-		Виснет
-    */
-    testLayer = new ol.layer.Tile({
-      source: new ol.source.OGCMapTile({
-        url: 'https://maps.gnosis.earth/ogcapi/collections/blueMarble/map/tiles/WebMercatorQuad',
-      }),
+    //генерируем базовый источник данных
+    let count = 2000;
+    let features = new Array(count);
+    let e = 4500000;
+    for (let i = 0;i < count;++i) {
+      let coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+      features[i] = new ol.Feature(new ol.geom.Point(coordinates));
+    }
+    let source = new ol.source.Vector({
+      features: features
     });
-    map.addLayer(testLayer);
-  },
-  OGCVectorTile() {
-    /*
-		Виснет
-    */
 
-    testLayer = new ol.layer.VectorTile({
-      source: new ol.source.OGCVectorTile({
-        url: 'https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:cultural:ne_10m_admin_0_countries/tiles/WebMercatorQuad',
-        format: new ol.format.MVT(),
-      }),
-      background: '#e2e3e3',
-      style: {
-        'stroke-width': 1,
-        'stroke-color': '#8c8b8b',
-        'fill-color': '#f7f7e9',
+    let clusterSource = new ol.source.Cluster({
+      distance: 50,
+      source: source
+    });
+
+    let styleCache = {};
+    testLayer = new ol.layer.Vector({
+      source: clusterSource,
+      style: function(feature) {
+        const size = feature.get('features').length;
+        let style = styleCache[size];
+        if (!style) {
+          style = new ol.style.Style({
+            image: new ol.style.Circle({
+              radius: 10,
+              stroke: new ol.style.Stroke({
+                color: '#fff',
+              }),
+              fill: new ol.style.Fill({
+                color: '#3399CC',
+              }),
+            }),
+            text: new ol.style.Text({
+              text: size.toString(),
+              fill: new ol.style.Fill({
+                color: '#fff',
+              }),
+            }),
+          });
+          styleCache[size] = style;
+        }
+        return style;
       },
-    })
+    });
 
     map.addLayer(testLayer);
+
+
   },
+
+
+
 }
 

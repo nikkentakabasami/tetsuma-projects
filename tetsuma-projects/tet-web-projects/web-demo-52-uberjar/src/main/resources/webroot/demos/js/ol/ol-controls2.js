@@ -28,6 +28,14 @@ export class DebugInfoControl extends ol.control.Control {
     this.$element.html(html);
   }
 
+	addLine(line){
+		this.$element.append(line+"<br>");	
+	}
+	
+	clear() {
+	  this.$element.html("");
+	}
+
   addShowBaseDebugInfoHandler() {
     let view = this.getMap().getView();
     this.getMap().on('moveend', () => {

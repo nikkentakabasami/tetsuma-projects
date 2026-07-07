@@ -318,6 +318,22 @@ func1(coord1);
 
 `,
 
+  coord3() {
+
+		//кастомная функция для форматирования координат
+    function fcp(d, mfd = 0) {
+      let r = d.toLocaleString("ru", { maximumFractionDigits: mfd });
+      return r.replace(/\s/g, '_');
+    }
+
+		
+		function formatCoord(coord){
+			return "[ "+fcp(coord[0])+", "+ fcp(coord[1])+" ]";
+		}
+
+		log2(formatCoord([745654.85, 4785569.23]));
+		
+  },
 
   proj4() {
 

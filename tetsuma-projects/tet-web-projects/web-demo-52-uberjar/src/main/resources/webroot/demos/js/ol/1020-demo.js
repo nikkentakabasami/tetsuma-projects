@@ -35,6 +35,7 @@ dispatchEvent(event)
 
 on(type, listener)
   Задание обработчиков событий.
+	можно задатьв type массив
 	
 once(type, listener)
   Задание обработчика, который сработает однократно
@@ -66,15 +67,20 @@ ob1.getRevision();
       log2("event:", event.type);
     });
 
+		//обработчик на 2 события
     let k1 = ob1.on(["et1", "et2"], event => {
       log2("event:", event.type);
     });
+		
+		//однократный обработчик
     ob1.once("et1", event => {
       log2("once event:", event.type);
     });
 
+		//кидаем событие 'change'
     ob1.changed();
 
+		//кидаем события
     ob1.dispatchEvent("et1");
     ob1.dispatchEvent("et1");
     ob1.dispatchEvent("et2");
@@ -83,8 +89,9 @@ ob1.getRevision();
 
     //удаляем обработчик
     ol.Observable.unByKey(k1);
+		
+		//это событие никто не поймает
     ob1.dispatchEvent("et2");
-
   },
 
 

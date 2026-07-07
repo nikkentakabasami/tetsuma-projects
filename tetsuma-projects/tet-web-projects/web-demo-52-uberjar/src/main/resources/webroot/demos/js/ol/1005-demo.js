@@ -8,19 +8,6 @@ import { selectorsData1 } from './1005-selectors-data.js'
 let olDemo;
 
 
-window.getBriefDemoOptions = () => {
-  return {
-    demoType: DT_OPENLAYERS,
-    selectorsData: selectorsData1,
-    selectedOption: "centerOn",
-    autoscrollLog1: true,
-    formattedJson: true,
-
-    initFunction: initMap,
-    moduleMode: true
-  };
-}
-
 
 
 class MyOLDemo extends old.OLDemo {
@@ -29,8 +16,8 @@ class MyOLDemo extends old.OLDemo {
     this.mapView = new ol.View({
       center: [877350, 6000000],
       zoom: 5,
-      //      projection: 'EPSG:4326',
-      projection: 'EPSG:3857',
+      //projection: 'EPSG:4326',  //wgs
+      projection: 'EPSG:3857',  //web mercator (default)
     });
 
   }
@@ -59,6 +46,19 @@ function initMap() {
 
 }
 
+
+window.getBriefDemoOptions = () => {
+  return {
+    demoType: DT_OPENLAYERS,
+    selectorsData: selectorsData1,
+    //selectedOption: "centerOn",
+    autoscrollLog1: true,
+    formattedJson: true,
+
+    initFunction: initMap,
+    moduleMode: true
+  };
+}
 
 
 

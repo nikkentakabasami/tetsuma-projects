@@ -1,16 +1,20 @@
 import * as old from './ol-demo-base.js';
 import * as olu from "./ol-demo-utils.js";
 import * as olt from "./ol-template.js";
+import { DebugInfoControl } from "./ol-controls2.js"
 
 
 //объявляем глобальные переменные
-"testLayer,map,vectorLayer,vectorSource,tileLayer,tileSource".split(",").forEach(name => window[name] = null);
+"testLayer,map,vectorLayer,vectorSource,tileLayer,tileSource,debugInfoControl".split(",").forEach(name => window[name] = null);
 
 
 let selectorsData1 = {
   t1() {
     let f1 = new ol.Feature(new ol.geom.Point([640_950, 5_567_518]));
     vectorSource.addFeature(f1);
+		debugInfoControl.setLines("added pont!");
+		
+		
   },
   t2() {
     testLayer = new ol.layer.Tile({
@@ -19,32 +23,19 @@ let selectorsData1 = {
     });
     map.addLayer(testLayer);
   },
-}
-
-window.getBriefDemoOptions = () => {
-  return {
-    demoType: DT_OPENLAYERS,
-    selectorsData: selectorsData1,
-    //selectedOption: "init3",
-    autoscrollLog1: true,
-    formattedJson: true,
-    moduleMode: true,
-    customFormatter: olu.formatCoord,
-    beforeExec: () => {
-      //      destroyMap();
-      //      createMap();
-    },
-    afterSelectChange: () => {
-      if (testLayer) {
-        map.removeLayer(testLayer);
-        testLayer = null;
-      }
-    },
-    initFunction: () => {
-      createMap();
-      //olt.createUniversalMap();
-    },
-  };
+	doc1:`
+/*
+*/
+`,
+	doc2:`
+/*
+*/
+`,
+	doc3:`
+/*
+*/
+`,
+	
 }
 
 
@@ -96,8 +87,40 @@ function createMap() {
   //При двойном клике - показываем координаты
   olu.addShowCoordHandler(map);
 
+	debugInfoControl = new DebugInfoControl();
+	map.addControl(debugInfoControl);
+	debugInfoControl.addShowBaseDebugInfoHandler();
 
 
 }
 
 
+
+window.getBriefDemoOptions = () => {
+  return {
+    demoType: DT_OPENLAYERS,
+    selectorsData: selectorsData1,
+    //selectedOption: "init3",
+    autoscrollLog1: true,
+    formattedJson: true,
+    moduleMode: true,
+    customFormatter: olu.formatCoord,
+    beforeExec: () => {
+      //      destroyMap();
+      //      createMap();
+    },
+    afterSelectChange: () => {
+			if (debugInfoControl){
+				debugInfoControl.clear();
+			}
+      if (testLayer) {
+        map.removeLayer(testLayer);
+        testLayer = null;
+      }
+    },
+    initFunction: () => {
+      createMap();
+      //olt.createUniversalMap();
+    },
+  };
+}

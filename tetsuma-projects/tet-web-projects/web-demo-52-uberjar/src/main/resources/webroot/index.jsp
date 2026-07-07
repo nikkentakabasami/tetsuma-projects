@@ -1,5 +1,6 @@
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="demos/include/header.jspf"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script src="js/index.js"></script>
 
@@ -44,7 +45,18 @@
 	<c:forEach var="folder" items="${demoFolders}" varStatus="loop">
 
     	<div class="acc-anchor-list">
+    	
+    	<%--
 			<h4>${folder.desc}<sup class="header-sup">${folder.name}</sup></h4>
+				<a href="folder?name=${folder.name}" target="${folder.name}">${folder.name}</a>
+    	 --%>
+    	
+			<h4><a href="folder.jsp?name=${folder.name}" target="${folder.name}">${folder.desc}<sup class="header-sup">${folder.name}</sup></a></h4>
+				
+				
+				
+
+
 
 			<c:forEach var="page" items="${folder.pages}">
 				<a href="demos/${folder.name}/${page.name}" target="${page.id}">${page.desc}</a>

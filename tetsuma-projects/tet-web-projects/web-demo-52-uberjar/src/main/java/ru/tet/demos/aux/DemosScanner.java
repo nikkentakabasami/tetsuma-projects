@@ -2,7 +2,11 @@ package ru.tet.demos.aux;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,29 +25,30 @@ public class DemosScanner {
 	public static DemosScanner getInstance() {
 		return instance;
 	}
-	
+
 	static final String DEMOS_PATH = "webroot/demos/";
 	static final String TITLE_TAG1 = "<title>";
 	static final String TITLE_TAG2 = "</title>";
-	
+
 	static Logger logger = LogManager.getLogger();
 
 	List<DemoFolder> demoFolders;
-	
-	
-	
+
+	Pattern startDiginPattern = Pattern.compile("^\\d+(?=( |_|-))");
+
 	public List<DemoFolder> scanDemos() throws IOException {
 
 		logger.info("MainServletContextListener: search demo pages in '" + DEMOS_PATH + "'");
 
 		//ищем папки с демками
-		List<String> demoFolderNames = TetClasspathUtils.scanClasspathFolder(DEMOS_PATH, 
-				(String fileName, boolean isDirectory) -> {
-			return isDirectory && (fileName.matches("^demos_\\d{3}.+"));
-		});
+		List<String> demoFolderNames =
+				TetClasspathUtils.scanClasspathFolder(DEMOS_PATH,
+						(String fileName, boolean isDirectory) -> {
+							return isDirectory && (fileName.matches("^demos_\\d{3}.+"));
+						});
 
 		demoFolderNames.sort(null);
-		
+
 		demoFolders = new ArrayList<>();
 		for (String folderName : demoFolderNames) {
 
@@ -59,64 +64,76 @@ public class DemosScanner {
 
 			String desc = TetClasspathUtils.readClasspathResourceAsString(folderPath + "/desc.txt");
 
-			
 			List<DemoPage> demoPages = new ArrayList<>(pageNames.size());
-			for(String pageName:pageNames) {
+			for (String pageName : pageNames) {
 
 				//ищем числовой идентификатор, который может быть в начале имени файла
 				String id = null;
-				int ind = pageName.indexOf('_');
-				if (ind<0) {
-					ind = pageName.indexOf('.');
+				Matcher matcher = startDiginPattern.matcher(pageName);
+				if (matcher.find()) {
+					id = matcher.group();
 				}
-				if (ind>0) {
-					id = pageName.substring(0, ind);
-					if (!id.matches("\\d+")) {
-						id=null;
-					}
-				}
-				
-				String pageDesc = scanDemoFileDesc(folderPath+"/"+pageName);
-				if (pageDesc==null) {
+
+				String sortNumber = null;
+				String pageDesc = scanDemoFileDesc(folderPath + "/" + pageName);
+				if (pageDesc == null) {
 					pageDesc = pageName;
+					sortNumber = id;
 				} else {
-					if (id!=null) {
-						pageDesc = id+" "+pageDesc;
+					matcher = startDiginPattern.matcher(pageDesc);
+					if (matcher.find()) {
+						sortNumber = matcher.group();
+						pageDesc = pageDesc.substring(matcher.end());
+					}
+
+					if (id != null) {
+						
+						if (sortNumber != null) {
+							pageDesc = id + " (" + sortNumber + ") " + pageDesc;
+						} else {
+							pageDesc = id + " " + pageDesc;
+						}
+						
 					}
 				}
-				
-				
-				demoPages.add(new DemoPage(id,pageName, pageDesc));
+
+				demoPages.add(new DemoPage(id, pageName, pageDesc, sortNumber));
 			}
+
+			demoPages.sort(new Comparator<DemoPage>() {
+				@Override
+				public int compare(DemoPage p1, DemoPage p2) {
+					
+					return p1.getSortValue().compareTo(p2.getSortValue());
+				}
+				
+			});
 			
 			
 			DemoFolder df = new DemoFolder(folderName, desc, demoPages);
 			demoFolders.add(df);
 		}
 
-	return demoFolders;
+		return demoFolders;
 
 	}
-	
-	
+
 	public String[] findSiblingPages(String pageName) {
 		getDemoFolders();
-		
-		
-		for(DemoFolder df:demoFolders) {
+
+		for (DemoFolder df : demoFolders) {
 
 			String[] r = df.findSiblingPages(pageName);
-			if (r!=null) {
+			if (r != null) {
 				return r;
 			}
 		}
 		return null;
-		
+
 	}
-	
-	
+
 	public List<DemoFolder> getDemoFolders() {
-		if (demoFolders==null) {
+		if (demoFolders == null) {
 			try {
 				scanDemos();
 			} catch (IOException e) {
@@ -125,9 +142,12 @@ public class DemosScanner {
 		}
 		return demoFolders;
 	}
-
 	
-
+	public DemoFolder findFolder(String name) {
+		Optional<DemoFolder> first = getDemoFolders().stream().filter(folder->folder.getName().equals(name)).findFirst();
+		return first.get();
+	}
+	
 
 	public String scanDemoFileDesc(String resPath) throws IOException {
 
@@ -145,6 +165,5 @@ public class DemosScanner {
 		return code.substring(ind1, ind2);
 
 	}
-
 
 }
