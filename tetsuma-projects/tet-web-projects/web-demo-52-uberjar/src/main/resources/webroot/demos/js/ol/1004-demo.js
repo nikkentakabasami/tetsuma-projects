@@ -1,4 +1,5 @@
 import * as old from './ol-demo-base.js';
+import * as olds from './ol-demo-styles.js';
 import * as olu from "./ol-demo-utils.js";
 
 /**
@@ -89,135 +90,296 @@ let selectorsData1 = {
   },
 
 
-  styleDoc: `
-/*
+  Style() {
+    /*
+    ol.style.Style
+  
+    geometry 	
+      геометрия или функция, возвращающая геометрию, которая будет прорисовывать фичу.
+      Эта геометрия заменит оригинальную геометрию!
+  
+    fill
+    stroke 	
+    image 	
+    text 	
+  
+    renderer
+    кастомная функция для прорисовки фич.
+  
+  
+    ------------
+    ol.style.Fill
+  
+    color
+  
+    ------------
+    ol.style.Stroke
+  
+    color
+    width
+  
+  
+    fill: new ol.style.Fill({ color: "rgba(0, 120, 0, 0.2)" }),
+    stroke: new ol.style.Stroke({ color: 'rgb(0, 120, 0)', width: 2 }),
+  
+    */
 
-ol.style.Style
+		vectorStyle = new ol.style.Style({
+		  stroke: new ol.style.Stroke({
+				color: 'rgb(0, 200, 0)',
+		    width: 3,
+		  }),
+		  fill: new ol.style.Fill({
+				color: 'rgba(0, 200, 0, 0.2)',
+		  }),
+		});		
+		
+		vectorLayer.setStyle(vectorStyle);
 
----Опции---
-
-geometry 	
-  геометрия или функция, возвращающая геометрию, которая будет прорисовывать фичу.
-	Эта геометрия заменит оригинальную геометрию!
-
-fill
-stroke 	
-image 	
-text 	
-
-renderer
-  кастомная функция для прорисовки фич.
-
-hitDetectionRenderer
-Custom renderer for hit detection.
-
-zIndex 	
-
-*/
-`,
-
-
-
+  },
 
   customStyle() {
     /*
     Стиль слоя по умолчанию - бледно голубой.
     Можно задать свой стиль:
     */
-    vectorLayer.setStyle(old.defaultVectorStyle);
+
+    vectorLayer.setStyle(olds.defaultVectorStyle);
+    log(olds.createDefaultVectorStyle)
   },
 
 
-
   iconStyle() {
+    /*
+    ol.style.Icon
+
+    src
+
+    anchor
+    Как привязать иконку к точке
+    (defaults to [0.5, 0.5] - по центру)
+
+    anchorXUnitss
+    anchorYUnits
+    (defaults to 'fraction')
+
+    'fraction'
+    'pixels'
+
+    anchorOrigin
+    (defaults to 'top-left')
+
+    color
+
+    offset
+    (defaults to [0, 0])
+    с какого пикселя брать изображение
+
+    offsetOrigin
+    (defaults to 'top-left')
+
+
+    displacement
+    (defaults to [0,0])
+    смещение иконки на карте
+
+    width 	
+    height
+    можно задать размеры в пикселях, растянув иконку
+  	
+    scale
+    можно растянуть через скейлинк
+  	
+    rotation
+    поворот по часовой стрелке в радианах
+    */
+
     //задать иконку в качестве стиля для точки 
-    let iconStyle = new ol.style.Style({
+    vectorStyle = new ol.style.Style({
       image: new ol.style.Icon(({
         src: '../../accord/icons/home.png'
       }))
     });
-    pointFeature.setStyle(iconStyle);
+		vectorLayer.setStyle(vectorStyle);
   },
-
-
-
   iconStyle2() {
-    //задать иконку и её цвет для точки 
-    let iconStyle = new ol.style.Style({
+    //задать иконку и её цвет для точки.
+    //Иконка будет касаться точки левым верхним углом
+    vectorStyle = new ol.style.Style({
       image: new ol.style.Icon(({
         src: '../images/square.svg',
+        anchor: [0, 0],
         color: '#BADA55',
       }))
     });
-    pointFeature.setStyle(iconStyle);
+		vectorLayer.setStyle(vectorStyle);
   },
 
+  iconStyle3() {
+    //сожмём иконку в 2 раза и повернём.
+    //Иконка будет касаться точки нижней центральной частью
+    vectorStyle = new ol.style.Style({
+      image: new ol.style.Icon(({
+        src: '../images/icon.png',
+        anchor: [0.5, 1],
+        scale: 0.5,
+        rotation: Math.PI / 4,
 
-	iconStyle3() {
-	  //задать иконку и её цвет для точки 
-	  let iconStyle = new ol.style.Style({
-	    image: new ol.style.Icon(({
-	      src: '../images/icon.png',
-			anchor: [0.5, 46],
-			anchorXUnits: 'fraction',
-			anchorYUnits: 'pixels',
-			
-			//Можно растянуть иконку
-			//width: 100,
-			//height: 100,
-			
-	    }))
-	  });
-	  pointFeature.setStyle(iconStyle);
-		
-		
-	},	
-	
+      }))
+    });
+		vectorLayer.setStyle(vectorStyle);
 
 
+  },
   circleStyle() {
 
+		/*
+		ol.style.Circle
+		Стиль для точек - рисование кружков.
+		
+		fill
+		radius 	
+		stroke 	
+		
+		displacement
+		scale 	
+		rotation 	
+		
+		*/
+		
     //задать кружок в качестве стиля для точки 
     let circleImage = new ol.style.Circle({
-      radius: 5,
+      radius: 8,
       fill: new ol.style.Fill({ color: "rgba(0, 120, 0, 0.2)" }),
       stroke: new ol.style.Stroke({ color: 'rgb(0, 120, 0)', width: 2 }),
     });
-
-    let vectorStyle = new ol.style.Style({
+    vectorStyle = new ol.style.Style({
       image: circleImage,
     });
 
-    pointFeature.setStyle(vectorStyle);
-
-    //стиль для полигона
-    vectorStyle = new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: 'rgb(0, 200, 0)',
-        width: 3,
-      }),
-      fill: new ol.style.Fill({
-        color: 'rgba(0, 200, 0, 0.2)',
-      }),
-    });
-    polygonFeature.setStyle(vectorStyle);
+		vectorLayer.setStyle(vectorStyle);
 
   },
-  style2() {
+	
+	RegularShape() {
+		/*
+		ol.style.RegularShape
+		Стиль для точек - рисование полигонов и звёзд.
+		
+		points
+		radius 	
+		radius2 	
+		angle 	
+
+		displacement
+		scale 	
+		rotation
+		
+		stroke 	
+		fill
+		
+		*/
+		
+		vectorStyle = new ol.style.Style({
+		    image: new ol.style.RegularShape({
+		      points: 5,
+		      radius: 20,
+		      radius2: 10,
+		      displacement: [0, 20],
+		      stroke: new ol.style.Stroke({
+		        width: 2,
+		        color: 'black',
+		      }),
+		      fill: new ol.style.Fill({
+		        color: 'rgba(0, 120, 0, 0.2)',
+		      }),
+					angle: Math.PI/5
+					
+		    })
+		  });		
+			vectorLayer.setStyle(vectorStyle);
+
+
+	},	
+	
+	
+	StyleText() {
+	  /*
+	  ol.style.Text
+	  позволяет добавить текст к векторным фичам.
+		
+		text 	
+		
+		font
+		(defaults to '10px sans-serif')
+
+		fill 	
+		stroke 	
+				
+		offsetX 	
+		offsetY 	
+
+		scale 	
+		rotation 	
+		
+		textAlign
+		Possible values: 'left', 'right', 'center', 'end' or 'start'.
+		Default is 'center'
+		
+		textBaseline
+		(defaults to 'middle')
+		Possible values: 'bottom', 'top', 'middle', 'alphabetic', 'hanging', 'ideographic'.
+
+		padding
+		(defaults to [0, 0, 0, 0])
+		окружает текст белым гало
+		
+	  */
+
+	  let circleImage = new ol.style.Circle({
+	    radius: 5,
+	    fill: new ol.style.Fill({ color: "rgba(0, 120, 0, 0.2)" }),
+	    stroke: new ol.style.Stroke({ color: 'rgb(0, 120, 0)', width: 2 }),
+	  });
+
+	  //Задаём текст для точки
+	  vectorStyle = new ol.style.Style({
+	    image: circleImage,
+	    text: new ol.style.Text({
+	      text: '---',
+	      font: '14px Calibri,sans-serif',
+	      fill: new ol.style.Fill({ color: '#000000' }),
+	      stroke: new ol.style.Stroke({ color: '#FFFFFF', width: 3 }),
+				textBaseline: 'top',
+				textAlign: 'left',
+				padding: [5,5,5,5],
+	      offsetX: 5,
+	      offsetY: 5,
+				
+	    })
+
+	  });
+		vectorLayer.setStyle(f=>{
+			vectorStyle.getText().setText(f.getId())
+			return vectorStyle;
+		});
+		
+	},	
+	
+	
+  style_renderer() {
 
     //Задаём стиль фичи через renderer
-    //Позволяет прорисовать фичу как угодно
+    //Позволяет прорисовать фичу на уровне canvas
     let vectorStyle = new ol.style.Style({
-      renderer(coordinates, state) {
-        renderGradient(coordinates, state);
-      }
-
+      renderer: renderGradient
     });
+
     circleFeature.setStyle(vectorStyle);
 
     log(renderGradient);
   },
-  style3() {
+  style_renderer2() {
 
     //Прорисовываем текст.
     let vectorStyle = new ol.style.Style({
@@ -241,9 +403,9 @@ zIndex
 
   },
 
-  StyleArray() {
+  style_geometry() {
 
-    //можно задавать массив стилей
+    //можно задавать массив стилей - фича будет прорисовываться дважды
     const styles = [
       new ol.style.Style({
         stroke: new ol.style.Stroke({
@@ -274,99 +436,6 @@ zIndex
 
 
   },
-
-
-  StyleText() {
-    /*
-    ol.style.Text
-      позволяет добавить текст к векторным фичам.
-    */
-
-
-    let circleImage = new ol.style.Circle({
-      radius: 5,
-      fill: new ol.style.Fill({ color: "rgba(0, 120, 0, 0.2)" }),
-      stroke: new ol.style.Stroke({ color: 'rgb(0, 120, 0)', width: 2 }),
-    });
-
-    //Задаём текст для точки
-    let vectorStyle = new ol.style.Style({
-      image: circleImage,
-
-      text: new ol.style.Text({
-        text: 'My Label',
-        font: '14px Calibri,sans-serif',
-        fill: new ol.style.Fill({ color: '#000000' }),
-        stroke: new ol.style.Stroke({ color: '#FFFFFF', width: 3 }), // Creates a halo effect for legibility
-        offsetX: 0,
-        offsetY: 15,
-        placement: 'point' // or 'line'
-      })
-
-    });
-    pointFeature.setStyle(vectorStyle);
-
-  },
-
-
-
-
-
-
-  styleCss() {
-
-    //задаём стиль через css
-    vectorLayer.setStyle({
-      'stroke-color': 'rgb(255, 153, 51)',
-      'stroke-width': 2,
-      'fill-color': 'rgba(255, 153, 51, 0.2)',
-
-      //стиль для точек
-      'circle-radius': 10,
-      'circle-fill-color': 'gray',
-      'circle-stroke-color': 'white',
-      'circle-stroke-width': 2,
-
-      //добавляем надписи
-      'text-value': [
-        'concat',
-        'id: ',
-        ['get', 'name'],
-      ],
-      'text-font': '20px sans-serif',
-      'text-fill-color': 'white',
-      'text-stroke-color': 'gray',
-      'text-stroke-width': 2,
-      'text-offset-y': 20,
-
-    });
-
-
-
-
-
-
-  },
-
-	styleWind() {
-		
-		//https://openlayers.org/en/latest/examples/wind-arrows.html
-		
-		},
-
-
-
-
-
-
-  styleDoc2: `
-/*
-*/
-`,
-  styleDoc3: `
-/*
-*/
-`,
 
 
 
@@ -416,7 +485,7 @@ function renderLabelText(coordinates, state, stroke) {
   ctx.lineWidth = 1;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.font = `bold 30px verdana`;
+  ctx.font = `bold 14px verdana`;
   ctx.filter = 'drop-shadow(7px 7px 2px #e81)';
   ctx.fillText(labelText, x, y);
   ctx.strokeText(labelText, x, y);
@@ -478,7 +547,7 @@ window.getBriefDemoOptions = () => {
   return {
     demoType: DT_OPENLAYERS,
     selectorsData: selectorsData1,
-    selectedOption: "iconStyle3",
+    selectedOption: "StyleText",
     autoscrollLog1: true,
     formattedJson: true,
     moduleMode: true,

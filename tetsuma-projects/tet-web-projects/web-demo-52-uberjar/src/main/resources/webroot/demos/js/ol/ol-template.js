@@ -71,7 +71,7 @@ export function createUniversalMap() {
 
 
   vectorSource = new ol.source.Vector({
-    url: 'misc/switzerland.geojson',
+    url: '../data/switzerland.geojson',
     format: new ol.format.GeoJSON(),
   });
 

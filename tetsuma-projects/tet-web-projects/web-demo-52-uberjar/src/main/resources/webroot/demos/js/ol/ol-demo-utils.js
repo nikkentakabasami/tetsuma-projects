@@ -153,7 +153,7 @@ export function createDemoVectorSource1(olDemo) {
 export function createDemoVectorSource2(olDemo) {
 
   olDemo.vectorSource = new ol.source.Vector({
-		url: 'misc/switzerland.geojson',
+		url: '../data/switzerland.geojson',
 		format: new ol.format.GeoJSON(),
   });
 
@@ -168,7 +168,7 @@ export function createDemoVectorSource2(olDemo) {
 	
 	olDemo.vectorSource.on("featuresloadend",e=>{
 		//вспомогательные переменные для тестов
-		window.pointFeature = olDemo.vectorSource.getFeatureById("LSNE");
+		window.pointFeature = olDemo.vectorSource.getFeatureById("m2");
 		window.lineFeature = olDemo.vectorSource.getFeatureById("l1");
 		window.polygonFeature = olDemo.vectorSource.getFeatureById("CHE");
 		

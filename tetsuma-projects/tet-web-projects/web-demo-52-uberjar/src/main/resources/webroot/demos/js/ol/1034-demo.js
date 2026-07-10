@@ -159,8 +159,8 @@ removeOverlay(overlay)
     map.on('click', event => {
       let pixel = event.pixel;
       let coord1 = map.getCoordinateFromPixel(pixel);
-      let coord2 = map.getEventCoordinate(event);
-
+      let coord2 = map.getEventCoordinate(event.originalEvent);
+			
       log("click, pixel=", pixel, "coord1", coord1, "coord2=", coord2);
     });
 
@@ -264,7 +264,7 @@ function createMap() {
   });
 
   vectorSource = new ol.source.Vector({
-    url: 'misc/switzerland.geojson',
+    url: '../data/switzerland.geojson',
     format: new ol.format.GeoJSON(),
   });
 

@@ -83,7 +83,9 @@ window.getBriefDemoOptions = () => {
 			map.getLayers().clear();
 			*/
       if (testLayer) {
+				
         map.removeLayer(testLayer);
+				testLayer.dispose();
         testLayer = null;
       }
 

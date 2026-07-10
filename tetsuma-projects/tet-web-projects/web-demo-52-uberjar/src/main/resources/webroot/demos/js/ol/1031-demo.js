@@ -395,6 +395,7 @@ window.getBriefDemoOptions = () => {
     afterSelectChange: () => {
       if (testLayer) {
         map.removeLayer(testLayer);
+				testLayer.dispose();
         testLayer = null;
       }
 

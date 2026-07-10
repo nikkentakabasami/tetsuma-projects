@@ -14,6 +14,8 @@ export let testFeatures = {
   lineFeature: new ol.Feature(
     new ol.geom.LineString([[-1e7, 1e6], [-1e6, 3e6]])),
 
+
+  //квадрат. В полигоне первая и последняя точки должны совпадать!
   polygonFeature: new ol.Feature(
     new ol.geom.Polygon([[[-3e6, -1e6], [-3e6, 1e6],
     [-1e6, 1e6], [-1e6, -1e6], [-3e6, -1e6]]])),

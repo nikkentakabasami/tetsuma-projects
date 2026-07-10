@@ -1,14 +1,39 @@
 
 
-export {defaultVectorStyle,defaultSelectStyle,defaultStyleFunction,defaultSelectStyleFunction};
-
-const circleImage = new ol.style.Circle({
-  radius: 5,
-  fill: null,
-  stroke: new ol.style.Stroke({ color: 'rgb(64, 64, 64)', width: 2 }),
-});
+export { defaultVectorStyle, defaultSelectStyle, defaultStyleFunction, defaultSelectStyleFunction };
 
 
+let circleImage, defaultVectorStyle;
+
+
+export function createDefaultVectorStyle() {
+
+  circleImage = new ol.style.Circle({
+    radius: 5,
+    fill: null,
+    stroke: new ol.style.Stroke({ color: 'rgb(64, 64, 64)', width: 2 }),
+  });
+
+  //серый
+  defaultVectorStyle = new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      color: 'rgb(64, 64, 64)',
+      width: 3,
+    }),
+    fill: new ol.style.Fill({
+      color: 'rgba(179, 179, 179, 0.2)',
+    }),
+    image: circleImage,
+  });
+
+}
+
+
+
+
+
+
+//красный
 const circleImageSelected = new ol.style.Circle({
   radius: 5,
   fill: null,
@@ -16,19 +41,6 @@ const circleImageSelected = new ol.style.Circle({
 });
 
 
-//серый
-const defaultVectorStyle = new ol.style.Style({
-  stroke: new ol.style.Stroke({
-    color: 'rgb(64, 64, 64)',
-    width: 3,
-  }),
-  fill: new ol.style.Fill({
-    color: 'rgba(179, 179, 179, 0.2)',
-  }),
-  image: circleImage,
-});
-
-//красный
 const defaultSelectStyle = new ol.style.Style({
   stroke: new ol.style.Stroke({
     color: 'red',
@@ -54,15 +66,18 @@ const selectStyle2 = new ol.style.Style({
 
 
 
-function defaultStyleFunction(){
-	return defaultVectorStyle;
-} 
+function defaultStyleFunction() {
+  return defaultVectorStyle;
+}
 
-function defaultSelectStyleFunction(){
-	return defaultSelectStyle;
-} 
+function defaultSelectStyleFunction() {
+  return defaultSelectStyle;
+}
 
 
+//------init--------
+
+createDefaultVectorStyle();
 
 
 

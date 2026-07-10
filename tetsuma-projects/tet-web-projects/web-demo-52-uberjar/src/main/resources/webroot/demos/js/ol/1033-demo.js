@@ -16,15 +16,34 @@ let olDemo;
 
 let selectorsData1 = {
 
-
-  layer1() {
+  testFeatures() {
     /*
-    ol.format.GeoJSON
+    Простейший векторный слой.
+    Добавление на него тестовых фич.
     */
 
+    testSource = new ol.source.Vector({
+    });
+
+    testLayer = new ol.layer.Vector({
+      source: testSource,
+      style: old.defaultVectorStyle
+    });
+    map.addLayer(testLayer);
+
+    let features = Object.values(demodata.testFeatures);
+    testSource.addFeatures(features);
+  },
+
+
+  GeoJSON() {
+    /*
+    ol.format.GeoJSON
+      Загрузка данных в формате .geojson
+    */
 
     testSource = new ol.source.Vector({
-      url: 'misc/switzerland.geojson',
+      url: '../data/switzerland.geojson',
       format: new ol.format.GeoJSON(),
     });
 
@@ -35,45 +54,9 @@ let selectorsData1 = {
     });
 
     map.addLayer(testLayer);
-
   },
 
-
-
-
-  TopoJSON() {
-    /*
-    */
-
-
-    testSource = new ol.source.Vector({
-      url: '../data/world-110m.json',
-      format: new ol.format.TopoJSON({
-        layers: ['countries'],
-      }),
-			overlaps: false,
-    });
-
-
-
-        testLayer = new ol.layer.Vector({
-          source: testSource,
-          //style: old.defaultVectorStyle,
-					style: {
-					    'stroke-color': 'red',
-					    'stroke-width': 2,
-					  },					
-        });
-
-    map.addLayer(testLayer);
-
-  },
-
-
-
-
-
-  layer2() {
+  GeoJSON2() {
     /*
     ol.format.GeoJSON
     */
@@ -90,33 +73,34 @@ let selectorsData1 = {
     map.addLayer(testLayer);
   },
 
-
-  layer3() {
+  TopoJSON() {
     /*
-    simple vector
+    ol.format.TopoJSON
     */
-
     testSource = new ol.source.Vector({
+      url: '../data/world-110m.json',
+      format: new ol.format.TopoJSON({
+        layers: ['countries'],
+      }),
+      overlaps: false,
     });
 
     testLayer = new ol.layer.Vector({
       source: testSource,
-      style: old.defaultVectorStyle
+      //style: old.defaultVectorStyle,
+      style: {
+        'stroke-color': 'red',
+        'stroke-width': 2,
+      },
     });
     map.addLayer(testLayer);
-
-    let features = Object.values(demodata.testFeatures);
-    testSource.addFeatures(features);
-
-
   },
-
-
 
 
   KML() {
     /*
     ol.format.KML
+    Загрузка землятресений.
     */
 
 
@@ -138,11 +122,10 @@ let selectorsData1 = {
 
   },
 
-
   Heatmap() {
     /*
     ol.layer.Heatmap
-    прорисовывает векторные данные в виде карты температур.
+    Слой, который прорисовывает векторные данные в виде карты температур.
   	
     */
 
@@ -165,10 +148,79 @@ let selectorsData1 = {
     });
 
     map.addLayer(testLayer);
-
   },
 
 
+
+  RegularShape() {
+    /*
+    */
+
+    const shaft = new ol.style.RegularShape({
+      points: 2,
+      radius: 5,
+      stroke: new ol.style.Stroke({
+        width: 2,
+        color: 'black',
+      }),
+      rotateWithView: true,
+    });
+
+    const head = new ol.style.RegularShape({
+      points: 3,
+      radius: 5,
+      fill: new ol.style.Fill({
+        color: 'black',
+      }),
+      rotateWithView: true,
+    });
+
+    const styles = [new ol.style.Style({image: shaft}), new ol.style.Style({image: head})];		
+
+
+    testSource = new ol.source.Vector({
+    });
+
+    testLayer = new ol.layer.Vector({
+      source: testSource,
+      style: old.defaultVectorStyle,
+      style: function(feature) {
+        const wind = feature.get('wind');
+        // rotate arrow away from wind origin
+        const angle = ((wind.deg - 180) * Math.PI) / 180;
+        const scale = wind.speed / 10;
+        shaft.setScale([1, scale]);
+        shaft.setRotation(angle);
+        head.setDisplacement([
+          0,
+          head.getRadius() / 2 + shaft.getRadius() * scale,
+        ]);
+        head.setRotation(angle);
+        return styles;
+      },
+    });
+    map.addLayer(testLayer);
+
+
+    fetch('../data/weather.json')
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        const features = [];
+        data.list.forEach(function(report) {
+          const feature = new ol.Feature(
+            new ol.geom.Point(ol.proj.fromLonLat([report.coord.lon, report.coord.lat])),
+          );
+          feature.setProperties(report);
+          features.push(feature);
+        });
+        testSource.addFeatures(features);
+        map.getView().fit(testSource.getExtent());
+      });
+
+
+  },
 
 
 
@@ -257,7 +309,7 @@ window.getBriefDemoOptions = () => {
   return {
     demoType: DT_OPENLAYERS,
     selectorsData: selectorsData1,
-    selectedOption: "TopoJSON",
+    selectedOption: "RegularShape",
     autoscrollLog1: true,
     formattedJson: true,
     moduleMode: true,
@@ -268,6 +320,7 @@ window.getBriefDemoOptions = () => {
     afterSelectChange: () => {
       if (testLayer) {
         map.removeLayer(testLayer);
+        testLayer.dispose();
         testLayer = null;
       }
 

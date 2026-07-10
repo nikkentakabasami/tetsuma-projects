@@ -1,71 +1,40 @@
 import * as old from './ol-demo-base.js';
 import * as olu from "./ol-demo-utils.js";
-import * as olt from "./ol-template.js";
-import { DebugInfoControl } from "./ol-controls2.js"
 
+import * as olds from './ol-demo-styles.js';
+
+import {drawArrows,drawTestFeatures} from './1035-arrows.js';
 
 //объявляем глобальные переменные
-"canvasElement,vectorContext".split(",").forEach(name => window[name] = null);
-
-//let canvasElement,vectorContext;
-
-
-let circleImage = new ol.style.Circle({
-  radius: 5,
-  fill: new ol.style.Fill({ color: "rgba(0, 120, 0, 0.2)" }),
-  stroke: new ol.style.Stroke({ color: 'rgb(0, 120, 0)', width: 2 }),
-});
-
-//стиль для полигона
-let selStyle = new ol.style.Style({
-  stroke: new ol.style.Stroke({
-    color: 'rgb(0, 200, 0)',
-    width: 3,
-  }),
-  fill: new ol.style.Fill({
-    color: 'rgba(0, 200, 0, 0.2)',
-  }),
-  image: circleImage,
-});
-
+"canvasElement,vectorContext,cc,f1,f2,f3".split(",").forEach(name => window[name] = null);
 
 
 let selectorsData1 = {
   toContext() {
     /*
     ol.render.toContext(context, options) {CanvasImmediateRenderer}
-		  Создаёт VectorContext, привязанный к заданному элементу canvas.
-			Это позволяет тестировать прорисовку фич.
-			
-			
-		ol.render.getVectorContext(event)
-		
-		
-		
-		
-		
-		
-			
+      Создаёт VectorContext, привязанный к заданному элементу canvas.
+      Это позволяет тестировать стили и прорисовку фич.
+	
+    ol.render.getVectorContext(event)
     */
-
 
     log(createMap);
   },
 
 
-vectorContextt1() {
-
-		
-		/*
-		setStyle(style)
-		
-		drawCircle(geometry)
-		drawFeature(feature, style)
-		drawGeometry(geometry)
-				
-		*/
-		
-    vectorContext.setStyle(selStyle);
+  vectorContextt1() {
+    /*
+    ol.render.VectorContext
+    умеет рисовать геометрии на canvas.
+  	
+    setStyle(style)
+  	
+    drawCircle(geometry)
+    drawFeature(feature, style)
+    drawGeometry(geometry)
+    */
+    vectorContext.setStyle(olds.defaultVectorStyle);
 
     vectorContext.drawGeometry(
       new ol.geom.LineString([
@@ -85,14 +54,45 @@ vectorContextt1() {
     );
     vectorContext.drawGeometry(new ol.geom.Point([88, 88]));
 
+  },
+  drawFeature() {
+    /*
+    ol.render.VectorContext
 
+    drawFeature(feature, style)
+    */
 
+    //многоугольник
+    f1 = new ol.Feature(new ol.geom.Polygon([
+      [
+        [10, 10],
+        [98, 10],
+        [10, 98],
+        [10, 10],
+      ],
+    ]));
 
+    f2 = new ol.Feature(new ol.geom.LineString([[50, 100], [200, 100], [50, 200], [200, 200]]));
 
+    vectorContext.drawFeature(f1, olds.defaultVectorStyle);
+    vectorContext.drawFeature(f2, olds.defaultVectorStyle);
 
   },
-  t2() {
+
+  drawArrows() {
+		drawArrows(vectorContext);
+		log(drawArrows);
   },
+
+	drawStars() {
+		drawTestFeatures(vectorContext);
+		log(drawTestFeatures);
+		
+		
+	},
+	
+	
+
   doc1: `
 /*
 */
@@ -111,15 +111,9 @@ vectorContextt1() {
 
 
 
+
 function destroyMap() {
 }
-
-
-
-
-
-
-
 
 //window.createMap = function () {
 function createMap() {
@@ -129,20 +123,37 @@ function createMap() {
   $(`<canvas id="canvas"></canvas>`).appendTo($map);
 
   canvasElement = document.getElementById('canvas');
-  vectorContext = ol.render.toContext(canvasElement.getContext('2d'), { 
-		size: [200, 200],
-//		pixelRatio: 10,
-	 });
+  cc = canvasElement.getContext('2d');
+  vectorContext = ol.render.toContext(cc, {
+    size: [400, 400],
+    //		pixelRatio: 10,
+  });
+	drawGrid();
 
 }
 
+function drawGrid(){
+	if (!cc)
+	  return;
+	cc.clearRect(0, 0, canvasElement.width, canvasElement.height);
+	cc.beginPath();
+	for (let y = 50;y < 400;y += 50) {
+			cc.moveTo(0, y);
+			cc.lineTo(400, y);
+			cc.moveTo(y, 0);
+			cc.lineTo(y, 400);
+	}
+	cc.strokeStyle = "#e6e6e6";
+	cc.stroke();	  
+	
+}
 
 
 window.getBriefDemoOptions = () => {
   return {
     demoType: DT_OPENLAYERS,
     selectorsData: selectorsData1,
-    //selectedOption: "init3",
+    selectedOption: "drawArrows",
     autoscrollLog1: true,
     formattedJson: true,
     moduleMode: true,
@@ -150,6 +161,9 @@ window.getBriefDemoOptions = () => {
     beforeExec: () => {
     },
     afterSelectChange: () => {
+			//рисуем сетку
+			drawGrid();
+
     },
     initFunction: () => {
       createMap();

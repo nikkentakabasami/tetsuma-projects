@@ -61,7 +61,7 @@ function createMap() {
   });
 
   vectorSource = new ol.source.Vector({
-    url: 'misc/switzerland.geojson',
+    url: '../data/switzerland.geojson',
     format: new ol.format.GeoJSON(),
   });
 
@@ -115,6 +115,7 @@ window.getBriefDemoOptions = () => {
 			}
       if (testLayer) {
         map.removeLayer(testLayer);
+				testLayer.dispose();
         testLayer = null;
       }
     },

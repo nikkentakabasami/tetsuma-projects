@@ -15,7 +15,8 @@
         "type" : "Feature",
         "id" : "LSNE",
         "properties" : {
-            "name" : "Lausanne"
+            "name" : "Lausanne",
+						"population" : 50000
         },
         "geometry" : {
             "type" : "Point",
@@ -26,13 +27,28 @@
 		    "type" : "Feature",
 		    "id" : "m1",
 		    "properties" : {
-		        "name" : "Milano"
+		        "name" : "Genova",
+						"population" : 500000
 		    },
 		    "geometry" : {
 		        "type" : "Point",
-		        "coordinates" : [ 9.2, 45.4 ]
+		        "coordinates" : [ 8.9327, 44.4004 ]
 		    }
 		},
+		
+		{
+		    "type" : "Feature",
+		    "id" : "m2",
+		    "properties" : {
+		        "name" : "Zurih",
+						"population" : 2000000
+		    },
+		    "geometry" : {
+		        "type" : "Point",
+		        "coordinates" : [ 8.534, 47.3809 ]
+		    }
+		},
+		
 		{
 		    "type" : "Feature",
 		    "id" : "l1",
