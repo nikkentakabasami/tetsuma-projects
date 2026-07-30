@@ -28,16 +28,16 @@ let selectorsData1 = `
 Предопределённые символьные классы
 . 	Any character
   Не включает в себя переносы строк!!!
-  Если нужно их включить - задавай [\s\S] 
-\d 	A digit: [0-9]
-\D 	A non-digit: [^0-9]
-\s 	A whitespace character: [ \t\n\x0B\f\r]
-\S 	A non-whitespace character: [^\s]
-\w	A word character: [a-zA-Z_0-9]
-\W 	A non-word character: [^\w]
-\n 	new line
-\r 	carriage return
-\t 	tab
+  Если нужно их включить - задавай [\\s\\S] 
+\\d 	A digit: [0-9]
+\\D 	A non-digit: [^0-9]
+\\s 	A whitespace character: [ \\t\\n\\x0B\\f\\r]
+\\S 	A non-whitespace character: [^\\s]
+\\w	A word character: [a-zA-Z_0-9]
+\\W 	A non-word character: [^\\w]
+\\n 	new line
+\\r 	carriage return
+\\t 	tab
 */
 
 //слова из символов и чисел
@@ -119,9 +119,11 @@ let selectorsData1 = `
 
 (?=шаблон) 		Позитивный просмотр вперёд
 (?!шаблон) 		Негативный просмотр вперёд (с отрицанием) 	
+*/
+
 //Просмотр вперёд и назад
 /(?<=text_before).+(?=text_after)/g
-*/
+
 //Просмотр вперёд
 /Людовик(?=X)/g
 
@@ -132,7 +134,9 @@ let selectorsData1 = `
 /(?<![:\\\\])\\/\\//g
 
 //Просмотр вперёд и назад (ленивая квантификация)
-/(?<=Людовик).+?(?=,)/g
+//ищем номера людовиков
+/(?<=Людовик).+?(?=(,|\\n))/g
+
 
 //Просмотр назад
 /(?<=Сергей )[а-яё]+/gi
@@ -181,9 +185,11 @@ let selectorsData1 = `
  \\B 	 Не граница слова
   Слово состоит из латиницы и цифр!
 */
-//Поиск на границе слова
+
+//ищем 'a' в начале слова
 /\\ba/gi
 
+//ищем 'a' в конце слова
 /a\\b/gi
 
 //Поиск не на границе слова
@@ -205,8 +211,8 @@ aaa aaa
 Сергей Иванов, Игорь Иванов
 text_before satori text_after
 1 индейка стоит 30€
-1 индейка стоит $50
-ёршик
+  1 индейка стоит $50
+ёршик  //comment2
 [some. @text. ($with.) braces.]
 @ hi		
 //tenka musou

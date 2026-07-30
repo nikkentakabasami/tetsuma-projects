@@ -1,16 +1,16 @@
 
 let buffer, view, dataView;
 
-let arr1,arr2,arr3;
+let arr1, arr2, arr3;
 
 
 
 
 
 let selectorsData1 = {
-	
-	
-	ArrayBuffer1:`
+
+
+  ArrayBuffer1: `
 /*
 ArrayBuffer
   ссылка  на непрерывную область памяти фиксированной длины.
@@ -50,7 +50,7 @@ for(let num of view) {
 @		
 
 `,
-	TypedArray2:`
+  TypedArray2: `
 /*
 Конструкторы типизированных массивов имеют вид:
 
@@ -104,8 +104,8 @@ arr1.byteLength;
 TypedArray - всего лишь представление!
 */
 `,
-	
-	TypedArray3:`
+
+  TypedArray3: `
 /*
 typedArray.buffer – ссылка на объект ArrayBuffer.
 */
@@ -123,9 +123,9 @@ arr2 = new Uint16Array(arr1.buffer);
 
 ArrayBuffer.isView(arr1) && !(arr1 instanceof DataView);
 `,
-	
-	
-	TypedArray4:`
+
+
+  TypedArray4: `
 
 /*
 Методы TypedArray.
@@ -173,7 +173,7 @@ arr1.fill(99,5);
 arr1.copyWithin(0,4)
 
 	`,
-	TypedArray5:`
+  TypedArray5: `
 /*
 Методы TypedArray
 
@@ -197,8 +197,8 @@ arr2 = new Uint8Array([10, 20, 30, 40, 50]);
 arr2.subarray(1, 4);
 	
 `,
-	
-	TypedArray6:`
+
+  TypedArray6: `
 //Пример: функция объединения типизированных массивов
 joinTypedArrays;
 
@@ -206,10 +206,10 @@ arr1 = new Uint8Array([10, 20, 30, 40, 50]);
 arr2 = new Uint8Array([7,8,9]);
 arr3 = new Uint8Array([11,12,13]);
 joinTypedArrays(arr1,arr2,arr3);
-`,	
-	
-	
-	DataView1:`
+`,
+
+
+  DataView1: `
 
 /*
 DataView
@@ -233,21 +233,21 @@ arr1;
 `,
 
 
-	
+
 }
 
 
-function joinTypedArrays(...chunks){
-	
-	let totalLength = chunks.reduce((sum, arr) => sum + arr.length, 0);
-	let arr = new Uint8Array(totalLength);
-	let offset = 0;
-	for (let chunk of chunks) {
-	  arr.set(chunk, offset);
-	  offset += chunk.length;
-	}
-	return arr;
-	
+function joinTypedArrays(...chunks) {
+
+  let totalLength = chunks.reduce((sum, arr) => sum + arr.length, 0);
+  let arr = new Uint8Array(totalLength);
+  let offset = 0;
+  for (let chunk of chunks) {
+    arr.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return arr;
+
 }
 
 

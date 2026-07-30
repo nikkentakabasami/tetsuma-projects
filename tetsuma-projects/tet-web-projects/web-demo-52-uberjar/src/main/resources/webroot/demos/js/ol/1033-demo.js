@@ -1,6 +1,7 @@
 import * as old from './ol-demo-base.js';
 import * as olu from "./ol-demo-utils.js";
 import * as demodata from "./ol-demo-data.js";
+import * as olds from './ol-demo-styles.js';
 
 
 /**
@@ -36,10 +37,54 @@ let selectorsData1 = {
   },
 
 
+	
+
+	postrender() {
+		
+		//создаём тестовый слой
+		selectorsData1.testFeatures();
+
+		//прорисовка доп. геометрий через ol.render.VectorContext
+	  testLayer.on('postrender', event => {
+
+			const vectorContext = ol.render.getVectorContext(event);
+			
+			//дорисовываем линию
+			vectorContext.setStyle(olds.defaultVectorStyle);
+			vectorContext.drawGeometry(
+			  new ol.geom.LineString([
+			    [0, 0],
+			    [1e7, 1e7],
+			  ]),
+			);
+
+			map.render();
+			
+	  });
+
+	},		
+	
+	
+	
+	
+	
   GeoJSON() {
     /*
     ol.format.GeoJSON
-      Загрузка данных в формате .geojson
+		Формат для считывания фич в формате GeoJSON
+
+		---Опции---
+
+		defaultDataProjection
+		  Default is EPSG:4326.
+
+		featureProjection
+
+		---Методы---
+
+		readFeature(source)
+		readFeatures(source)
+		readGeometry(source)		
     */
 
     testSource = new ol.source.Vector({
@@ -309,7 +354,7 @@ window.getBriefDemoOptions = () => {
   return {
     demoType: DT_OPENLAYERS,
     selectorsData: selectorsData1,
-    selectedOption: "RegularShape",
+    selectedOption: "postrender",
     autoscrollLog1: true,
     formattedJson: true,
     moduleMode: true,

@@ -118,7 +118,15 @@ function stringifyObject(o, indent = "", withBraces = false, asJson = true) {
 	
 	//dom-объект
 	if (o instanceof Element){
-		return o.outerHTML;
+		//return o.outerHTML;
+		
+		let r = o.tagName;
+		if (o.id){
+			r+="#"+o.id;
+		} else if (o.className){
+			r+="."+o.className;
+		}
+		return r;
 	}
 
 	//async функция
@@ -397,20 +405,20 @@ function logFuncCode(f, withHr = false, $log = null){
 function log2Blue(val) {
 	val = stringifyObject(val);
 	val = accordUtils.escapeHTML(val);
-	val = sp_blue+val+sp_end;
+	val = sp_blue+val+sp_end+"\n";
 	$logExp.append(val);
 }
 
 function log2Gray(val) {
 	val = stringifyObject(val);
 	val = accordUtils.escapeHTML(val);
-	val = sp_gray+val+sp_end;
+	val = sp_gray+val+sp_end+"\n";
 	$logExp.append(val);
 }
-function log2Green(val) {
+function log2Green(val, ...vals) {
 	val = stringifyObject(val);
 	val = accordUtils.escapeHTML(val);
-	val = sp_green+val+sp_end;
+	val = sp_green+val+sp_end+"\n";
 	$logExp.append(val);
 }
 

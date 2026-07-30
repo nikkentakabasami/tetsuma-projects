@@ -108,6 +108,13 @@ formatter1.format(new Date());
 formatter2.format(date1);
 formatter3.format(date1);
 
+//альтернативный способ вызова
+date1.toLocaleString("ru", { year: 'numeric', month: 'numeric', day: "numeric" });
+
+
+//Проще форматировать через moment.js
+//moment(date1).format('DD.MM.YYYY, hh:mm:ss');
+
 `,
 	
 intl_DateTimeFormat2:`

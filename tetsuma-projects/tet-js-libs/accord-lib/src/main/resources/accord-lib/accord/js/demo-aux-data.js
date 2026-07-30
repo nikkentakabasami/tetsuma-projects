@@ -12,6 +12,18 @@ let greenBorderDivSnippet = '<div class="green-border"></div>';
 let testUrl = "http://api.github.com/zen";
 let testUrl2 = "http://api.github.com/zen?p1=777&p2=888#4";
 
+
+
+//запросы для получения json
+const sectionsUrl = "../../testAjax/getSectionsJson";
+const testJsonUrl = "../misc/test.json";
+
+//для тестирования get/post запросов - возвращает полученные параметры и тело запроса
+//JqueryAjaxDemoServlet
+const testRequestUrl = "../../testAjax/TestRequest";
+
+
+
 let testString1 = "  Seishun tte a to iu ma to koto.\t";
 
 let namesString = 'Маша, Петя, Марина, Василий';
@@ -35,10 +47,10 @@ let testMap1 = new Map([
 
 
 let testObject1 = {
-    id: 123,
-    name: "bob",
-	age: 30,
-	active: true,
+  id: 123,
+  name: "bob",
+  age: 30,
+  active: true,
 }
 
 let karma = Symbol("karma");
@@ -49,8 +61,8 @@ let testEvent1 = {
   title: "Конференция",
   date: "сегодня",
   user: {
-	id: 50,
-	name: "Patrik"
+    id: 50,
+    name: "Patrik"
   },
   id: 123
 };
@@ -64,9 +76,9 @@ const particleObject = {
 
 
 function heavyTask() {
-    let result = 0;
-    for (let i = 0;i < 1000000;i++) {
-        result += Math.sqrt(i);
-    }
-    return result;
+  let result = 0;
+  for (let i = 0;i < 1000000;i++) {
+    result += Math.sqrt(i);
+  }
+  return result;
 }

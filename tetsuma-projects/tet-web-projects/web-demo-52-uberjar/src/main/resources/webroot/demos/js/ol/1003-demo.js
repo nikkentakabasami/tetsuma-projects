@@ -12,40 +12,40 @@ ol.Overlay
   Похож на Control, но в отличии от него привязан к географической координате.
 
 Опции:
+
+id 	
+
+element
+
+offset
+  сдвиг элемента в пикселях, относительно координаты.
+  (default [0, 0]) 	
+
+position
+  начальная координата
+
+positioning
+  Позиционирование (default 'top-left') 	
+
+stopEvent
+  (default true)
+  Останавливать передачу событий в map
+
+insertFirst 	
+  (default true)
+
+autoPan 	PanIntoViewOptions | boolean (defaults to false) 	
+
+className
+  CSS class
+	Назначается на оверлей, а не на элемент!
+
 	
-	id 	
+Методы: геттеры/сеттеры для опций
 
-	element
-
-	offset
-	  сдвиг элемента в пикселях, относительно координаты.
-	  (default [0, 0]) 	
-
-	position
-	  начальная координата
-	
-	positioning
-	  Позиционирование (default 'top-left') 	
-
-	stopEvent
-	  (default true)
-	  Останавливать передачу событий в map
-
-	insertFirst 	
-	  (default true)
-
-	autoPan 	PanIntoViewOptions | boolean (defaults to false) 	
-
-	className
-	  CSS class
-		Назначается на оверлей, а не на элемент!
-	
-		
-	Методы: геттеры/сеттеры для опций
-	
-	getElement()
-	getPosition()
-	getPositioning()	
+getElement()
+getPosition()
+getPositioning()	
 		
 
 */
@@ -94,18 +94,22 @@ class MyOLDemo extends old.OLDemo {
   }
 
   addOverlay1() {
-		//показ ссылки
+
+    let element = $('<a id="vienna" target="_blank" href="./Vienna">Vienna</a>').get(0);
+
+
+    //показ ссылки
     this.ol1 = new ol.Overlay({
       id: "vienna_overlay",
       position: [2_148_583, 6_126_159],
-      element: document.getElementById('vienna')
+      element: element
     });
     this.map.addOverlay(this.ol1);
 
   }
 
   addOverlay2() {
-		//показ координаты при ctrl+click
+    //показ координаты при ctrl+click
     let element = $('<div id="ol2"></div>').get(0);
 
     this.ol2 = new ol.Overlay({
@@ -157,7 +161,7 @@ class MyOLDemo extends old.OLDemo {
 
 
   addOverlay4() {
-		//показывает координату при клике.
+    //показывает координату при клике.
 
     let element = $('<div id="fetureTooltipOverlay"></div>').get(0);
 

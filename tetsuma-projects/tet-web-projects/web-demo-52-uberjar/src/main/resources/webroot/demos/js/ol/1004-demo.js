@@ -26,27 +26,27 @@ let selectorsData1 = {
     */
 
     //точка
-    f1 = new ol.Feature(new ol.geom.Point([640_950, 5_567_518]));
+    f1 = new ol.Feature(new ol.geom.Point([6e5, 55e5]));
 
+		//с заданием properties
     f2 = new ol.Feature({
-      geometry: new ol.geom.Point([692_598, 5_455_023]),
-      labelPoint: new ol.geom.Point([693_000, 5_456_000]),
-      id: "p2",
+      geometry: new ol.geom.Point([6e5, 54e5]),
+      id: "p2",  //не задаёт id!
       name: 'My Point2',
       population: 4000,
     });
 
     //ломаная линия
     f3 = new ol.Feature(
-      new ol.geom.LineString([[1249135, 5433577], [1392248, 5958212]]));
+      new ol.geom.LineString([[12e5, 54e5], [13e5, 59e5],[15e5, 58e5]]));
 
     //многоугольник
     f4 = new ol.Feature(
-      new ol.geom.Polygon([[[900923, 5295031], [1139449, 5292597], [1027488, 5049257]]]));
+      new ol.geom.Polygon([[[9e5, 52e5], [11e5, 52e5], [10e5, 50e5]]]));
 
-    //круг
+    //круг (центр+радиус)
     f5 = new ol.Feature({
-      geometry: new ol.geom.Circle([679_663, 5_667_780], 40000),
+      geometry: new ol.geom.Circle([6e5, 56e5], 40000),
     });
 
     //id не задать в конструкторе, приходится задавать явно.
@@ -55,9 +55,6 @@ let selectorsData1 = {
     f3.setId("f3");
     f4.setId("f4");
     f5.setId("f5");
-
-
-
 
     olDemoGlobal.vectorSource.addFeatures([f1, f2, f3, f4, f5]);
 
@@ -82,8 +79,7 @@ let selectorsData1 = {
     */
 
     log("keys:", pointFeature.getKeys());
-
-    let name = f1.get("name")
+    let name = pointFeature.get("name");
     log("name:", name);
 
 
@@ -118,9 +114,6 @@ let selectorsData1 = {
     color
     width
   
-  
-    fill: new ol.style.Fill({ color: "rgba(0, 120, 0, 0.2)" }),
-    stroke: new ol.style.Stroke({ color: 'rgb(0, 120, 0)', width: 2 }),
   
     */
 
@@ -235,7 +228,7 @@ let selectorsData1 = {
 
 		/*
 		ol.style.Circle
-		Стиль для точек - рисование кружков.
+		Прорисовка точки кружком
 		
 		fill
 		radius 	
@@ -264,7 +257,7 @@ let selectorsData1 = {
 	RegularShape() {
 		/*
 		ol.style.RegularShape
-		Стиль для точек - рисование полигонов и звёзд.
+		Прорисовка точки полигоном или звездой
 		
 		points
 		radius 	
@@ -280,6 +273,7 @@ let selectorsData1 = {
 		
 		*/
 		
+		//пятиконечная звезда, будет касаться точки нижним лучом
 		vectorStyle = new ol.style.Style({
 		    image: new ol.style.RegularShape({
 		      points: 5,
@@ -301,7 +295,6 @@ let selectorsData1 = {
 
 
 	},	
-	
 	
 	StyleText() {
 	  /*

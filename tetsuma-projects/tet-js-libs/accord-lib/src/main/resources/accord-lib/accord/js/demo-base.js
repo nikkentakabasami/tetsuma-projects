@@ -45,7 +45,7 @@ const defaultBruefDemoOptions = {
   //выполняются до и после выполнения currentScript/демо-кнопок
   beforeExec: null,
   afterExec: null,
-	afterSelectChange: null,
+  afterSelectChange: null,
 
   //функция инициализации всего кода: выводить её при нажатии каждой демо-кнопки
   initFunction: null,
@@ -65,12 +65,12 @@ const defaultBruefDemoOptions = {
 
   //выводить объекты в лог в json-виде
   logObjectsAsJson: true,
-	
-	//форматировать json
-	formattedJson: false,
-	
-	//кастомная функция, форматирующая значения для вывода в лог
-	customFormatter: null,
+
+  //форматировать json
+  formattedJson: false,
+
+  //кастомная функция, форматирующая значения для вывода в лог
+  customFormatter: null,
 
 }
 
@@ -153,21 +153,23 @@ function findMainJs() {
 //добавляет в демку недостающие доп. элементы
 function addTitlePanelButtons() {
 
-	let $tp = $(".titlePanel, .titlePanel2");
-	if (demoOptions.demoType!=DT_SELECT_SINGLE_LOG && demoOptions.demoType!=DT_OPENLAYERS){
-		
-		if (!$tp.children("#hideAuxButton").length) {
-		  $tp.append('<button id="hideAuxButton" type="button" class="acc-btn">Скрыть описание</button>');
-		}
-	}	
+  let $tp = $(".titlePanel, .titlePanel2");
+  if (demoOptions.demoType != DT_SELECT_SINGLE_LOG && demoOptions.demoType != DT_OPENLAYERS) {
+
+    if (!$tp.children("#hideAuxButton").length) {
+      $tp.append('<button id="hideAuxButton" type="button" class="acc-btn">Скрыть описание</button>');
+    }
+  }
 
   if (!$("#bClearLog").length) {
     $tp.append('<button id="bClearLog" type="button" class="acc-btn">Очистить логи</button>');
   }
 
+	/*
   if (!$("#bReload").length && $("#template1").length) {
     $tp.append('<button id="bReload" type="button" class="acc-btn">Перезагрузить песочницу (0)</button>');
   }
+	*/
 
   if (!$tp.children("a").length) {
     $tp.append('<a id="mainsrc" href="#">Исходники (F1)</a>');
@@ -279,12 +281,12 @@ function reloadSandbox() {
   $form1 = $("#form1");
   $form2 = $("#form2");
 
-  
+
   $sel1 = $("#select1");
   $sel2 = $("#select2");
   $sel3 = $("#select3");
-  
-  
+
+
   $formPanel = $(".form-panel");
 
 
@@ -346,11 +348,11 @@ function execDemoFunc() {
 
 
   if (!currentScript.func) {
-		
-		if (!$log2.length){
-			clearLog1()
-		}
-		
+
+    if (!$log2.length) {
+      clearLog1()
+    }
+
     logParsedExpression(currentScript);
   } else {
 
@@ -432,12 +434,12 @@ function initDemoCodeSelect() {
     if (demoOptions.reloadSandboxOnChange) {
       reloadSandbox();
     }
-		
-		if (demoOptions.afterSelectChange) {
-		  demoOptions.afterSelectChange();
-		}
-		
-		
+
+    if (demoOptions.afterSelectChange) {
+      demoOptions.afterSelectChange();
+    }
+
+
 
     //снимаем фокус (иначе будут глюки при нажатии на pgUp/pgDown)
     $mainSelect.blur();
@@ -492,16 +494,16 @@ function addDemoButton(buttonTitle, handler, panelSelector = ".acc-button-panel"
     //выделяем последнюю нажатую кнопку
     $panel.find("button").removeClass("blue-border");
     $newButton.addClass("blue-border");
-	
-	currentScript = mainDataParsed[buttonTitle];
-	if (!currentScript) {
-	  clearLog();
-	  return;
-	}
 
-	clearLog2();
-	logCurrentScript();
-	
+    currentScript = mainDataParsed[buttonTitle];
+    if (!currentScript) {
+      clearLog();
+      return;
+    }
+
+    clearLog2();
+    logCurrentScript();
+
     execDemoFunc();
 
   });
@@ -576,12 +578,18 @@ function initDemo() {
   });
 
   $("#bClearLog").click(e => {
-	if ($log2.length){
-	    clearLog2();
-	} else {
-		clearLog();		
-	}
-	
+    if ($log2.length) {
+      clearLog2();
+    } else {
+      clearLog();
+    }
+
+  });
+
+  $("#bCopy").click(e => {
+		let $l = $log2.length?$log2:$log1;
+		let text = $l.prop("innerText");
+		accordUtils.copyTextToBuffer(text);
   });
 
   $("#bReload").click(e => {
@@ -593,6 +601,12 @@ function initDemo() {
     if (e.keyCode == 112) { //F1
       e.preventDefault();
       helpPopup.toggleVisible();
+    } else if (e.keyCode == 113) { // F2
+      e.preventDefault();
+      refreshCurrentScript();
+		} else if (e.keyCode == 114) { // F3
+		  e.preventDefault();
+			$("#bCopy").click();			
     } else if (e.ctrlKey && e.keyCode == 37) { // <-
       e.preventDefault();
       if (siblingPages[0]) {
@@ -647,7 +661,16 @@ function initDemo() {
 
 
 
+function refreshCurrentScript() {
 
+  if (!currentScript) {
+    location.assign(location.pathname);
+  }
+
+  let url = new URL(location.href);
+  url.searchParams.set("currentScript", currentScript.key);
+  location.assign(url.href)
+}
 
 
 
@@ -682,16 +705,16 @@ function initBriefDemo(options) {
       accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment5.html", null, true);
       break;
 
-  case DT_SELECT_SINGLE_LOG:
-    accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment6.html", null, true);
-    break;
-		case DT_OPENLAYERS:
-		  accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment8.html", null, true);
-		  break;
-	  	  
-		
-		
-	  
+    case DT_SELECT_SINGLE_LOG:
+      accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment6.html", null, true);
+      break;
+    case DT_OPENLAYERS:
+      accordUtils.loadHtmlFragmentXHR("demos/fragments/demoFragment8.html", null, true);
+      break;
+
+
+
+
     default:
       console.log(`demoType ${demoOptions.demoType} not found.`);
       return;
@@ -721,16 +744,20 @@ function initBriefDemo(options) {
     || demoOptions.demoType == DT_SELECT_NO_WP
     || demoOptions.demoType == DT_SELECTORS
     || demoOptions.demoType == DT_REGEXP
-	|| demoOptions.demoType == DT_SELECT_SINGLE_LOG
-	|| demoOptions.demoType == DT_OPENLAYERS
-	
+    || demoOptions.demoType == DT_SELECT_SINGLE_LOG
+    || demoOptions.demoType == DT_OPENLAYERS
+
   ) {
     initDemoCodeSelect("#selectors1");
 
 
-    if (demoOptions.selectedOption) {
+    let url = new URL(location.href);
+    let selectedOption = url.searchParams.get("currentScript");
+
+    //selectedOption = selectedOption || demoOptions.selectedOption;
+    if (selectedOption) {
       //выбрать опцию после загрузки страницы 
-      $("#selectors1").val(options.selectedOption).trigger("change");
+      $("#selectors1").val(selectedOption).trigger("change");
     }
   }
 

@@ -41,6 +41,7 @@ let selectorsData1 = {
 /*
 ol.Graticule
   Слой, рисующий координатную сетку поверх карты.
+	координатная сетка.
 	
 ---Опции---
 
@@ -129,6 +130,7 @@ latLabelStyle
 
 
 	TileDebugInfo:`
+/*
 ol.source.TileDebug
 Источник псевдо-тайлов, прорисовывающий информацию по тайлам заданного источника.
 
@@ -147,7 +149,7 @@ template
 
 color
 (default 'grey') 	
-	
+*/
 `,
 
   TileDebug() {

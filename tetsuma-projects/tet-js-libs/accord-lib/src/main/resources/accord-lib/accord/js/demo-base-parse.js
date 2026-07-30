@@ -93,6 +93,7 @@ function parseSelectorsData(selectorsData) {
 		}
 					
 		let ps = parseScript(currentCode, funcMode);
+		ps.key = key;
 		
 		mainDataParsed[key] = ps;
 		if (funcMode) {

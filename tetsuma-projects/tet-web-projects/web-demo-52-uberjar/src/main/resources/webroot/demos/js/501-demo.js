@@ -127,12 +127,11 @@ str.at(ind)
   (-1 - последний символ)
   
 */
-testString1.charAt(5);
-testString1[5];
 
-testString1.at(-1);
-testString1.at(-5);
-
+"abcd".charAt(1);
+"abcd"[1];
+"abcd".at(-1);
+"abcd".at(-3);
 
 /*
 str.substring(start, end)
@@ -150,8 +149,8 @@ testString1.slice(1,-1);  //убрать первый и последний си
 str.split(separator/regexp, limit)
   разбиение строки (можно и регулярным выражением)
 */
-testString1.split(' ',3);
-testString1.split(/ ?to ?/,3);
+"a b c d".split(' ',3);
+testString1.split(/ to /,3);
 
 /*
 str.concat(...o)
@@ -181,9 +180,9 @@ str.padEnd(targetLength, padString)
 str.repeat(count)
   дублирует строку заданное число раз.
 */
-testString1.padStart(40,'*');
-testString1.padEnd(40,'*#');
-'hello_'.repeat(5);
+"hi".padStart(10,'*');
+"hi".padEnd(10,'*#');
+"hi".repeat(5);
 
 `,	
 	
@@ -278,7 +277,7 @@ function getBriefDemoOptions() {
     afterSandboxReload: null,
     selectedOption: "String_functions",
     debugMode: false,
-//	logObjectsAsJson: true,
+		logObjectsAsJson: false,
     initFunction: () => {
     }
 	

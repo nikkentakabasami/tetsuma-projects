@@ -25,7 +25,7 @@ function getNextPointFeature(restart = false){
 
 
 //стили для рисования стрелок
-let shaft, head, shaftStyle, headStyle, arrowStyle;
+let shaft, head, shaftStyle, headStyle;
 export function createArrowStyle1() {
 
   shaft = new ol.style.RegularShape({
@@ -48,7 +48,6 @@ export function createArrowStyle1() {
   shaftStyle = new ol.style.Style({ image: shaft });
   headStyle = new ol.style.Style({ image: head });
 
-  arrowStyle = [shaftStyle, headStyle];
 }
 
 

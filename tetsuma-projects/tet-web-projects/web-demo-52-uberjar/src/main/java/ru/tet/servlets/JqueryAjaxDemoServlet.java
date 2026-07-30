@@ -1,9 +1,12 @@
 package ru.tet.servlets;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
+
+import org.apache.commons.io.IOUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -29,8 +32,9 @@ public class JqueryAjaxDemoServlet extends HttpServlet {
 
 	public static final String SECTIONS_URL = "/getSectionsJson";
 	public static final String UPDATE_FILTER_URL = "/updateTasksFilter";
-	public static final String TEST_POST_REQUEST_URL = "/TestPostRequest";
-
+	
+	public static final String TEST_REQUEST_URL = "/TestRequest";
+	
 	TSGTasksDao dao;
 
 	@Override
@@ -49,6 +53,14 @@ public class JqueryAjaxDemoServlet extends HttpServlet {
 
 		String paramsString = logRequestParams(req);
 
+		
+		
+		//кидаем тестовую ошибку, если надо
+		String errorTest = req.getParameter("errorTest");
+		if (errorTest!=null) {
+			throw new RuntimeException("Test Error happened in servlet!");
+		}
+		
 		//по умолчанию кодировка обычно ISO-8859-1
 		resp.setContentType("text/plain; charset=UTF-8");
     resp.setCharacterEncoding("UTF-8");		
@@ -77,9 +89,17 @@ public class JqueryAjaxDemoServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 
-		} else if (pathInfo.startsWith(TEST_POST_REQUEST_URL)) {
-			resp.getWriter().write("test post request handled! received params: "+paramsString);
-
+		} else if (pathInfo.startsWith(TEST_REQUEST_URL)) {
+			
+			String body = IOUtils.toString(req.getInputStream(), "UTF-8");
+			logger.info("request body: "+body);
+			
+			resp.getWriter().write("test post request handled!\nreceived params: "+paramsString
+					+",\nreq.getContentType(): "+req.getContentType()
+					+",\nreceived body: "+body
+					);
+			
+			
 		} else {
 			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			resp.getWriter().write("Invalid URL format: " + pathInfo);
@@ -94,8 +114,25 @@ public class JqueryAjaxDemoServlet extends HttpServlet {
 
 		logger.info("get query: " + pathInfo);
 
-		logRequestParams(req);
+		String paramsString = logRequestParams(req);
 
+
+		//кидаем тестовую ошибку, если надо
+		String errorTest = req.getParameter("errorTest");
+		if (errorTest!=null) {
+			throw new RuntimeException("Test Error happened in servlet!");
+		}
+		
+
+		resp.setContentType("text/plain; charset=UTF-8");
+    resp.setCharacterEncoding("UTF-8");		
+		
+		
+		if (pathInfo.startsWith(TEST_REQUEST_URL)) {
+			resp.getWriter().write("test get request handled! received params: "+paramsString);
+			return;
+		}
+		
 		//возврат json-объекта
 		if (pathInfo.startsWith(SECTIONS_URL)) {
 			List<TsgSection> sections = TSGDictionaries.getInstance().getSections();

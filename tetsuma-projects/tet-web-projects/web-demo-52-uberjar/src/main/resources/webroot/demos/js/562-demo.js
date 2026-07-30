@@ -21,19 +21,6 @@ window.innerHeight;
 //Положение окна
 window.pageXOffset;
 window.pageYOffset;
-
-/*
-onerror
-  Обработчик ошибок.
-*/
-
-//подавление сообщений об ошибках в скрипте:
-window.onerror=null;
-
-//или так.
-//window.onerror = ()=>{return true};
-		
-//throw new Error("test2");
 	
 	`,
 
@@ -94,6 +81,22 @@ w1 = window.open(testUrl); !
       body.insertBefore(div, body.firstChild);
     }
 
+
+
+  },
+  window_onerror() {
+    /*
+    onerror
+      Обработчик ошибок.
+    */
+
+    //подавление сообщений об ошибках в скрипте:
+    window.onerror = null;
+
+    //или так.
+    //window.onerror = ()=>{return true};
+
+    throw new Error("test2");
   },
   window_open_click() {
 

@@ -4,37 +4,37 @@ let promise, r;
 let counter = 0;
 
 
-function doTestOperation(){
-	promise = new Promise(function(resolve, reject) {
-	  counter++;
-	  setTimeout(() => {
-		if (counter%2){
-			resolve("done "+counter);
-		} else {
-			reject("some error "+counter);
-		}
-	  }, 1000);
-	  
-	});
-	return promise;
+function doTestOperation() {
+  promise = new Promise(function(resolve, reject) {
+    counter++;
+    setTimeout(() => {
+      if (counter % 2) {
+        resolve("done " + counter);
+      } else {
+        reject("some error " + counter);
+      }
+    }, 1000);
+
+  });
+  return promise;
 }
 
-function makeDemoPromise(promiseName, timeout, withError = false){
-	return new Promise(function(resolve, reject) {
-	  setTimeout(() => {
-		if (withError){
-			reject("some error happened with "+promiseName);
-		} else {
-			resolve(promiseName+" result.");
-		}
-	  }, timeout);
-	  
-	});
+function makeDemoPromise(promiseName, timeout, withError = false) {
+  return new Promise(function(resolve, reject) {
+    setTimeout(() => {
+      if (withError) {
+        reject("some error happened with " + promiseName);
+      } else {
+        resolve(promiseName + " result.");
+      }
+    }, timeout);
+
+  });
 }
 
-async function makeAndLogDemoPromise(promiseName, timeout){
-	let r = await makeDemoPromise(promiseName,timeout)
-	log2(r);
+async function makeAndLogDemoPromise(promiseName, timeout) {
+  let r = await makeDemoPromise(promiseName, timeout)
+  log2(r);
 }
 
 
@@ -50,289 +50,360 @@ function loadScript(src) {
     script.onload = () => resolve(script);
     script.onerror = () => reject(new Error(`Ошибка загрузки скрипта ${src}`));
 
-	document.head.append(script);
-	
+    document.head.append(script);
+
   });
 }
 
-function errorHandler(error){
-	log2("promise error:",error);	
+function errorHandler(error) {
+  log2("promise error:", error);
 }
 
 
 let selectorsData1 = {
 
 
-	Promise_then(){
-		/*
-		Promise
-		  Класс для выполнения длительных, асинхронных задач, 
-		 которые надо отслеживать и получить в конце результат
-		  Сделаны для более читаемого кода, без коллбэков
+  Promise_then() {
+    /*
+    Promise
+      Класс для выполнения длительных, асинхронных задач, 
+     которые надо отслеживать и получить в конце результат
+      Сделаны для более читаемого кода, без коллбэков
+    	
+    promise.then(onFulfilled, onRejected)
+      Обработка результата выполнения
+      Можно вызывать несколько раз, добавляя разные обработчики.
+      Возвращает Promise, что позволяет создавать цепочку промисов.
+    	
 
-		promise.then(onFulfilled, onRejected)
-		  Обработка результата выполнения
-		  Можно вызывать несколько раз, добавляя разные обработчики.
-		  Возвращает Promise, что позволяет создавать цепочку промосов.
-		*/
-		
-		doTestOperation().then(
-			result => {
-				log2("promise finished:",result);	
-			},
-			error => {
-				log2("promise error:",error);	
-			}
-		);
-		
-		logFuncCode(doTestOperation, true);
-	},
-	Promise_then2(){
+    Promise.resolve(value)
+      создаёт успешно выполненный промис с результатом value.
+      не особенно ясно зачем он
 
-		//Альтернативный способ задания обработчиков	
-		doTestOperation()
-			.then(result => {
-				log2("promise finished:",result);	
-			})
-			.catch(error => {
-				log2("promise error:",error);	
-			})
-			.finally(() => {
-				log2("finally.");	
-			})
+    Promise.reject(error)
+      создаёт промис, завершённый с ошибкой error.
+    */
 
-		logFuncCode(doTestOperation, true);		
-		
-	},
-	Promise_all(){
-		
-		/*
-		let promise = Promise.all([...промисы...]);
-		   Возвращает промис, который сработает когда будут завершены все заданные промисы.
-		   Вернёт массив результатов.
-		   Если один из них завершится ошибкой - вернёт ошибку
-		*/
+    doTestOperation().then(
+      result => {
+        log2("promise finished:", result);
+      },
+      error => {
+        log2("promise error:", error);
+      }
+    );
 
-		Promise.all([
-			makeDemoPromise("Porcia",1500),
-			makeDemoPromise("Bianka",500),
-			makeDemoPromise("Mark",700),
-		]).then(result => {
-			log2nl("promise finished:",result);	
-			
-			Promise.all([
-				makeDemoPromise("Porcia",1500),
-				makeDemoPromise("Bianka",500),
-				makeDemoPromise("Mark",700, true),
-			]).then(result => {
-				log2nl("promise finished:",result);	
-			}).catch(error => {
-				log2nl("promise error:",error);	
-			});
-		});
-	},
-	Promise_allSettled(){
-		
-		/*
-		let promise = Promise.allSettled([...промисы...]);
-		   Возвращает промис, который сработает когда будут завершены все заданные промисы.
-		   Вернёт массив объектов вида: {"status": "fulfilled","value":"..."}
-		   Если один из них завершится ошибкой - вернёт ошибку
-		*/
+    logFuncCode(doTestOperation, true);
+  },
+  Promise_then2() {
 
-		Promise.allSettled([
-			makeDemoPromise("Porcia",1500),
-			makeDemoPromise("Bianka",500, true),
-			makeDemoPromise("Mark",700),
-		]).then(result => {
-			log2nl("promise finished:",result);	
-		});
-	},
-	Promise_race(){
-		/*
-		let promise = Promise.race([...промисы...]);
-		  ждёт только первый выполненный промис, из которого берёт результат (или ошибку).
-		*/
-		
-		Promise.race([
-			makeDemoPromise("Porcia",1500),
-			makeDemoPromise("Bianka",500),
-			makeDemoPromise("Mark",700, true),
-		]).then(result => {
-			log2nl("promise finished:",result);	
-		});
-		
-	},
-	Promise_await: async function(){
-		/*
-		await
-		  Ключевое слово await заставит интерпретатор JavaScript ждать до тех пор, пока промис справа от await не выполнится.
-		  После чего оно вернёт его результат, и выполнение кода продолжится.
-		  можно использовать только в функциях с async.
-		  При ошибках - кинет исключение. Ошибки перехватываются через try catch
-		
-		Пока промис не выполнится, JS-движок может заниматься другими задачами: выполнять прочие скрипты, обрабатывать события!
-		Последовательность действий сохраняется только в async-методах!
-		*/
-		
-		try {
+    //Альтернативный способ задания обработчиков	
+    doTestOperation()
+      .then(result => {
+        log2("promise finished:", result);
+      })
+      .catch(error => {
+        log2("promise error:", error);
+      })
+      .finally(() => {
+        log2("finally.");
+      })
 
-			r = await makeDemoPromise("Porcia",1500);
-			log2nl("promise finished:",r);	
+    logFuncCode(doTestOperation, true);
 
-			r = await makeDemoPromise("Mark",700, true),
-			log2nl("promise finished:",r);	
-						
-		} catch (err) {
-			log2nl("promise error:",err);	
-		}		
-		
-		
-	},
-	Promise_async(){
+  },
+  resolve() {
+    /*
+    Promise.resolve(value)
+      создаёт успешно выполненный промис с результатом value.
+      не особенно ясно зачем он
+  
+    Promise.reject(error)
+      создаёт промис, завершённый с ошибкой error.
+    */
 
-		/*		
-		async
-		  ключевое слово для функций
-		  отмеченная функция всегда возвращает промис
-		  Значения других типов оборачиваются в завершившийся успешно промис автоматически.
-		*/
-		
-		async function f() {
-		  return "async function result.";
-		}
+    let p1 = Promise.resolve("porcia");
 
-		f().then(r=>log2(r));
-		
-		
-	},
-	Promise_fetch: async function(){
+    p1.then(result => {
+      log2("promise finished:", result);
+    });
 
-		/*
-		fetch() возвращает промис, который можно ожидать с помощью await.
-		*/				
-				
-		try {
-		  const response = await fetch("../fragments/anchorsSandbox.html");
-		  const htmlContent = await response.text();
-
-		  log2(htmlContent);
-
-		} catch (err) {
-			log2nl("promise error:",err);	
-		}		
-		
-	},
-	Promise_chain(){
-		
-		/*
-		Цепочка промисов.
-		  promise.then() сам возвращает Promise, что позволяет создавать цепочку промисов.
-		  
-		Цепочка позволяет выполнять асинхронные задачи последовательно, без излишней вложенности
-		*/				
-				
-		//пример с простыми значениями
-		makeDemoPromise("Porcia",700)
-		.then(result=>{
-			log2(result);
-			return 10;
-		})
-		.then(result=>{
-			log2(result);
-			return result*3;
-		})
-		.then(result=>{
-			log2(result);
-			return result*3;
-		});
+  },
 
 
-				
-	},
-	Promise_chain2(){
 
-		//пример с длительными промисами
-		//добавляем в пример обработчик ошибок errorHandler
-		makeDemoPromise("Porcia",700)
-		.then(result=>{
-			log2(result);
-			return makeDemoPromise("bob",800)
-		},errorHandler)
-		.then(result=>{
-			log2(result);
-			return makeDemoPromise("Alice",800)
-		},errorHandler)
-		.then(result=>{
-			log2(result);
-			return makeDemoPromise("Porcia",500, true)
-		},errorHandler)
-		.then(result=>{
-			log2(result);
-		},errorHandler)
-		
-		
-	},
-	Promise_chain3(){
-		
-		//последовательная загрузка скриптов
-		loadScript("../misc/test_script1.js")
-		  .then(script => loadScript("../misc/test_script2.js"),errorHandler)
-		  .then(script => loadScript("../misc/test_script3.js"),errorHandler)
-				
-		  logFuncCode(loadScript, true);
-		
-	},
-		
+  Promise_then3() {
 
-	Promise_chain_array: async function(){
-		let arr1 = ["shichika","hachi","retsu","hasshin"];
+    //Простой пример1
+    let p = new Promise(function(resolve, reject) {
+      // эта функция выполнится автоматически, при вызове new Promise
 
-		//обработка строк выполняется не последовательно!
-		arr1.forEach((line,ind)=>{
-			if (ind==1){
-				log2(line);
-				return;
-			}
-			//async функция, содержащая await
-			makeAndLogDemoPromise(line,500);
-		});
-		
-		//и тут тоже!
-		for(let i=0; i<arr1.length;i++){
-			let line = "for: "+arr1[i];
-			if (i==1){
-				log2(line);
-				continue;
-			}
-			//async функция, содержащая await
-			makeAndLogDemoPromise(line,500);
-		}
-	},
-	
-	
-	Promise_chain_array2(){
-		let arr1 = ["shichika","hachi","retsu","hasshin"];
-		
-		//последовательная обработка через цепочку промисов
-		arr1.reduce((promise, item) => {
-		  const line = "for: " + item;
-		  return promise.then(r => {
-		    log2(r);
-		    if (item === "hachi"){
-		      return line;
-		    }
-		    return makeDemoPromise(line, 800);
-		  });
-		}, Promise.resolve("start"))
-		.then(r=>{
-			//последний элемент
-			log2(r);
-		});
-		
-	},	
-		
-	
+      // через 1 секунду сигнализировать, что задача выполнена с результатом "done"
+      setTimeout(() => resolve("done"), 1000);
+    });
+
+    p.then(
+      result => {
+        log2("promise finished:", result);
+      },
+      error => {
+        log2("promise error:", error);
+      }
+    );
+
+
+  },
+  async Promise_then4() {
+
+    //Простой пример2
+    let p = new Promise(function(resolve, reject) {
+      setTimeout(() => resolve("done"), 1000);
+    });
+
+    let result = await p;
+    log2("promise finished:", result);
+
+  }, Promise_all() {
+
+    /*
+    let promise = Promise.all([...промисы...]);
+       Возвращает промис, который сработает когда будут завершены все заданные промисы.
+       Вернёт массив результатов.
+       Если один из них завершится ошибкой - вернёт ошибку
+    */
+
+    Promise.all([
+      makeDemoPromise("Porcia", 1500),
+      makeDemoPromise("Bianka", 500),
+      makeDemoPromise("Mark", 700),
+    ]).then(result => {
+      log2nl("promise finished:", result);
+
+      Promise.all([
+        makeDemoPromise("Porcia", 1500),
+        makeDemoPromise("Bianka", 500),
+        makeDemoPromise("Mark", 700, true),
+      ]).then(result => {
+        log2nl("promise finished:", result);
+      }).catch(error => {
+        log2nl("promise error:", error);
+      });
+    });
+
+    logFuncCode(makeDemoPromise);
+  },
+  Promise_allSettled() {
+
+    /*
+    let promise = Promise.allSettled([...промисы...]);
+       Возвращает промис, который сработает когда будут завершены все заданные промисы.
+       Вернёт массив объектов вида: {"status": "fulfilled","value":"..."}
+       Если один из них завершится ошибкой - не прервёт выполнение
+    */
+
+    Promise.allSettled([
+      makeDemoPromise("Porcia", 1500),
+      makeDemoPromise("Bianka", 500, true),
+      makeDemoPromise("Mark", 700),
+    ]).then(result => {
+      log2nl("promise finished:", result);
+    });
+
+    logFuncCode(makeDemoPromise);
+  },
+  Promise_race() {
+    /*
+    let promise = Promise.race([...промисы...]);
+      ждёт только первый выполненный промис, из которого берёт результат (или ошибку).
+    */
+
+    Promise.race([
+      makeDemoPromise("Porcia", 1500),
+      makeDemoPromise("Bianka", 500),
+      makeDemoPromise("Mark", 700, true),
+    ]).then(result => {
+      log2nl("promise finished:", result);
+    });
+
+  },
+  Promise_await: async function() {
+    /*
+    await
+      Ключевое слово await заставит интерпретатор JavaScript ждать до тех пор, пока промис справа от await не выполнится.
+      После чего оно вернёт его результат, и выполнение кода продолжится.
+      можно использовать только в функциях с async.
+      При ошибках - кинет исключение. Ошибки перехватываются через try catch
+  	
+    Пока промис не выполнится, JS-движок может заниматься другими задачами: выполнять прочие скрипты, обрабатывать события!
+    Последовательность действий сохраняется только в async-методах!
+    */
+
+    try {
+
+      r = await makeDemoPromise("Porcia", 1500);
+      log2nl("promise finished:", r);
+
+      r = await makeDemoPromise("Mark", 700, true),
+        log2nl("promise finished:", r);
+
+    } catch (err) {
+      log2nl("promise error:", err);
+    }
+
+
+  },
+  Promise_async() {
+
+    /*		
+    async
+      ключевое слово для функций
+      отмеченная функция всегда возвращает промис
+      Значения других типов оборачиваются в завершившийся успешно промис автоматически.
+    */
+
+    async function f() {
+      return "async function result.";
+    }
+
+    f().then(r => log2(r));
+
+
+  },
+  Promise_fetch: async function() {
+
+    /*
+    fetch() возвращает промис, который можно ожидать с помощью await.
+    */
+
+    try {
+      const response = await fetch("../fragments/anchorsSandbox.html");
+      const htmlContent = await response.text();
+
+      log2(htmlContent);
+
+    } catch (err) {
+      log2nl("promise error:", err);
+    }
+
+  },
+  Promise_chain() {
+
+    /*
+    Цепочка промисов.
+      promise.then() сам возвращает Promise, что позволяет создавать цепочку промисов.
+      
+    Цепочка позволяет выполнять асинхронные задачи последовательно, без излишней вложенности
+    */
+
+    //пример с простыми значениями
+    makeDemoPromise("Porcia", 700)
+      .then(result => {
+        log2(result);
+        return 10;
+      })
+      .then(result => {
+        log2(result);
+        return result * 3;
+      })
+      .then(result => {
+        log2(result);
+        return result * 3;
+      });
+
+
+
+  },
+  Promise_chain2() {
+
+    //пример с длительными промисами
+    //добавляем в пример обработчик ошибок errorHandler
+    makeDemoPromise("Porcia", 700)
+      .then(result => {
+        log2(result);
+        return makeDemoPromise("bob", 800)
+      }, errorHandler)
+      .then(result => {
+        log2(result);
+        return makeDemoPromise("Alice", 800)
+      }, errorHandler)
+      .then(result => {
+        log2(result);
+        return makeDemoPromise("Porcia", 500, true)
+      }, errorHandler)
+      .then(result => {
+        log2(result);
+      }, errorHandler)
+
+
+  },
+  Promise_chain3() {
+
+    //последовательная загрузка скриптов
+    loadScript("../misc/test_script1.js")
+      .then(script => loadScript("../misc/test_script2.js"), errorHandler)
+      .then(script => loadScript("../misc/test_script3.js"), errorHandler)
+
+    logFuncCode(loadScript, true);
+
+  },
+
+
+  Promise_chain_array: async function() {
+    logFuncCode(makeAndLogDemoPromise);
+
+    let arr1 = ["shichika", "hachi", "retsu", "hasshin"];
+
+    //обработка строк выполняется не последовательно!
+    arr1.forEach((line, ind) => {
+      if (ind == 1) {
+        log2(line);
+        return;
+      }
+      //async функция, содержащая await
+      makeAndLogDemoPromise(line, 500);
+    });
+
+    //и тут тоже!
+    for (let i = 0;i < arr1.length;i++) {
+      let line = "for: " + arr1[i];
+      if (i == 1) {
+        log2(line);
+        continue;
+      }
+      //async функция, содержащая await
+      makeAndLogDemoPromise(line, 500);
+    }
+
+  },
+
+
+  Promise_chain_array2() {
+    let arr1 = ["shichika", "hachi", "retsu", "hasshin"];
+
+    //последовательная обработка массива через цепочку промисов
+    //последовательность будет сохранена
+    let lastPromise = arr1.reduce((promise, item) => {
+      const line = "for: " + item;
+      return promise.then(r => {
+        log2(r);
+        //этот элемент возвращаем сразу, без обработки
+        if (item === "hachi") {
+          return line;
+        }
+        return makeDemoPromise(line, 800);
+      });
+    }, Promise.resolve("start"));
+
+    lastPromise.then(r => {
+      //последний элемент
+      log2(r);
+    });
+
+
+
+  },
+
+
 }
 
 

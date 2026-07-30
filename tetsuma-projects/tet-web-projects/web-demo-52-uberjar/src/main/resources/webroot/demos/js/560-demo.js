@@ -25,7 +25,7 @@ let selectorsData1 = {
       48, 2.87, 3.14, Math.PI
     );
 
-    console.log("my object: %o is based", testObject);
+    console.log("my object: %o is based", testObject1);
 
     /*
     info, warn, error

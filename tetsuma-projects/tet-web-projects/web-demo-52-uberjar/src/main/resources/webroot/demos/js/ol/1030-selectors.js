@@ -33,7 +33,8 @@ state
   Состояние: undefined, loading, ready, error
 
 wrapX
-  (default false) 	
+(default false) 	
+позволяет бесконечно прокручивать карту по горизонтали (бесконечная карта)
 
 interpolate
   (default false) 	
@@ -190,7 +191,11 @@ ol.layer.Vector
 ---Опции---
 
 style
-  Стили для фич
+Стили для фич
+
+source	ol.source.Vector
+
+
 
 */
 olDemoGlobal.createVectorLayer
@@ -246,7 +251,7 @@ ol.source.Cluster
 ---Опции---	
 		
 source	ol.source.Vector
-  Базовый векторынй источник данных.
+  Базовый векторный источник данных.
 
 distance	number
   Минимальное расстояние между кластерами в пикселях.

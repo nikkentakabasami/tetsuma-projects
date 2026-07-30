@@ -25,6 +25,9 @@ export let testFeatures = {
 };
 
 
+window.testFeaturesGlobal = testFeatures;
+
+
 //массив объектов, на основе которых будут созданы фичи
 export const demoObjects2 = [
   {

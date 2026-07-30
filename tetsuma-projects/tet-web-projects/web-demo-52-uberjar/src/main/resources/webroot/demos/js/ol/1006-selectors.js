@@ -226,7 +226,7 @@ export let selectorsData1 = {
     map.addControl(testControl);
     testControl.addShowBaseDebugInfoHandler();
     testControl.setLines("hello", "there");
-    log(testControl)
+    log(DebugInfoControl)
 
 
   },
@@ -240,7 +240,7 @@ export let selectorsData1 = {
     map.addControl(testControl);
     testControl.init();
 
-    log(testControl)
+    log(CurrentZoomControl)
 
 
   },

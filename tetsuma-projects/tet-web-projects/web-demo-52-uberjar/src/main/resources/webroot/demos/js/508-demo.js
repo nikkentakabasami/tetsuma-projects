@@ -40,7 +40,7 @@ d2 = new Date(d1.getTime());
 `,
 	
 	Date_parts: `
-d1 = new Date();
+d1 = new Date(2014, 11, 31, 12, 30, 0);	//31.12.2014 12:30:00
 
 //Получение компонентов даты
 d1.getFullYear();
@@ -57,9 +57,21 @@ d1.getMilliseconds();
 d1.getTimezoneOffset();	//Возвращает разницу между местным и UTC-временем, в минутах.
 
 //Установка компонентов даты
+
+//setFullYear(yearValue, monthValue, dateValue)
+
 d1.setFullYear(2015,0,5);	!
+
+d1;
+
 d1.setMonth(2);	!
+
+d1;
+
 d1.setDate(100);	!
+
+d1;
+
 d1.setMinutes(0);	!
 d1.setSeconds(0);	!
 d1.setMilliseconds(0);	!
@@ -83,9 +95,18 @@ Date.toLocaleString([locales [, options]])
   Форматирование через локаль и опции. См. Intl.DateTimeFormat
 */
 
-d1 = new Date(); !
+@
+d1 = new Date();
 
-d1.toLocaleString("ru", { year: 'numeric', month: 'numeric', day: "numeric" }); 
+d1.toLocaleString("ru", {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric"
+}); 
+@
 
 //Форматирование вручную:
 accordUtils.formatDate;

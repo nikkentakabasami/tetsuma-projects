@@ -28,7 +28,8 @@ options.lastModified
 `,
 	File_get:`
 //Получаем объекты File из <input type="file">
-files = $("#if1").get(0).files; !
+files = document.getElementById("if1").files; !
+
 file = files[0]; !
 
 file.size;

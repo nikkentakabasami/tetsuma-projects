@@ -214,10 +214,10 @@ ol.extent.getArea(ext1)
 ol.extent
 
 extend(extent1, extent2, opt_extent)
-  объединение
+  записывает в extent1 объединение двух экстентов
 
 getIntersection(extent1, extent2, opt_extent)
-  пересечение	
+  возвращает пересечение
 	
 containsCoordinate(extent, coordinate)
 containsExtent(extent1, extent2)
@@ -227,8 +227,6 @@ equals(extent1, extent2)
 isEmpty(extent)	
   Проверки
 	
-extend(extent1, extent2)
-  записывает в extent1 объединение двух экстентов 
 */
 
 ext1 = [100,100, 200, 200]; !
@@ -237,8 +235,13 @@ ext2 = [10,150, 300, 160]; !
 //объединение двух экстентов
 ol.extent.extend(ext1, ext2);
 
+ext1;
+
 //пересечение
 ol.extent.getIntersection(ext1, ext2);
+
+ext1;
+
 
 //пустое пересечение
 ext3 = ol.extent.getIntersection(ext1, [1,1,10,10]);
@@ -272,6 +275,7 @@ ol.coordinate.rotate(coord1, Math.PI / 2);
 
 `,
   coord2: `
+ol.coordinate
 
 coord1 = [7.8532, 47.9123]; !
 

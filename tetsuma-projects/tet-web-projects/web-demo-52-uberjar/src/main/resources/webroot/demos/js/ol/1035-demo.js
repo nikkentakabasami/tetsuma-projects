@@ -3,36 +3,42 @@ import * as olu from "./ol-demo-utils.js";
 
 import * as olds from './ol-demo-styles.js';
 
-import {drawArrows,drawTestFeatures} from './1035-arrows.js';
+import { drawArrows, drawTestFeatures } from './1035-arrows.js';
 
 //объявляем глобальные переменные
 "canvasElement,vectorContext,cc,f1,f2,f3".split(",").forEach(name => window[name] = null);
 
 
 let selectorsData1 = {
-  toContext() {
+  VectorContext() {
     /*
-    ol.render.toContext(context, options) {CanvasImmediateRenderer}
-      Создаёт VectorContext, привязанный к заданному элементу canvas.
-      Это позволяет тестировать стили и прорисовку фич.
-	
-    ol.render.getVectorContext(event)
+  	
+    ol.render.VectorContext
+      Контекст для прорисовки геометрий на canvas.
+
+    Реализации:
+    ol.render.canvas.Immediate
+    ol.render.webgl.Immediate
+
+    Методы:
+
+    setStyle(style)
+    drawCircle(geometry)
+    drawFeature(feature, style)
+    drawGeometry(geometry)		
+  	
     */
 
     log(createMap);
   },
 
 
-  vectorContextt1() {
+  toContext() {
     /*
-    ol.render.VectorContext
-    умеет рисовать геометрии на canvas.
+    ol.render.toContext(context, options)
+      Создаёт VectorContext, привязанный к заданному элементу canvas.
+      Это позволяет тестировать стили и прорисовку фич.
   	
-    setStyle(style)
-  	
-    drawCircle(geometry)
-    drawFeature(feature, style)
-    drawGeometry(geometry)
     */
     vectorContext.setStyle(olds.defaultVectorStyle);
 
@@ -55,6 +61,29 @@ let selectorsData1 = {
     vectorContext.drawGeometry(new ol.geom.Point([88, 88]));
 
   },
+
+  getVectorContext() {
+    /*
+    ol.render.getVectorContext(event)
+      Получение VectorContext из событий прорисовки
+  
+    testLayer.on('postrender', event => {
+      const vectorContext = ol.render.getVectorContext(event);
+  
+      //дорисовываем линию
+      vectorContext.setStyle(olds.defaultVectorStyle);
+      vectorContext.drawGeometry(
+        new ol.geom.LineString([
+          [0, 0],
+          [1e7, 1e7],
+        ]),
+      );
+      map.render();
+    });
+  
+    */
+  },
+
   drawFeature() {
     /*
     ol.render.VectorContext
@@ -80,18 +109,18 @@ let selectorsData1 = {
   },
 
   drawArrows() {
-		drawArrows(vectorContext);
-		log(drawArrows);
+    drawArrows(vectorContext);
+    log(drawArrows);
   },
 
-	drawStars() {
-		drawTestFeatures(vectorContext);
-		log(drawTestFeatures);
-		
-		
-	},
-	
-	
+  drawStars() {
+    drawTestFeatures(vectorContext);
+    log(drawTestFeatures);
+
+
+  },
+
+
 
   doc1: `
 /*
@@ -128,24 +157,24 @@ function createMap() {
     size: [400, 400],
     //		pixelRatio: 10,
   });
-	drawGrid();
+  drawGrid();
 
 }
 
-function drawGrid(){
-	if (!cc)
-	  return;
-	cc.clearRect(0, 0, canvasElement.width, canvasElement.height);
-	cc.beginPath();
-	for (let y = 50;y < 400;y += 50) {
-			cc.moveTo(0, y);
-			cc.lineTo(400, y);
-			cc.moveTo(y, 0);
-			cc.lineTo(y, 400);
-	}
-	cc.strokeStyle = "#e6e6e6";
-	cc.stroke();	  
-	
+function drawGrid() {
+  if (!cc)
+    return;
+  cc.clearRect(0, 0, canvasElement.width, canvasElement.height);
+  cc.beginPath();
+  for (let y = 50;y < 400;y += 50) {
+    cc.moveTo(0, y);
+    cc.lineTo(400, y);
+    cc.moveTo(y, 0);
+    cc.lineTo(y, 400);
+  }
+  cc.strokeStyle = "#e6e6e6";
+  cc.stroke();
+
 }
 
 
@@ -161,8 +190,8 @@ window.getBriefDemoOptions = () => {
     beforeExec: () => {
     },
     afterSelectChange: () => {
-			//рисуем сетку
-			drawGrid();
+      //рисуем сетку
+      drawGrid();
 
     },
     initFunction: () => {

@@ -2,6 +2,9 @@
 
 let n1, n2, n3, n4;
 
+//let guest,editor,admin;
+
+
 //показать число в 10-м и 2-м форматах
 function fb(n){
 	
@@ -163,6 +166,46 @@ fb(-13 >> 2);
 fb(13 >>> 2);
 fb(-13 >>> 2);
 fb(-1>>>1);
+`,
+
+Number_masks(){
+	
+	//Пример: использование масок
+	let ACCESS_ADMIN = 1;          // 00001
+	let ACCESS_GOODS_EDIT = 2;   // 00010
+	let ACCESS_GOODS_VIEW = 4;     // 00100
+	let ACCESS_ARTICLE_EDIT = 8; // 01000
+	let ACCESS_ARTICLE_VIEW = 16;  // 10000
+
+	let guest = ACCESS_ARTICLE_VIEW | ACCESS_GOODS_VIEW; // 10100
+	let editor = guest | ACCESS_ARTICLE_EDIT | ACCESS_GOODS_EDIT; // 11110
+	let admin = editor | ACCESS_ADMIN; // 11111
+
+	
+	log2(editor & ACCESS_ADMIN); // 0, доступа нет
+
+	log2(editor & ACCESS_ARTICLE_EDIT); // 8, доступ есть
+
+	
+	
+	
+},
+
+round:`
+
+/*
+Бинарные операторы можно использовать для округления чисел
+  Битовые операторы делают любое число 32-битным целым, обрезая десятичную часть.
+В результате побитовая операция, которая не изменяет число, например, двойное битовое НЕ – округляет его:
+*/
+
+~~12.345; 	// 12
+
+12.345 ^ 0; 	// 12
+
+12.3 * 14.5 ^ 0; 	// (=178) "12.3 умножить на 14.5 и округлить"
+
+
 `,
 
 

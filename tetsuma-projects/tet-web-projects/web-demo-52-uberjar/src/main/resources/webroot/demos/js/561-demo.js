@@ -110,6 +110,16 @@ url2.pathname;
 url2.href;		//полный URL-адрес
 url2.search;	//строка параметров, начинается с вопросительного знака ?
 url2.hash;		//начинается с символа #
+
+/*
+url.searchParams;
+объект класса URLSearchParams. 
+Позволяет удобнобно получить параметры запроса.
+*/
+
+Array.from(url2.searchParams)
+
+
 `,
 
   URLSearchParams: `
@@ -135,6 +145,26 @@ for(let [name, value] of url1.searchParams) {
 }
 @!	
 
+
+//получить параметры запроса
+url1 = new URL("http://api.github.com/zen?p1=dark&p2=room"); !
+
+//получение параметров в виде массива
+Array.from(url1.searchParams);
+
+//перебрать параметры
+@
+for(let [name, value] of url1.searchParams) {
+  log2(name+" - "+value);
+}
+@
+
+//Задать свои параметры запроса
+@
+url1.search = "";
+url1.searchParams.set("topic", "More webdev")
+url1.href;
+@
 
 
 `,
@@ -209,6 +239,13 @@ sp1.toString()
     let href = URL.createObjectURL(blob1);
     log2(href);
 
+		//Теперь при клике по ссылке - данные будут скачиваться в виде файла
+		let $link = $("#link1");
+		$link.text("download message")
+		$link.attr("download", "hello.txt")
+		$link.attr("href", URL.createObjectURL(blob1))
+		
+		
     /*
     URL.revokeObjectURL(objectURL)
       удаляет внутреннюю ссылку на объект, что позволяет удалить его сборщику мусора		

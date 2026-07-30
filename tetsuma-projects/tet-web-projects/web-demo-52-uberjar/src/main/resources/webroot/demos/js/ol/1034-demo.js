@@ -1,5 +1,6 @@
 import * as old from './ol-demo-base.js';
 import * as olu from "./ol-demo-utils.js";
+import * as olds from './ol-demo-styles.js';
 import { DebugInfoControl } from "./ol-controls2.js"
 
 
@@ -115,10 +116,26 @@ postrender
     map.on('dblclick', event => {
       let pixel = event.pixel;
       let coord = map.getCoordinateFromPixel(pixel);
-      log("dblclick, pixel=", pixel, "evt.pixel", pixel, "coord=", coord);
+      log("dblclick, pixel=", pixel, "coord=", coord);
     });
 
   },
+	
+	postcompose() {
+
+	  map.on('postcompose', event => {
+
+			 const ctx = event.context;
+			 //не работает
+			 if (ctx){
+				ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
+				ctx.fillRect(0, 0, canvas.width, canvas.height);			
+			 }
+			
+	  });
+
+	},	
+	
 
   map_methods1: `
 /*
@@ -165,11 +182,6 @@ removeOverlay(overlay)
     });
 
   },
-
-
-
-
-
 
 
   checkFeatures() {
@@ -227,10 +239,6 @@ removeOverlay(overlay)
     });
   },
 
-  forEachFeatureAtPixel() {
-
-
-  },
 
 
 
@@ -301,7 +309,7 @@ window.getBriefDemoOptions = () => {
   return {
     demoType: DT_OPENLAYERS,
     selectorsData: selectorsData1,
-    //selectedOption: "checkFeatures",
+    selectedOption: "postcompose",
     autoscrollLog1: true,
     formattedJson: true,
     moduleMode: true,

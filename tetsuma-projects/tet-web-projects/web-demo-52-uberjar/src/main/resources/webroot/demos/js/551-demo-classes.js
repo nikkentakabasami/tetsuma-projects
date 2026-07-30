@@ -21,7 +21,8 @@ class User {
 
 
   //Статический метод
-  static staticMethod1() {    //аналогично назначению User.staticMethod = function() {...
+	//аналогично назначению User.staticMethod1 = function() {...
+  static staticMethod1() {
     log2("staticMethod1 message");
     return true;
   }
@@ -119,7 +120,7 @@ class Rabbit extends Animal {
     this.earLength = earLength;
   }
 
-  //добавение метода
+	//добавление метода
   hide() {
     log2(`${this.name} прячется!`);
   }

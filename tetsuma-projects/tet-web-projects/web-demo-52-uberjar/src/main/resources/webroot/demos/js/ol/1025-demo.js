@@ -30,6 +30,10 @@ let selectorsData1 = {
     new ol.geom.Polygon(coordinates)
       Задаётся двойной массив координат.
 
+		ol.geom.MultiPoint
+		ol.geom.MultiLineString
+		ol.geom.MultiPolygon
+		  мульти геометрии
     */
 
     log(addTestGeoms);
@@ -123,7 +127,8 @@ function addTestGeoms() {
   geoms.geomLine = new ol.geom.LineString([[2e6, 2e6], [1e6, 1e6], [1e6, 2e6]]);
   geoms.geomPolygon = new ol.geom.Polygon([[[3e6, 3e6], [4e6, 3e6], [4e6, 4e6]]]);
   geoms.geomCircle = new ol.geom.Circle([5e6, 7e6], 1e6);
-
+	geoms.geomMultiPoint = new ol.geom.MultiPoint([[5e5, 5e5],[6e5, 6e5],[7e5, 7e5]]);
+	
   Object.assign(window, geoms);
 
   let features = Object.values(geoms).map(geom => new ol.Feature(geom));

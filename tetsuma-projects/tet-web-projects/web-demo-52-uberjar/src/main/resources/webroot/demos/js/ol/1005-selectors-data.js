@@ -188,16 +188,14 @@ mapView.adjustCenter([50000, 50000]);
     	
     */
 
-    //позиционировать карту так, чтобы показывался заданная геометрия, с заданными опциями
+    //позиционировать карту так, чтобы показывался полигон с заданным паддингом
     mapView.fit(polygonFeature.getGeometry(), { padding: [170, 50, 30, 150] });
 
   },
   fit2() {
-    const feature = vectorSource.getFeatures()[1];
-    const point = feature.getGeometry();
 
     //точка будет показана в центре карты
-    mapView.fit(point, { padding: [170, 50, 30, 150], minResolution: 50 });
+    mapView.fit(pointFeature.getGeometry(), { padding: [50, 50, 50, 50], minResolution: 50 });
 
   },
 

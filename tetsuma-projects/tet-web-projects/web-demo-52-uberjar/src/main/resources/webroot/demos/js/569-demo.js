@@ -1,14 +1,14 @@
 
 
-let url1,url2,url3,url4;
+let url1, url2, url3, url4;
 let blob1, blob2, blob3;
 let arr1, buffer1, obj1, json1;
 
 let selectorsData1 = {
-	
-	
-		
-	blob_constructors:`
+
+
+
+  blob_constructors: `
 /*
 Blob
   файло-подобный объект, или сырые немутабельные данные.
@@ -36,7 +36,7 @@ blob2 = new Blob([arr1, ' ', 'world'], {type: 'text/plain'}); !
 blob2.text();
 
 // создадим Blob из JSON
-json1 = JSON.stringify(testObject, null, 2); !
+json1 = JSON.stringify(testObject1, null, 2); !
 blob3 = new Blob([json1], {type: "application/json"}); !	
 
 blob3.text();
@@ -48,8 +48,8 @@ blob2.type;
 
 
 `,
-	
-	blob_methods:`
+
+  blob_methods: `
 # Blob - методы
   
 arr1 = new Uint8Array([72, 101, 108, 108, 111]);
@@ -92,152 +92,152 @@ blob.bytes()
 //blob1.bytes();
 
 `,
-	
-	blob_stream(){
-		/*
-		Blob - методы 2
-		  
-		  
-		blob.stream()
-		  Возвращает ReadableStream с данными блоба
-		*/
-		
-		arr1 = new Uint8Array([72, 101, 108, 108, 111]);
-		blob1 = new Blob(["<html>",arr1,"</html>"], {type: 'text/html'});
-		
-		let stream = blob1.stream();
-		
-		const reader = stream.getReader();
-		let chunks = [];
 
-		reader.read().then(function processData({ done, value }) {
-		  if (done) {
-			//объединяем все данные в один Uint8Array
-			let totalLength = chunks.reduce((sum, arr) => sum + arr.length, 0);
-			let arr = new Uint8Array(totalLength);
-			let offset = 0;
-			for (let chunk of chunks) {
-			  arr.set(chunk, offset);
-			  offset += chunk.length;
-			}
+  blob_stream() {
+    /*
+    Blob - методы 2
+      
+      
+    blob.stream()
+      Возвращает ReadableStream с данными блоба
+    */
 
-			//декодируем			
-			let str = new TextDecoder().decode(arr);
-		    log2('Поток завершён:', str);
-		    return;
-		  }
-		  
-		  //value - Uint8Array
-		  chunks.push(value);
-		  reader.read().then(processData);
-		});
-		
-	},
-	
-	url_createObjectURL(){
+    arr1 = new Uint8Array([72, 101, 108, 108, 111]);
+    blob1 = new Blob(["<html>", arr1, "</html>"], { type: 'text/html' });
 
-		/*
-		URL.createObjectURL
-		  создаёт url-ссылку на Blob-объект.
-		  Это быстрый и безопасный вариант создавать ссылки на динамические файлы.
-		*/
-		
-		blob1 = new Blob(["Hello, world!"], {type: 'text/plain'});
+    let stream = blob1.stream();
 
-		//Теперь при клике по ссылке - данные будут скачиваться в виде файла
-		let $link = $("#link1"); 
-		$link.text("download message")
-		$link.attr("download","hello.txt")
-		$link.attr("href",URL.createObjectURL(blob1))
-		
-		
-	},
-	fileReader_readAsDataURL(){
+    const reader = stream.getReader();
+    let chunks = [];
 
-		/*
-		fileReader.readAsDataURL(blob)
-		  конвертация Blob-объекта в строку с кодировкой base64.
-		
-		Эта кодировка представляет двоичные данные в виде строки с безопасными для чтения символами.
-		data url имеет форму data:[<mediatype>][;base64],<data>.
-		Мы можем использовать такой url где угодно наряду с «обычным» url.
-		*/
-				
-		let $link = $("#link1"); 
-		$link.text("download message")
-		$link.attr("download","hello.txt")
+    reader.read().then(function processData({ done, value }) {
+      if (done) {
+        //объединяем все данные в один Uint8Array
+        let totalLength = chunks.reduce((sum, arr) => sum + arr.length, 0);
+        let arr = new Uint8Array(totalLength);
+        let offset = 0;
+        for (let chunk of chunks) {
+          arr.set(chunk, offset);
+          offset += chunk.length;
+        }
 
-		blob1 = new Blob(['Hello, world!'], {type: 'text/plain'});
-		
-		let reader = new FileReader();
-		reader.readAsDataURL(blob1);
-		reader.onload = function() {
-			$link.attr("href",reader.result)
-		};		
-		
-	},
-	canvas_toBlob(){
-		//Создаём Blob на основе картинки из canvas
-		
-		let img = document.querySelector('#img1');
+        //декодируем			
+        let str = new TextDecoder().decode(arr);
+        log2('Поток завершён:', str);
+        return;
+      }
 
-		//создаём <canvas> того же размера
-		let canvas = document.createElement('canvas');
-		canvas.width = img.clientWidth;
-		canvas.height = img.clientHeight;
+      //value - Uint8Array
+      chunks.push(value);
+      reader.read().then(processData);
+    });
 
-		let context = canvas.getContext('2d');
+  },
 
-		// копируем изображение в  canvas
-		context.drawImage(img, 0, 0);
+  url_createObjectURL() {
 
-		canvas.toBlob(function(blob) {
-			
-			let $link = $("#link1"); 
-			$link.text("download image")
-			$link.attr("download","example.png")
-			$link.attr("href",URL.createObjectURL(blob))
+    /*
+    URL.createObjectURL(blob)
+      создаёт url-ссылку на Blob-объект.
+      Это быстрый и безопасный вариант создавать ссылки на динамические файлы.
+    */
 
-			// удаляем внутреннюю ссылку на Blob, что позволит браузеру очистить память
-			URL.revokeObjectURL($link.href);
-			
-		}, 'image/png');		
-		
-		
-	},
-	
-	fileReader_readAsArrayBuffer(){
-		
-		// получаем ArrayBuffer из Blob
-		blob1 = new Blob(['Hello, world!'], {type: 'text/plain'});
-		
-		let fileReader = new FileReader();
-		fileReader.readAsArrayBuffer(blob1);
+    blob1 = new Blob(["Hello, world!"], { type: 'text/plain' });
 
-		fileReader.onload = function(event) {
-		  arr1 = new Uint8Array(fileReader.result);		  
-		  
-		  log2(arr1);
-		};		
-		
-	}
-	
-	
+    //Теперь при клике по ссылке - данные будут скачиваться в виде файла
+    let $link = $("#link1");
+    $link.text("download message")
+    $link.attr("download", "hello.txt")
+    $link.attr("href", URL.createObjectURL(blob1))
 
-	
+
+  },
+  fileReader_readAsDataURL() {
+
+    /*
+    fileReader.readAsDataURL(blob)
+      конвертация Blob-объекта в строку с кодировкой base64.
+  	
+    Эта кодировка представляет двоичные данные в виде строки с безопасными для чтения символами.
+    data url имеет форму data:[<mediatype>][;base64],<data>.
+    Мы можем использовать такой url где угодно наряду с «обычным» url.
+    */
+
+    let $link = $("#link1");
+    $link.text("download message")
+    $link.attr("download", "hello.txt")
+
+    blob1 = new Blob(['Hello, world!'], { type: 'text/plain' });
+
+    let reader = new FileReader();
+    reader.readAsDataURL(blob1);
+    reader.onload = function() {
+      $link.attr("href", reader.result)
+    };
+
+  },
+  canvas_toBlob() {
+    //Создаём Blob на основе картинки из canvas
+
+    let img = document.querySelector('#img1');
+
+    //создаём <canvas> того же размера
+    let canvas = document.createElement('canvas');
+    canvas.width = img.clientWidth;
+    canvas.height = img.clientHeight;
+
+    let context = canvas.getContext('2d');
+
+    // копируем изображение в  canvas
+    context.drawImage(img, 0, 0);
+
+    canvas.toBlob(function(blob) {
+
+      let $link = $("#link1");
+      $link.text("download image")
+      $link.attr("download", "example.png")
+      $link.attr("href", URL.createObjectURL(blob))
+
+      // удаляем внутреннюю ссылку на Blob, что позволит браузеру очистить память
+      URL.revokeObjectURL($link.href);
+
+    }, 'image/png');
+
+
+  },
+
+  fileReader_readAsArrayBuffer() {
+
+    // получаем ArrayBuffer из Blob
+    blob1 = new Blob(['Hello, world!'], { type: 'text/plain' });
+
+    let fileReader = new FileReader();
+    fileReader.readAsArrayBuffer(blob1);
+
+    fileReader.onload = function(event) {
+      arr1 = new Uint8Array(fileReader.result);
+
+      log2(arr1);
+    };
+
+  }
+
+
+
+
 }
 
 function getBriefDemoOptions() {
   return {
-	demoType: DT_SELECT, 
-	workPanelTemplate: "../fragments/anchorsSandbox.html",
+    demoType: DT_SELECT,
+    workPanelTemplate: "../fragments/anchorsSandbox.html",
     selectorsData: selectorsData1,
     lfMode: true,
     afterSandboxReload: null,
     selectedOption: "url2",
     debugMode: false,
     initFunction: () => {
-		$(".auxPanel").css("height","600px");
+      $(".auxPanel").css("height", "600px");
     }
   };
 }

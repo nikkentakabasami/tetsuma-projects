@@ -247,23 +247,18 @@ async function addCssToPagePromise(href) {
 
 }
 
+/**
+ * Динамически добавляет на страницу js-скрипт.
+ * Возвращает промис, загружающий его.
+ */
 async function addJSToPagePromise(src, type) {
 
   //Если задан массив ссылок - добавляем их последовательно.
   if (Array.isArray(src)) {
-
     while (src.length) {
-
       let csrc = src.pop();
       let r = await addJSToPagePromise(csrc);
-      console.log(r);
     }
-
-    /*		
-    src.forEach(csrc=>{
-      await addJSToPagePrimise(csrc);
-    });
-    */
     return true;
   }
 
@@ -280,6 +275,7 @@ async function addJSToPagePromise(src, type) {
     if (type) {
       script.type = type;
     }
+		console.log("adding script:",src);
 
     script.onload = () => resolve(true);
     script.onerror = () => reject(new Error(`Ошибка загрузки скрипта: ${src}`));
@@ -799,7 +795,7 @@ function deleteAllCookiesAndReload(event) {
 function copyTextToBuffer(textValue) {
   window.getSelection().removeAllRanges();
   if (!$copyDiv) {
-    $copyDiv = $('<div id="copyDiv" style="height: 0px;"></div>').appendTo(document.body);
+    $copyDiv = $('<div id="copyDiv" style="height: 0px;white-space: pre-wrap;"></div>').appendTo(document.body);
   }
   $copyDiv.text(textValue);
   let range = document.createRange();
