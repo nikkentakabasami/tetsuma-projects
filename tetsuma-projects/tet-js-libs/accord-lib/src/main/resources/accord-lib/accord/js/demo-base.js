@@ -26,6 +26,7 @@ const DT_OPENLAYERS = 7;  //для тестирования openlayers
 //workPanelTemplate - шаблон для песочницы
 const TEMPLATE_FORM1 = 1;	//formTemplate1.html (2 текстовых инпута, 1 select)
 const TEMPLATE_FORM2 = 2;	//formTemplate2.html (пустая форма)
+const TEMPLATE_FORM10 = 10;	//formTemplate10.html (песочница полигон)
 
 
 //опции, определяющие, как будет работать текущая демка
@@ -165,11 +166,11 @@ function addTitlePanelButtons() {
     $tp.append('<button id="bClearLog" type="button" class="acc-btn">Очистить логи</button>');
   }
 
-	/*
+  /*
   if (!$("#bReload").length && $("#template1").length) {
     $tp.append('<button id="bReload" type="button" class="acc-btn">Перезагрузить песочницу (0)</button>');
   }
-	*/
+  */
 
   if (!$tp.children("a").length) {
     $tp.append('<a id="mainsrc" href="#">Исходники (F1)</a>');
@@ -587,9 +588,9 @@ function initDemo() {
   });
 
   $("#bCopy").click(e => {
-		let $l = $log2.length?$log2:$log1;
-		let text = $l.prop("innerText");
-		accordUtils.copyTextToBuffer(text);
+    let $l = $log2.length ? $log2 : $log1;
+    let text = $l.prop("innerText");
+    accordUtils.copyTextToBuffer(text);
   });
 
   $("#bReload").click(e => {
@@ -604,9 +605,9 @@ function initDemo() {
     } else if (e.keyCode == 113) { // F2
       e.preventDefault();
       refreshCurrentScript();
-		} else if (e.keyCode == 114) { // F3
-		  e.preventDefault();
-			$("#bCopy").click();			
+    } else if (e.keyCode == 114) { // F3
+      e.preventDefault();
+      $("#bCopy").click();
     } else if (e.ctrlKey && e.keyCode == 37) { // <-
       e.preventDefault();
       if (siblingPages[0]) {
@@ -724,12 +725,17 @@ function initBriefDemo(options) {
     accordUtils.loadHtmlFragmentXHR(demoOptions.workPanelTemplate, null, false);
   } else {
 
+
+
     switch (demoOptions.workPanelTemplate) {
       case TEMPLATE_FORM1:
         accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate1.html", null, true);
         break;
       case TEMPLATE_FORM2:
         accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate2.html", null, true);
+        break;
+      case TEMPLATE_FORM10:
+        accordUtils.loadHtmlFragmentXHR("demos/fragments/formTemplate10.html", null, true);
         break;
       default:
     }

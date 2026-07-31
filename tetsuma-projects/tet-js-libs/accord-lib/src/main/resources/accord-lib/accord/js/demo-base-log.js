@@ -402,23 +402,33 @@ function logFuncCode(f, withHr = false, $log = null){
 }
 
 
-function log2Blue(val) {
+function log2Blue(val, nl =false) {
 	val = stringifyObject(val);
 	val = accordUtils.escapeHTML(val);
 	val = sp_blue+val+sp_end+"\n";
+	if (nl){
+		val+="\n";
+	}
 	$logExp.append(val);
 }
 
-function log2Gray(val) {
+function log2Gray(val, nl =false) {
 	val = stringifyObject(val);
 	val = accordUtils.escapeHTML(val);
 	val = sp_gray+val+sp_end+"\n";
+	if (nl){
+		val+="\n";
+	}
 	$logExp.append(val);
 }
-function log2Green(val, ...vals) {
+function log2Green(val, nl =false) {
 	val = stringifyObject(val);
 	val = accordUtils.escapeHTML(val);
 	val = sp_green+val+sp_end+"\n";
+	if (nl){
+		val+="\n";
+	}
+	
 	$logExp.append(val);
 }
 

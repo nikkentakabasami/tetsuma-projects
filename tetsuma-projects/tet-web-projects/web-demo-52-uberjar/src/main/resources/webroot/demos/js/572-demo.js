@@ -6,6 +6,9 @@ let selectorsData1 = {
   blob_stream() {
 
     /*
+    ReadableStream
+      поток байтовых данных. 
+  	
     blob.stream()
       Возвращает ReadableStream с данными блоба
     */
@@ -46,13 +49,45 @@ let selectorsData1 = {
 
   },
 
-  stream2() {
+  async streamToString1() {
     /*
-    ReadableStream
-      поток байтовых данных. 
+    Простой способ сконвертировать ReadableStream в строку, используя Response.
     */
+
+    const request1 = new Request(testRequestUrl, {
+      method: "POST",
+      body: JSON.stringify(testObject1),
+    });
+
+
+    //request1.body возвращает ReadableStream
+
+    let b = await streamToString(request1.body);
+    log2("request body:", b);
+
+
+    log(streamToString);
+
+
   },
-  stream3() {
+  async streamToString2() {
+		/*
+		Второй способ
+		*/
+
+		const request1 = new Request(testRequestUrl, {
+		  method: "POST",
+		  body: JSON.stringify(testObject1),
+		});
+
+
+		//request1.body возвращает ReadableStream
+
+		let b = await streamToString2(request1.body);
+		log2("request body:", b);
+
+		log(streamToString2);		
+		
   },
   stream4() {
   },
@@ -60,6 +95,32 @@ let selectorsData1 = {
 
 
 }
+
+
+async function streamToString(stream) {
+  const response = new Response(stream);
+  const text = await response.text();
+  return text;
+};
+
+async function streamToString2(stream) {
+  const reader = stream.getReader();
+  const decoder = new TextDecoder('utf-8');
+  let result = '';
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    result += decoder.decode(value, { stream: true });
+  }
+  // Финальный вызов для завершения декодирования
+  result += decoder.decode();
+
+  return result;
+};
+
+
+
 
 
 
