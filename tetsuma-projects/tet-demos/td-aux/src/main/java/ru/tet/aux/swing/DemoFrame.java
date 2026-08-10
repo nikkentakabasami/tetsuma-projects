@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -18,12 +19,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import ru.tet.beans.SuIdNameModel;
-import ru.tet.javax.swing.aux.IdNameListCellRenderer;
+import ru.tet.aux.AbstractDemoBase;
 import ru.tet.javax.swing.aux.JControlPanelForTests;
 
 /**
@@ -127,16 +126,40 @@ public class DemoFrame extends AbstractDemoFrame {
 		inputMap.put(KeyStroke.getKeyStroke("F2"), "next");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
 
-		actionMap.put("close", new AbstractAction() {
-			  @Override
-			  public void actionPerformed(ActionEvent e) {
+		
+
+		
+		AbstractAction testAction = new DemoAction() {
+			void onAction(ActionEvent e, AbstractDemoBase demo) {
+		  	String name = e.getActionCommand();
+		  	int testNo = Integer.parseInt(name.substring(name.length()-1));
+		  	try {
+		  		demo.test(testNo);
+				} catch (Exception e1) {
+					demo.log2(e);
+					e1.printStackTrace();
+				}
+		  }
+		};
+		
+		//для быстрого выполнения тестов
+		for (int i = 0; i < 6; i++) {
+			int testNo = i+1;
+			String testName = "test"+testNo;
+			inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD1+i, InputEvent.CTRL_DOWN_MASK), testName);
+			actionMap.put(testName, testAction);		
+			
+		}
+		
+		actionMap.put("close", new DemoAction() {
+			void onAction(ActionEvent e, AbstractDemoBase demo) throws Exception {
+			  	demo.beforeClose();
 				  DemoFrame.this.dispose();
 			  }
 			});		
 		
-		actionMap.put("next", new AbstractAction() {
-		  @Override
-		  public void actionPerformed(ActionEvent e) {
+		actionMap.put("next", new DemoAction() {
+			void onAction(ActionEvent e, AbstractDemoBase demo) throws Exception {
 			  if (demosComboBox==null) {
 				  return;
 			  }
@@ -148,9 +171,8 @@ public class DemoFrame extends AbstractDemoFrame {
 			  demosComboBox.setSelectedIndex(ind);
 		  }
 		});
-		actionMap.put("prev", new AbstractAction() {
-			  @Override
-			  public void actionPerformed(ActionEvent e) {
+		actionMap.put("prev", new DemoAction() {
+			void onAction(ActionEvent e, AbstractDemoBase demo) throws Exception {
 				  if (demosComboBox==null) {
 					  return;
 				  }
@@ -164,7 +186,8 @@ public class DemoFrame extends AbstractDemoFrame {
 			});		
 	}	
 	
-	
+			
+			
 	public static void main(String[] args) {
 		
 		SwingUtilities.invokeLater(() -> {

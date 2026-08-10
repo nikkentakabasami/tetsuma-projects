@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config
+	xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+	xmlns='http://www.ehcache.org/v3'
+	xmlns:jsr107='http://www.ehcache.org/v3/jsr107'
+	xsi:schemaLocation="
+        http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.1.xsd
+        http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.1.xsd">
+
+  <!-- С хранением данных на диске  -->
+	<persistence directory="target/mybuff" />
+
+	<cache alias="c1">
+		<key-type>java.lang.String</key-type>
+		<value-type>java.lang.String</value-type>
+		<resources>
+			<heap unit="entries">10</heap>
+			<offheap unit="MB">1</offheap>
+			<disk unit="MB">2</disk>
+		</resources>
+	</cache>
+
+	<cache alias="c2">
+		<key-type>java.lang.String</key-type>
+		<value-type>java.lang.String</value-type>
+		<expiry>
+			<ttl unit="seconds">10</ttl>
+		<!-- 
+		<tti unit="seconds">10</tti>
+		ttl - time-to-live (will expire after a fixed duration following their creation)
+		tti - time-to-idle (will expire after a fixed duration following the time they were last accessed)		
+		 -->
+		</expiry>
+		<resources>
+			<heap unit="entries">10</heap>
+		</resources>
+	</cache>
+
+
+	<cache
+		alias="c3"
+		uses-template="myDefaults">
+		<key-type>java.lang.Number</key-type>
+	</cache>
+
+	<cache
+		alias="c4"
+		uses-template="myDefaults" />
+
+	<cache-template name="myDefaults">
+		<key-type>java.lang.Long</key-type>
+		<value-type>java.lang.String</value-type>
+		<heap unit="entries">20</heap>
+	</cache-template>
+
+
+
+</config>

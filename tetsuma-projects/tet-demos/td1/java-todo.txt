@@ -1,0 +1,6 @@
+multiline mode
+
+String text = "Line one\nLine two\nLine three";
+// Prepend each line with a bullet point symbol
+String result = text.replaceAll("(?m)^", "• "); 
+System.out.println(result);

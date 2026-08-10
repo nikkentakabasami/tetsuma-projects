@@ -9,6 +9,10 @@
 	</parent>
 	<artifactId>td10-libs</artifactId>
 
+	<properties>
+		<maven.compiler.source>20</maven.compiler.source>
+		<maven.compiler.target>20</maven.compiler.target>
+	</properties>
 
 	<dependencies>
 
@@ -37,14 +41,38 @@
 		</dependency>
 
 		<dependency>
-		    <groupId>com.javax0.sourcebuddy</groupId>
-		    <artifactId>SourceBuddy</artifactId>
+			<groupId>com.javax0.sourcebuddy</groupId>
+			<artifactId>SourceBuddy</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
 		</dependency>
+
+
+		<!-- libs to test -->
+		<dependency>
+			<groupId>org.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>3.4.0</version>
+		</dependency>
+
+		<!-- необходим для ehcache (если использовать xml-конфигурацию) -->
+		<!--
+			
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+		-->
+
 
 	</dependencies>
 

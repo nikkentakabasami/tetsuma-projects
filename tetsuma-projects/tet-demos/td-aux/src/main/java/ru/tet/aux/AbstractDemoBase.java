@@ -6,6 +6,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.swing.JButton;
@@ -14,6 +15,8 @@ import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ru.tet.aux.swing.AbstractDemoFrame;
 import ru.tet.aux.swing.LogDemoTextPane;
@@ -24,6 +27,8 @@ import ru.tet.sourcebuddy.EvalResult;
 
 public abstract class AbstractDemoBase {
 
+	public static AbstractDemoBase currentDemo;
+	
 	static DecimalFormat createSimpleDecimalFormat() {
 		DecimalFormatSymbols simpleDot = new DecimalFormatSymbols();
 	    simpleDot.setDecimalSeparator('.');
@@ -51,6 +56,10 @@ public abstract class AbstractDemoBase {
 	protected int lastTestNo = 0;
 	String lastTestName;
 
+	//результат теста, будет выводиться в json формате
+	protected DemoResult r = null;
+	
+	
 	public AbstractDemoBase() {
 		sourceUtils = new DemoSourceUtils(this);
 	}
@@ -60,6 +69,10 @@ public abstract class AbstractDemoBase {
 
 	protected void doInitControlPanel() throws Exception {
 	}
+
+	public void beforeClose() throws Exception {
+	}
+	
 	
 	
 	public abstract void init(AbstractDemoFrame frame);
@@ -75,6 +88,8 @@ public abstract class AbstractDemoBase {
 	}
 
 	public void test4() throws Exception {
+	}
+	public void test5() throws Exception {
 	}
 
 	public JButton addButton(String title, DemoActionListener al) {
@@ -98,9 +113,17 @@ public abstract class AbstractDemoBase {
 		if (testNo<=0) {
 			return;
 		}
+		
 		String testName = "test" + testNo;
+		Method method = null;
+		try {
+			method = AbstractDemoBase.class.getMethod(testName);
+		} catch (NoSuchMethodException e) {
+			log2("method not found: "+testName);
+			return;
+		}
+		
 		beforeTest(testNo);
-		Method method = AbstractDemoBase.class.getMethod(testName);
 		method.invoke(this);
 		lastTestName = testName;
 		afterTest(testNo);
@@ -123,15 +146,39 @@ public abstract class AbstractDemoBase {
 		clearlog2();
 		clearlog1();
 		sourceUtils.logCurrentSources(testNo);
+		r = new DemoResult();
 	}
 
 	protected void afterTest(int testNo) throws Exception {
 		lastTestNo = testNo;
+
+		//вывод результата
+		if (r.s1!=null) {
+			
+			DemoResult.fixResult(r);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(r);
+			json = json.replaceAll("  \"", "")
+					.replaceAll("(?<=\\d)\" :", ":")
+					.replaceAll("\\[ ", "[").replaceAll("\\ ]", "]")  //лишние пробелы из массивов
+					.replaceAll("(?m),$", "");
+			
+			log2(json);
+		}
+		
 		log2Splitter();
 		log2(lastTestName, "finished");
 		textArea2.hlComments();
+		
+		
+		
 	}
 
+	
+
+	
+	
 	public JButton addTest1Button(String title) {
 		return addTestButton(title, 1);
 	}
@@ -146,6 +193,9 @@ public abstract class AbstractDemoBase {
 
 	public JButton addTest4Button(String title) {
 		return addTestButton(title, 4);
+	}
+	public JButton addTest5Button(String title) {
+		return addTestButton(title, 5);
 	}
 
 	public void clearlog1() {
@@ -225,6 +275,7 @@ public abstract class AbstractDemoBase {
 	public void log(JTextPane ta, Object... args) {
 		String text = Stream.of(args).map(this::toStr).collect(Collectors.joining(" "));
 		text += "\n";
+		System.out.println(text);
 		append(ta,text);
 	}
 
@@ -234,11 +285,15 @@ public abstract class AbstractDemoBase {
 			return "";
 		}
 		
+		
 		if (o instanceof Double) {
 			return DECIMAL_FORMAT.format((Double)o);
 		}
 		
-		return o.toString();
+		String s = o.toString();
+		s = s.replaceAll("\t", "  ");
+
+		return s;
 	}
 	
 
@@ -249,9 +304,9 @@ public abstract class AbstractDemoBase {
 	public static void run(Class<? extends AbstractDemoBase> cl, int startTestOnLaunch) {
 		SwingUtilities.invokeLater(() -> {
 			try {
-				AbstractDemoBase demo = cl.getDeclaredConstructor().newInstance();
-				demo.init(null);
-				demo.test(startTestOnLaunch);
+				currentDemo = cl.getDeclaredConstructor().newInstance();
+				currentDemo.init(null);
+				currentDemo.test(startTestOnLaunch);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
