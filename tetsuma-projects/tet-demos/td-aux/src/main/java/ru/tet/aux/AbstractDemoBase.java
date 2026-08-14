@@ -1,5 +1,6 @@
 package ru.tet.aux;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -155,7 +156,7 @@ public abstract class AbstractDemoBase {
 		//вывод результата
 		if (r.s1!=null) {
 			
-			DemoResult.fixResult(r);
+			fixResult(r);
 			
 			ObjectMapper mapper = new ObjectMapper();
 			String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(r);
@@ -176,6 +177,53 @@ public abstract class AbstractDemoBase {
 	}
 
 	
+	/**
+	 * фиксит параметры результата, приводя их к типам, которые можно вывести в json
+	 * @param r
+	 * @throws Exception
+	 */
+	public void fixResult(DemoResult r) throws Exception {
+
+		Field[] fields = DemoResult.class.getFields();
+		for (Field field : fields) {
+			String name = field.getName();
+
+			if (!name.matches("s\\d")) {
+				continue;
+			}
+
+			Object value = field.get(r);
+
+			if (value == null) {
+				continue;
+			}
+			
+			Object value2 = fixResultValue(value);
+
+			if (value2!=value) {
+				field.set(r, value2);
+			}
+
+			System.out.println("r." + name + " = " + value2.toString());
+
+		}
+
+	}
+	
+	/**
+	 * Правка/Форматирование значений результатов (перед выводом их в лог)
+	 * @param value
+	 * @return
+	 */
+	public Object fixResultValue(Object value) {
+		
+		if (value instanceof Stream s) {
+			return s.toArray();
+		}
+		
+		return value;
+		
+	}	
 
 	
 	

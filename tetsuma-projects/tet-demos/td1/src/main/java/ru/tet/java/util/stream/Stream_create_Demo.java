@@ -48,8 +48,15 @@ public class Stream_create_Demo extends DemoBase {
 
 		r.s5 = Stream.generate(() -> Math.round(Math.random() * 100) / 100.0).limit(3);
 
-		r.s6 = Stream.iterate(1, n -> n + 1).limit(5);
+		//3 раза вывести Hello
+		Stream.generate(() -> "Hello").limit(3).forEach(this::log2);
+		
+		r.s7 = Stream.iterate(1, n -> n + 1).limit(5);
 
+		
+		r.s8 = Stream.concat(IntStream.of(7,2,8).boxed(), Stream.of("w","k"));
+		
+		
 	}
 
 	public void test2() throws Exception {
@@ -91,7 +98,6 @@ public class Stream_create_Demo extends DemoBase {
 		Stream.builder().add(...)....build()
 		
 		 */
-		
 		
 		Stream<String> s5 = Stream.<String>builder().add("a1").add("a2").add("a3").build();
 		r.s5 = s5;

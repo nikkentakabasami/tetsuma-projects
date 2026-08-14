@@ -44,7 +44,10 @@ public class DemoSourceUtils {
 //				return;
 //			}
 			
-			StaticJavaParser.getParserConfiguration().setLanguageLevel(LanguageLevel.JAVA_15);
+			StaticJavaParser.getParserConfiguration().setLanguageLevel(LanguageLevel.JAVA_25);
+			
+			//Use of patterns with instanceof is not supported.
+			
 			
 			CompilationUnit cu2 = StaticJavaParser.parse(javaFileIS);
 //			CompilationUnit cu2 = StaticJavaParser.parse(Files.newInputStream(path));
@@ -155,7 +158,6 @@ public class DemoSourceUtils {
 		}
 		
 		demoBase.textArea1.hlComments();
-//		demoBase.frame.hlComments();
 
 		/*
 		

@@ -52,7 +52,7 @@ public class LogDemoTextPane extends JTextPane {
 			}
 			
 			int ind2 = text.indexOf("\n", ind);
-			if (ind<0) {
+			if (ind2<0) {
 				break;
 			}
 			int length = ind2-ind;

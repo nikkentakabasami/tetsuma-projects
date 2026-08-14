@@ -1,6 +1,5 @@
 package ru.tet.aux;
 
-import java.lang.reflect.Field;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -61,39 +60,7 @@ public class DemoResult {
 		}
 
 	}
-
-	/**
-	 * фиксит параметры результата, приводя их к типам, которые можно вывести в json
-	 * @param r
-	 * @throws Exception
-	 */
-	public static void fixResult(DemoResult r) throws Exception {
-
-		Field[] fields = DemoResult.class.getFields();
-		for (Field field : fields) {
-			String name = field.getName();
-
-			if (!name.matches("s\\d")) {
-				continue;
-			}
-
-			Object value = field.get(r);
-
-			if (value == null) {
-				continue;
-			}
-
-			if (value instanceof Stream) {
-				Stream s = (Stream) value;
-				value = s.toArray();
-				field.set(r, value);
-			}
-
-			System.out.println("r." + name + " = " + value.getClass().getName());
-
-		}
-
-	}
+	
 
 	public static void main(String[] args) throws Exception {
 
@@ -102,7 +69,7 @@ public class DemoResult {
 		r.s2 = "hi";
 		r.s3 = IntStream.of(5, 7, 11, 13).toArray();
 		r.s4 = Stream.of("yanineko", "tabako", "ski");
-		fixResult(r);
+		//fixResult(r);
 
 	}
 
