@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.github.javaparser.ParserConfiguration.LanguageLevel;
 import com.github.javaparser.StaticJavaParser;
@@ -17,20 +19,28 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 import ru.tet.utils.TetSourceUtils;
 
+
+/**
+ * Содержит исходники текущей демки (demoBase)
+ */
 public class DemoSourceUtils {
 
 	static final String TEST_METHOD_SUFFIX = "test";
 
 	AbstractDemoBase demoBase;
+	List<TestSources> sources;
 
+	
+	
 	public DemoSourceUtils(AbstractDemoBase db) {
 		this.demoBase = db;
 	}
 
-	List<TestSources> sources;
 
+	/**
+	 * Находит исходники текущей демки (demoBase) и парсит их, заполняя sources.
+	 */
 	public void parseCurrentSources() {
-
 		
 		sources = new ArrayList<>(10);
 		for (int i = 0; i < 8; i++) {
@@ -39,18 +49,10 @@ public class DemoSourceUtils {
 
 		try {
 			InputStream javaFileIS = TetSourceUtils.findSource(demoBase.getClass());
-//			if (javaFileIS==null) {
-//				demoBase.log1("source file not found:", demoBase.getClass().getCanonicalName());
-//				return;
-//			}
 			
 			StaticJavaParser.getParserConfiguration().setLanguageLevel(LanguageLevel.JAVA_25);
 			
-			//Use of patterns with instanceof is not supported.
-			
-			
 			CompilationUnit cu2 = StaticJavaParser.parse(javaFileIS);
-//			CompilationUnit cu2 = StaticJavaParser.parse(Files.newInputStream(path));
 
 			cu2.accept(new VoidVisitorAdapter<Object>() {
 
@@ -78,6 +80,8 @@ public class DemoSourceUtils {
 
 						TestSources testSources = sources.get(testNo);
 						testSources.setTestMethod(m);
+						testSources.parseLogEvals();
+						
 					} else {
 						TestSources testSources = findTestSourcesByAnnotation(m);
 						if (testSources != null) {
@@ -102,6 +106,13 @@ public class DemoSourceUtils {
 
 	}
 
+	
+  Pattern auxTestNoPattern = Pattern.compile("\\d+");
+	
+	
+	/**
+	 * Если на метод назначена аннотация AuxTest, возвращает TestSources, к которому привязан этот метод
+	 */
 	private TestSources findTestSourcesByAnnotation(NodeWithAnnotations m) {
 
 		Optional<AnnotationExpr> ann = m.getAnnotationByName(AuxTest.class.getSimpleName());
@@ -111,11 +122,12 @@ public class DemoSourceUtils {
 
 		int testNo = 1;
 		String s = ann.get().toString();
-		int ind1 = s.indexOf("(");
-		int ind2 = s.indexOf(")");
-		if (ind1 > 0 && ind2 > 0) {
-			testNo = Integer.parseInt(s.substring(ind1 + 1, ind2));
+		
+	  Matcher matcher = auxTestNoPattern.matcher(s);
+		if (matcher.find()) {
+			testNo = Integer.parseInt(matcher.group());
 		}
+		
 		TestSources testSources = sources.get(testNo);
 		return testSources;
 	}
@@ -159,58 +171,10 @@ public class DemoSourceUtils {
 		
 		demoBase.textArea1.hlComments();
 
-		/*
-		
-		Path path = getClassJavaFile(db.getClass());
-		if (!Files.exists(path)) {
-			db.log1("source file not found:", path);
-			return;
-		}
-		
-		try {
-			CompilationUnit cu2 = StaticJavaParser.parse(Files.newInputStream(path));
-		
-			String clName = db.getClass().getSimpleName();
-			Optional<ClassOrInterfaceDeclaration> mainClass = cu2.getClassByName(clName);
-			if (mainClass.isEmpty()) {
-				db.log1("class not found:" + clName);
-			}
-			//			log1("current class:", clName);
-		
-			boolean afterTests = false;
-			List<MethodDeclaration> methodsByName = mainClass.get().getMethods();
-			for (MethodDeclaration m : methodsByName) {
-				String name = m.getName().getIdentifier();
-				BlockStmt body = m.getBody().get();
-		
-				if (name.contains("test")) {
-					afterTests = true;
-		
-					if (testNo > 0 && !name.equals("test" + testNo)) {
-						continue;
-					}
-		
-					db.log1(name);
-					db.log1(body);
-					db.log1NL();
-				} else {
-					//методы после тестов не выводить
-					if (afterTests) {
-						break;
-					}
-					db.log1(name);
-					db.log1(body);
-					db.log1NL();
-				}
-		
-			}
-		
-		} catch (IOException e) {
-			db.log2(e.getMessage());
-			e.printStackTrace();
-		}
-		*/
-
 	}
 
+	public List<TestSources> getSources() {
+		return sources;
+	}
+	
 }

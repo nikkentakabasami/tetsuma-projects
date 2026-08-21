@@ -22,6 +22,7 @@ import ru.tet.data.BeansSamples;
 public class XMLEncoderDemo extends DemoBase {
 
 	String encodedXml;
+	User user;
 
 	//XMLEncoder - Сериализует бин в xml для долгосрочного хранения.
 	//Получается длинно.
@@ -47,12 +48,13 @@ public class XMLEncoderDemo extends DemoBase {
 	@Override
 	public void test1() throws Exception {
 		
-		User user = BeansSamples.createTestUserBean();
-		log2("user:", user);
-
-		log2Splitter("encodeBean");
-		encodedXml = encodeBean(user);
-		log2(encodedXml);
+		logExpr(() -> {
+			user = BeansSamples.createTestUserBean();
+			return user;
+		}, () -> {
+			encodedXml = encodeBean(user);
+			return encodedXml;
+		});
 
 	}
 
@@ -63,17 +65,16 @@ public class XMLEncoderDemo extends DemoBase {
 			return;
 		}
 		
-		log2Splitter("decodeBean");
-		User user = decodeBean(encodedXml);
-		log2(user);
+		logEval(encodedXml);
+
+		logExpr(() -> {
+			user = decodeBean(encodedXml);
+			return user;
+		});
+
+		
 	}
 
-	@Override
-	protected void doInitControlPanel() throws Exception {
-
-		addTest1Button(null);
-		addTest2Button(null);
-	}
 
 	public static void main(String[] args) {
 		DemoBase.run(XMLEncoderDemo.class);

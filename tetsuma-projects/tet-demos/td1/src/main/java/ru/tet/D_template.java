@@ -1,26 +1,33 @@
 package ru.tet;
 
-import java.util.stream.IntStream;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Random;
 
-import ru.tet.aux.AuxTest;
 import ru.tet.aux.swing.DemoBase;
 
 //Шаблон для создания новых демо
-public class TemplateDemo extends DemoBase {
-
-	@AuxTest
-	class testClass {
-	}
+public class D_template extends DemoBase {
 
 	public void test1() throws Exception {
 		/*
-		
 		 */
+		
+		logExpr(() -> {
+			return 1;
+		}, () -> {
+			return 1;
+		});		
+
 	}
 
 	public void test2() throws Exception {
-		r.s1 = IntStream.of(55).toArray();
-		r.s3 = IntStream.of(5, 7, 11, 13).toArray();
+		/*
+		
+		 */
+
+
 	}
 
 	public void test3() throws Exception {
@@ -44,7 +51,7 @@ public class TemplateDemo extends DemoBase {
 	}
 
 	public static void main(String[] args) {
-		DemoBase.run(TemplateDemo.class);
+		DemoBase.run(D_template.class);
 	}
 
 }

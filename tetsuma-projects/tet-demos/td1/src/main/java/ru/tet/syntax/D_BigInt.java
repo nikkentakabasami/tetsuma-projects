@@ -11,7 +11,8 @@ public class D_BigInt extends DemoBase {
 
 	public void test1() throws Exception {
 		/*
-		
+		BigInteger
+		Способы объявления
 		 */
 
 		BigInteger fromString = new BigInteger("123456789012345678901234567890");
@@ -28,10 +29,17 @@ public class D_BigInt extends DemoBase {
 		BigInteger b1 = BigInteger.valueOf(5000000L);
 		BigInteger b2 = BigInteger.valueOf(70400L);
 
-		r.s1 = b1.gcd(b2);
-		r.s2 = b1.add(b2);
-		r.s3 = b1.divide(b2);
-		r.s4 = b1.pow(3);
+		logEval(
+				b1,
+				b2,
+				b1.gcd(b2),
+				b1.add(b2),
+				b1.subtract(b2),
+				b1.divide(b2),
+				b1.multiply(b2),
+				b1.pow(3)
+
+		);
 
 	}
 
@@ -40,7 +48,7 @@ public class D_BigInt extends DemoBase {
 		
 		 */
 
-		//Ошибочный способ 
+		//Ошибочный способ создания 
 		BigDecimal bad = new BigDecimal(0.1);
 
 		//Правильный способ
@@ -67,23 +75,15 @@ public class D_BigInt extends DemoBase {
 		scale - сколько чисел после запятой
 		
 		 */
-		
+
 		BigDecimal b1 = new BigDecimal("10.6789");
-		r.s1 = b1.scale();		
+		r.s1 = b1.scale();
 
 		//округление до второго знака после запятой
-    r.s2 = b1.setScale(2, RoundingMode.HALF_UP);
-		
-		
+		r.s2 = b1.setScale(2, RoundingMode.HALF_UP);
+
 	}
 
-	@Override
-	protected void doInitControlPanel() throws Exception {
-		addTest1Button(null);
-		addTest2Button(null);
-		addTest3Button(null);
-		addTest4Button(null);
-	}
 
 	public static void main(String[] args) {
 		DemoBase.run(D_BigInt.class);

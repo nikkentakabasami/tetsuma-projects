@@ -19,15 +19,10 @@ public class BeanInfoDemo extends DemoBase {
 		//Introspector - вычисляет BeanInfo автоматически
 		BeanInfo beanInfo = Introspector.getBeanInfo(Course.class);
 		for (PropertyDescriptor desc : beanInfo.getPropertyDescriptors()) {
-			log2(desc.getPropertyType().getName(),desc.getName());
+			log2(desc.getName(),"-",desc.getPropertyType().getName());
 		}
 	}
 
-	
-	@Override
-	protected void doInitControlPanel() throws Exception {
-		addTest1Button(null);
-	}
 
 	public static void main(String[] args) {
 		DemoBase.run(BeanInfoDemo.class);

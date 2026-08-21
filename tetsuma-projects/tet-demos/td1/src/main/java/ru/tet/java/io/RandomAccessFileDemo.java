@@ -2,14 +2,15 @@ package ru.tet.java.io;
 
 import java.io.RandomAccessFile;
 
-import ru.tet.TemplateDemo;
+import ru.tet.DemoExample;
 import ru.tet.aux.swing.DemoBase;
 
 public class RandomAccessFileDemo extends DemoBase {
 
-//RandomAccessFile
-//  позволяет читать и записывать данные в файл произвольно
-//  Содержит курсор с которого будет идти запись/чтение
+	
+	//RandomAccessFile
+	//  позволяет читать и записывать данные в файл произвольно
+	//  Содержит курсор с которого будет идти запись/чтение
 	@Override
 	public void test1() throws Exception {
 
@@ -19,25 +20,22 @@ public class RandomAccessFileDemo extends DemoBase {
 		raf.writeUTF("Hello");
 		raf.close();
 
-		
 		raf = new RandomAccessFile("target/example.dat", "rw");
-		raf.seek(0);	//задание позиции курсора
+		raf.seek(0); //задание позиции курсора
 
-		int number = raf.readInt();
-		log2("Number: " + number);
-		String str = raf.readUTF();
-		log2("String: " + str);
-
-		long length = raf.length();
-		log2("File length: " + length);
+		int number;
+		String str;
+		
+		
+		logEval(
+				number = raf.readInt(),
+				raf.getFilePointer(),
+				str = raf.readUTF(),
+				raf.getFilePointer(),
+				raf.length()
+				);
 
 		raf.close();
-	}
-
-	
-	@Override
-	protected void doInitControlPanel() throws Exception {
-		addTest1Button(null);
 	}
 
 	public static void main(String[] args) {

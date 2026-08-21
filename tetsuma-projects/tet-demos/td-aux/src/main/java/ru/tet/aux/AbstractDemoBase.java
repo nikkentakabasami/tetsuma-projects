@@ -5,9 +5,10 @@ import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.swing.JButton;
@@ -31,9 +32,15 @@ public abstract class AbstractDemoBase {
 	public static AbstractDemoBase currentDemo;
 	
 	static DecimalFormat createSimpleDecimalFormat() {
-		DecimalFormatSymbols simpleDot = new DecimalFormatSymbols();
-	    simpleDot.setDecimalSeparator('.');
-		DecimalFormat f = new DecimalFormat("#0.##",simpleDot);
+		
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		symbols.setDecimalSeparator('.');
+		symbols.setGroupingSeparator('_');
+		DecimalFormat f = new DecimalFormat("###,##0.####", symbols);
+		
+//		DecimalFormatSymbols simpleDot = new DecimalFormatSymbols();
+//	    simpleDot.setDecimalSeparator('.');
+//		DecimalFormat f = new DecimalFormat("#0.##",simpleDot);
 		return f;
 	}
 	
@@ -57,6 +64,11 @@ public abstract class AbstractDemoBase {
 	protected int lastTestNo = 0;
 	String lastTestName;
 
+	//исходним выполняемого теста
+	TestSources currentSources;
+	int logEvalNo = 0;
+	int logExprNo = 0;
+	
 	//результат теста, будет выводиться в json формате
 	protected DemoResult r = null;
 	
@@ -65,18 +77,21 @@ public abstract class AbstractDemoBase {
 		sourceUtils = new DemoSourceUtils(this);
 	}
 
+
+	//инициализация демки, вызывается при её запуске
 	protected void doInit() throws Exception {
 	}
 
+	//ещё одна инициализация, доп. метод
 	protected void doInitControlPanel() throws Exception {
 	}
 
+	//вызывается перед закрытием демки
 	public void beforeClose() throws Exception {
 	}
+
 	
 	
-	
-	public abstract void init(AbstractDemoFrame frame);
 
 	//заготовки под тесты
 	public void test1() throws Exception {
@@ -136,18 +151,29 @@ public abstract class AbstractDemoBase {
 		return s != null ? s : mn;
 	}
 
-	private JButton addTestButton(String title, int testNo) {
+	protected JButton addTestButton(String title, int testNo) {
 		String testName = "test" + testNo;
 		return addButton(nvl(title, testName), event -> {
 			test(testNo);
 		});
 	}
+	
+	
+	
+	//вызывается после создания демки, вызывает doInit
+	public abstract void init(AbstractDemoFrame frame);
+	
 
 	protected void beforeTest(int testNo) throws Exception {
 		clearlog2();
 		clearlog1();
 		sourceUtils.logCurrentSources(testNo);
 		r = new DemoResult();
+		
+		currentSources = sourceUtils.getSources().get(testNo);
+		logEvalNo = 0;
+		logExprNo = 0;
+		
 	}
 
 	protected void afterTest(int testNo) throws Exception {
@@ -168,8 +194,8 @@ public abstract class AbstractDemoBase {
 			log2(json);
 		}
 		
-		log2Splitter();
-		log2(lastTestName, "finished");
+//		log2Splitter();
+//		log2(lastTestName, "finished");
 		textArea2.hlComments();
 		
 		
@@ -209,17 +235,30 @@ public abstract class AbstractDemoBase {
 		}
 
 	}
+
+	
+	
 	
 	/**
 	 * Правка/Форматирование значений результатов (перед выводом их в лог)
 	 * @param value
 	 * @return
 	 */
-	public Object fixResultValue(Object value) {
+	public Object fixResultValue(Object value) throws Exception {
 		
 		if (value instanceof Stream s) {
 			return s.toArray();
 		}
+		
+		if (value instanceof Integer i) {
+			return DECIMAL_FORMAT.format(i);
+		}
+		
+		if (value instanceof Long l) {
+			return DECIMAL_FORMAT.format(l);
+		}
+		
+		
 		
 		return value;
 		
@@ -270,6 +309,43 @@ public abstract class AbstractDemoBase {
 		logSplitter(textArea2, args);
 	}
 
+	
+	@SafeVarargs
+	public final void logExpr(Supplier<Object>... args) {
+		
+		String[] expressions = currentSources.logExprs.get(logExprNo);
+
+		for (int i = 0; i < expressions.length; i++) {
+			String expr = expressions[i];
+			Object val = args[i].get();
+
+			//log2(expr+"\n---\n",val,"\n---\n");
+			log2(expr+"\n",val,"\n");
+		}
+		
+		logExprNo++;		
+		
+	}
+	
+	
+	@SafeVarargs
+	public final void logEval(Object... args) {
+
+		
+		String[] expressions = currentSources.logEvals.get(logEvalNo);
+
+		for (int i = 0; i < expressions.length; i++) {
+			String expr = expressions[i];
+			Object val = args[i];
+
+			log2(expr+"\n",val,"\n");
+		}
+		
+		logEvalNo++;
+		
+	}
+	
+	@Deprecated
 	public void logEval2(String code) {
 		try {
 			
@@ -331,6 +407,12 @@ public abstract class AbstractDemoBase {
 	private String toStr(Object o) {
 		if (o == null) {
 			return "";
+		}
+
+		try {
+			o = fixResultValue(o);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		

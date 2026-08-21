@@ -14,27 +14,35 @@ public class PropertyEditorDemo extends DemoBase {
 	@Override
 	public void test1() throws Exception {
 
-		//PropertyEditorManager- Позволяет искать и регистрировать РЕ, которые могут понадобиться.
-		PropertyEditor editor = PropertyEditorManager.findEditor(Font.class);
-		//font to text conversion
-		editor.setValue(new Font(Font.DIALOG, Font.BOLD, 12));
-		String str = editor.getAsText();
-		log2("Font to String:",str);
 
-		//text to font conversion
-		PropertyEditor editor2 = PropertyEditorManager.findEditor(Font.class);
-		editor2.setAsText("SansSerif ITALIC 14");
-		Object value = editor2.getValue();
-		log2("String to Font:",value);
 
 	}
 
-
+	
 	@Override
-	protected void doInitControlPanel() throws Exception {
-		addTest1Button(null);
-
+	public void test2() throws Exception {
+		
+		logExpr(() -> {
+			//PropertyEditorManager- Позволяет искать и регистрировать РЕ, которые могут понадобиться.
+			PropertyEditor editor = PropertyEditorManager.findEditor(Font.class);
+			
+			//font to text conversion
+			editor.setValue(new Font(Font.DIALOG, Font.BOLD, 12));
+			
+			String str = editor.getAsText();
+			return str;
+		}, () -> {
+			//text to font conversion
+			PropertyEditor editor2 = PropertyEditorManager.findEditor(Font.class);
+			editor2.setAsText("SansSerif ITALIC 14");
+			Object value = editor2.getValue();
+			return value;
+			
+		});		
+		
+		
 	}
+	
 
 	public static void main(String[] args) {
 		DemoBase.run(PropertyEditorDemo.class);

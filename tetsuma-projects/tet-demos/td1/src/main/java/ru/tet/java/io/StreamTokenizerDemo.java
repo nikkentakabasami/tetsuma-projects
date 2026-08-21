@@ -1,6 +1,5 @@
 package ru.tet.java.io;
 
-import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
 
@@ -52,17 +51,6 @@ public class StreamTokenizerDemo extends DemoBase {
 
 		}
 
-	}
-
-	@Override
-	protected void doInitControlPanel() throws Exception {
-		addTest1Button(null);
-	}
-	
-	@Override
-	protected void doInit() throws Exception {
-		//запускаем
-		test1();
 	}
 
 	public static void main(String[] args) {

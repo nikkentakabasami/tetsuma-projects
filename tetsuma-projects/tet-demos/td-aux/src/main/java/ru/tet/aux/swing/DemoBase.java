@@ -1,6 +1,7 @@
 package ru.tet.aux.swing;
 
 import ru.tet.aux.AbstractDemoBase;
+import ru.tet.aux.TestSources;
 import ru.tet.swing.utils.TetSwingUtils;
 
 /**
@@ -35,6 +36,20 @@ public class DemoBase extends AbstractDemoBase {
 		try {
 			doInitControlPanel();
 			doInit();
+
+			//добавляем кнопки для тестов
+			for (int i = 1; i < sourceUtils.getSources().size(); i++) {
+				TestSources sources = sourceUtils.getSources().get(i);
+				
+				if (!sources.isEmpty()) {
+					addTestButton(null, i);
+				}
+				
+			}
+			
+			
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

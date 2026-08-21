@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import ru.tet.TemplateDemo;
+import ru.tet.DemoExample;
 import ru.tet.aux.AuxTest;
 import ru.tet.aux.swing.DemoBase;
 
@@ -57,10 +57,6 @@ public class FilterInputStreamDemo extends DemoBase {
 		
 	}
 
-	@Override
-	protected void doInitControlPanel() throws Exception {
-		addTest1Button(null);
-	}
 
 	public static void main(String[] args) {
 		DemoBase.run(FilterInputStreamDemo.class);
