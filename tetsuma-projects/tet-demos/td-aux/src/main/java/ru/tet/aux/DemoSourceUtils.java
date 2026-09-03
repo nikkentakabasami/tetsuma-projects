@@ -54,18 +54,26 @@ public class DemoSourceUtils {
 			
 			CompilationUnit cu2 = StaticJavaParser.parse(javaFileIS);
 
+			//пробегаемся по дереву исходников
 			cu2.accept(new VoidVisitorAdapter<Object>() {
 
-				@Override
+				//просматриваем внутренние классы
+		    @Override
 				public void visit(ClassOrInterfaceDeclaration n, Object arg) {
-					TestSources testSources = findTestSourcesByAnnotation(n);
-					if (testSources != null) {
+
+					//если класс привязан к какому то тесту ( аннотацией @AuxTest) - добавляем его в auxClasses
+					Integer testNo = findTestNo(n);
+					if (testNo != null) {
+						TestSources testSources = sources.get(testNo);
 						testSources.getAuxClasses().add(n);
 					}
+					//сносим @AuxTest
 					n.getAnnotations().clear();
+					
 					super.visit(n, arg);
 				}
 
+				//просматриваем методы
 				@Override
 				public void visit(MethodDeclaration m, Object arg) {
 					super.visit(m, arg);
@@ -83,17 +91,18 @@ public class DemoSourceUtils {
 						testSources.parseLogEvals();
 						
 					} else {
-						TestSources testSources = findTestSourcesByAnnotation(m);
-						if (testSources != null) {
+						//если метод привязан к какому то тесту ( аннотацией @AuxTest) - добавляем его в auxMethods
+						Integer testNo = findTestNo(m);
+						if (testNo != null) {
+							TestSources testSources = sources.get(testNo);
 							testSources.getAuxMethods().add(m);
 						}
+						
 					}
 					
 					m.getAnnotations().clear();
 					m.getModifiers().clear();
 					m.getThrownExceptions().clear();
-					
-					
 
 				}
 
@@ -107,14 +116,14 @@ public class DemoSourceUtils {
 	}
 
 	
-  Pattern auxTestNoPattern = Pattern.compile("\\d+");
-	
+  Pattern digitPattern = Pattern.compile("\\d+");
 	
 	/**
-	 * Если на метод назначена аннотация AuxTest, возвращает TestSources, к которому привязан этот метод
+	 * возвращает номер теста, к которому привязан заданный метод/класс/интерфейс
+	 * @param m - метод/класс/интерфейс
+	 * @return
 	 */
-	private TestSources findTestSourcesByAnnotation(NodeWithAnnotations m) {
-
+	private Integer findTestNo(NodeWithAnnotations m) {
 		Optional<AnnotationExpr> ann = m.getAnnotationByName(AuxTest.class.getSimpleName());
 		if (ann.isEmpty()) {
 			return null;
@@ -122,16 +131,17 @@ public class DemoSourceUtils {
 
 		int testNo = 1;
 		String s = ann.get().toString();
-		
-	  Matcher matcher = auxTestNoPattern.matcher(s);
+	  Matcher matcher = digitPattern.matcher(s);
 		if (matcher.find()) {
 			testNo = Integer.parseInt(matcher.group());
 		}
 		
-		TestSources testSources = sources.get(testNo);
-		return testSources;
-	}
-
+		return testNo;
+	}	
+	
+	
+	
+	
 	public void logCurrentSources() {
 		logCurrentSources(0);
 	}	
@@ -158,12 +168,10 @@ public class DemoSourceUtils {
 			}
 
 			for (MethodDeclaration m : testSources.getAuxMethods()) {
-				//				m.getAnnotations().clear();
 				demoBase.log1(m);
 				demoBase.log1NL();
 			}
 
-			//			ts.getTestMethod().getAnnotations().clear();
 			demoBase.log1(testSources.getTestMethod());
 			demoBase.log1NL();
 

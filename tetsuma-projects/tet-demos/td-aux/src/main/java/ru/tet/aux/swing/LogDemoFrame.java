@@ -50,13 +50,13 @@ public class LogDemoFrame extends JFrame {
 	    
 	    Font font = new Font("Serif", Font.PLAIN, 18);
 	    
-		textArea2 = new LogDemoTextPane();
+		textArea2 = new LogDemoTextPane(false);
 		textArea2.setFont(font);
 //		textArea2.setText("ta2");
 		
 		JScrollPane sp2 = new JScrollPane(textArea2);
 		sp2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		textArea1 = new LogDemoTextPane();
+		textArea1 = new LogDemoTextPane(true);
 		textArea1.setFont(font);
 		JScrollPane sp1 = new JScrollPane(textArea1);
 		sp1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);

@@ -89,12 +89,12 @@ public class DemoFrame extends AbstractDemoFrame {
 	    
 	    Font font = new Font("Serif", Font.PLAIN, 18);
 	    
-		textArea2 = new LogDemoTextPane();
+		textArea2 = new LogDemoTextPane(true);
 		textArea2.setFont(font);
 		
 		JScrollPane sp2 = new JScrollPane(textArea2);
 
-		textArea1 = new LogDemoTextPane();
+		textArea1 = new LogDemoTextPane(false);
 		textArea1.setFont(font);
 		JScrollPane sp1 = new JScrollPane(textArea1);
 		sp1.setPreferredSize(new Dimension(600, 300));

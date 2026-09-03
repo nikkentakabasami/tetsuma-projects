@@ -50,10 +50,11 @@ public class DemoExample extends DemoBase {
 		
 		 */
 
+		log2Splitter("test logExpr");
+		
 		logExpr(() -> {
 			Random r = new Random();
 			double d = r.nextDouble(444);
-
 			return d;
 		}, () -> {
 
@@ -66,7 +67,9 @@ public class DemoExample extends DemoBase {
 
 		});
 
-		logEval(
+		log2Splitter("test logEval1");
+		
+		logEval1(
 
 				d1 = 12.6e6,
 				//(d1=1, d2=2),
@@ -75,6 +78,16 @@ public class DemoExample extends DemoBase {
 				Math.cbrt(254),
 				//деление с округлением вверх (добавлен в Java 20)
 				Math.ceilDiv(22, 3));
+
+		log2Splitter("test logEval2");
+		
+		logEval2(
+				123 * 22,
+				expr(() -> {
+					Random randomNumbers = new Random();
+					int r1 = randomNumbers.nextInt(6);
+					return r1;
+				}));
 
 	}
 
@@ -90,12 +103,34 @@ public class DemoExample extends DemoBase {
 		/*
 		
 		 */
+
+		int i = 11;
+
+		for (int j = 1; j < 4; j++) {
+
+			log2("---", j);
+
+			logEval1(
+					j,
+					i * j);
+
+		}
+
 	}
 
 	public void test4() throws Exception {
 		/*
 		
 		 */
+
+		logEval1(
+				123 * 22,
+				expr(() -> {
+					Random randomNumbers = new Random();
+					int r1 = randomNumbers.nextInt(6);
+					return r1;
+				}));
+
 	}
 
 	public static void main(String[] args) {

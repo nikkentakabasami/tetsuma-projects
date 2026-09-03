@@ -12,7 +12,7 @@ public class MathDemo extends DemoBase {
 	@Override
 	public void test1() throws Exception {
 
-		logEval(
+		logEval1(
 
 				//кубический корень
 				Math.cbrt(254),
@@ -59,7 +59,7 @@ public class MathDemo extends DemoBase {
 	public void test2() throws Exception {
 
 		Random rand = new Random();
-		logEval(
+		logEval1(
 				rand.nextInt(124),
 				rand.nextDouble(90));
 
