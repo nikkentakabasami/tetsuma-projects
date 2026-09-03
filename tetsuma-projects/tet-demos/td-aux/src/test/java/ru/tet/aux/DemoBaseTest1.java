@@ -72,7 +72,7 @@ public class DemoBaseTest1 extends DemoBase {
 	public void test2() throws Exception {
 
 		//Эта функция позволяет компилировать, выполнять и выводить в лог короткие выражения.
-		logEval2("""
+		logEvalString("""
 				//кубический корень
 				Math.cbrt(254)
 

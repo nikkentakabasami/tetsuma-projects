@@ -13,6 +13,7 @@ public class CharsetDemo {
 
 	public static void Demo2() {
 
+		
 		SortedMap<String, Charset> availableCharsets = Charset.availableCharsets();
 		for(String csn:availableCharsets.keySet()) {
 			System.out.println(csn);
@@ -28,7 +29,7 @@ public class CharsetDemo {
 //	    Charset charset = Charset.forName("Cp1251");
 	    Charset charset = Charset.forName("windows-1251");
 
-	    
+			Charset.defaultCharset();
 	    
 	    System.out.println("name="+charset.name());
 	    System.out.println("displayName="+charset.displayName());

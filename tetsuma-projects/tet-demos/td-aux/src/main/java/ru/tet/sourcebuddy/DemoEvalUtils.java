@@ -36,9 +36,9 @@ public class DemoEvalUtils {
 		}
 		
 		Class<?> templateClass = options.templateClass;
-		if (templateClass==null) {
-			templateClass = EvalTemplate1.class; 
-		}
+//		if (templateClass==null) {
+//			templateClass = EvalTemplate1.class; 
+//		}
 		
 		String template = TetSourceUtils.findSourceAsString(templateClass);
 		

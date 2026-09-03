@@ -5,9 +5,6 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import ru.tet.sourcebuddy.DemoEvalUtils;
-import ru.tet.sourcebuddy.EvalResult;
-
 public class DemoEvalUtilsTest2 {
 
     @Test
@@ -17,7 +14,7 @@ public class DemoEvalUtilsTest2 {
     			//random
     			Math.random();
     			
-    			////деление с округлением вверх
+    			//деление с округлением вверх
     			Math.ceilDiv(22, 3);
     			""";
     	

@@ -32,18 +32,12 @@ public abstract class AbstractDemoBase {
 	public static AbstractDemoBase currentDemo;
 	
 	static DecimalFormat createSimpleDecimalFormat() {
-		
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		symbols.setDecimalSeparator('.');
 		symbols.setGroupingSeparator('_');
 		DecimalFormat f = new DecimalFormat("###,##0.####", symbols);
-		
-//		DecimalFormatSymbols simpleDot = new DecimalFormatSymbols();
-//	    simpleDot.setDecimalSeparator('.');
-//		DecimalFormat f = new DecimalFormat("#0.##",simpleDot);
 		return f;
 	}
-	
 	public static final DecimalFormat DECIMAL_FORMAT = createSimpleDecimalFormat();
 
 	//классы, которые нужно будет добавить в секцию import
@@ -346,7 +340,7 @@ public abstract class AbstractDemoBase {
 	}
 	
 	@Deprecated
-	public void logEval2(String code) {
+	public void logEvalString(String code) {
 		try {
 			
 			EvalOptions options = new EvalOptions();

@@ -1,4 +1,4 @@
-package ru.tet;
+package ru.tet.syntax.datatypes;
 
 import ru.tet.aux.swing.DemoBase;
 

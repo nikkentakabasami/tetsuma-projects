@@ -1,4 +1,4 @@
-package ru.tet.syntax;
+package ru.tet.syntax.datatypes;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

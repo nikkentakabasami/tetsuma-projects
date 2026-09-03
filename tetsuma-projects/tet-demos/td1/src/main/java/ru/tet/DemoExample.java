@@ -37,7 +37,7 @@ public class DemoExample extends DemoBase {
 
 	//доп. обработка значений в поле r перед их преобразованием в json.
 	@Override
-	public Object fixResultValue(Object value) {
+	public Object fixResultValue(Object value) throws Exception {
 		if (value instanceof Date d) {
 			return dateFormat.format(d);
 		}

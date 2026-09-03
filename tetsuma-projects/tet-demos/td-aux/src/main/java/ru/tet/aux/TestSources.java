@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.LambdaExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
@@ -60,7 +61,7 @@ public class TestSources {
 			if (me != null) {
 				String[] evalExpressions =
 						me.getChildNodes().stream()
-								.filter(e -> !(e instanceof SimpleName))
+								.filter(e -> !(e instanceof SimpleName) && !(e instanceof LineComment))
 								.map(e -> e.toString())
 								//						.peek(p->{
 								//							System.out.println(p.toString());

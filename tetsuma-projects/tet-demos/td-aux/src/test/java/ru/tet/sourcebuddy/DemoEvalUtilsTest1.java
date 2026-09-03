@@ -7,9 +7,6 @@ import java.util.Date;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import ru.tet.sourcebuddy.DemoEvalUtils;
-import ru.tet.sourcebuddy.EvalOptions;
-
 public class DemoEvalUtilsTest1 {
 
     @Test
