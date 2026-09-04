@@ -14,25 +14,18 @@ import ru.tet.aux.swing.DemoBase;
 import ru.tet.beans.User;
 import ru.tet.data.BeansSamples;
 
-/**
- * java.beans.XMLEncoder
-	Преобразовывает бин в xml для долгосрочного хранения.
-	Получается длинно.
- */
 public class XMLEncoderDemo extends DemoBase {
 
 	String encodedXml;
 	User user;
 
-	//XMLEncoder - Сериализует бин в xml для долгосрочного хранения.
-	//Получается длинно.
 	@AuxTest(1)
 	public String encodeBean(User user) {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(os));
 		encoder.writeObject(user);
 		encoder.close();
-		return new String(os.toByteArray(),StandardCharsets.UTF_8);
+		return new String(os.toByteArray(), StandardCharsets.UTF_8);
 	}
 
 	//XMLDecoder - десериализация из xml в бин
@@ -44,11 +37,16 @@ public class XMLEncoderDemo extends DemoBase {
 		decoder.close();
 		return user;
 	}
-	
+
 	@Override
 	public void test1() throws Exception {
-		
-		logExpr(() -> {
+		/**
+		 java.beans.XMLEncoder
+			Преобразовывает бин в xml для долгосрочного хранения.
+			Получается длинно.
+		 */
+
+		logExpr1(() -> {
 			user = BeansSamples.createTestUserBean();
 			return user;
 		}, () -> {
@@ -60,21 +58,19 @@ public class XMLEncoderDemo extends DemoBase {
 
 	@Override
 	public void test2() throws Exception {
-		
-		if (encodedXml==null) {
+
+		if (encodedXml == null) {
 			return;
 		}
-		
+
 		logEval(encodedXml);
 
-		logExpr(() -> {
+		logExpr1(() -> {
 			user = decodeBean(encodedXml);
 			return user;
 		});
 
-		
 	}
-
 
 	public static void main(String[] args) {
 		DemoBase.run(XMLEncoderDemo.class);

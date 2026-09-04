@@ -71,9 +71,7 @@ public class D_Numbers_operations extends DemoBase {
 				7 & 21,
 				7 | 21,
 				7 ^ 21,
-				~7
-				);
-
+				~7);
 
 	}
 
@@ -87,8 +85,8 @@ public class D_Numbers_operations extends DemoBase {
 		% — остаток от деления (модуль)
 		 */
 
-		r.s1 = 10 / 3;
-		r.s2 = 10 % 3;
+				r.s1 = 10 / 3;
+				r.s2 = 10 % 3;
 
 		/*
 		++ — префиксный или постфиксный инкремент
@@ -97,9 +95,9 @@ public class D_Numbers_operations extends DemoBase {
 
 		int x = 10, y = 10, z = 10;
 
-		r.s3 = x++;
-		r.s4 = ++y;
-		r.s5 = --z;
+				r.s3 = x++;
+				r.s4 = ++y;
+				r.s5 = --z;
 
 		/*
 		=
@@ -138,6 +136,7 @@ public class D_Numbers_operations extends DemoBase {
 	public void test4() throws Exception {
 
 		/*
+		boolean
 		Логический тип
 		
 		&& — логическое И

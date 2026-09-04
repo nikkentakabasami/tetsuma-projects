@@ -23,34 +23,25 @@ import ru.tet.sourcebuddy.EvalResult;
  * 
  */
 public abstract class AbstractDemoBase implements DemoAuxFunctions, DemoLogFunctions {
-
+	
 	public static AbstractDemoBase currentDemo;
-	
-	//Опции для logEvalString
-	EvalOptions evalStringOptions = new EvalOptions();
-	
+
+	DemoOptions options = new DemoOptions();
 	
 	//содержит инструментальную панель и панель для логов.
 	protected AbstractDemoFrame frame;
-	
 	protected LogDemoTextPane textArea1;
 	protected LogDemoTextPane textArea2;
-	
-
 	protected JControlPanelForTests controlPanel;
-
 	protected JPanel workPanel;
 	
 	protected int lastTestNo = 0;
-	String lastTestName;
 
 	//класс для работы с исходниками демки
 	protected DemoSourceUtils sourceUtils;
 	
 	//исходник выполняемого теста
 	TestSources currentSources;
-//	int logEvalNo = 0;
-//	int logExprNo = 0;
 	
 
 	//Результаты демки можно записывать в этот объект
@@ -109,7 +100,6 @@ public abstract class AbstractDemoBase implements DemoAuxFunctions, DemoLogFunct
 		
 		//вывести буферизованные логи
 		flushLogs();
-		
 		textArea2.hlComments();
 		
 	}
@@ -134,19 +124,6 @@ public abstract class AbstractDemoBase implements DemoAuxFunctions, DemoLogFunct
 
 
 	
-	@SafeVarargs
-	public final void _logExpr(Integer no, Supplier<Object>... args) {
-		
-		
-		String[] expressions = currentSources.logExprs.get(no);
-
-		for (int i = 0; i < expressions.length; i++) {
-			String expr = expressions[i];
-			Object val = args[i].get();
-			log2(expr+"\n",val,"\n");
-		}
-		
-	}
 	
 	@SafeVarargs
 	public final void _logEval(Integer no, Object... args) {
@@ -156,12 +133,59 @@ public abstract class AbstractDemoBase implements DemoAuxFunctions, DemoLogFunct
 		for (int i = 0; i < expressions.length; i++) {
 			String expr = expressions[i];
 			Object val = args[i];
-
-			log2(expr+"\n",val,"\n");
+			textArea2.logBlue(expr+NL);
+			log2(toStr(val)+NL);
 		}
 		
 	}	
 	
+	@SafeVarargs
+	public final void _logExpr(Integer no, Supplier<Object>... args) {
+		
+		String[] expressions = currentSources.logExprs.get(no);
+
+		for (int i = 0; i < expressions.length; i++) {
+			String expr = expressions[i];
+			Object val = args[i].get();
+			textArea2.logBlue(expr+NL);
+			log2(toStr(val)+NL);
+		}
+		
+	}
+	
+	
+	
+	@SafeVarargs
+	public final void logExpr1(Supplier<Object>... args) {
+		_logExpr(1, args);
+	}
+	
+	@SafeVarargs
+	public final void logExpr2(Supplier<Object>... args) {
+		_logExpr(1, args);
+	}
+
+	@SafeVarargs
+	public final void logExpr3(Supplier<Object>... args) {
+		_logExpr(1, args);
+	}
+
+	
+	@Override
+	public LogDemoTextPane textArea1() {
+		return textArea1;
+	}
+
+	@Override
+	public LogDemoTextPane textArea2() {
+		return textArea2;
+	}
+	
+	public DemoOptions options() {
+		return options;
+	}
+	
+
 	/**
 	 * Позволяет задать тесты в строковом виде.
 	 * Экспериментальная фича.
@@ -171,7 +195,7 @@ public abstract class AbstractDemoBase implements DemoAuxFunctions, DemoLogFunct
 	public void logEvalString(String code) {
 		try {
 			
-			List<EvalResult> ers = DemoEvalUtils.evalMultiExpression(code, evalStringOptions);
+			List<EvalResult> ers = DemoEvalUtils.evalMultiExpression(code, options.evalStringOptions);
 			for(EvalResult er:ers) {
 				if (er.getComments()!=null) {
 					log2(er.getComments());
@@ -186,20 +210,7 @@ public abstract class AbstractDemoBase implements DemoAuxFunctions, DemoLogFunct
 	}
 	
 	
-
-
 	
-	@Override
-	public LogDemoTextPane textArea1() {
-		return textArea1;
-	}
-
-	@Override
-	public LogDemoTextPane textArea2() {
-		return textArea2;
-	}
-	
-
 	//вспомогательный метод для запуска тестов
 	public static void run(Class<? extends AbstractDemoBase> cl) {
 		run(cl,0);

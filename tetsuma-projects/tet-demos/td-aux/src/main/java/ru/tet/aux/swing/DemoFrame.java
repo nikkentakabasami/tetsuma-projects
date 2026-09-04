@@ -23,6 +23,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import ru.tet.aux.AbstractDemoBase;
+import ru.tet.aux.DemoOptions;
 import ru.tet.javax.swing.aux.JControlPanelForTests;
 
 /**
@@ -33,6 +34,11 @@ public class DemoFrame extends AbstractDemoFrame {
 	public static int INSET = 50;
 	
 	JComboBox demosComboBox;
+	
+	
+	public DemoFrame(DemoOptions options) {
+		super(options);
+	}
 	
 	public void initWithControlPanelAbove() {
 		setBounds();
@@ -89,12 +95,12 @@ public class DemoFrame extends AbstractDemoFrame {
 	    
 	    Font font = new Font("Serif", Font.PLAIN, 18);
 	    
-		textArea2 = new LogDemoTextPane(true);
+		textArea2 = new LogDemoTextPane(options);
 		textArea2.setFont(font);
 		
 		JScrollPane sp2 = new JScrollPane(textArea2);
 
-		textArea1 = new LogDemoTextPane(false);
+		textArea1 = new LogDemoTextPane(options);
 		textArea1.setFont(font);
 		JScrollPane sp1 = new JScrollPane(textArea1);
 		sp1.setPreferredSize(new Dimension(600, 300));
@@ -191,7 +197,7 @@ public class DemoFrame extends AbstractDemoFrame {
 	public static void main(String[] args) {
 		
 		SwingUtilities.invokeLater(() -> {
-			DemoFrame f = new DemoFrame();
+			DemoFrame f = new DemoFrame(new DemoOptions());
 			f.initWithControlPanelAbove();
 		});
 		

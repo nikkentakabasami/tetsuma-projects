@@ -52,13 +52,14 @@ public class D_CharBuffer extends DemoBase {
 		
 		String s = "We wish you a merry christmas"; // length=29
 
-		CharBuffer buf = CharBuffer.wrap(s.toCharArray(), 3, 10); // "wish you a"
+//		CharBuffer buf = CharBuffer.wrap(s.toCharArray(), 3, 10); // "wish you a"
+		CharBuffer buf = CharBuffer.wrap(s, 3, 10); // "wish you a"
 
 		logEval(
 				buf.position(),	//3
 				buf.limit(),	//13
 				buf.capacity(),	//29
-				buf.arrayOffset(),	//0
+//				buf.arrayOffset(),	//0
 				buf.get(4)	//i
 		);
  

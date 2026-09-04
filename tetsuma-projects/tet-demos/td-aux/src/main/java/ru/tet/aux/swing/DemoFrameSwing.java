@@ -16,6 +16,7 @@ import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import ru.tet.aux.DemoOptions;
 import ru.tet.javax.swing.aux.JControlPanelForTests;
 
 public class DemoFrameSwing extends AbstractDemoFrame {
@@ -24,7 +25,11 @@ public class DemoFrameSwing extends AbstractDemoFrame {
 
 	LogDemoFrame logFrame;
 
+	public DemoFrameSwing(DemoOptions options) {
+		super(options);
+	}
 
+	
 	public void initWithControlPanelAbove() {
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -42,7 +47,7 @@ public class DemoFrameSwing extends AbstractDemoFrame {
 		splitPane.setDividerLocation(200);
 		setContentPane(splitPane);
 
-		logFrame = new LogDemoFrame();
+		logFrame = new LogDemoFrame(options);
 		logFrame.initWithControlPanelAbove();
 		logFrame.setVisible(true);
 
@@ -95,7 +100,7 @@ public class DemoFrameSwing extends AbstractDemoFrame {
 	public static void main(String[] args) {
 
 		SwingUtilities.invokeLater(() -> {
-			DemoFrameSwing f = new DemoFrameSwing();
+			DemoFrameSwing f = new DemoFrameSwing(new DemoOptions());
 			f.initWithControlPanelAbove();
 		});
 

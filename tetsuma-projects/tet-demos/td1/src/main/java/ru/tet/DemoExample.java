@@ -47,12 +47,20 @@ public class DemoExample extends DemoBase {
 
 	public void test1() throws Exception {
 		/*
-		
+		Работа с логами
 		 */
 
-		log2Splitter("test logExpr");
+		log2("aaa");
+		log2Green("my g text");
+		log2("bbb");
+		log2Blue("my blue text");
+		log2("ccc");
+		log2Bold("my bold text");
+		log2("ddd");		
 		
-		logExpr(() -> {
+		log2Splitter("test logExpr");
+
+		logExpr1(() -> {
 			Random r = new Random();
 			double d = r.nextDouble(444);
 			return d;
@@ -68,7 +76,7 @@ public class DemoExample extends DemoBase {
 		});
 
 		log2Splitter("test logEval1");
-		
+
 		logEval1(
 
 				d1 = 12.6e6,
@@ -80,12 +88,22 @@ public class DemoExample extends DemoBase {
 				Math.ceilDiv(22, 3));
 
 		log2Splitter("test logEval2");
-		
+
 		logEval2(
 				123 * 22,
 				expr(() -> {
 					Random randomNumbers = new Random();
 					int r1 = randomNumbers.nextInt(6);
+					return r1;
+				}));
+
+		logEval3(
+				1,
+				expr(() -> {
+					int r1 = 33;
+					return r1;
+				}), expr(() -> {
+					int r1 = 44;
 					return r1;
 				}));
 

@@ -8,7 +8,6 @@ import ru.tet.aux.swing.DemoBase;
 //Шаблон для создания новых демо
 public class D_Numbers extends DemoBase {
 
-
 	public void test1() throws Exception {
 		/*
 		Объявление чисел.
@@ -33,7 +32,7 @@ public class D_Numbers extends DemoBase {
 
 						Integer.MAX_VALUE,
 						Integer.MIN_VALUE,
-						
+
 				};
 
 		double[] floats =
@@ -44,7 +43,7 @@ public class D_Numbers extends DemoBase {
 						3.5f, -45.67F,
 
 						4.7e-5f, 2.5e10, -0.345e-25,
-						
+
 						Double.POSITIVE_INFINITY,
 						Double.NEGATIVE_INFINITY,
 						Double.NaN
@@ -52,12 +51,6 @@ public class D_Numbers extends DemoBase {
 
 		r.s1 = numbers;
 		r.s2 = floats;
-
-		//log2(numbers);
-		//log2(floats);
-
-		//		System.out.println(Arrays.toString(numbers));
-		//		System.out.println(Arrays.toString(floats));
 
 	}
 
@@ -84,19 +77,17 @@ public class D_Numbers extends DemoBase {
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		symbols.setDecimalSeparator('.');
 		symbols.setGroupingSeparator('_');
-		
+
 		//самый базовый шаблон (группировка, максимум 4 знака после запятой)
 		DecimalFormat df1 = new DecimalFormat("###,##0.####", symbols);
 		r.s3 = df1.format(d1);
 		r.s4 = df1.format(d2);
-		
-		
+
 		//группировать по разрядам, дополнять нулями до нужного размера
 		df1 = new DecimalFormat("00,000.0000", symbols);
 		r.s5 = df1.format(d1);
 		r.s6 = df1.format(d2);
 		r.s7 = df1.format(-0.5);
-		
 
 	}
 
@@ -109,25 +100,21 @@ public class D_Numbers extends DemoBase {
 		 */
 
 		Double d1 = Double.valueOf("123456.12");
-		
+
 		r.s1 = d1;
 
-		
 		/*
 		Парсинг через DecimalFormat
 		 */
-		
+
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		symbols.setDecimalSeparator('.');
 		symbols.setGroupingSeparator('_');
-		
+
 		DecimalFormat df1 = new DecimalFormat("###,###.#", symbols);
 		Number n1 = df1.parse("1_234.123456");
 		r.s2 = n1;
-		
-		
-		
-		
+
 	}
 
 	public void test4() throws Exception {
@@ -135,17 +122,15 @@ public class D_Numbers extends DemoBase {
 		
 		 */
 		r.s1 = Double.toHexString(11.33);
-		
+
 		r.s2 = Integer.toHexString(19);
 		r.s3 = Integer.toBinaryString(19);
 		r.s4 = Integer.toOctalString(19);
-		
+
 		//для показа числа в байтовом виде
 		r.s5 = Integer.toBinaryString(19 & 0xFF);
 		r.s6 = Integer.toBinaryString(-19 & 0xFF);
-		
-		 
-		
+
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import java.util.stream.IntStream;
 import ru.tet.aux.AuxTest;
 import ru.tet.aux.swing.DemoBase;
 
-//Шаблон для создания новых демо
 public class D_String extends DemoBase {
 
 	public void test1() throws Exception {
@@ -20,9 +19,12 @@ public class D_String extends DemoBase {
 		r.s3 = """
 				Это многострочная
 				строка в Java 15+.
-				символы можно задвать юникод-кодами: \u2206
+				символы можно задавать юникод-кодами: \u2206
+				Иконки имеют коды: u2600 - u27FF
 				""";
 
+		r.s4 = "Иконки: \u2700 \u2B00 \u2B01";
+		
 	}
 
 	public void test2() throws Exception {
@@ -32,22 +34,19 @@ public class D_String extends DemoBase {
 
 	public void test3() throws Exception {
 		/*
-		
+		Задание символов кодами
 		 */
+		
+		log2("\u270E \u270F \u2710");
+		log2('\u2711');
+		
+		
 	}
 
 	public void test4() throws Exception {
 		/*
 		
 		 */
-	}
-
-	@Override
-	protected void doInitControlPanel() throws Exception {
-		addTest1Button(null);
-		addTest2Button(null);
-		addTest3Button(null);
-		addTest4Button(null);
 	}
 
 	public static void main(String[] args) {

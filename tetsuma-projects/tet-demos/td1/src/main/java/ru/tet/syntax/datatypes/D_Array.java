@@ -36,9 +36,10 @@ public class D_Array extends DemoBase {
 		Integer[] a5 = new Integer[5];
 		String[] a7 = new String[] { "Winter", "Spring", "Summer" };
 
-		//При инициализации массивы заполняются значениями по умолчанию: нулями, null, false
-		r.s1 = a2;
-		r.s2 = a5;
+		logEval1(
+				//При инициализации массивы заполняются значениями по умолчанию: нулями, null, false
+				a2,
+				a5);
 
 	}
 
@@ -57,8 +58,9 @@ public class D_Array extends DemoBase {
 		a4[0] = new int[6][];
 		a4[0][0] = new int[7];
 
-		r.s1 = a3;
-		r.s2 = a4;
+		logEval1(
+				a3,
+				a4);
 
 	}
 
@@ -72,17 +74,15 @@ public class D_Array extends DemoBase {
 		int[] a1_copy;
 		int[] a1_copy2;
 
-		logEval(
+		logEval1(
 				Arrays.toString(a1),
-				Arrays.deepToString(a2));
+				Arrays.toString(a2),
+				Arrays.deepToString(a2),
+				expr(() -> {
+					Arrays.sort(a1);
+					return a1;
+				}),
 
-		logExpr(() -> {
-			Arrays.sort(a1);
-			String s = Arrays.toString(a1);
-			return s;
-		});
-
-		logEval(
 				//ищем число 5
 				Arrays.binarySearch(a1, 5),
 
@@ -92,22 +92,23 @@ public class D_Array extends DemoBase {
 				//копия массива с длиной 4
 				a1_copy = Arrays.copyOf(a1, 4),
 				Arrays.equals(a1, a1_copy),
-				
-				a1_copy2 = Arrays.copyOfRange(a1, 1, 4)
-				
-				);
 
-		logExpr(() -> {
-			//заполнение массива
-			Arrays.fill(a1, 7);
-			return a1;
-		}, () -> {
-			//заполнение массива генератором
-			Arrays.setAll(a1, cell_ind -> {
-				return (cell_ind + 1) * 3;
-			});
-			return a1;
-		});
+				a1_copy2 = Arrays.copyOfRange(a1, 1, 4),
+
+				expr(() -> {
+					//заполнение массива
+					Arrays.fill(a1, 7);
+					return a1;
+				}),
+				expr(() -> {
+					//заполнение массива генератором
+					Arrays.setAll(a1, cell_ind -> {
+						return (cell_ind + 1) * 3;
+					});
+					return a1;
+				})
+
+		);
 
 	}
 
@@ -117,15 +118,17 @@ public class D_Array extends DemoBase {
 		Spliterator - позволяет организовать итерацию, последовательно или параллельно
 		 */
 		int[] a1 = { 1, 5, 4, 3, 7 };
-		r.s1 = a1;
+		logEval1(
+				a1);
 
-
+		log2Splitter();
 		OfInt spliterator = Arrays.spliterator(a1);
 		while (spliterator.tryAdvance((int v) -> {
 			log2(v);
 		}))
 			;
 
+		log2Splitter();
 		//итерация в разбивке на 2 части
 		spliterator = Arrays.spliterator(a1);
 		OfInt spliterator2 = spliterator.trySplit();

@@ -1,8 +1,11 @@
 package ru.tet.aux.swing;
 
+import java.awt.HeadlessException;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import ru.tet.aux.DemoOptions;
 import ru.tet.javax.swing.aux.JControlPanelForTests;
 
 public class AbstractDemoFrame extends JFrame {
@@ -15,7 +18,12 @@ public class AbstractDemoFrame extends JFrame {
 	
 	protected LogDemoTextPane textArea1;
 	protected LogDemoTextPane textArea2;
-	
+
+	DemoOptions options;
+
+	public AbstractDemoFrame(DemoOptions options) throws HeadlessException {
+		this.options = options;
+	}
 
 	/**
 	 * Очищает все добавленные компоненты и текст в логах.

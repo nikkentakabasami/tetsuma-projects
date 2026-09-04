@@ -23,6 +23,9 @@ public class D_Date extends DemoBase {
 		if (value instanceof Date d) {
 			return dateFormat.format(d);
 		}
+		if (value instanceof Calendar c) {
+			return dateFormat.format(c.getTime());
+		}
 
 		return super.fixResultValue(value);
 	}
@@ -45,7 +48,7 @@ public class D_Date extends DemoBase {
 		
 		 */
 
-		logEval(
+		logEval1(
 				d1 = new Date(),
 				d2 = new Date(125, 7, 12),
 				d3 = dateFormat.parse("05.02.2008 12:31"),
@@ -57,61 +60,69 @@ public class D_Date extends DemoBase {
 
 	public void test2() throws Exception {
 		/*
+		java.util.Calendar
+		Мутабельный
+		
+		Date	getTime()
+		void	setTime(Date date)
+		связь с датой
 		
 		 */
-
 		Calendar c1 = Calendar.getInstance();
-		Calendar c2 = new GregorianCalendar(TimeZone.getTimeZone("GMT+5:30"), new Locale("en", "IN"));
+		Calendar c2 = new GregorianCalendar(TimeZone.getTimeZone("GMT+5:30"), Locale.of("en", "IN"));
 
 		TimeZone tz = TimeZone.getTimeZone("America/New_York");
 		Calendar c3 = Calendar.getInstance(tz);
 
-		logEval(
+		logEval1(
 				c1.get(Calendar.YEAR),
 				c1.get(Calendar.MONTH),
 				c1.get(Calendar.DAY_OF_MONTH),
-				c1.get(Calendar.DAY_OF_WEEK));
+				c1.get(Calendar.DAY_OF_WEEK),
+				c1.getTime());
 
-		logExpr(() -> {
+		logExpr1(() -> {
 			//задаём части даты
 			c1.set(Calendar.YEAR, 2025);
 			c1.set(Calendar.MONTH, Calendar.OCTOBER);
-			return c1.getTime();
+			return c1;
 		}, () -> {
 			c1.set(2025, Calendar.JANUARY, 20);
-			return c1.getTime();
+			return c1;
 		}, () -> {
 			//задаём все части вместе
 			c1.set(2025, Calendar.JANUARY, 20, 11, 32);
-			return c1.getTime();
+			return c1;
 		}, () -> {
 			Date d1 = new Date(125, 7, 12);
 			c1.setTime(d1);
-			return c1.getTime();
+			return c1;
 		}, () -> {
 			c1.setTimeInMillis((long) 1e12);
-			return c1.getTime();
+			return c1;
 		});
 
 	}
 
 	public void test3() throws Exception {
 		/*
+		конвертация Date в LocalDateTime
 		
 		 */
 		Date d1 = dateFormat.parse("05.02.2008 12:31");
-
-		//конвертация Date в LocalDateTime
 		Instant instant = Instant.ofEpochMilli(d1.getTime());
 		LocalDateTime ldt = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 
-		r.set(instant.toString(), ldt.toString());
+		logEval(instant.toString(), 
+				ldt.toString());
+		
 
 	}
 
 	public void test4() throws Exception {
 		/*
-		
+		TimeUnit
+		перечисление с временными единицами измерения
 		 */
 
 		logEval(

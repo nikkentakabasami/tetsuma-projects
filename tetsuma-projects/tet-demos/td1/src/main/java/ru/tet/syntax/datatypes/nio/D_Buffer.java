@@ -60,7 +60,6 @@ public class D_Buffer extends DemoBase {
 		ByteBuffer bb1 = ByteBuffer.allocate(48);
 		ByteBuffer bb2 = ByteBuffer.allocateDirect(48);
 
-		System.out.println(Charset.defaultCharset());
 
 		byte[] bytes = "clean biosphere".getBytes(); //для латиницы UTF-8 использует 1 байт на символ
 		ByteBuffer bb4 = ByteBuffer.wrap(bytes);
@@ -155,9 +154,10 @@ public class D_Buffer extends DemoBase {
 		 */
 		ByteBuffer bb1 = ByteBuffer.wrap("hello!".getBytes());
 
-		logEval(
+		logEval1(
 				Arrays.toString(bb1.array()),
 
+				bb1.get(4),
 				bb1.position(),
 				bb1.limit(),
 				bb1.capacity());
@@ -166,7 +166,7 @@ public class D_Buffer extends DemoBase {
 			log2("[" + bb1.position() + "]: " + bb1.get() + " rem:" + bb1.remaining());
 		}
 		
-		logExpr(() -> {
+		logExpr1(() -> {
 			
 			//считывание 4х байтов в другой байтовый буфер
 			bb1.rewind();

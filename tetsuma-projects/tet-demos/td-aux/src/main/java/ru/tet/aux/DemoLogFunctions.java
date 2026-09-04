@@ -1,6 +1,5 @@
 package ru.tet.aux;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -8,17 +7,16 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.swing.JTextPane;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-
 import ru.tet.aux.swing.LogDemoTextPane;
+import ru.tet.aux.swing.LogDemoTextPane.LogStyle;
 
 /**
  * Все функции демок, связанные с выводом в лог
  */
 public interface DemoLogFunctions {
 
+	final static String NL = "\n";
+	
 	static DecimalFormat createSimpleDecimalFormat() {
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		symbols.setDecimalSeparator('.');
@@ -33,6 +31,8 @@ public interface DemoLogFunctions {
 
 	LogDemoTextPane textArea2();
 
+	DemoOptions options();
+	
 	/**
 	 * фиксит параметры результата, приводя их к типам, которые можно вывести в json
 	 * @param r
@@ -104,27 +104,6 @@ public interface DemoLogFunctions {
 
 		return s;
 	}
-
-
-	/*
-	default void append1(String s) {
-		append(textArea1(), s);
-	}
-
-	default void append2(String s) {
-		append(textArea2(), s);
-	}
-
-	default void append(JTextPane ta, String s) {
-		Document document = ta.getDocument();
-		try {
-			document.insertString(document.getLength(), s, null);
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		}
-	}
-	*/
-	
 	
 	
 	default void logSplitter(LogDemoTextPane ta, Object... args) {
@@ -160,6 +139,21 @@ public interface DemoLogFunctions {
 		log(textArea2(), args);
 	}
 
+	default void log2(String s, LogStyle style) {
+		textArea2().log(s+NL, style);
+	}
+
+	default void log2Blue(String s) {
+		textArea2().logBlue(s+NL);
+	}
+	default void log2Green(String s) {
+		textArea2().logGreen(s+NL);
+	}
+	default void log2Bold(String s) {
+		textArea2().log(s+NL,LogStyle.BOLD);
+	}
+	
+	
 	//вывод без перехода на новую строку
 	default void log1_(Object... args) {
 		logInline(textArea1(), args);
@@ -187,7 +181,8 @@ public interface DemoLogFunctions {
 	}
 	
 	//вывод логов
-	default void flushLogs() throws IOException {
+	default void flushLogs() throws Exception {
+		textArea1().flush();
 		textArea2().flush();
 		
 	}
@@ -197,11 +192,10 @@ public interface DemoLogFunctions {
 	}
 	
 	
-//	void logExpr(Supplier<Object>... args);
-//	void logEval(Object... args);
+	
+	//---------------logEval-----------------
 	
 	void _logEval(Integer no, Object... args);
-	void _logExpr(Integer no, Supplier<Object>... args);
 
 	
 	default void logEval(Object... args) {
@@ -217,6 +211,10 @@ public interface DemoLogFunctions {
 		_logEval(3, args);
 	}
 
+	//---------------logExpr-----------------
+	
+	void _logExpr(Integer no, Supplier<Object>... args);
+	
 	default void logExpr(Supplier<Object>... args) {
 		_logExpr(1, args);
 	}

@@ -12,6 +12,9 @@ public class D_BigInt extends DemoBase {
 	public void test1() throws Exception {
 		/*
 		BigInteger
+		для работы с числами произвольной точности
+		Немутабельный
+		
 		Способы объявления
 		 */
 
@@ -25,13 +28,18 @@ public class D_BigInt extends DemoBase {
 	}
 
 	public void test2() throws Exception {
+		/*
+		BigInteger
+		
+		Основные операции
+		 */
 
-		BigInteger b1 = BigInteger.valueOf(5000000L);
-		BigInteger b2 = BigInteger.valueOf(70400L);
+		BigInteger b1, b2;
 
-		logEval(
-				b1,
-				b2,
+		logEval1(
+				b1 = BigInteger.valueOf(5000000L),
+				b2 = BigInteger.valueOf(70400L),
+				//наибольший общий делитель
 				b1.gcd(b2),
 				b1.add(b2),
 				b1.subtract(b2),
@@ -45,45 +53,47 @@ public class D_BigInt extends DemoBase {
 
 	public void test3() throws Exception {
 		/*
-		
+		BigDecimal
+		для работы с дробными числами с высокой точностью.
+		Немутабельный
 		 */
 
-		//Ошибочный способ создания 
-		BigDecimal bad = new BigDecimal(0.1);
+		BigDecimal b1, b2, b3, b4, b5, num1, num2;
 
-		//Правильный способ
-		BigDecimal good1 = new BigDecimal("0.1");
-		BigDecimal good2 = BigDecimal.valueOf(0.1);
+		logEval1(
+				//Ошибочный способ создания 
+				b1 = new BigDecimal(0.1),
+				b1.toString(),
 
-		r.s1 = bad;
-		r.s2 = good1;
-		r.s3 = good2;
+				//Правильный способ
+				b2 = new BigDecimal("0.1"),
+				b3 = BigDecimal.valueOf(0.1),
 
-		BigDecimal num1 = new BigDecimal("10.50");
-		BigDecimal num2 = new BigDecimal("2.30");
-
-		r.s4 = num1.add(num2);
-		r.s5 = num1.subtract(num2);
-		r.s6 = num1.multiply(num2);
-
-		r.s7 = num1.divide(num2, 2, RoundingMode.HALF_UP);
-
+				//основные операции
+				num1 = new BigDecimal("10.50"),
+				num2 = new BigDecimal("2.30"),
+				num1.add(num2),
+				num1.subtract(num2),
+				num1.multiply(num2),
+				num1.divide(num2, 2, RoundingMode.HALF_UP)
+		);
 	}
 
 	public void test4() throws Exception {
 		/*
 		scale - сколько чисел после запятой
-		
 		 */
 
-		BigDecimal b1 = new BigDecimal("10.6789");
-		r.s1 = b1.scale();
+		BigDecimal b1, b2;
+		
+		logEval1(
+				b1 = new BigDecimal("10.6789"),
+				b1.scale(),
+				b2 = b1.setScale(2, RoundingMode.HALF_UP)
+		);
 
-		//округление до второго знака после запятой
-		r.s2 = b1.setScale(2, RoundingMode.HALF_UP);
 
 	}
-
 
 	public static void main(String[] args) {
 		DemoBase.run(D_BigInt.class);

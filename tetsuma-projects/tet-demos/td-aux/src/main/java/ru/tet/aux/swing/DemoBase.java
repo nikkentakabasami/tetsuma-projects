@@ -19,7 +19,7 @@ public class DemoBase extends AbstractDemoBase {
 			frame.clearContent();
 
 		} else {
-			DemoFrame fr = new DemoFrame();
+			DemoFrame fr = new DemoFrame(options());
 			fr.initWithControlPanelAbove();
 			frame = fr;
 //			frame.initLog1Styles();

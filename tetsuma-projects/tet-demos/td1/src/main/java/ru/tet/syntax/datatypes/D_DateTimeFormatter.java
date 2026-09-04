@@ -40,7 +40,7 @@ public class D_DateTimeFormatter extends DemoBase {
 		Форматирование и парсинг дат
 		
 		
-		Предопределённые форматтеры
+		Предопределённые форматтеры:
 		
 		DateTimeFormatter	ISO_LOCAL_DATE
 		DateTimeFormatter	ISO_LOCAL_DATE_TIME
@@ -50,7 +50,7 @@ public class D_DateTimeFormatter extends DemoBase {
 
 		LocalDateTime ldt1 = LocalDateTime.now();
 
-		logEval(
+		logEval1(
 				DateTimeFormatter.BASIC_ISO_DATE.format(ldt1),
 				DateTimeFormatter.ISO_LOCAL_DATE.format(ldt1),
 				DateTimeFormatter.ISO_LOCAL_TIME.format(ldt1),
@@ -88,7 +88,6 @@ public class D_DateTimeFormatter extends DemoBase {
 				DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL)
 						.withZone(ZoneId.systemDefault()).format(ldt1));
 
-
 	}
 
 	public void test3() throws Exception {
@@ -111,21 +110,23 @@ public class D_DateTimeFormatter extends DemoBase {
 		ZonedDateTime zdt1 = ZonedDateTime.of(ldt1, ZoneId.systemDefault());
 		OffsetDateTime odt1 = OffsetDateTime.now();
 
-		DateTimeFormatter f1 = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-		r.s1 = f1.format(ldt1);
-
-		DateTimeFormatter f2 = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss z");
-		r.s2 = f2.format(zdt1);
-
-		DateTimeFormatter f3 = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss XXX");
-		r.s3 = f3.format(odt1);
+		logEval1(
+				expr(() -> {
+					DateTimeFormatter f1 = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+					return f1.format(ldt1);
+				}), expr(() -> {
+					DateTimeFormatter f2 = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss z");
+					return f2.format(zdt1);
+				}), expr(() -> {
+					DateTimeFormatter f3 = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss XXX");
+					return f3.format(odt1);
+				}));
 
 	}
 
 	public void test4() throws Exception {
 		/*
 		DateTimeFormatter
-		
 		 */
 
 		LocalDateTime ldt1 = LocalDateTime.parse("01.01.2005 11:30:11", dateTimeFormatter);
@@ -133,7 +134,6 @@ public class D_DateTimeFormatter extends DemoBase {
 		r.s1 = dateTimeFormatter.format(ldt1);
 		r.s2 = dateFormatter.format(ldt1);
 		r.s3 = timeFormatter.format(ldt1);
-
 		r.s4 = dateFormatter.format(ldt1.toLocalDate());
 
 		LocalDateTime ldt2 = LocalDateTime.parse("2015-02-20T06:30:00"); //20.02.2015 06:30:00

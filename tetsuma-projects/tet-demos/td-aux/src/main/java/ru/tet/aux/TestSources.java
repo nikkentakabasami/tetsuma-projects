@@ -43,14 +43,9 @@ public class TestSources {
 	//Если в тесте вызывается метод logExpr - парсит код этих вызовов сюда
 	Map<Integer, String[]> logExprs = new HashMap<>();
 
-	//	List<String[]> logEvals = new ArrayList<>();
-	//	List<String[]> logExprs = new ArrayList<>();
-
 	public boolean isEmpty() {
 		return testMethod == null && auxMethods.isEmpty() && auxClasses.isEmpty();
 	}
-
-	//  Pattern digitPattern = Pattern.compile("\\d+$");
 
 	public Map<Integer, String[]> findMethodCallExpr(Node node, String prefix) {
 
@@ -91,59 +86,6 @@ public class TestSources {
 		logExprs = findMethodCallExpr(testMethod, LOG_EXPR);
 	}
 
-	/*
-	public void parseLogEvals() {
-	
-		if (testMethod == null) {
-			return;
-		}
-	
-		testMethod.getBody().get().getStatements().forEach(statement -> {
-	
-			MethodCallExpr me =
-					statement.getChildNodes().stream()
-							.filter(e -> (e instanceof MethodCallExpr))
-							.map(e -> (MethodCallExpr) e)
-							.filter(e -> e.getName().toString().equals("logEval"))
-							.findFirst().orElse(null);
-	
-			if (me != null) {
-				String[] evalExpressions =
-						me.getChildNodes().stream()
-								.filter(e -> !(e instanceof SimpleName) && !(e instanceof LineComment))
-								.map(e -> e.toString())
-								//						.peek(p->{
-								//							System.out.println(p.toString());
-								//						})
-								.toArray(String[]::new);
-	
-				logEvals.add(evalExpressions);
-			}
-			
-			
-			me =
-					statement.getChildNodes().stream()
-							.filter(e -> (e instanceof MethodCallExpr))
-							.map(e -> (MethodCallExpr) e)
-							.filter(e -> e.getName().toString().equals("logExpr"))
-							.findFirst().orElse(null);
-	
-			if (me != null) {
-				String[] expressions =
-						me.getChildNodes().stream()
-								.filter(e -> (e instanceof LambdaExpr))
-								.map(e -> (LambdaExpr) e)
-	//								.map(e -> e.getBody().toString())
-								.map(this::formatFunctionBody)
-								.toArray(String[]::new);
-	
-				logExprs.add(expressions);
-			}
-	
-		});
-	
-	}
-	*/
 
 	String formatExpression(Node node) {
 		
@@ -162,26 +104,37 @@ public class TestSources {
 		return node.toString();
 	}
 
+	static final String RETURN = "return ";
+	
 	String formatFunctionBody(LambdaExpr expr) {
 		String str = expr.getBody().toString();
 		
+		//что возвращается в return
+		String returnVal = null;
 
-		int ind = str.lastIndexOf("return");
+		int ind = str.lastIndexOf(RETURN);
 		if (ind>=0) {
+			
+			int valInd = ind+RETURN.length();
+			int scInd = str.indexOf(';', valInd);
+
+			if (scInd>0) {
+				returnVal = str.substring(valInd,scInd).trim();
+			}
+			
 			str = str.substring(2, ind);
+			//str = str.substring(ind);
+			
 		} else {
 			str = str.substring(2, str.length() - 2);
 		}
 
-		/*
-		int ind = str.lastIndexOf('\n', str.length() - 4);
-		if (ind <= 0) {
-			ind = str.length() - 2;
-		}
-		str = str.substring(2, ind);
-		*/
-		
 		str = str.replaceAll("(?m)^\\s+", "").trim();
+		
+		if (returnVal!=null) {
+			str+="\n"+returnVal;
+		}
+		
 		return str;
 	}
 

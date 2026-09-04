@@ -10,13 +10,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import ru.tet.aux.DemoOptions;
 import ru.tet.javax.swing.aux.JControlPanelForTests;
 
 public class LogDemoFrame extends JFrame {
@@ -30,9 +30,11 @@ public class LogDemoFrame extends JFrame {
 	LogDemoTextPane textArea1;
 	LogDemoTextPane textArea2;
 	
+	DemoOptions options;	
 	
-	public LogDemoFrame() {
-
+	
+	public LogDemoFrame(DemoOptions options) {
+		this.options = options;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("Логи для демо");
 
@@ -50,13 +52,13 @@ public class LogDemoFrame extends JFrame {
 	    
 	    Font font = new Font("Serif", Font.PLAIN, 18);
 	    
-		textArea2 = new LogDemoTextPane(false);
+		textArea2 = new LogDemoTextPane(options);
 		textArea2.setFont(font);
 //		textArea2.setText("ta2");
 		
 		JScrollPane sp2 = new JScrollPane(textArea2);
 		sp2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		textArea1 = new LogDemoTextPane(true);
+		textArea1 = new LogDemoTextPane(options);
 		textArea1.setFont(font);
 		JScrollPane sp1 = new JScrollPane(textArea1);
 		sp1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -103,7 +105,7 @@ public class LogDemoFrame extends JFrame {
 	public static void main(String[] args) {
 		
 		SwingUtilities.invokeLater(() -> {
-			LogDemoFrame f = new LogDemoFrame();
+			LogDemoFrame f = new LogDemoFrame(new DemoOptions());
 			f.initWithControlPanelAbove();
 		});
 		

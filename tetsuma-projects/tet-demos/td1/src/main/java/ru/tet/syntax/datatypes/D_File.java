@@ -33,25 +33,22 @@ public class D_File extends DemoBase {
 		File d1 = Paths.get("/home/tetsuma/myfiles/").toFile();
 		File f2 = new File(d1, "tmp.txt");
 
-		File f1 = new File("../pom.xml");	//относительный путь
+		File f1 = new File("../pom.xml"); //относительный путь
 		File f3 = new File("/home/tetsuma/myfiles/theft.txt");
 		File f4 = new File(new URI("file:///home/tetsuma/myfiles/theft.txt"));
-		
+
 		//Создание на основе Path
 		File f5 = Paths.get("/home/tetsuma/myfiles/").toFile();
-		
+
 		//временные
 		File f6 = File.createTempFile("testp", "tests", new File("target"));
 		File f7 = File.createTempFile("testp", "tests");
 		f6.deleteOnExit();
 		f7.deleteOnExit();
-		
-		
-		
-		
+
 		logEval(
 				f1,
-				
+
 				//атрибуты файлов
 				f1.exists(),
 				f1.length(),
@@ -63,15 +60,15 @@ public class D_File extends DemoBase {
 				f1.isDirectory(),
 				f1.isFile(),
 				f1.isHidden(),
-				
+
 				//имя файла, заданное при создании - полное/абсолютное
 				f1.isAbsolute(),
-				
+
 				//конвертации
 				f1.toURI(),
 				f1.toURI().toURL(),
 				f1.toPath(),
-				
+
 				//краткое имя файла
 				f1.getName(),
 				//полное имя директории с файлом
@@ -82,27 +79,19 @@ public class D_File extends DemoBase {
 				f1.getAbsolutePath(),
 				//абсолютный путь с устранёнными . и .., а также разрешёнными символическими ссылками.
 				f1.getCanonicalPath(),
-				
+
 				f1.getAbsoluteFile().getPath(),
 				f1.getCanonicalFile().getPath(),
 				f1.getParentFile().getPath(),
-				
-				
-				
-				
-				
+
 				Arrays.toString(d1.list()),
-				
+
 				//место на диске с файлом
 				f1.getTotalSpace(),
 				f1.getUsableSpace(),
 				f1.getFreeSpace()
-				
-				
-				
-				
-				);
 
+		);
 
 	}
 
@@ -132,17 +121,12 @@ public class D_File extends DemoBase {
 		f2.createNewFile();
 		f2.deleteOnExit();
 
-		
-		
-		
 		f1.setExecutable(true);
 		f1.setReadable(true);
 		f1.setWritable(true);
-		
+
 		f1.setLastModified(Instant.now().getLong(ChronoField.MILLI_OF_SECOND));
-		
-		
-		
+
 		File tempFile1 = File.createTempFile("testp", "tests", new File("target"));
 		//чтобы он удалился сам при выходе
 		tempFile1.deleteOnExit();
@@ -169,33 +153,31 @@ public class D_File extends DemoBase {
 
 	public void test3() throws Exception {
 		/*
-File[] 	listFiles()
-File[] 	listFiles(FileFilter filter)
-File[] 	listFiles(FilenameFilter filter)
-String[] 	list()
-String[] 	list(FilenameFilter filter)
+		File[] 	listFiles()
+		File[] 	listFiles(FileFilter filter)
+		File[] 	listFiles(FilenameFilter filter)
+		String[] 	list()
+		String[] 	list(FilenameFilter filter)
 		
 		 */
-		
+
 		log2Splitter("File.listRoots()");
 		File[] roots = File.listRoots();
 		Arrays.stream(roots).forEach(f -> log2(f.getName()));
 
 		File targetDir = new File("target");
-		
+
 		log2Splitter("targetDir.list()");
 		Arrays.stream(targetDir.list()).forEach(this::log2);
-		
+
 		log2Splitter("targetDir.listFiles(()");
 		Arrays.stream(targetDir.listFiles()).forEach(f -> log2(f.getName()));
-		
+
 		log2Splitter("targetDir.listFiles(FilenameFilter filter)");
-		Arrays.stream(targetDir.listFiles((File dir, String name)->{
+		Arrays.stream(targetDir.listFiles((File dir, String name) -> {
 			return name.contains("test");
 		})).forEach(f -> log2(f.getName()));
-		
-		
-		
+
 	}
 
 	public void test4() throws Exception {
