@@ -1,4 +1,4 @@
-package ru.tet.aux;
+package ru.tet.demos;
 
 import java.util.stream.IntStream;
 import java.util.stream.Stream;

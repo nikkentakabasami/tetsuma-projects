@@ -1,4 +1,4 @@
-package ru.tet.aux;
+package ru.tet.demos;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

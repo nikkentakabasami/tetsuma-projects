@@ -10,7 +10,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import ru.tet.aux.DemoOptions;
+import ru.tet.demos.DemoOptions;
 
 public class LogDemoTextPane extends JTextPane {
 
@@ -139,9 +139,8 @@ public class LogDemoTextPane extends JTextPane {
 	}
 
 	public void flush() throws Exception {
-		if (options.bufferLogs) {
+		if (options.bufferLogs && logWriter.getBuffer().length()>0) {
 			setText(logWriter.toString());
-
 			hlStyle(blueStyle, LogStyle.BLUE.markerChar);
 			hlStyle(greenStyle, LogStyle.GREEN.markerChar);
 			hlStyle(boldStyle, LogStyle.BOLD.markerChar);

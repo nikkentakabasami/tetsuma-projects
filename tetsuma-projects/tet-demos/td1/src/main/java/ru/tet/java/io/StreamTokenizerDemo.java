@@ -3,9 +3,9 @@ package ru.tet.java.io;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
 
-import ru.tet.aux.AuxTest;
 import ru.tet.aux.swing.DemoBase;
 import ru.tet.data.StringSamples;
+import ru.tet.demos.AuxTest;
 
 public class StreamTokenizerDemo extends DemoBase {
 

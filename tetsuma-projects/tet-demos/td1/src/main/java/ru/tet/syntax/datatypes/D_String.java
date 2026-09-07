@@ -2,8 +2,8 @@ package ru.tet.syntax.datatypes;
 
 import java.util.stream.IntStream;
 
-import ru.tet.aux.AuxTest;
 import ru.tet.aux.swing.DemoBase;
+import ru.tet.demos.AuxTest;
 
 public class D_String extends DemoBase {
 
@@ -24,6 +24,8 @@ public class D_String extends DemoBase {
 				""";
 
 		r.s4 = "Иконки: \u2700 \u2B00 \u2B01";
+		
+		r.s5 = "line1"+System.lineSeparator()+"line2";
 		
 	}
 

@@ -1,6 +1,6 @@
 package ru.tet.aux.swing;
 
-import ru.tet.aux.AbstractDemoBase;
+import ru.tet.demos.AbstractDemoBase;
 
 public class DemoBaseSwing extends AbstractDemoBase {
 
@@ -22,7 +22,7 @@ public class DemoBaseSwing extends AbstractDemoBase {
 			frame = generalFrame;
 			frame.clearContent();
 		} else {
-			DemoFrameSwing fr = new DemoFrameSwing();
+			DemoFrameSwing fr = new DemoFrameSwing(null);
 			fr.initWithControlPanelAbove();
 			frame = fr;
 //			frame.initLog1Styles();

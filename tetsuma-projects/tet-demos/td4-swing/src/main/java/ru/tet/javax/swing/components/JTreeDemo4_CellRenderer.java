@@ -6,8 +6,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
@@ -17,7 +15,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 
-import ru.tet.javax.swing.aux.DemoDataSamples;
+import ru.tet.aux.DemoAuxDataSamplesSwing;
 import ru.tet.javax.swing.aux.JFrameForTests;
 
 public class JTreeDemo4_CellRenderer extends JFrameForTests {
@@ -42,7 +40,7 @@ public class JTreeDemo4_CellRenderer extends JFrameForTests {
 
 		workPanel.setLayout(new BorderLayout());
 
-		DefaultMutableTreeNode root = DemoDataSamples.makeTestTreeNodes2();
+		DefaultMutableTreeNode root = DemoAuxDataSamplesSwing.makeTestTreeNodes2();
 		treeModel = new DefaultTreeModel(root);
 
 		jtree = new JTree(treeModel);

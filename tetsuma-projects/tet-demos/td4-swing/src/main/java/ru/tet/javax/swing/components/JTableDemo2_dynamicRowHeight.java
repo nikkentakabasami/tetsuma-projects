@@ -8,7 +8,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-import ru.tet.javax.swing.aux.DemoDataSamples;
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.javax.swing.aux.DynamicRowHeightTable;
 import ru.tet.javax.swing.aux.JFrameForTests;
 
@@ -27,7 +27,7 @@ public class JTableDemo2_dynamicRowHeight extends JFrameForTests {
 
 		controlPanel.addDebugLabel();
 
-		model = new DefaultTableModel(DemoDataSamples.tableData2, DemoDataSamples.tableHeadings2) {
+		model = new DefaultTableModel(DemoAuxDataSamples.tableData2, DemoAuxDataSamples.tableHeadings2) {
 	        @Override public Class<?> getColumnClass(int column) {
 	          return getValueAt(0, column).getClass();
 	        }

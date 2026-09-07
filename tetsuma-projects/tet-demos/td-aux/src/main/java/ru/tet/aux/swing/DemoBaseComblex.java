@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import org.reflections.Reflections;
 
-import ru.tet.aux.AbstractDemoBase;
+import ru.tet.demos.AbstractDemoBase;
 
 /**
  * Демка, объединяющая набор демок в единое целое
@@ -37,7 +37,7 @@ public class DemoBaseComblex extends AbstractDemoBase {
 		String[] demoNamesArray = demoNames.toArray(new String[0]);
 
 		
-		DemoFrame fr = new DemoFrame();
+		DemoFrame fr = new DemoFrame(null);
 		
 		fr.initComplex(demoNamesArray, e->{
 			currentDemoIndex = fr.demosComboBox.getSelectedIndex();

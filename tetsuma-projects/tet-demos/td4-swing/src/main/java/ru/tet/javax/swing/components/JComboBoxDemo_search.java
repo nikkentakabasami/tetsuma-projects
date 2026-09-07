@@ -12,7 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import ru.tet.javax.swing.aux.DemoDataSamples;
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.javax.swing.aux.JFrameForTests;
 
 public class JComboBoxDemo_search extends JFrameForTests {
@@ -61,7 +61,7 @@ public class JComboBoxDemo_search extends JFrameForTests {
 	
 	public JComboBox makeComboBox1() {
 
-		data = Arrays.asList(DemoDataSamples.apples);
+		data = Arrays.asList(DemoAuxDataSamples.apples);
 		
 		
 		

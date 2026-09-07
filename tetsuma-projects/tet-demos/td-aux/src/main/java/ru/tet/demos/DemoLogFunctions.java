@@ -1,8 +1,9 @@
-package ru.tet.aux;
+package ru.tet.demos;
 
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Arrays;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -79,6 +80,10 @@ public interface DemoLogFunctions {
 			return DECIMAL_FORMAT.format(i);
 		}
 
+//		if (value.getClass().isArray()) {
+//			Arrays.toString(value);
+//		}
+		
 		return value;
 
 	}

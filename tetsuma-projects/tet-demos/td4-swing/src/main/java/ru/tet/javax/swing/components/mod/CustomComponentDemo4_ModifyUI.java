@@ -18,7 +18,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import ru.tet.javax.swing.aux.DemoDataSamples;
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.javax.swing.aux.JFrameForTests;
 
 public class CustomComponentDemo4_ModifyUI extends JFrameForTests {
@@ -36,7 +36,7 @@ public class CustomComponentDemo4_ModifyUI extends JFrameForTests {
 		UIManager.put("ScrollBar.incrementButtonGap", 0);
 		UIManager.put("ScrollBar.decrementButtonGap", 0);
 
-		String testText = DemoDataSamples.loadTestText();
+		String testText = DemoAuxDataSamples.loadTestText();
 
 		// Задаём для ScrollBar-ов кастомный ui
 		JScrollPane sp1 = new JScrollPane(new JTextArea(testText)) {

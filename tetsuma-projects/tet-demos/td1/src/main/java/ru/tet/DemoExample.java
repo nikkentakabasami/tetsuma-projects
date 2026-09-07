@@ -9,8 +9,8 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import ru.tet.aux.AuxTest;
 import ru.tet.aux.swing.DemoBase;
+import ru.tet.demos.AuxTest;
 
 //Пример использования демок
 public class DemoExample extends DemoBase {
@@ -19,23 +19,27 @@ public class DemoExample extends DemoBase {
 	SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH);
 
 	//Вспомогательный класс для теста 1
-	@AuxTest(1)
+	@AuxTest
 	class testClass {
 	}
 
+	//вспомогательный метод (для второго теста)
 	@AuxTest(value = 2)
 	void auxMethod() {
 		//aux method
 	}
 
+	
+	//код для инициализации всей демки. Будет показываться для всех тестов.
 	@Override
 	protected void doInit() throws Exception {
-		//код для инициализации всей демки. Будет показываться для всех тестов.
 		d1 = 100;
 
+		//Задание опций демки
+		options().removeMarkerChars = false;
 	}
 
-	//доп. обработка значений в поле r перед их преобразованием в json.
+	//Правка/Форматирование значений результатов перед выводом их в лог или преобразованием в JSON
 	@Override
 	public Object fixResultValue(Object value) throws Exception {
 		if (value instanceof Date d) {

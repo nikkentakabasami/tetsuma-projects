@@ -1,4 +1,4 @@
-package ru.tet.aux;
+package ru.tet.demos;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -9,11 +9,11 @@ import javax.swing.SwingUtilities;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ru.tet.aux.DemoActionListener;
 import ru.tet.aux.swing.AbstractDemoFrame;
 import ru.tet.aux.swing.LogDemoTextPane;
 import ru.tet.javax.swing.aux.JControlPanelForTests;
 import ru.tet.sourcebuddy.DemoEvalUtils;
-import ru.tet.sourcebuddy.EvalOptions;
 import ru.tet.sourcebuddy.EvalResult;
 
 /**
@@ -22,7 +22,7 @@ import ru.tet.sourcebuddy.EvalResult;
  * Функции для работы с тестами - в интерфейсе DemoAuxFunctions.
  * 
  */
-public abstract class AbstractDemoBase implements DemoAuxFunctions, DemoLogFunctions {
+public abstract class AbstractDemoBase implements DemoTestFunctions, DemoLogFunctions {
 	
 	public static AbstractDemoBase currentDemo;
 
@@ -53,9 +53,7 @@ public abstract class AbstractDemoBase implements DemoAuxFunctions, DemoLogFunct
 	
 	public AbstractDemoBase() {
 		sourceUtils = new DemoSourceUtils(this);
-		
 	}
-
 
 	//инициализация демки, вызывается при её запуске
 	protected void doInit() throws Exception {
@@ -105,7 +103,7 @@ public abstract class AbstractDemoBase implements DemoAuxFunctions, DemoLogFunct
 	}
 		
 	//вызывается после создания демки, вызывает doInit
-	public abstract void init(AbstractDemoFrame frame);
+	public abstract void init(AbstractDemoFrame frame) throws Exception;
 	
 	
 

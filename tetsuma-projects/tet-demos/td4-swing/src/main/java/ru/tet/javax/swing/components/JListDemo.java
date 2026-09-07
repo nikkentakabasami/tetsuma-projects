@@ -14,8 +14,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.beans.SuIdNameModel;
-import ru.tet.javax.swing.aux.DemoDataSamples;
 import ru.tet.javax.swing.aux.IdNameListCellRenderer;
 import ru.tet.javax.swing.aux.JFrameForTests;
 
@@ -40,7 +40,7 @@ public class JListDemo extends JFrameForTests {
 	    
 	    workPanel.add(new JLabel("MULTIPLE_INTERVAL_SELECTION"));
 		
-		list1 = new JList(DemoDataSamples.apples); 
+		list1 = new JList(DemoAuxDataSamples.apples); 
 	    list1.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION); 
 	 
 	    JScrollPane sp = new JScrollPane(list1); 
@@ -53,7 +53,7 @@ public class JListDemo extends JFrameForTests {
 	    workPanel.add(new JLabel("list with model (editable)"));
 	    
 	    DefaultListModel lm = new DefaultListModel(); 
-		lm.addAll(Arrays.asList(DemoDataSamples.apples));
+		lm.addAll(Arrays.asList(DemoAuxDataSamples.apples));
 		list2 = new JList(lm); 
 
 	    sp = new JScrollPane(list2); 
@@ -73,7 +73,7 @@ public class JListDemo extends JFrameForTests {
 	    //-----------------------------
 	    workPanel.add(new JLabel("list with ListCellRenderer"));
 	    
-		list3 = new JList(DemoDataSamples.makeItemsList(10).toArray(new SuIdNameModel[0])); 
+		list3 = new JList(DemoAuxDataSamples.makeItemsList(10).toArray(new SuIdNameModel[0])); 
 	    list3.setCellRenderer(new IdNameListCellRenderer());
 
 	    sp = new JScrollPane(list3); 
@@ -90,7 +90,7 @@ public class JListDemo extends JFrameForTests {
 	    list1.addListSelectionListener(new ListSelectionListener() {  
 	      public void valueChanged(ListSelectionEvent le) {
 	    	  int[] indices = list1.getSelectedIndices();
-	    	  String selectedApples = Arrays.stream(indices).mapToObj(i->DemoDataSamples.apples[i]).collect(Collectors.joining(","));
+	    	  String selectedApples = Arrays.stream(indices).mapToObj(i->DemoAuxDataSamples.apples[i]).collect(Collectors.joining(","));
 	    	  controlPanel.label1.setText("selected apples:"+selectedApples);
 	      }  
 	    });  

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.ehcache.PersistentUserManagedCache;
 import org.ehcache.UserManagedCache;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.ehcache.config.builders.UserManagedCacheBuilder;
@@ -17,8 +16,8 @@ import org.ehcache.impl.config.persistence.DefaultPersistenceConfiguration;
 import org.ehcache.impl.config.persistence.UserManagedPersistenceContext;
 import org.ehcache.impl.persistence.DefaultLocalPersistenceService;
 
-import ru.tet.aux.AuxTest;
 import ru.tet.aux.swing.DemoBase;
+import ru.tet.demos.AuxTest;
 
 /**
 	UserManagedCache

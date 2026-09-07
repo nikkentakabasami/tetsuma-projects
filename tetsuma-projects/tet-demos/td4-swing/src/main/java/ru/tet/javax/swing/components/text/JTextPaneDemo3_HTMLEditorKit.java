@@ -17,7 +17,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.html.HTMLEditorKit;
 
-import ru.tet.javax.swing.aux.DemoDataSamples;
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.javax.swing.aux.JFrameForTests;
 import ru.tet.javax.swing.aux.MyHTMLEditorKit;
 import ru.tet.javax.swing.images.MissingIcon;
@@ -73,7 +73,7 @@ public class JTextPaneDemo3_HTMLEditorKit extends JFrameForTests {
 		
 		controlPanel.addButton("read html page", e -> {
 			try {
-				StringReader sr = new StringReader(DemoDataSamples.loadTestHtml());
+				StringReader sr = new StringReader(DemoAuxDataSamples.loadTestHtml());
 //				textPane.read(sr, "html/text");
 				textPane.read(sr, null);
 			} catch (IOException e1) {
@@ -142,7 +142,7 @@ public class JTextPaneDemo3_HTMLEditorKit extends JFrameForTests {
 		workPanel.setLayout(new BorderLayout());
 		workPanel.add(scroll, BorderLayout.CENTER);
 
-		textPane.setText(DemoDataSamples.sampleString);
+		textPane.setText(DemoAuxDataSamples.sampleString);
 
 	}
 

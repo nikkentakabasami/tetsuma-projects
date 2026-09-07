@@ -16,8 +16,8 @@ import javax.swing.text.Highlighter;
 import javax.swing.text.Keymap;
 import javax.swing.text.NavigationFilter;
 
-import ru.tet.aux.AuxTest;
 import ru.tet.aux.swing.DemoBaseSwing;
+import ru.tet.demos.AuxTest;
 
 public class JTextAreaDemo2 extends DemoBaseSwing {
 

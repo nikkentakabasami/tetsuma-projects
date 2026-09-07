@@ -12,8 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.beans.SuIdNameModel;
-import ru.tet.javax.swing.aux.DemoDataSamples;
 import ru.tet.javax.swing.aux.JFrameForTests;
 
 public class JComboBoxDemo_Renderer extends JFrameForTests {
@@ -67,7 +67,7 @@ public class JComboBoxDemo_Renderer extends JFrameForTests {
 	private JComboBox<SuIdNameModel> makeComboBox1() {
 		
 
-		List<SuIdNameModel> data = DemoDataSamples.makeItemsList(10);
+		List<SuIdNameModel> data = DemoAuxDataSamples.makeItemsList(10);
 		JComboBox<SuIdNameModel> cb = new JComboBox<>(data.toArray(new SuIdNameModel[0]));
 //		cb.setEditable(true);
 

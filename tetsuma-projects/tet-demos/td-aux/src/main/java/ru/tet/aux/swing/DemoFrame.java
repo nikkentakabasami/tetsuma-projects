@@ -22,8 +22,8 @@ import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import ru.tet.aux.AbstractDemoBase;
-import ru.tet.aux.DemoOptions;
+import ru.tet.demos.AbstractDemoBase;
+import ru.tet.demos.DemoOptions;
 import ru.tet.javax.swing.aux.JControlPanelForTests;
 
 /**

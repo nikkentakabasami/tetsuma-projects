@@ -3,19 +3,17 @@ package ru.tet.syntax.datatypes.nio;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Set;
-import java.util.stream.IntStream;
 
+import ru.tet.aux.DemoAuxFunctions;
 import ru.tet.aux.swing.DemoBase;
 
 public class D_Files extends DemoBase {
@@ -115,7 +113,9 @@ long	size(Path path)
 		Создание soft link - если оригинальный файл будет удалён - обращение к ссылке кинет ошибку
 		 */
 
-		Path textFile = createTextFile().toAbsolutePath();
+		Path textFile = DemoAuxFunctions.createNumbersTableTextFile("testTextFile.txt");
+		
+		
 		log2("created file:", textFile);
 
 		//soft link/ symbolic link
@@ -192,24 +192,6 @@ long	size(Path path)
 		}
 
 		Files.move(p4, p5, StandardCopyOption.REPLACE_EXISTING);
-	}
-
-	public static Path createTextFile() throws IOException {
-		Path filePath = Paths.get("target", "testTextFile.txt");
-		if (Files.exists(filePath)) {
-			return filePath;
-		}
-
-		byte[] content =
-				IntStream.range(0, 20)
-						.mapToObj(i -> {
-							String sep = i % 5 != 0 ? ", " : System.lineSeparator();
-							return i + sep;
-						})
-						.reduce("", String::concat)
-						.getBytes(StandardCharsets.UTF_8);
-		Files.write(filePath, content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-		return filePath;
 	}
 
 	//пример

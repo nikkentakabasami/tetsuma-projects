@@ -7,7 +7,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ru.tet.javax.swing.aux.DemoDataSamples;
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.javax.swing.aux.JFrameForTests;
 import ru.tet.javax.swing.aux.comp.SearchPanel;
 import ru.tet.javax.swing.aux.comp.SearchPopupMenu;
@@ -33,7 +33,7 @@ public class CustomComponentDemo6_search extends JFrameForTests {
 
 		controlPanel.addDebugLabel();
 		
-		data =DemoDataSamples.makeApplesList(5);
+		data =DemoAuxDataSamples.makeApplesList(5);
 		
 		searchPanel = new SearchPanel(searchText->{
 			if (StringUtils.isBlank(searchText)) {

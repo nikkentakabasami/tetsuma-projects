@@ -1,4 +1,4 @@
-package ru.tet.syntax.datatypes;
+package ru.tet.syntax.datatypes.io;
 
 import java.io.File;
 import java.net.URI;

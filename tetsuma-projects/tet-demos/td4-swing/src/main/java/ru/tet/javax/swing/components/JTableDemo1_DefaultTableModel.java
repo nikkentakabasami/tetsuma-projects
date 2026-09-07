@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.apache.commons.lang3.StringUtils;
 
-import ru.tet.javax.swing.aux.DemoDataSamples;
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.javax.swing.aux.JFrameForTests;
 
 public class JTableDemo1_DefaultTableModel extends JFrameForTests {
@@ -24,7 +24,7 @@ public class JTableDemo1_DefaultTableModel extends JFrameForTests {
 
 		controlPanel.addDebugLabel();
 
-		tableModel = new DefaultTableModel(DemoDataSamples.tableData1, DemoDataSamples.tableHeadings1);
+		tableModel = new DefaultTableModel(DemoAuxDataSamples.tableData1, DemoAuxDataSamples.tableHeadings1);
 
 		table = new JTable(tableModel);
 

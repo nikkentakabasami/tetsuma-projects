@@ -5,8 +5,8 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import ru.tet.aux.AuxTest;
 import ru.tet.aux.swing.DemoBase;
+import ru.tet.demos.AuxTest;
 
 //Шаблон для создания новых демо
 public class D_NumberFormat extends DemoBase {

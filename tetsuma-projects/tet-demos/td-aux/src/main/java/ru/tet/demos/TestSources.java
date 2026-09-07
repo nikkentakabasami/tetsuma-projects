@@ -1,4 +1,4 @@
-package ru.tet.aux;
+package ru.tet.demos;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,7 +131,7 @@ public class TestSources {
 
 		str = str.replaceAll("(?m)^\\s+", "").trim();
 		
-		if (returnVal!=null) {
+		if (returnVal!=null && !returnVal.equals("null")) {
 			str+="\n"+returnVal;
 		}
 		

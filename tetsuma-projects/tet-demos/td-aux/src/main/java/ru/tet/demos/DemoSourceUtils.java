@@ -1,4 +1,4 @@
-package ru.tet.aux;
+package ru.tet.demos;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -142,7 +142,7 @@ public class DemoSourceUtils {
 	
 	
 	
-	public void logCurrentSources() {
+	public void logCurrentSources()  throws Exception {
 		logCurrentSources(0);
 	}	
 	/**
@@ -151,7 +151,7 @@ public class DemoSourceUtils {
 	 * 
 	 * @param testNo
 	 */
-	public void logCurrentSources(int testNo) {
+	public void logCurrentSources(int testNo)  throws Exception {
 
 		for (TestSources testSources : sources) {
 			if (testSources.isEmpty()) {
@@ -176,6 +176,7 @@ public class DemoSourceUtils {
 			demoBase.log1NL();
 
 		}
+		demoBase.flushLogs();
 		
 		demoBase.textArea1.hlComments();
 

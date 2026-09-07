@@ -19,7 +19,7 @@ import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
-import ru.tet.javax.swing.aux.DemoDataSamples;
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.javax.swing.aux.GBC;
 import ru.tet.javax.swing.aux.JFrameForTests;
 
@@ -77,7 +77,7 @@ public class JSpinnerDemo extends JFrameForTests {
 			label1.setText(" Selected date is: " + date + " ");
 		});
 
-		SpinnerListModel spm3 = new SpinnerListModel(Arrays.asList(DemoDataSamples.tableHeadings1));
+		SpinnerListModel spm3 = new SpinnerListModel(Arrays.asList(DemoAuxDataSamples.tableHeadings1));
 		spinner3 = new JSpinner(spm3);
 
 		JPanel np = new JPanel(new GridLayout(0, 2, 20, 20));

@@ -16,7 +16,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import ru.tet.aux.DemoOptions;
+import ru.tet.demos.DemoOptions;
 import ru.tet.javax.swing.aux.JControlPanelForTests;
 
 public class LogDemoFrame extends JFrame {

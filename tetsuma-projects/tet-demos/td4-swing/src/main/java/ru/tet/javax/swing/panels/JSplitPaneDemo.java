@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-import ru.tet.javax.swing.aux.DemoDataSamples;
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.javax.swing.aux.JFrameForTests;
 
 public class JSplitPaneDemo extends JFrameForTests {
@@ -15,7 +15,7 @@ public class JSplitPaneDemo extends JFrameForTests {
 	@Override
 	protected void doInit() {
 
-		String html = DemoDataSamples.loadClassPathResourceAsText("labelHtmlPage.html");
+		String html = DemoAuxDataSamples.loadClassPathResourceAsText("labelHtmlPage.html");
 		
 		JLabel label1 = new JLabel(" Left side: ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 		JLabel label2 = new JLabel(html);

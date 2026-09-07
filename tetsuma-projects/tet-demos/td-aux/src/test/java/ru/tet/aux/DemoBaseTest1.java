@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.tet.aux.swing.DemoBase;
+import ru.tet.demos.AuxTest;
 
 /**
  * Тест для демонстрации использования DemoBase

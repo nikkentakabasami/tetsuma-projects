@@ -31,7 +31,7 @@ import javax.swing.text.StyledDocument;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import ru.tet.javax.swing.aux.DemoDataSamples;
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.javax.swing.aux.JFrameForTests;
 import ru.tet.javax.swing.images.MissingIcon;
 
@@ -139,7 +139,7 @@ public class JTextPaneDemo1 extends JFrameForTests {
 		controlPanel.addButton("setText", e -> {
 			try {
 				textPane.setContentType("html/text");
-				String testHtml = DemoDataSamples.loadTestHtml();				
+				String testHtml = DemoAuxDataSamples.loadTestHtml();				
 				textPane.setText(testHtml);
 				
 				//не работает
@@ -152,7 +152,7 @@ public class JTextPaneDemo1 extends JFrameForTests {
 		});
 		
 		controlPanel.addButton("setPage", e -> {
-			URL url = DemoDataSamples.class.getResource("/testHtmlPage.html");
+			URL url = DemoAuxDataSamples.class.getResource("/testHtmlPage.html");
 			try {
 				textPane.setPage(url);
 			} catch (IOException e1) {

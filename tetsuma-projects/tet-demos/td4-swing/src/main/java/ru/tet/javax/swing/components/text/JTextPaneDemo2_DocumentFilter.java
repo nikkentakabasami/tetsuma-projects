@@ -12,7 +12,7 @@ import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
-import ru.tet.javax.swing.aux.DemoDataSamples;
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.javax.swing.aux.JFrameForTests;
 
 /**
@@ -41,7 +41,7 @@ public class JTextPaneDemo2_DocumentFilter extends JFrameForTests {
 
 		controlPanel.addButton("insert text", e -> {
 			try {
-				textPane.getDocument().insertString(textPane.getDocument().getLength(),DemoDataSamples.sampleString,null);
+				textPane.getDocument().insertString(textPane.getDocument().getLength(),DemoAuxDataSamples.sampleString,null);
 			} catch (BadLocationException e1) {
 				e1.printStackTrace();
 			}
@@ -50,7 +50,7 @@ public class JTextPaneDemo2_DocumentFilter extends JFrameForTests {
 		workPanel.setLayout(new BorderLayout());
 		workPanel.add(scroll, BorderLayout.CENTER);
 
-		textPane.setText(DemoDataSamples.sampleString);
+		textPane.setText(DemoAuxDataSamples.sampleString);
 
 	}
 

@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import ru.tet.aux.AbstractDemoBase;
+import ru.tet.demos.AbstractDemoBase;
 
 public abstract class DemoAction extends AbstractAction {
 

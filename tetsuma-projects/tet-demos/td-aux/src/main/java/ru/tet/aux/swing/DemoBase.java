@@ -1,7 +1,7 @@
 package ru.tet.aux.swing;
 
-import ru.tet.aux.AbstractDemoBase;
-import ru.tet.aux.TestSources;
+import ru.tet.demos.AbstractDemoBase;
+import ru.tet.demos.TestSources;
 import ru.tet.swing.utils.TetSwingUtils;
 
 /**
@@ -12,7 +12,7 @@ import ru.tet.swing.utils.TetSwingUtils;
 public class DemoBase extends AbstractDemoBase {
 
 	@Override
-	public final void init(AbstractDemoFrame generalFrame) {
+	public final void init(AbstractDemoFrame generalFrame)  throws Exception {
 
 		if (generalFrame != null) {
 			frame = generalFrame;

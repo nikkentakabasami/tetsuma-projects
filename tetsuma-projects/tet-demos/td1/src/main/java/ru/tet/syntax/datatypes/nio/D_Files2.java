@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
 
+import ru.tet.aux.DemoAuxFunctions;
 import ru.tet.aux.swing.DemoBase;
 
 public class D_Files2 extends DemoBase {
@@ -33,7 +34,7 @@ public class D_Files2 extends DemoBase {
 		
 		 */
 
-		Path p1 = D_Files.createTextFile();
+		Path p1 = DemoAuxFunctions.createNumbersTableTextFile("testTextFile.txt");
 		log2("p1 =", p1);
 		log2("Files.readAllBytes(p1)");
 
@@ -72,7 +73,7 @@ public class D_Files2 extends DemoBase {
 		Считывание/запись в виде строк
 		
 		 */
-		Path p1 = D_Files.createTextFile();
+		Path p1 = DemoAuxFunctions.createNumbersTableTextFile("testTextFile.txt");
 		log2("p1 =", p1);
 
 		String content = Files.readString(p1);

@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import ru.tet.javax.swing.aux.DemoDataSamples;
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.javax.swing.aux.JFrameForTests;
 
 public class JScrollPaneDemo extends JFrameForTests {
@@ -19,7 +19,7 @@ public class JScrollPaneDemo extends JFrameForTests {
 	@Override
 	protected void doInit() {
 
-		String html = DemoDataSamples.loadClassPathResourceAsText("labelHtmlPage.html");
+		String html = DemoAuxDataSamples.loadClassPathResourceAsText("labelHtmlPage.html");
 		label = new JLabel(html);
 		
 

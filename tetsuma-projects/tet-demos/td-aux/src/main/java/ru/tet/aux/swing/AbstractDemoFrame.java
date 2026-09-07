@@ -5,7 +5,7 @@ import java.awt.HeadlessException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import ru.tet.aux.DemoOptions;
+import ru.tet.demos.DemoOptions;
 import ru.tet.javax.swing.aux.JControlPanelForTests;
 
 public class AbstractDemoFrame extends JFrame {
@@ -22,6 +22,9 @@ public class AbstractDemoFrame extends JFrame {
 	DemoOptions options;
 
 	public AbstractDemoFrame(DemoOptions options) throws HeadlessException {
+		if (options==null) {
+			options = new DemoOptions();
+		}
 		this.options = options;
 	}
 

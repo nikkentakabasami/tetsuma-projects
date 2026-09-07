@@ -7,7 +7,7 @@ import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import ru.tet.javax.swing.aux.DemoDataSamples;
+import ru.tet.aux.DemoAuxDataSamplesSwing;
 import ru.tet.javax.swing.aux.JFrameForTests;
 
 public class JTreeDemo extends JFrameForTests {
@@ -17,7 +17,7 @@ public class JTreeDemo extends JFrameForTests {
 		initWithControlPanelAbove();
 	    workPanel.setLayout(new BorderLayout()); 
 
-		DefaultMutableTreeNode root = DemoDataSamples.makeTestTreeNodes();
+		DefaultMutableTreeNode root = DemoAuxDataSamplesSwing.makeTestTreeNodes();
 
 		JTree jtree = new JTree(root);
 		JScrollPane jscrlp = new JScrollPane(jtree);

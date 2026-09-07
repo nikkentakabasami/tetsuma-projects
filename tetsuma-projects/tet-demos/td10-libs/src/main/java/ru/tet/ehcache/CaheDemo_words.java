@@ -18,9 +18,9 @@ import org.ehcache.expiry.Duration;
 import org.ehcache.expiry.Expirations;
 import org.ehcache.xml.XmlConfiguration;
 
-import ru.tet.aux.AuxTest;
 import ru.tet.aux.swing.DemoBase;
 import ru.tet.data.WarodaiDictionaryReader;
+import ru.tet.demos.AuxTest;
 import ru.tet.warodai.DWordModel;
 
 /**

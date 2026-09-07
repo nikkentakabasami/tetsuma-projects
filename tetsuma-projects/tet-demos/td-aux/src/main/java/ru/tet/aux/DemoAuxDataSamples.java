@@ -1,4 +1,4 @@
-package ru.tet.javax.swing.aux;
+package ru.tet.aux;
 
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -6,16 +6,21 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-
 import org.apache.commons.io.IOUtils;
 
 import ru.tet.beans.SuIdNameModel;
 
-public class DemoDataSamples {
+/**
+ * Образцы данных для демок.
+ */
+public class DemoAuxDataSamples {
 
 	public static String sampleString = "Съешь ещё этих мягких французских булок, да выпей же чаю";
+	
+	public static String sampleStringShort = "fujori dake no kishoutenketsu";
+	public static String sampleStringLyric = "Houritsu mo chitsujo demo  kurutta yatsu ga tsukutteru, Masa ni FARUSU  fujouri dake no kishou tenketsu";
+	public static String sampleStringJap = "法律も秩序でも　狂った奴が創ってる まさに ファルス 不条理だけの起承転結";
+	 
 	
 	
 	public static String[] tableHeadings1 = { "From", "Address", "Subject", "Size" };
@@ -78,25 +83,16 @@ public class DemoDataSamples {
 		return data;
 	}
 
-	/**
-	 * простейший html, который можно использовать даже в JLabel
-	 * @return
-	 */
-	public static String loadSimpleHtml() {
-		String html = DemoDataSamples.loadClassPathResourceAsText("labelHtmlPage.html");
-		return html;
-	}
-	
 	
 	public static String loadTestHtml() {
-		String html = DemoDataSamples.loadClassPathResourceAsText("testHtmlPage.html");
+		String html = DemoAuxDataSamples.loadClassPathResourceAsText("testHtmlPage.html");
 		return html;
 	}
 		
 	
 
 	public static String loadTestText() {
-		String html = DemoDataSamples.loadClassPathResourceAsText("testText.txt");
+		String html = DemoAuxDataSamples.loadClassPathResourceAsText("testText.txt");
 		return html;
 	}
 
@@ -104,7 +100,7 @@ public class DemoDataSamples {
 
 		try {
 //			URL resource = DemoDataSamples.class.getResource(resName);
-			URL resource = DemoDataSamples.class.getClassLoader().getResource(resName);
+			URL resource = DemoAuxDataSamples.class.getClassLoader().getResource(resName);
 			InputStream is = resource.openStream();
 
 			StringWriter sw = new StringWriter();
@@ -118,77 +114,6 @@ public class DemoDataSamples {
 		return null;
 	}
 
-	// JTree data
-
-	/**
-	 * Тестовые данные для JTree
-	 * 
-	 * @return
-	 */
-	public static DefaultMutableTreeNode makeTestTreeNodes() {
-
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Food");
-
-		// Fruit
-		DefaultMutableTreeNode fruit = new DefaultMutableTreeNode("Fruit");
-		root.add(fruit);
-
-		DefaultMutableTreeNode apples = new DefaultMutableTreeNode("Apples");
-		fruit.add(apples);
-
-		apples.add(new DefaultMutableTreeNode("Jonathan"));
-		apples.add(new DefaultMutableTreeNode("Winesap"));
-
-		DefaultMutableTreeNode pears = new DefaultMutableTreeNode("Pears");
-		fruit.add(pears);
-
-		pears.add(new DefaultMutableTreeNode("Bartlett"));
-
-		// Vegetables
-		DefaultMutableTreeNode veg = new DefaultMutableTreeNode("Vegetables");
-		root.add(veg);
-
-		veg.add(new DefaultMutableTreeNode("Beans"));
-		veg.add(new DefaultMutableTreeNode("Corn"));
-		veg.add(new DefaultMutableTreeNode("Potatoes"));
-		veg.add(new DefaultMutableTreeNode("Rice"));
-
-		return root;
-
-	}
-
-	public static DefaultMutableTreeNode makeTestTreeNodes2() {
-
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-		DefaultMutableTreeNode parent;
-
-		parent = new DefaultMutableTreeNode("colors");
-		root.add(parent);
-		parent.add(new DefaultMutableTreeNode("blue", false));
-		parent.add(new DefaultMutableTreeNode("violet", false));
-		parent.add(new DefaultMutableTreeNode("red", false));
-		parent.add(new DefaultMutableTreeNode("yellow", false));
-
-		parent = new DefaultMutableTreeNode("sports");
-		root.add(parent);
-		parent.add(new DefaultMutableTreeNode("basketball", false));
-		parent.add(new DefaultMutableTreeNode("soccer", false));
-		parent.add(new DefaultMutableTreeNode("football", false));
-		parent.add(new DefaultMutableTreeNode("hockey", false));
-
-		parent = new DefaultMutableTreeNode("food");
-		root.add(parent);
-		parent.add(new DefaultMutableTreeNode("hot dogs", false));
-		parent.add(new DefaultMutableTreeNode("pizza", false));
-		parent.add(new DefaultMutableTreeNode("ravioli", false));
-		parent.add(new DefaultMutableTreeNode("bananas", false));
-
-		parent = new DefaultMutableTreeNode("test");
-		root.add(parent);
-
-		return root;
-
-	}
 
 	
 	public static void main(String[] args) {

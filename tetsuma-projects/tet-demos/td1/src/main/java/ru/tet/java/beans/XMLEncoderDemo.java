@@ -9,10 +9,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import ru.tet.aux.AuxTest;
 import ru.tet.aux.swing.DemoBase;
 import ru.tet.beans.User;
 import ru.tet.data.BeansSamples;
+import ru.tet.demos.AuxTest;
 
 public class XMLEncoderDemo extends DemoBase {
 

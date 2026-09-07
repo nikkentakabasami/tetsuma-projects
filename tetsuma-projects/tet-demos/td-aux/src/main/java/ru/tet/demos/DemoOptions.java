@@ -1,4 +1,4 @@
-package ru.tet.aux;
+package ru.tet.demos;
 
 import ru.tet.sourcebuddy.EvalOptions;
 

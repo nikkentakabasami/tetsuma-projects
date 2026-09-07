@@ -12,7 +12,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.commons.io.FileUtils;
 
-import ru.tet.javax.swing.aux.DemoDataSamples;
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.javax.swing.aux.JFrameForTests;
 import ru.tet.javax.swing.aux.PropertiesTableModel;
 
@@ -53,7 +53,7 @@ public class JTableDemo4_PropertiesTableModel extends JFrameForTests {
 		controlPanel.addDebugLabel();
 
 		model = new PropertiesTableModel();
-		model.loadData(DemoDataSamples.tableData3);
+		model.loadData(DemoAuxDataSamples.tableData3);
 		
 		
 		table = new JTable(model);

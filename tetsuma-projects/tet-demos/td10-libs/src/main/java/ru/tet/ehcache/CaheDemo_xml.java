@@ -10,8 +10,8 @@ import org.ehcache.config.Configuration;
 import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.xml.XmlConfiguration;
 
-import ru.tet.aux.AuxTest;
 import ru.tet.aux.swing.DemoBase;
+import ru.tet.demos.AuxTest;
 
 /**
  * Тестируем конфигурирование кешей через xml

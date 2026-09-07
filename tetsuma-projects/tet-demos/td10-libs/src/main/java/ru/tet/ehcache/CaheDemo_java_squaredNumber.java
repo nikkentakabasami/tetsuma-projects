@@ -1,6 +1,5 @@
 package ru.tet.ehcache;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -18,8 +17,8 @@ import org.ehcache.config.units.MemoryUnit;
 import org.ehcache.expiry.Duration;
 import org.ehcache.expiry.Expirations;
 
-import ru.tet.aux.AuxTest;
 import ru.tet.aux.swing.DemoBase;
+import ru.tet.demos.AuxTest;
 
 //Шаблон для создания новых демо
 public class CaheDemo_java_squaredNumber extends DemoBase {
