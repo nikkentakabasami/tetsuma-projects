@@ -2,6 +2,7 @@ package ru.tet.java.lang.reflect;
 
 import java.lang.reflect.Proxy;
 
+import ru.tet.aux.DemoAuxObjectSamples;
 import ru.tet.beans.Person;
 import ru.tet.beans.PersonImpl;
 
@@ -9,7 +10,7 @@ public class ProxyDemo {
 
 	public static void main(String[] args) {
 
-		PersonImpl vasia = new PersonImpl("Vasya", 30, "Санкт-Петербург", "Россия");
+		PersonImpl vasia = DemoAuxObjectSamples.createPerson1();
 
 		ClassLoader vasiaClassLoader = vasia.getClass().getClassLoader();
 

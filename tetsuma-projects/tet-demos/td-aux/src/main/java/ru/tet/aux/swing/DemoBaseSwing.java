@@ -39,7 +39,7 @@ public class DemoBaseSwing extends AbstractDemoBase {
 			doInitControlPanel();
 			doInit();
 		} catch (Exception e) {
-			e.printStackTrace();
+			currentDemo.logException(e);
 		}		
 		
 	}

@@ -109,8 +109,7 @@ public class DemoSourceUtils {
 			}, null);
 
 		} catch (IOException e) {
-			demoBase.log2(e.getMessage());
-			e.printStackTrace();
+			demoBase.logException(e);
 		}
 
 	}

@@ -1,10 +1,18 @@
 package ru.tet.aux.swing;
 
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
+import ru.tet.demos.AbstractDemoBase;
 import ru.tet.demos.DemoOptions;
 import ru.tet.javax.swing.aux.JControlPanelForTests;
 
@@ -20,6 +28,7 @@ public class AbstractDemoFrame extends JFrame {
 	protected LogDemoTextPane textArea2;
 
 	DemoOptions options;
+	int actionCounter;
 
 	public AbstractDemoFrame(DemoOptions options) throws HeadlessException {
 		if (options==null) {
@@ -43,6 +52,28 @@ public class AbstractDemoFrame extends JFrame {
 		setTitle("Мои тесты");
 	}	
 	
+	/**
+	 * Добавление дополнительных обработчиков нажатия клавиш
+	 * @param ks
+	 * @param action
+	 */
+	public void addKeyHandler(KeyStroke ks, ActionListener action) {
+		InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = getRootPane().getActionMap();
+		actionCounter++;
+		String actionName = "addAction"+actionCounter;
+		
+		inputMap.put(ks, actionName);
+		actionMap.put(actionName, new DemoAction() {
+			void onAction(ActionEvent event, AbstractDemoBase demo) {
+		  	try {
+		  		action.actionPerformed(event);
+				} catch (Exception e) {
+					demo.logException(e);
+				}
+		  }
+		});
+	}
 	
 
 	

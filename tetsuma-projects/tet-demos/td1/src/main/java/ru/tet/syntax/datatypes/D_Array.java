@@ -145,6 +145,21 @@ public class D_Array extends DemoBase {
 
 	@Override
 	public void test5() throws Exception {
+		/*
+		System.arraycopy(Object src,  int  srcPos,
+			Object dest, int destPos,
+			int length);
+		  Копирование массивов
+		
+		 */
+
+		logExpr1(() -> {
+			int[] a1 = { 1, 5, 4, 3, 7 };
+			int[] a2 = new int[10];
+
+			System.arraycopy(a1, 0, a2, 2, 5);
+			return a2;
+		});
 
 	}
 

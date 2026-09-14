@@ -49,8 +49,6 @@ public abstract class AbstractDemoBase implements DemoTestFunctions, DemoLogFunc
 	//И если в него была запись - его содержимое выведется в json формате
 	protected DemoResult r = null;
 	
-	
-	
 	public AbstractDemoBase() {
 		sourceUtils = new DemoSourceUtils(this);
 	}
@@ -71,7 +69,9 @@ public abstract class AbstractDemoBase implements DemoTestFunctions, DemoLogFunc
 	public void beforeTest(int testNo) throws Exception {
 		clearlog2();
 		clearlog1();
-		sourceUtils.logCurrentSources(testNo);
+		if (options.logSources) {
+			sourceUtils.logCurrentSources(testNo);
+		}
 		r = new DemoResult();
 		
 		currentSources = sourceUtils.getSources().get(testNo);
@@ -112,8 +112,7 @@ public abstract class AbstractDemoBase implements DemoTestFunctions, DemoLogFunc
 			try {
 				al.actionPerformed(event);
 			} catch (Exception e) {
-				log2(e);
-				e.printStackTrace();
+				logException(e);
 			}
 		});
 	}
@@ -132,7 +131,15 @@ public abstract class AbstractDemoBase implements DemoTestFunctions, DemoLogFunc
 			String expr = expressions[i];
 			Object val = args[i];
 			textArea2.logBlue(expr+NL);
-			log2(toStr(val)+NL);
+			
+			val = toStr(val);
+			if (val!=null) {
+				log2(val+NL);
+			} else {
+				log2NL();
+			}
+			
+			
 		}
 		
 	}	
@@ -144,8 +151,8 @@ public abstract class AbstractDemoBase implements DemoTestFunctions, DemoLogFunc
 
 		for (int i = 0; i < expressions.length; i++) {
 			String expr = expressions[i];
-			Object val = args[i].get();
 			textArea2.logBlue(expr+NL);
+			Object val = args[i].get();
 			log2(toStr(val)+NL);
 		}
 		
@@ -206,6 +213,15 @@ public abstract class AbstractDemoBase implements DemoTestFunctions, DemoLogFunc
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public void execTest(int testNo){
+  	try {
+  		test(testNo);
+		} catch (Exception e) {
+			logException(e);
+		}
+	}
+	
 	
 	
 	

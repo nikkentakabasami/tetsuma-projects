@@ -1,9 +1,12 @@
 package ru.tet.demos;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.Arrays;
+import java.util.Formatter;
+import java.util.Locale;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,6 +31,7 @@ public interface DemoLogFunctions {
 
 	public static final DecimalFormat DECIMAL_FORMAT = createSimpleDecimalFormat();
 
+	
 	LogDemoTextPane textArea1();
 
 	LogDemoTextPane textArea2();
@@ -94,14 +98,18 @@ public interface DemoLogFunctions {
 	 * @return
 	 */
 	default String toStr(Object o) {
+		if (o instanceof Supplier s) {
+			o = s.get();
+		}
+		
 		if (o == null) {
 			return "";
 		}
-
+		
 		try {
 			o = fixResultValue(o);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logException(e);
 		}
 
 		String s = o.toString();
@@ -113,7 +121,7 @@ public interface DemoLogFunctions {
 	
 	default void logSplitter(LogDemoTextPane ta, Object... args) {
 		String text = Stream.of(args).map(this::toStr).collect(Collectors.joining(" "));
-		log(ta,"-------------"+text+"------------\n\n");
+		log(ta,"-------------"+text+"------------");
 	}
 
 	default void log(LogDemoTextPane ta, Object... args) {
@@ -127,6 +135,18 @@ public interface DemoLogFunctions {
 		ta.log(text);
 	}
 	
+	default void logException(Exception e) {
+		e.printStackTrace();
+
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		e.printStackTrace(pw);
+
+		
+		String st = sw.toString();
+		textArea2().log(st);
+		textArea2().flushNoHL();
+	}
 	
 	default void clearlog1() {
 		textArea1().clear();
@@ -144,6 +164,17 @@ public interface DemoLogFunctions {
 		log(textArea2(), args);
 	}
 
+	
+	default void log2Format(String template, Object... args) {
+		String s = String.format(template, args);
+		log2(s);
+	}
+	
+	//без перехода но новую строку
+	default void log2Inline(Object... args) {
+		logInline(textArea2(), args);
+	}
+	
 	default void log2(String s, LogStyle style) {
 		textArea2().log(s+NL, style);
 	}
@@ -193,7 +224,8 @@ public interface DemoLogFunctions {
 	}
 	
 	default Object expr(Supplier<Object> arg) {
-		return arg.get();
+//		return arg.get();
+		return arg;
 	}
 	
 	

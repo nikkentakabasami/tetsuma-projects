@@ -42,7 +42,7 @@ public class DemoAuxFunctions {
 		return p1;
 	}	
 	
-	public static Path createTestFile1() throws IOException {
+	public static Path getTestTextFile() throws IOException {
 		return createTestFile("testFile1.txt",DemoAuxDataSamples.sampleStringLyric);
 	}
 

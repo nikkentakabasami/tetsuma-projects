@@ -31,27 +31,27 @@ public class DemoBase extends AbstractDemoBase {
 		this.textArea2 = frame.textArea2;
 
 		sourceUtils.parseCurrentSources();
-		sourceUtils.logCurrentSources();
 
 		try {
 			doInitControlPanel();
 			doInit();
 
-			//добавляем кнопки для тестов
-			for (int i = 1; i < sourceUtils.getSources().size(); i++) {
-				TestSources sources = sourceUtils.getSources().get(i);
-				
-				if (!sources.isEmpty()) {
-					addTestButton(null, i);
-				}
-				
+			if (options().logSources) {
+				sourceUtils.logCurrentSources();
 			}
 			
-			
-			
+			if (options().addTestButtons) {
+				//добавляем кнопки для тестов
+				for (int i = 1; i < sourceUtils.getSources().size(); i++) {
+					TestSources sources = sourceUtils.getSources().get(i);
+					if (!sources.isEmpty()) {
+						addTestButton(null, i);
+					}
+				}
+			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			currentDemo.logException(e);
 		}
 
 

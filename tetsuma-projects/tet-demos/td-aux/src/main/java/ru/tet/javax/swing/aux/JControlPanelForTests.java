@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -15,7 +16,10 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeListener;
+
+import org.apache.commons.lang3.StringUtils;
 
 import ru.tet.beans.SuIdNameModel;
 
@@ -67,8 +71,9 @@ public class JControlPanelForTests extends TetBoxPanel {
 	public JCheckBox checkbox2;
 	public JCheckBox checkbox3;
 	
-	
 	public JTextArea textArea;
+	
+	public JTextField textField1;
 	
 	
 	public void clearContent() {
@@ -172,6 +177,12 @@ public class JControlPanelForTests extends TetBoxPanel {
 		sp.setPreferredSize(new Dimension(300, 200));
 		currentHorizontalBox.addComp(sp,0);
 	}	
+
+	public void addTextField() {
+		textField1 = new JTextField();
+		currentHorizontalBox.addComp(textField1,0);
+	}	
+	
 	
 	public JCheckBox addCheckbox(String title, ActionListener al) {
 		JCheckBox b = new JCheckBox(title);
@@ -194,6 +205,13 @@ public class JControlPanelForTests extends TetBoxPanel {
 	public <E> JComboBox<E> addComboBox(E[] data, ActionListener listener) {
 		return addComboBox(data, listener, null);
 	}
+
+	public JComboBox<String> addComboBox(String data, ActionListener listener, String title) {
+		String[] rows = Arrays.stream(data.split("\n")).map(String::trim).filter(s->!s.startsWith("//")).filter(StringUtils::isNotBlank).toArray(String[]::new);
+//		String[] rows = data.split("\n");
+		return addComboBox(rows, listener, title);
+	}
+	
 	
 	public <E> JComboBox<E> addComboBox(E[] data, ActionListener listener, String title) {
 		JComboBox cb = new JComboBox(data);

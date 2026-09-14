@@ -1,6 +1,7 @@
 package ru.tet.aux.swing;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.io.StringWriter;
 
 import javax.swing.JTextPane;
@@ -27,10 +28,11 @@ public class LogDemoTextPane extends JTextPane {
 	static final char BLUE_CHAR = '\u270E';
 	static final char GREEN_CHAR = '\u270F';
 	static final char BOLD_CHAR = '\u2710';
+	static final char RED_CHAR = '\u2711';
 
 	
 	public enum LogStyle {
-		BLUE("stBlue",BLUE_CHAR), GREEN("stGreen",GREEN_CHAR), BOLD("stBold",BOLD_CHAR);
+		RED("stRed",RED_CHAR), BLUE("stBlue",BLUE_CHAR), GREEN("stGreen",GREEN_CHAR), BOLD("stBold",BOLD_CHAR);
 
 		String styleName;
 		char markerChar;
@@ -45,6 +47,7 @@ public class LogDemoTextPane extends JTextPane {
 	
 	
 	Style greenStyle;
+	Style redStyle;
 	Style blueStyle;
 	Style boldStyle;
 	
@@ -62,8 +65,11 @@ public class LogDemoTextPane extends JTextPane {
 		greenStyle = doc.addStyle(LogStyle.GREEN.styleName, null);
 		StyleConstants.setForeground(greenStyle, new Color(0, 120, 0));
 
+		redStyle = doc.addStyle(LogStyle.RED.styleName, null);
+		StyleConstants.setForeground(redStyle, Color.RED);
+		
 		blueStyle = doc.addStyle(LogStyle.BLUE.styleName, null);
-		StyleConstants.setForeground(blueStyle, Color.BLUE);
+//		StyleConstants.setForeground(blueStyle, Color.BLUE);
 		StyleConstants.setForeground(blueStyle, new Color(0x4c,0x6a,0xc3));
 		//4c6ac3
 		
@@ -149,6 +155,14 @@ public class LogDemoTextPane extends JTextPane {
 		}
 	}
 
+	public void flushNoHL() {
+		if (options.bufferLogs && logWriter.getBuffer().length()>0) {
+			setText(logWriter.toString());
+			initWriters();
+		}
+	}
+	
+	
 	public void append(String s) {
 		Document document = getDocument();
 		try {
@@ -179,11 +193,30 @@ public class LogDemoTextPane extends JTextPane {
 		
 	}
 	
+	public void clearStyles() {
+		try {
+      int length = doc.getLength();
+      String text = doc.getText(0, length);
+      doc.remove(0, length);
+      doc.insertString(0, text, null);			
+		} catch (BadLocationException e1) {
+			e1.printStackTrace();
+		}
+	}
 	
 	public void hlGreen(int offset, int length) {
-		doc.setCharacterAttributes(offset, length, greenStyle, true);
+		EventQueue.invokeLater(() -> {
+			doc.setCharacterAttributes(offset, length, greenStyle, true);
+		});
 	}
 
+	public void hlRed(int offset, int length) {
+		EventQueue.invokeLater(() -> {
+			doc.setCharacterAttributes(offset, length, redStyle, true);
+		});
+	}
+	
+	
 	/**
 	 * Выделяем комменты зелёным
 	 * @throws Exception

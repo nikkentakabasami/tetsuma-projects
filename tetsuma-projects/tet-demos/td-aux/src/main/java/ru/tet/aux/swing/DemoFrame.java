@@ -133,17 +133,14 @@ public class DemoFrame extends AbstractDemoFrame {
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
 
 		
-
-		
 		AbstractAction testAction = new DemoAction() {
-			void onAction(ActionEvent e, AbstractDemoBase demo) {
-		  	String name = e.getActionCommand();
+			void onAction(ActionEvent event, AbstractDemoBase demo) {
+		  	String name = event.getActionCommand();
 		  	int testNo = Integer.parseInt(name.substring(name.length()-1));
 		  	try {
 		  		demo.test(testNo);
-				} catch (Exception e1) {
-					demo.log2(e);
-					e1.printStackTrace();
+				} catch (Exception e) {
+					demo.logException(e);
 				}
 		  }
 		};
@@ -190,6 +187,12 @@ public class DemoFrame extends AbstractDemoFrame {
 				  demosComboBox.setSelectedIndex(ind);
 			  }
 			});		
+		
+//		addKeyHandler(KeyStroke.getKeyStroke(KeyEvent.VK_1, InputEvent.CTRL_DOWN_MASK), e->{
+//			System.out.println("test999");
+//		});
+		
+		
 	}	
 	
 			

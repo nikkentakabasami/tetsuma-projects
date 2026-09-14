@@ -86,7 +86,7 @@ public class DemoBaseComblex extends AbstractDemoBase {
 		try {
 			cl.getDeclaredConstructor().newInstance().init(frame);
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			currentDemo.logException(e1);
 		} 
 		
 	}

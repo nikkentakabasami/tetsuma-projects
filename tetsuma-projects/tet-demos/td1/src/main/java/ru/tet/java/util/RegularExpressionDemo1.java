@@ -1,5 +1,9 @@
 package ru.tet.java.util;
 
+import java.io.FileReader;
+import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -11,7 +15,8 @@ public class RegularExpressionDemo1 {
 //		demo1();
 //		demo2();
 //		demo3();
-		demo4();
+//		demo4();
+		demo5();
 	}
 
 	static void testRegex(String input, String regex) throws Exception {
@@ -26,6 +31,17 @@ public class RegularExpressionDemo1 {
 		System.out.println();
 	}
 
+	public static void demo5() throws Exception {
+		FileReader fr1 = new FileReader(Path.of("pom.xml").toFile(), StandardCharsets.UTF_8);
+		CharBuffer cb1 = CharBuffer.allocate(8000);
+		fr1.read(cb1);
+		fr1.close();
+		String s = cb1.flip().toString();
+		
+		testRegex(s, "<.+?>");
+		
+	}
+	
 
 	public static void demo4() throws Exception {
 

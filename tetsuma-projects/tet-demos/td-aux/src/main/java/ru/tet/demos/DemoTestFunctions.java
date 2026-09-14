@@ -63,6 +63,10 @@ public interface DemoTestFunctions {
 		afterTest(testNo);
 	}
 
+	//для выполнения тестов
+	void execTest(int testNo);
+	
+	
 	void beforeTest(int testNo) throws Exception;
 
 	void afterTest(int testNo) throws Exception;

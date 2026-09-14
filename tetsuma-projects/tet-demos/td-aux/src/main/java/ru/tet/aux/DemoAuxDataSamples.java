@@ -21,7 +21,10 @@ public class DemoAuxDataSamples {
 	public static String sampleStringLyric = "Houritsu mo chitsujo demo  kurutta yatsu ga tsukutteru, Masa ni FARUSU  fujouri dake no kishou tenketsu";
 	public static String sampleStringJap = "法律も秩序でも　狂った奴が創ってる まさに ファルス 不条理だけの起承転結";
 	 
+	//Строка с токенами, для тестирования StreamTokenizer
+	public static String sampleStringTokenized = "(;GM[1.4] /comment\n  один-четыре\t分け前 \n\"quo ted1\" \n 'quoted 2' FF[4] CA[UTF-8]AP[CGoban:3]KM[0.50]TM[3600]";	
 	
+	public static String  multilineTestString = "привет //𝄞\nКак дела?\n2+6/5";
 	
 	public static String[] tableHeadings1 = { "From", "Address", "Subject", "Size" };
 

@@ -1,18 +1,12 @@
-package ru.tet.syntax.datatypes;
+package ru.tet.syntax;
 
 import ru.tet.aux.swing.DemoBase;
 
-public class D_template extends DemoBase {
+public class D_template2 extends DemoBase {
 
 	public void test1() throws Exception {
 		/*
 		 */
-		
-		logExpr(() -> {
-			return 1;
-		}, () -> {
-			return 1;
-		});		
 
 	}
 
@@ -37,7 +31,7 @@ public class D_template extends DemoBase {
 	}
 
 	public static void main(String[] args) {
-		DemoBase.run(D_template.class);
+		DemoBase.run(D_template2.class);
 	}
 
 }

@@ -12,13 +12,10 @@ public abstract class DemoAction extends AbstractAction {
 	
 	@Override
 	public final void actionPerformed(ActionEvent e) {
-
-		
   	try {
   		onAction(e, AbstractDemoBase.currentDemo);
 		} catch (Exception e1) {
-			AbstractDemoBase.currentDemo.log2(e);
-			e1.printStackTrace();
+			AbstractDemoBase.currentDemo.logException(e1);
 		}		
 		
 	}

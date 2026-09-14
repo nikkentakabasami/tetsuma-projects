@@ -49,6 +49,15 @@ public class D_String extends DemoBase {
 		/*
 		
 		 */
+		
+		
+		
+		
+		Character c1 = Character.valueOf('\u2700');
+		
+		
+		
+		
 	}
 
 	public static void main(String[] args) {

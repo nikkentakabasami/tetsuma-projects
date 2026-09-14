@@ -214,7 +214,7 @@ text_before satori text_after
   1 индейка стоит $50
 ёршик  //comment2
 [some. @text. ($with.) braces.]
-@ hi		
+@ hi \\\\double backslash!	
 //tenka musou
 http://localhost:8090/demo-52
 трам-трам-трумтрам-трум-трамтрум.

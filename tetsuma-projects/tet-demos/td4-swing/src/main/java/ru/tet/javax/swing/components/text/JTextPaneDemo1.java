@@ -107,6 +107,20 @@ public class JTextPaneDemo1 extends JFrameForTests {
 			textPane.setCharacterAttributes(style, true);
 		});
 
+		controlPanel.addButton("clear style", e -> {
+			StyledDocument doc = textPane.getStyledDocument();
+			try {
+	      int length = doc.getLength();
+	      String text = doc.getText(0, length);
+	      doc.remove(0, length);
+	      doc.insertString(0, text, null);			
+			} catch (BadLocationException e1) {
+				e1.printStackTrace();
+			}
+//			textPane.getStyledDocument().setCharacterAttributes(0,10,null, true);
+		});
+		
+		
 		controlPanel.addButton("setItalic", e -> {
 
 			SimpleAttributeSet attributes = new SimpleAttributeSet();
