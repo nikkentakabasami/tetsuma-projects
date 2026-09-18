@@ -21,6 +21,9 @@ public class DemoOptions {
 	public int maxEntries = 10;
 
 	public boolean logSources = true;	
+
+	public boolean hlComments = true;	
+	
 	
 	
 }

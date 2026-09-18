@@ -1,7 +1,9 @@
 package ru.tet.syntax.datatypes;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.aux.swing.DemoBase;
 import ru.tet.demos.AuxTest;
 
@@ -24,9 +26,9 @@ public class D_String extends DemoBase {
 				""";
 
 		r.s4 = "Иконки: \u2700 \u2B00 \u2B01";
-		
-		r.s5 = "line1"+System.lineSeparator()+"line2";
-		
+
+		r.s5 = "line1" + System.lineSeparator() + "line2";
+
 	}
 
 	public void test2() throws Exception {
@@ -38,26 +40,23 @@ public class D_String extends DemoBase {
 		/*
 		Задание символов кодами
 		 */
-		
+
 		log2("\u270E \u270F \u2710");
 		log2('\u2711');
-		
-		
+
 	}
 
 	public void test4() throws Exception {
 		/*
 		
 		 */
-		
-		
-		
-		
-		Character c1 = Character.valueOf('\u2700');
-		
-		
-		
-		
+		List<String> list1 = DemoAuxDataSamples.makeStringList(3);
+		logEval1(
+				String.join(",", "one", "two", "three"),
+				String.join(",", list1)
+
+		);
+
 	}
 
 	public static void main(String[] args) {

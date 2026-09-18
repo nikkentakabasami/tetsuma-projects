@@ -150,7 +150,7 @@ public class DemoSourceUtils {
 	 * 
 	 * @param testNo
 	 */
-	public void logCurrentSources(int testNo)  throws Exception {
+	public void logCurrentSources(int testNo) {
 
 		for (TestSources testSources : sources) {
 			if (testSources.isEmpty()) {

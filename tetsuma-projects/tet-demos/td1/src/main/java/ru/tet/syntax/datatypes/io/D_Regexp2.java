@@ -1,181 +1,162 @@
 package ru.tet.syntax.datatypes.io;
 
-import java.awt.event.InputEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.swing.KeyStroke;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import ru.tet.aux.swing.DemoBase;
 
+/**
+ * Pattern, Matcher
+ * Основы.
+ * 
+ */
 public class D_Regexp2 extends DemoBase {
 
-	String currentRegexp;
-
-//	static String[] testRegExps =
-//			{
-//					"exp1 ssse e asdfasfas dsasdf a sadfasf",
-//					"exp2 sss",
-//					"exp3 sss",
-//					"exp4 sss"
-//			};
-
-	public static String regexps1 = """
-
-//
-
-(?i)tenka #поиск без учёта регистра
-
-сергей
-(?i)сергей #плохо работает
-
-
-
-
-Людовик
-(?m)^Людовик
-
-
-
-			""";
-
-
-	/*
-		testRegex("Treehouse", "(?i)tree");
-		testRegex("Treehouse", "tree");
-
-		// многострочный поиск
-		testRegex("abc\nabc", "(?m)^abc$");
-
-		// комментарии
-		testRegex("matter", ".at(?x)#match hat, cat, and so on");
-	 * 
-	 */
-	
-	
-	public static String testText = """
-			ЛюдовикXV, ЛюдовикXVI, ЛюдовикXVIII,
-			ЛюдовикV, ЛюдовикVI, ЛюдовикVIII, ЛюдовикLXVII, ЛюдовикXXL
-			aaa aaa
-			Сергей Иванов, Игорь Иванов
-			text_before satori text_after
-			1 индейка стоит 30€
-			  1 индейка стоит $50
-			ёршик  //comment2
-			[some. @text. ($with.) braces.]
-			@ hi \\\\double backslash!
-			//Tenka musou
-			http://localhost:8090/demo-52
-			трам-трам-трумтрам-трум-трамтрум.
-			----""";
-
+	String regex;
 
 	void execRegex(String regex) throws Exception {
-		execRegex(testText, regex, 0);
+		execRegex(D_RegexpBase.testText, regex);
 	}
-	
-	
+
+	//Универсальная функция для поиска по РВ, включая группы
 	void execRegex(String input, String regex) throws Exception {
-		execRegex(input, regex, 0);
-	}
-	
-	void execRegex(String input, String regex, int flags) throws Exception {
 
-		currentRegexp = regex;
-
-		Pattern pattern = Pattern.compile(regex, Pattern.COMMENTS | flags);
-		
+		Pattern pattern = Pattern.compile(regex, 0);
 		Matcher matcher = pattern.matcher(input);
 
-		log2(regex);
-		log2Splitter();
+		log2Green(regex);
+
 		while (matcher.find()) {
-			log2Format("'%s' (%d-%d)", matcher.group(), matcher.start(), matcher.end());
+			String r = String.format("'%s' (%d-%d)", matcher.group(), matcher.start(), matcher.end());
+			if (matcher.groupCount() > 0) {
+				String groups =
+						IntStream.rangeClosed(1, matcher.groupCount())
+								.boxed()
+								.map(i -> "(" + matcher.group(i) + ")")
+								.collect(Collectors.joining(","));
+				r += " groups: " + groups;
+			}
+
+			log2(r);
 		}
-	}	
-	
-	
-	void showCBText() {
-		Object selectedItem = controlPanel.comboBox1.getSelectedItem();
-		controlPanel.textField1.setText(String.valueOf(selectedItem));
+
+		log2Splitter();
+
 	}
-	
+
 	@Override
-	protected void doInitControlPanel() throws Exception {
-		controlPanel.addComboBox(regexps1, e -> {
-			showCBText();
-		}, "curent regExp");
-		controlPanel.addTextField();
-
-		frame.addKeyHandler(KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_DOWN, InputEvent.CTRL_DOWN_MASK), e -> {
-			int ind = controlPanel.comboBox1.getSelectedIndex() + 1;
-			if (ind < controlPanel.comboBox1.getItemCount()) {
-				controlPanel.comboBox1.setSelectedIndex(ind);
-			}
-		});
-		frame.addKeyHandler(KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_UP, InputEvent.CTRL_DOWN_MASK), e -> {
-			int ind = controlPanel.comboBox1.getSelectedIndex() - 1;
-			if (ind >= 0) {
-				controlPanel.comboBox1.setSelectedIndex(ind);
-			}
-		});
-		controlPanel.textField1.grabFocus();
-
-
-		
-		controlPanel.textField1.addKeyListener(new KeyAdapter(){
-		  public void keyPressed(KeyEvent e) {
-		    if (e.getKeyCode()==KeyEvent.VK_ENTER) {
-		    	execTest(1);
-		    }
-		  }
-		});
-		
-		showCBText();
-		
-		
+	protected void doInit() throws Exception {
+		options().logSources = false;
+		options().hlComments = false;
 	}
-
-
 
 	@Override
 	public void beforeTest(int testNo) throws Exception {
 		super.beforeTest(testNo);
-
-		clearlog1();
-		log1(testText);
+		log1(D_RegexpBase.testText);
 	}
 
 	public void test1() throws Exception {
 		/*
+		boolean	Pattern.matches(String regex, CharSequence input)
+		Быстрая проверка строки на соответствие выражению
+		
+		String	Pattern.quote(String s)
+		Создаёт regex, соответствующий заданной строке, окружая её \Q и \E
+		
+		String regex = Pattern.quote("t[],t.");	//\Qt[],t.\E
+		 * 
 		 */
 
-		String re = controlPanel.textField1.getText();
-		execRegex(testText, re);
+		//		Pattern pattern = Pattern.compile(" \\d+ ", 0);
+
+		logEval1(
+				regex = Pattern.quote("t[],t."),
+				Pattern.matches(" \\d+ ", " 456 "),
+				Pattern.matches("\\d+", "SD456 "),
+				Pattern.matches(".*7$", "АБС-X-57"),
+				"АБС-X-57".matches(".*7$")
+
+		);
+		execRegex("mat[],t.sp", regex);
 
 	}
 
 	public void test2() throws Exception {
 		/*
+		Matcher
+		Методы без состояния
 		
+		boolean	matches()
+		возвращает true, если весь текст соответствует шаблону.
+		
+		boolean	lookingAt()
+		возвращает true, если любая часть текста соответствует шаблону.
+		
+		String	replaceAll(String replacement)
+		String	replaceAll(Function f)
+		Замена всех вхождений
 		 */
-//		execRegex("Treehouse", "(?i)tree");
-		execRegex(testText, "сергей", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+
+		Pattern pattern = Pattern.compile("\\w+");
+		Matcher matcher = pattern.matcher("abc and cdf!");
+		logEval1(
+				matcher.matches(),
+				matcher.lookingAt(),
+
+				matcher.replaceAll("@"),
+				matcher.replaceAll(mr -> {
+					return mr.group().toUpperCase();
+				}),
+
+				Pattern.compile("Java(?i:script) is bold").matcher("JavaScript is bold").matches()
+
+		);
+
+		//		Pattern p = Pattern.compile("\\s+");
+		//		Matcher m = p.matcher("Удаляем      \t\t лишние пробелы.   ");
+		//		System.out.println(m.replaceAll(" "));
 
 	}
 
 	public void test3() throws Exception {
 		/*
+		Matcher	appendReplacement(StringBuffer sb, String replacement)
+		считывает текст с input-а, начиная с append position и до конца найденного выражения, делает в нём замену на replacement, 
+		записывает результат в sb
+		replacement может содержать выражение ${no} - для замены по группе
+		Используется для поиска и замены выражений.
 		
+		StringBuffer	appendTail(StringBuffer sb)
+		записывает в sb оставшийся текст		
 		 */
+		
+		Pattern p = Pattern.compile("(cat)");
+		Matcher m = p.matcher("one cat, two cats, or three cats on a fence");
+		StringBuffer sb = new StringBuffer();
+		while (m.find()) {
+		  m.appendReplacement(sb, "big $1erpillar");
+		}
+		m.appendTail(sb);
+		log2(sb);
+		
 	}
 
 	public void test4() throws Exception {
 		/*
 		
 		 */
+		//поиск с группами
+		execRegex("(Лю)до(вик)");
+
+		//квантификация группы
+		execRegex("(тр[ау]м-?)+");
+
+		//экранирование
+		execRegex("\\Q[some.\\E");
+
 	}
 
 	public static void main(String[] args) {

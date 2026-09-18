@@ -2,6 +2,7 @@ package ru.tet.aux;
 
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,16 @@ public class DemoAuxDataSamples {
 	public static String sampleStringTokenized = "(;GM[1.4] /comment\n  один-четыре\t分け前 \n\"quo ted1\" \n 'quoted 2' FF[4] CA[UTF-8]AP[CGoban:3]KM[0.50]TM[3600]";	
 	
 	public static String  multilineTestString = "привет //𝄞\nКак дела?\n2+6/5";
+
+	public static String jsonString1 = "{\"enplantId\":121,\"enplantGuid\":\"D057056E385B8F72E050007F01014BBE\",\"reportId\":\"reportAlpha\",\"filterParams\":{\"параметр1\": \"因果\", \"параметр2\" : \"что то на русском\"},\"token\":\"someToken\"}";
+	
+
+	//url для тестирования get-запросов
+	public static String url_get_example = "https://example.com";
+	public static String url_get_httpbin = "https://httpbin.org/post";
+	
+	//url для тестирования post-запросов
+	public static String url_post_httpbin = "https://httpbin.org/post";
 	
 	public static String[] tableHeadings1 = { "From", "Address", "Subject", "Size" };
 

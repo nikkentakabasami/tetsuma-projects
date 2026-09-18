@@ -1,7 +1,9 @@
 package ru.tet.syntax.datatypes.nio;
 
 import java.io.File;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
 
 import ru.tet.aux.swing.DemoBase;
@@ -145,7 +147,6 @@ public class D_Path extends DemoBase {
 				p2_absolute.getName(1),
 				p2_absolute.getName(10)
 
-
 		);
 
 		log2("p2_absolute.iterator()");
@@ -166,32 +167,39 @@ public class D_Path extends DemoBase {
 		boolean isAbsolute();
 		
 		 */
-		
-		
-		
+
 		Path p1 = Paths.get("/home/tetsuma/f.txt");
-		
-		
+
 		logEval(
 				p1.getFileSystem(),
 				p1.isAbsolute(),
 				p1.startsWith("/home"),
 				p1.startsWith("/"),
-				p1.endsWith("f.txt")
-		);
+				p1.endsWith("f.txt"));
 
-		
-		
-		
-		
+	}
+
+	public void checkPath(String pattern, String path) {
+		PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher(pattern);
+		Path path1 = Path.of(path);
+		boolean matches = pathMatcher.matches(path1);
+		log2Format("'%s' matches '%s' = %b\n", pattern, path, matches);
 	}
 
 	@Override
-	protected void doInitControlPanel() throws Exception {
-		addTest1Button(null);
-		addTest2Button(null);
-		addTest3Button(null);
-		addTest4Button(null);
+	public void test5() throws Exception {
+		/*
+		java.nio.file.PathMatcher
+		Интерфейс объекта, который сравнивает заданный паттерн с заданным путём к файлу.
+		 */
+
+		String pattern1 = "glob:**/*.txt";
+
+		checkPath(pattern1, "/path/to/directory/file.txt"); //true
+		checkPath(pattern1, "/file.txt"); //true
+		checkPath(pattern1, "file.txt"); //false
+		checkPath(pattern1, "/path/to/image.jpg"); //false
+
 	}
 
 	public static void main(String[] args) {

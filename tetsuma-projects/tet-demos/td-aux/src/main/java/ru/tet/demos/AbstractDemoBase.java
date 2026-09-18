@@ -98,7 +98,11 @@ public abstract class AbstractDemoBase implements DemoTestFunctions, DemoLogFunc
 		
 		//вывести буферизованные логи
 		flushLogs();
-		textArea2.hlComments();
+		
+		if (options.hlComments) {
+			textArea2.hlComments();
+		}
+		
 		
 	}
 		

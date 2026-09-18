@@ -30,6 +30,11 @@ public class D_template extends DemoBase {
 		 */
 	}
 
+	@Override
+	protected void doInit() throws Exception {
+		options().hlComments = false;
+	}
+	
 	public static void main(String[] args) {
 		DemoBase.run(D_template.class);
 	}

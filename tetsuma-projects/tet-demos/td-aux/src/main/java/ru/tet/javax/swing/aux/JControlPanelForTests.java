@@ -2,6 +2,7 @@ package ru.tet.javax.swing.aux;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -180,6 +181,12 @@ public class JControlPanelForTests extends TetBoxPanel {
 
 	public void addTextField() {
 		textField1 = new JTextField();
+		
+		 //увеличить размер шрифта
+		 Font currentFont = textField1.getFont();
+     Font newFont = currentFont.deriveFont(currentFont.getSize() + 10f);
+     textField1.setFont(newFont);
+		
 		currentHorizontalBox.addComp(textField1,0);
 	}	
 	

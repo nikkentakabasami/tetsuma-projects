@@ -4,14 +4,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.swing.KeyStroke;
 
 import ru.tet.aux.swing.DemoBase;
 
 public class D_RegexpBase extends DemoBase {
-
-	String currentRegexp;
 
 	String regexps1;
 
@@ -26,8 +26,9 @@ public class D_RegexpBase extends DemoBase {
 			ёршик  //comment2
 			[some. @text. ($with.) braces.]
 			@ hi \\\\double backslash!
-			//Tenka musou
+			//Tenka musou, 1212
 			http://localhost:8090/demo-52
+			AbcD,ABCD,aBcD,abcd
 			трам-трам-трумтрам-трум-трамтрум.
 			----""";
 
@@ -45,9 +46,14 @@ public class D_RegexpBase extends DemoBase {
 
 	void execRegex(String input, String regex, int flags) throws Exception {
 
-		currentRegexp = regex;
+		if (controlPanel.checkbox1.isSelected()) {
+			flags = Pattern.MULTILINE | flags;
+		}
+		if (controlPanel.checkbox2.isSelected()) {
+			flags = Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | flags;
+		}
 
-		Pattern pattern = Pattern.compile(regex, Pattern.COMMENTS | flags);
+		Pattern pattern = Pattern.compile(regex, flags);
 
 		Matcher matcher = pattern.matcher(input);
 
@@ -55,9 +61,20 @@ public class D_RegexpBase extends DemoBase {
 		log2Green(regex);
 
 		int counter = 0;
-		
 		while (matcher.find()) {
-			log2Format("'%s' (%d-%d)", matcher.group(), matcher.start(), matcher.end());
+
+			String r = String.format("'%s' (%d-%d)", matcher.group(), matcher.start(), matcher.end());
+
+			if (matcher.groupCount() > 0) {
+
+				String groups =
+						IntStream.rangeClosed(1, matcher.groupCount()).boxed().map(i -> "(" + matcher.group(i) + ")").collect(
+								Collectors.joining(","));
+				r += " groups: " + groups;
+			}
+
+			log2(r);
+
 			textArea1.hlRed(matcher.start(), (matcher.end() - matcher.start()));
 			if (++counter > options().maxEntries) {
 				break;
@@ -67,15 +84,12 @@ public class D_RegexpBase extends DemoBase {
 
 	}
 
-	void showCBText() {
-		Object selectedItem = controlPanel.comboBox1.getSelectedItem();
-		controlPanel.textField1.setText(String.valueOf(selectedItem));
-	}
-
 	@Override
 	protected void doInit() throws Exception {
 		options().maxEntries = 5;
 		options().logSources = false;
+		options().hlComments = false;
+		//		log1(testText);
 	}
 
 	@Override
@@ -87,6 +101,10 @@ public class D_RegexpBase extends DemoBase {
 
 		//		int mask = InputEvent.CTRL_DOWN_MASK;
 		int mask = 0;
+
+		controlPanel.newHorizontalBox();
+		controlPanel.addCheckbox("MULTILINE", null);
+		controlPanel.addCheckbox("CASE_INSENSITIVE", null);
 
 		frame.addKeyHandler(KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_DOWN, mask), e -> {
 			int ind = controlPanel.comboBox1.getSelectedIndex() + 1;
@@ -112,6 +130,11 @@ public class D_RegexpBase extends DemoBase {
 
 		showCBText();
 
+	}
+
+	void showCBText() {
+		Object selectedItem = controlPanel.comboBox1.getSelectedItem();
+		controlPanel.textField1.setText(String.valueOf(selectedItem));
 	}
 
 	@Override

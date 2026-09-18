@@ -52,6 +52,7 @@ long	size(Path path)
 		Path p2 = p1.toAbsolutePath();
 
 		logEval(
+				p2,
 				Files.exists(p1),
 				Files.notExists(p1),
 

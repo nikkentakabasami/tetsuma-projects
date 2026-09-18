@@ -11,6 +11,7 @@ public class MiscTests {
 	
 	public static void main(String[] args) {
 
+		System.out.println("\u044f\u0431\u043b\u043e\u043a\u043e");
 		/*
 		String text = "Line one\nLine two\nLine three";
 	// Prepend each line with a bullet point symbol
@@ -20,7 +21,6 @@ public class MiscTests {
 	
 		*/
 
-		System.out.println(5^2);
 		
 		
 	}
