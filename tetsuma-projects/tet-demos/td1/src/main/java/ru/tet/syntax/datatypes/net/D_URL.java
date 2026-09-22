@@ -17,7 +17,6 @@ import org.apache.commons.io.IOUtils;
 import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.aux.swing.DemoBase;
 
-//Шаблон для создания новых демо
 public class D_URL extends DemoBase {
 
 	@Override
@@ -96,6 +95,7 @@ public class D_URL extends DemoBase {
 
 				getClass().getClassLoader().getResource("mytest.txt"),
 				getClass().getResource("/mytest.txt"),
+				getClass().getResource("/notExists.txt"),
 
 				url1 = URI.create("http://example.com").toURL()
 

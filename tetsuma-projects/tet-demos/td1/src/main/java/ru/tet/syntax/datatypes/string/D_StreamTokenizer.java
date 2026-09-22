@@ -1,4 +1,4 @@
-package ru.tet.java.io;
+package ru.tet.syntax.datatypes.string;
 
 import java.io.StreamTokenizer;
 import java.io.StringReader;
@@ -7,7 +7,7 @@ import ru.tet.aux.swing.DemoBase;
 import ru.tet.data.StringSamples;
 import ru.tet.demos.AuxTest;
 
-public class StreamTokenizerDemo extends DemoBase {
+public class D_StreamTokenizer extends DemoBase {
 
 	//java.io.StreamTokenizer
 	//  Принимает входной поток, и разбивает его на токены, позволяя последовательно их считывать.
@@ -54,7 +54,7 @@ public class StreamTokenizerDemo extends DemoBase {
 	}
 
 	public static void main(String[] args) {
-		DemoBase.run(StreamTokenizerDemo.class,1);
+		DemoBase.run(D_StreamTokenizer.class,1);
 	}
 
 }

@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 import ru.tet.aux.swing.DemoBase;
 
-//Шаблон для создания новых демо
 public class D_Date extends DemoBase {
 
 	SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.ENGLISH);

@@ -6,10 +6,13 @@ import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Formatter;
+import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ru.tet.aux.swing.LogDemoTextPane;
 import ru.tet.aux.swing.LogDemoTextPane.LogStyle;
@@ -83,10 +86,15 @@ public interface DemoLogFunctions {
 			return DECIMAL_FORMAT.format(i);
 		}
 
-		//		if (value.getClass().isArray()) {
-		//			Arrays.toString(value);
-		//		}
+		if (value.getClass().isArray()) {
+			ObjectMapper mapper = new ObjectMapper();
+			return mapper.writeValueAsString(value);
+		}
 
+		if (value instanceof List l) {
+			return (String) l.stream().map(String::valueOf).collect(Collectors.joining(","));
+		}
+		
 		return value;
 
 	}

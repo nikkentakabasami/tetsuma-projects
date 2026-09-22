@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.apache.commons.io.IOUtils;
 
@@ -63,6 +64,8 @@ public class DemoAuxDataSamples {
 	public static String apples[] = { "Winesap", "Cortland", "Red Delicious", "Golden Delicious", "Gala", "Fuji",
 			"Granny Smith", "Jonathan" };
 
+	List<Integer> numbersList = IntStream.range(1, 10).boxed().toList();
+	
 	//расширенный список яблок
 	public static List<String> makeApplesList(int size) {
 		List<String> data = new ArrayList<>();

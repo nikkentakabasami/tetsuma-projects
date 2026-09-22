@@ -171,12 +171,12 @@ public abstract class AbstractDemoBase implements DemoTestFunctions, DemoLogFunc
 	
 	@SafeVarargs
 	public final void logExpr2(Supplier<Object>... args) {
-		_logExpr(1, args);
+		_logExpr(2, args);
 	}
 
 	@SafeVarargs
 	public final void logExpr3(Supplier<Object>... args) {
-		_logExpr(1, args);
+		_logExpr(3, args);
 	}
 
 	

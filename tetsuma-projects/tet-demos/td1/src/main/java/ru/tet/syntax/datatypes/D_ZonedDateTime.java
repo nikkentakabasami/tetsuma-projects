@@ -12,7 +12,6 @@ import java.util.Set;
 
 import ru.tet.aux.swing.DemoBase;
 
-//Шаблон для создания новых демо
 public class D_ZonedDateTime extends DemoBase {
 
 	public Object fixResultValue(Object value) throws Exception {

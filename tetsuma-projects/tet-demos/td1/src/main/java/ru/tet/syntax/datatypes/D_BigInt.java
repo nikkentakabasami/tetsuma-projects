@@ -6,7 +6,6 @@ import java.math.RoundingMode;
 
 import ru.tet.aux.swing.DemoBase;
 
-//Шаблон для создания новых демо
 public class D_BigInt extends DemoBase {
 
 	public void test1() throws Exception {

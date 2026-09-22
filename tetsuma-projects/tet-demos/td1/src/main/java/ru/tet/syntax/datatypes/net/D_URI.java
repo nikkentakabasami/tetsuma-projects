@@ -6,7 +6,6 @@ import java.nio.file.Paths;
 
 import ru.tet.aux.swing.DemoBase;
 
-//Шаблон для создания новых демо
 public class D_URI extends DemoBase {
 
 	URI uri1, uri2, uri3, uri4;

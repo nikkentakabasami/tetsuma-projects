@@ -20,7 +20,6 @@ import org.ehcache.expiry.Expirations;
 import ru.tet.aux.swing.DemoBase;
 import ru.tet.demos.AuxTest;
 
-//Шаблон для создания новых демо
 public class CaheDemo_java_squaredNumber extends DemoBase {
 
 	CacheManager cacheManager;

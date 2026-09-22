@@ -1,4 +1,4 @@
-package ru.tet.syntax.datatypes.io;
+package ru.tet.syntax.datatypes.string;
 
 import java.io.BufferedReader;
 import java.io.CharArrayReader;

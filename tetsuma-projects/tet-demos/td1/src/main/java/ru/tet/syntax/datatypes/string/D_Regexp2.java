@@ -1,4 +1,4 @@
-package ru.tet.syntax.datatypes.io;
+package ru.tet.syntax.datatypes.string;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
