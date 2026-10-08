@@ -1,7 +1,11 @@
 package ru.tet.syntax.datatypes;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HexFormat;
 import java.util.Spliterator.OfInt;
+import java.util.stream.IntStream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -11,6 +15,7 @@ public class D_Array extends DemoBase {
 
 	@Override
 	public Object fixResultValue(Object value) throws Exception {
+		
 		if (value.getClass().isArray()) {
 			ObjectMapper mapper = new ObjectMapper();
 			String json = mapper.writeValueAsString(value);
@@ -36,10 +41,24 @@ public class D_Array extends DemoBase {
 		Integer[] a5 = new Integer[5];
 		String[] a7 = new String[] { "Winter", "Spring", "Summer" };
 
+		char[] chars = "hello".toCharArray();
+		byte[] bytes = "hello".getBytes(StandardCharsets.UTF_8);
+		
+		int[] array = IntStream.range(1, 9).toArray();
+		
+		ByteBuffer bb2 = ByteBuffer.allocate(16);
+		bb2.putChar('h').putInt(128).putDouble(2.3).flip();
+		byte[] arr1 = bb2.array();
+		
+		
+		
 		logEval1(
 				//При инициализации массивы заполняются значениями по умолчанию: нулями, null, false
 				a2,
-				a5);
+				a5,
+				arr1
+				
+				);
 
 	}
 

@@ -24,6 +24,8 @@ public class DemoOptions {
 
 	public boolean hlComments = true;	
 	
+	//будет использоваться только log2
+//	public boolean singleLog = false;	
 	
 	
 }

@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 import ru.tet.aux.swing.DemoBase;
 
-public class D_ResourceBundle extends DemoBase {
+public class D_ResourceBundle_Properties extends DemoBase {
 
 
 	
@@ -135,7 +135,7 @@ public class D_ResourceBundle extends DemoBase {
 	}
 	
 	public static void main(String[] args) {
-		DemoBase.run(D_ResourceBundle.class);
+		DemoBase.run(D_ResourceBundle_Properties.class);
 	}
 
 }

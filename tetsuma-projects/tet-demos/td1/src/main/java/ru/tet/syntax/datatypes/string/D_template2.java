@@ -1,8 +1,8 @@
-package ru.tet.syntax.datatypes;
+package ru.tet.syntax.datatypes.string;
 
 import ru.tet.aux.swing.DemoBase;
 
-public class D_template3 extends DemoBase {
+public class D_template2 extends DemoBase {
 
 	public void test1() throws Exception {
 		/*
@@ -36,7 +36,7 @@ public class D_template3 extends DemoBase {
 	}
 	
 	public static void main(String[] args) {
-		DemoBase.run(D_template3.class);
+		DemoBase.run(D_template2.class);
 	}
 
 }

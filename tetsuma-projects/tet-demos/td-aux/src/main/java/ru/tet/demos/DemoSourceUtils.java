@@ -84,7 +84,13 @@ public class DemoSourceUtils {
 						TestSources testSources = sources.get(0);
 						testSources.getAuxMethods().add(m);
 					} else if (name.startsWith(TEST_METHOD_SUFFIX)) {
-						int testNo = Integer.parseInt(name.substring(TEST_METHOD_SUFFIX.length()));
+						String suffix = name.substring(TEST_METHOD_SUFFIX.length());
+						if (!suffix.matches("\\d+")) {
+							return;
+						}
+						
+						
+						int testNo = Integer.parseInt(suffix);
 
 						TestSources testSources = sources.get(testNo);
 						testSources.setTestMethod(m);

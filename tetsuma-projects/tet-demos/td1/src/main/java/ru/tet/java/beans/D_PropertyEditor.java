@@ -6,7 +6,7 @@ import java.beans.PropertyEditorManager;
 
 import ru.tet.aux.swing.DemoBase;
 
-public class PropertyEditorDemo extends DemoBase {
+public class D_PropertyEditor extends DemoBase {
 
 	@Override
 	protected void doInit() throws Exception {
@@ -56,7 +56,7 @@ public class PropertyEditorDemo extends DemoBase {
 	}
 
 	public static void main(String[] args) {
-		DemoBase.run(PropertyEditorDemo.class);
+		DemoBase.run(D_PropertyEditor.class);
 	}
 
 }

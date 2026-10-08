@@ -10,6 +10,7 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 
 import ru.tet.demos.AbstractDemoBase;
@@ -23,6 +24,8 @@ public class AbstractDemoFrame extends JFrame {
 
 	// рабочая панель - содержит логи.
 	protected JPanel workPanel;
+	
+	public JSplitPane textAreaSP;
 	
 	protected LogDemoTextPane textArea1;
 	protected LogDemoTextPane textArea2;

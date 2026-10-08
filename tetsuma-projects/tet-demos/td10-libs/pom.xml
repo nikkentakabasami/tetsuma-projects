@@ -50,6 +50,46 @@
 			<artifactId>junit-jupiter</artifactId>
 		</dependency>
 
+		<!-- log4j -->
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.20.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.20.0</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- sl4j -->
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j2-impl</artifactId>
+		</dependency>
+
+		<!--
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+	
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+-->
 
 		<!-- libs to test -->
 		<dependency>
@@ -57,6 +97,20 @@
 			<artifactId>ehcache</artifactId>
 			<version>3.4.0</version>
 		</dependency>
+
+
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.35</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>ST4</artifactId>
+			<version>4.3.4</version>
+		</dependency>
+
 
 		<!-- необходим для ehcache (если использовать xml-конфигурацию) -->
 		<!--

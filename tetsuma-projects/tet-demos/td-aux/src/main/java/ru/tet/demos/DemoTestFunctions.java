@@ -35,7 +35,6 @@ public interface DemoTestFunctions {
 	default void test(int testNo) throws Exception {
 
 		if (testNo <= 0 || testNo > 5) {
-			System.out.println("bad test no: " + testNo);
 			return;
 		}
 

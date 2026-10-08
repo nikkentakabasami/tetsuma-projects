@@ -7,14 +7,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import ru.tet.DemoExample;
 import ru.tet.aux.swing.DemoBase;
 import ru.tet.demos.AuxTest;
 
 
 
 
-public class FilterInputStreamDemo extends DemoBase {
+public class D_FilterInputStream extends DemoBase {
 
 	//FilterInputStream, переводящий строки в верхний регистр
 	@AuxTest
@@ -59,7 +58,7 @@ public class FilterInputStreamDemo extends DemoBase {
 
 
 	public static void main(String[] args) {
-		DemoBase.run(FilterInputStreamDemo.class);
+		DemoBase.run(D_FilterInputStream.class);
 	}
 
 }

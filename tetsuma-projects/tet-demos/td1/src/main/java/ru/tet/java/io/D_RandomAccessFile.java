@@ -5,7 +5,7 @@ import java.io.RandomAccessFile;
 import ru.tet.DemoExample;
 import ru.tet.aux.swing.DemoBase;
 
-public class RandomAccessFileDemo extends DemoBase {
+public class D_RandomAccessFile extends DemoBase {
 
 	
 	//RandomAccessFile
@@ -39,7 +39,7 @@ public class RandomAccessFileDemo extends DemoBase {
 	}
 
 	public static void main(String[] args) {
-		DemoBase.run(RandomAccessFileDemo.class);
+		DemoBase.run(D_RandomAccessFile.class);
 	}
 
 }

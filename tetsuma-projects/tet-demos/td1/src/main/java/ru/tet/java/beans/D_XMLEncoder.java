@@ -14,7 +14,7 @@ import ru.tet.beans.User;
 import ru.tet.data.BeansSamples;
 import ru.tet.demos.AuxTest;
 
-public class XMLEncoderDemo extends DemoBase {
+public class D_XMLEncoder extends DemoBase {
 
 	String encodedXml;
 	User user;
@@ -73,7 +73,7 @@ public class XMLEncoderDemo extends DemoBase {
 	}
 
 	public static void main(String[] args) {
-		DemoBase.run(XMLEncoderDemo.class);
+		DemoBase.run(D_XMLEncoder.class);
 	}
 
 }

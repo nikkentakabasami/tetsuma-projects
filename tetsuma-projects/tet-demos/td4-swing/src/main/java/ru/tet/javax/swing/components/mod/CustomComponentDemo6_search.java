@@ -33,7 +33,7 @@ public class CustomComponentDemo6_search extends JFrameForTests {
 
 		controlPanel.addDebugLabel();
 		
-		data =DemoAuxDataSamples.makeApplesList(5);
+		data =DemoAuxDataSamples.makeApplesListBig(5);
 		
 		searchPanel = new SearchPanel(searchText->{
 			if (StringUtils.isBlank(searchText)) {

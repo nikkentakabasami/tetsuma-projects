@@ -12,7 +12,7 @@ public class User implements Serializable {
 	};
 
 	@Data
-	public static class Name {
+	public static class Name implements Serializable {
 		String first, last;
 	}
 

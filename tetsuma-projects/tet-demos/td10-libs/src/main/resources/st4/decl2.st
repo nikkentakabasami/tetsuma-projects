@@ -1,0 +1,1 @@
+<type> <name><init2(value)>;

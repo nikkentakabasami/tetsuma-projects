@@ -7,14 +7,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.javax0.sourcebuddy.Compiler;
 
 import ru.tet.sourcebuddy.aux.EvalFunction;
 import ru.tet.sourcebuddy.aux.EvalFunction2;
-import ru.tet.sourcebuddy.templ.EvalTemplate1;
 import ru.tet.sourcebuddy.templ.EvalTemplate2;
 import ru.tet.utils.TetSourceUtils;
 
@@ -24,7 +23,7 @@ import ru.tet.utils.TetSourceUtils;
  */
 public class DemoEvalUtils {
 
-	static Logger logger = LogManager.getLogger();
+  static Logger logger = LoggerFactory.getLogger(DemoEvalUtils.class);
 
 	public static Object eval(String code) throws Exception {
 		return eval(code, null);

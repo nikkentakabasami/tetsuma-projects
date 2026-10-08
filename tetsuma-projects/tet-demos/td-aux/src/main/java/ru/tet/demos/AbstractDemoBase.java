@@ -134,6 +134,10 @@ public abstract class AbstractDemoBase implements DemoTestFunctions, DemoLogFunc
 		for (int i = 0; i < expressions.length; i++) {
 			String expr = expressions[i];
 			Object val = args[i];
+			if (args.length>1 && expressions.length==1) {
+				val = args;
+			}
+			
 			textArea2.logBlue(expr+NL);
 			
 			val = toStr(val);

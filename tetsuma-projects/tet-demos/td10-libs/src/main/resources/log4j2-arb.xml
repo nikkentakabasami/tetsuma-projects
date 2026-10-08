@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+
+	<appenders>
+
+		<Console
+			name="console1"
+			target="SYSTEM_OUT">
+
+			<SystemPropertyArbiter
+				propertyName="env"
+				propertyValue="dev">
+				<PatternLayout pattern="'%20m','%-20m','%.10m'%n" />
+			</SystemPropertyArbiter>
+
+			<SystemPropertyArbiter
+				propertyName="env"
+				propertyValue="prod">
+				<PatternLayout
+					pattern="%d{HH:mm:ss} %5p (%c{1}:%L)- %m%n" />
+			</SystemPropertyArbiter>
+
+		</Console>
+
+		<Console
+			name="console2"
+			target="SYSTEM_OUT">
+			<PatternLayout pattern="%level %m%n" />
+
+			<MarkerFilter
+				marker="TRANSACTION"
+				onMatch="ACCEPT"
+				onMismatch="DENY" />
+
+		</Console>
+
+		<Console
+			name="console3"
+			target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%highlight{%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n}" />
+		</Console>
+
+<!-- 
+
+ -->
+
+	</appenders>
+
+	<loggers>
+
+		<logger
+			name="ru.tet.reflections"
+			additivity="false">
+			<appender-ref ref="console2" />
+		</logger>
+
+
+		<root
+			level="debug"
+			includeLocation="true">
+			<appender-ref ref="console1" />
+		</root>
+	</loggers>
+</configuration>

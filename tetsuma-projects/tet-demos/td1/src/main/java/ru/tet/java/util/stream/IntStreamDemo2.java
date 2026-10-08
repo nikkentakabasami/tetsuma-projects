@@ -81,13 +81,6 @@ public class IntStreamDemo2 extends DemoBase {
 		r.s9 = IntStream.of(5, 7, 11, 7, 13).mapToObj(String::valueOf).collect(Collectors.joining(":", "(", ")"));
 	}
 
-	@Override
-	protected void doInitControlPanel() throws Exception {
-		addTest1Button(null);
-		addTest2Button(null);
-		addTest3Button(null);
-		addTest4Button(null);
-	}
 
 	public static void main(String[] args) {
 		DemoBase.run(IntStreamDemo2.class);

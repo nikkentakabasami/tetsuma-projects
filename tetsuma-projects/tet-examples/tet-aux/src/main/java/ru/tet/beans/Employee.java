@@ -20,6 +20,10 @@ public class Employee implements Serializable {
 		this.department = department;
 	}
 
+	public boolean isOld() {
+		return age>=20;
+	}
+	
 	public Employee() {
 	}
 

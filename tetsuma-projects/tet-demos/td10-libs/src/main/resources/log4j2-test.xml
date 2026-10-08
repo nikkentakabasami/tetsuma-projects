@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+  <appenders>
+    <Console name="console" target="SYSTEM_OUT" >
+      <PatternLayout pattern="%highlight{%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n}" />
+    </Console>
+
+  </appenders>
+
+  <loggers>
+  <!-- 
+  По умолчанию проходят только WARN сообщения.
+  Все сообщения идут в консоль.
+  
+  В пакеты ru.tet могут проходить и info
+  В пакет ru.tet.logs могут проходить и debug
+   -->
+    <logger name="ru.tet" level="info"/>
+    <logger name="ru.tet.logs" level="debug"/>
+    <root level="debug">
+      <appender-ref ref="console" />
+    </root>
+  </loggers>
+</configuration>

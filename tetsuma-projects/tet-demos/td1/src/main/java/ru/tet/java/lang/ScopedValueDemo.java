@@ -8,11 +8,17 @@ public class ScopedValueDemo {
 	static final ScopedValue<Integer> RANDOM_NUMBER = ScopedValue.newInstance();
 
 	public static void main(String[] args) throws InterruptedException {
-//		Demo1();
+		//		Demo1();
 		Demo3();
 	}
 
 	public static void Demo1() {
+
+		/*
+		java.lang.ScopedValue
+		альтернатива ThreadLocal - контейнер для переменной, привязанной к нити (в дочерние нити тоже передаётся)
+		эти данные немутабельны, но нить можно вызвать с другим значением! 
+		 */
 
 		for (int i = 0; i < 10; i++) {
 			new Thread(() -> {
@@ -32,7 +38,7 @@ public class ScopedValueDemo {
 		try (StructuredTaskScope scope = new StructuredTaskScope()) {
 			for (int i = 0; i < 10; i++) {
 				scope.fork(() -> {
-					
+
 					int randomNumber = ThreadLocalRandom.current().nextInt(1, 101);
 					ScopedValue.where(RANDOM_NUMBER, randomNumber).run(() -> {
 						System.out.printf("Thread %s: Random number: %dn", Thread.currentThread().threadId(),
@@ -46,32 +52,22 @@ public class ScopedValueDemo {
 		}
 
 	}
-	
-	
-	
+
 	private static final ScopedValue<String> USER = ScopedValue.newInstance();
-	
+
 	public static void Demo3() throws InterruptedException {
 
 		ScopedValue.Carrier carrierForBen = ScopedValue.where(USER, "ben");
 
-		var boundUser = carrierForBen.get(USER);	//"ben"
+		var boundUser = carrierForBen.get(USER); //"ben"
 
-	    System.out.println(boundUser);
-		
-		
+		System.out.println(boundUser);
+
 		carrierForBen.run(() -> {
-		    var currentUser = USER.get();	//"ben"
-		    System.out.println(currentUser);
+			var currentUser = USER.get(); //"ben"
+			System.out.println(currentUser);
 		});
 
-				
-		
 	}
-	
-	
-	
-	
-	
 
 }

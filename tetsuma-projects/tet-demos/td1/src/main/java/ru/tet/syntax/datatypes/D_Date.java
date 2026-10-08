@@ -11,6 +11,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import ru.tet.aux.swing.DemoBase;
 
 public class D_Date extends DemoBase {
@@ -112,9 +114,8 @@ public class D_Date extends DemoBase {
 		Instant instant = Instant.ofEpochMilli(d1.getTime());
 		LocalDateTime ldt = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 
-		logEval(instant.toString(), 
+		logEval(instant.toString(),
 				ldt.toString());
-		
 
 	}
 
@@ -127,6 +128,27 @@ public class D_Date extends DemoBase {
 		logEval(
 				TimeUnit.HOURS.toMinutes(5),
 				TimeUnit.MILLISECONDS.toSeconds(5000));
+
+	}
+
+	@Override
+	public void test5() throws Exception {
+
+		/*
+		DateUtils
+		Содержит кучу методов, позволяющих обойтись без календаря.
+		 */
+
+		d1 = dateFormat.parse("05.02.2008 12:31");
+
+		logEval1(
+				d1,
+				DateUtils.addDays(d1, 10),
+				DateUtils.setMonths(d1, 1),
+				DateUtils.ceiling(d1, Calendar.MONTH),
+				DateUtils.ceiling(d1, Calendar.DATE),
+				DateUtils.round(d1, Calendar.DATE),
+				DateUtils.truncate(d1, Calendar.DATE));
 
 	}
 

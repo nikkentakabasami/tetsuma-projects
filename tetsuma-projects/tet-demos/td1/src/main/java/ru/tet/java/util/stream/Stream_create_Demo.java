@@ -1,11 +1,17 @@
 package ru.tet.java.util.stream;
 
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang3.stream.Streams;
 
 import ru.tet.aux.swing.DemoBase;
 
@@ -50,13 +56,11 @@ public class Stream_create_Demo extends DemoBase {
 
 		//3 раза вывести Hello
 		Stream.generate(() -> "Hello").limit(3).forEach(this::log2);
-		
+
 		r.s7 = Stream.iterate(1, n -> n + 1).limit(5);
 
-		
-		r.s8 = Stream.concat(IntStream.of(7,2,8).boxed(), Stream.of("w","k"));
-		
-		
+		r.s8 = Stream.concat(IntStream.of(7, 2, 8).boxed(), Stream.of("w", "k"));
+
 	}
 
 	public void test2() throws Exception {
@@ -84,40 +88,50 @@ public class Stream_create_Demo extends DemoBase {
 
 		Stream<String> s3 = Files.lines(Paths.get("NOTICE.txt"));
 		r.s3 = s3;
-		
+
 		/*
 		IntStream string.chars()
 		Коды символов из строки.
 		 */
-		
+
 		IntStream s4 = "123".chars();
 		r.s4 = s4.toArray();
 
-		
 		/*
 		Stream.builder().add(...)....build()
 		
 		 */
-		
-		Stream<String> s5 = Stream.<String>builder().add("a1").add("a2").add("a3").build();
+
+		Stream<String> s5 = Stream.<String> builder().add("a1").add("a2").add("a3").build();
 		r.s5 = s5;
-		
-		
-    Stream.Builder<String> cityBuilder = Stream.builder();
-    cityBuilder.add("London");
-    cityBuilder.add("Paris");
-    cityBuilder.add("Tokyo");
-    Stream<String> s6 = cityBuilder.build();		
+
+		Stream.Builder<String> cityBuilder = Stream.builder();
+		cityBuilder.add("London");
+		cityBuilder.add("Paris");
+		cityBuilder.add("Tokyo");
+		Stream<String> s6 = cityBuilder.build();
 		r.s6 = s6;
-		
-		
 
 	}
 
 	public void test3() throws Exception {
 		/*
-		
+		org.apache.commons.lang3.stream.Streams
+		вспомогательные методы для потоков
+		главная фича - умеет создавать FailableStream.
 		 */
+
+
+		Stream<URI> addrStream = List.of("https://example.com").stream().map(URI::create);
+
+		//Такую операцию сделать невозможно - ведь метод toURL() кидает MalformedURLException 
+		//URL url = addrStream.map(add->add.toURL()).findFirst().get();
+
+		//Поэтому можно обернуть addrStream в FailableStream:
+		URL url = Streams.failableStream(addrStream).map(uri -> uri.toURL()).stream().findFirst().get();
+
+		log2(url);
+
 	}
 
 	public void test4() throws Exception {
@@ -130,8 +144,8 @@ public class Stream_create_Demo extends DemoBase {
 	protected void doInitControlPanel() throws Exception {
 		addTest1Button(null);
 		addTest2Button(null);
-//		addTest3Button(null);
-//		addTest4Button(null);
+		//		addTest3Button(null);
+		//		addTest4Button(null);
 	}
 
 	public static void main(String[] args) {

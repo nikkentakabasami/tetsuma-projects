@@ -7,7 +7,7 @@ import ru.tet.utils.TetIOUtils;
 
 
 
-public class ClassLoaderDemo extends DemoBase {
+public class D_ClassLoader extends DemoBase {
 
 	
 	@Override
@@ -23,13 +23,9 @@ public class ClassLoaderDemo extends DemoBase {
 		
 	}
 
-	@Override
-	protected void doInitControlPanel() throws Exception {
-		addTest1Button(null);
-	}
 
 	public static void main(String[] args) {
-		DemoBase.run(ClassLoaderDemo.class,1);
+		DemoBase.run(D_ClassLoader.class,1);
 	}
 
 }

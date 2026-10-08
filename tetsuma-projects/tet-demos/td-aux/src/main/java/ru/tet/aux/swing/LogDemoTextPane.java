@@ -189,7 +189,6 @@ public class LogDemoTextPane extends JTextPane {
 		} while (true);		
 		
 		text = getText();
-		System.out.println(text);
 		
 	}
 	

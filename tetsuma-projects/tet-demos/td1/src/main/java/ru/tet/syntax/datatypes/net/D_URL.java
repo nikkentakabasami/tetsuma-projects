@@ -150,7 +150,6 @@ public class D_URL extends DemoBase {
 		 */
 
 		URL url1 = URI.create("https://example.com").toURL();
-
 		URLConnection cnn = url1.openConnection();
 
 		//заголовки

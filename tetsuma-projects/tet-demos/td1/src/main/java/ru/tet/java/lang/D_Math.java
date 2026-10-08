@@ -5,7 +5,7 @@ import java.util.Random;
 
 import ru.tet.aux.swing.DemoBase;
 
-public class MathDemo extends DemoBase {
+public class D_Math extends DemoBase {
 
 	public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#0.##");
 
@@ -66,7 +66,7 @@ public class MathDemo extends DemoBase {
 	}
 
 	public static void main(String[] args) {
-		DemoBase.run(MathDemo.class, 1);
+		DemoBase.run(D_Math.class, 1);
 	}
 
 }

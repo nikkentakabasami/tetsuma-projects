@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+<!-- 
+Спец-символы (conversion characters):
+p		Приоритет логового события	(DEBUG, ERROR, INFO...)
+C		Вызывающий класс (mypack.MyClass)
+C{1}		В фигурных скобках задаётся максимальная длинна пути к классу (1- "TestBean1", 2 - "beans.TestBean1")
+L		Номер линии, из которой было вызвано сообщение
+m		Пользовательское сообщение
+n		Конец строки
+d{HH:mm:ss,SSS}	Дата события
+d{dd MMM yyyy HH:mm:ss,SSS}
+t		Имя нити, выдавшей сообщение
+r		Количество миллисекунд после запуска приложения
+F		Имя файла, из которого сделан вызов. Работает медленно.
+%% - знак процента
+ -->
+
+  <appenders>
+    <Console name="console1" target="SYSTEM_OUT" >
+      <PatternLayout pattern="%d{dd.MM.yyyy HH:mm:ss} %5p [%t] (%c{1}:%L)- %m%n"/>
+    </Console>
+
+    <Console name="console2" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss} [%t] %C - %m%n"/>
+    </Console>
+
+    <Console name="console3" target="SYSTEM_OUT" >
+      <PatternLayout pattern="%highlight{%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n}" />
+    </Console>
+
+<!-- 
+      <PatternLayout pattern="'%20m','%-20m','%.10m'%n"/>
+      <PatternLayout pattern="'%-10.10m','%-15.15m','%-20.20m'%n"/>
+      
+
+ -->
+
+  </appenders>
+
+  <loggers>
+  
+  <!-- 
+    <logger name="ru.tet.logs" additivity="false">
+      <appender-ref ref="console1" />
+    </logger>
+    <logger name="ru.tet.reflections" additivity="false">
+      <appender-ref ref="console2" />
+    </logger>
+    <root level="debug" includeLocation="true">
+      <appender-ref ref="console1" />
+    </root>
+   -->
+    
+    
+    <root level="debug" includeLocation="true">
+      <appender-ref ref="console1" />
+    </root>
+  </loggers>
+</configuration>

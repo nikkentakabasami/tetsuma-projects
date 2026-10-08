@@ -7,7 +7,7 @@ import java.beans.PropertyDescriptor;
 import ru.tet.aux.swing.DemoBase;
 import ru.tet.beans.Course;
 
-public class BeanInfoDemo extends DemoBase {
+public class D_BeanInfo extends DemoBase {
 
 	@Override
 	public void test1() throws Exception {
@@ -27,7 +27,7 @@ public class BeanInfoDemo extends DemoBase {
 	}
 
 	public static void main(String[] args) {
-		DemoBase.run(BeanInfoDemo.class);
+		DemoBase.run(D_BeanInfo.class);
 	}
 
 }

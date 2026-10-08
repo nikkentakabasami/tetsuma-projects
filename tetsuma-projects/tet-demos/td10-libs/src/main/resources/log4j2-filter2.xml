@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+  <appenders>
+    <Console name="console1" target="SYSTEM_OUT" >
+    </Console>
+
+    <Console name="console2" target="SYSTEM_OUT" >
+      <PatternLayout pattern="%d{dd.MM.yyyy HH:mm:ss} %5p [%t] (%c{1}:%L)- %m%n"/>
+    </Console>
+
+
+  </appenders>
+
+  <loggers>
+  <!-- 
+    <logger name="ru.tet.logs" level="debug" additivity="false">
+      <appender-ref ref="console1" />
+    </logger>
+   -->
+    
+    <root level="debug">
+      <appender-ref ref="console1">
+			<RegexFilter regex=".*test.*" onMatch="ACCEPT" onMismatch="DENY"/>
+      </appender-ref>
+      <appender-ref ref="console2">
+			<RegexFilter regex=".*test.*" onMatch="DENY" onMismatch="ACCEPT"/>
+      </appender-ref>
+    </root>
+  </loggers>
+</configuration>

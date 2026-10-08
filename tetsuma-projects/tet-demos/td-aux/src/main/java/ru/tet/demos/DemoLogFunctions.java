@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Formatter;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
@@ -86,6 +87,13 @@ public interface DemoLogFunctions {
 			return DECIMAL_FORMAT.format(i);
 		}
 
+		if (value instanceof byte[] arr1) {
+			HexFormat commaFormat = HexFormat.ofDelimiter(",");
+			String str = commaFormat.formatHex(arr1, 0, arr1.length);
+			return str;
+		}
+		
+		
 		if (value.getClass().isArray()) {
 			ObjectMapper mapper = new ObjectMapper();
 			return mapper.writeValueAsString(value);

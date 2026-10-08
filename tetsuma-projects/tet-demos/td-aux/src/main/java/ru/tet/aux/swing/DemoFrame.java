@@ -103,12 +103,14 @@ public class DemoFrame extends AbstractDemoFrame {
 		textArea1 = new LogDemoTextPane(options);
 		textArea1.setFont(font);
 		JScrollPane sp1 = new JScrollPane(textArea1);
+		
+		
 		sp1.setPreferredSize(new Dimension(600, 300));
 		
 		
-		JSplitPane splitPane2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, sp1, sp2);
-		splitPane2.setDividerLocation(500);
-		workPanel.add(splitPane2);	    
+		textAreaSP = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, sp1, sp2);
+		textAreaSP.setDividerLocation(500);
+		workPanel.add(textAreaSP);	    
 		
 		controlPanel = new JControlPanelForTests();
 
