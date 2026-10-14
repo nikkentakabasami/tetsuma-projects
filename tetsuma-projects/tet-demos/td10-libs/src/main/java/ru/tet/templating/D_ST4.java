@@ -9,6 +9,7 @@ import org.stringtemplate.v4.STGroupDir;
 import org.stringtemplate.v4.STGroupFile;
 import org.stringtemplate.v4.STRawGroupDir;
 
+import ru.tet.aux.DemoAuxDataSamples;
 import ru.tet.aux.DemoAuxObjectSamples;
 import ru.tet.aux.swing.DemoBase;
 import ru.tet.beans.Employee;
@@ -55,54 +56,8 @@ public class D_ST4 extends DemoBase {
 
 	}
 
-	public void test2() throws Exception {
-		/*
-		STGroupDir
-		 */
-
-		STGroup group = new STGroupDir("st4");
-		ST st = group.getInstanceOf("decl");
-		st.add("type", "int");
-		st.add("name", "x");
-		st.add("value", 0);
-		String result = st.render(); //"int x = 0;"		
-		log2(result);
-
-	}
-
-	public void test3() throws Exception {
-		/*
-		STRawGroupDir
-		
-		 */
-
-		STRawGroupDir group = new STRawGroupDir("st4");
-		ST st = group.getInstanceOf("decl2");
-		st.add("type", "int");
-		st.add("name", "x");
-		st.add("value", 0);
-		String result = st.render(); //"int x = 0;"		
-		log2(result);
-	}
-
-	public void test4() throws Exception {
-		/*
-		STGroupFile
-		 */
-
-		STGroup group = new STGroupFile("st4/test.stg");
-		ST st = group.getInstanceOf("decl");
-		st.add("type", "int");
-		st.add("name", "x");
-		st.add("value", 22);
-		String result = st.render();		
-		log2(result);
-
-	}
-
-	
 	@Override
-	public void test5() throws Exception {
+	public void test2() throws Exception {
 		/*
 		С заданием своих символов-ограничителей
 		 */
@@ -127,11 +82,46 @@ public class D_ST4 extends DemoBase {
 		log2(result);
 		
 		
+	}	
+	
+	
+
+	public void test3() throws Exception {
+		/*
 		
+		st.addAggr()
+		Задание данных в списках, если нет подходящего класса
+		 */
+
+		ST st1 = new ST("<items:{it|<it.id>: <it.lastName>, <it.firstName>\n}>");
+		st1.addAggr("items.{ firstName ,lastName, id }", "Ter", "Parr", 99);
+		st1.addAggr("items.{firstName, lastName ,id}", "Tom", "Burns", 34);
+		String result = st1.render();
+		log2(result);
+	}
+
+	public void test4() throws Exception {
+
+		List<Integer> numbersList = DemoAuxDataSamples.makeNumbersList(15);
+		String s = ST.format(20, "int <%1>[] = { <%2; wrap, anchor, separator=\", \"> };", "a", numbersList);
+		log2(s);
+
+		s = ST.format("""
+				<["a", "b", "c"]>
+				<first(["a", "b", "c"])>
+						""");
+		log2(s);
+		
+		
+	}
+
+	public void test5() throws Exception {
 		
 		
 		
 	}
+	
+
 	
 	@Override
 	protected void doInit() throws Exception {

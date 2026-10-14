@@ -4,15 +4,21 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 public class TetJettyServerOptions {
 
-	@AllArgsConstructor
 	public static class AdditionalStatic {
+
+		public AdditionalStatic() {
+		}
 		
+		public AdditionalStatic(String pathSpec, Path dirPath) {
+			this.pathSpec = pathSpec;
+			this.dirPath = dirPath;
+		}
+
 		//ResourceServlet mapping
 		String pathSpec;
 		

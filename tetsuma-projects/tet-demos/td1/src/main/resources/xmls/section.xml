@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+	<section name="Fiction">
+		<book id="b1">
+			<title>1984</title>
+			<author>George Orwell</author>
+			<price>9.99</price>
+		</book>
+		<book id="b2">
+			<title>Brave New World</title>
+			<author>Aldous Huxley</author>
+			<price>12.50</price>
+		</book>
+	</section>
+	<section name="Nonfiction">
+		<book id="b3">
+			<title>Sapiens</title>
+			<author>Yuval Noah Harari</author>
+			<price>14.99</price>
+		</book>
+	</section>
+</library>

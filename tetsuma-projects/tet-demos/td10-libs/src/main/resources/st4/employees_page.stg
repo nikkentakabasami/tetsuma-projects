@@ -1,0 +1,60 @@
+delimiters "%", "%"
+
+import "apples.stg"
+
+getEmpDep(emp) ::= <<department of %emp.department%>>
+
+empItem(emp) ::= <<
+  <li>%emp.id%: %emp.firstName% <span class="blue">%getEmpDep(emp)%</span>  %if(emp.old)% (is old!)%endif%
+>>
+
+empFullInfo(emp) ::= <%
+  %emp.firstName% (id=%emp.id%, age is %emp.age%) %getEmpDep(emp)%
+%>
+
+empsInfo(emps) ::= <<
+
+<h1>Employees list</h1>
+
+<ul>
+%emps:empItem(); separator="\n"%
+</ul>
+
+First Employee is %empFullInfo(first(emps))%
+>>
+
+
+testContent(emps, apples) ::= <<
+%empsInfo(emps)%
+<hr>
+
+template from "apples.stg":
+%listApplesImported(apples)%
+
+Apples:
+%apples:{app | <br>%i%) %app%}; separator="\n"%
+
+>>
+
+// Выводит html-страницу с заданными яблоками и служащими
+testPage(emps, apples) ::= <%
+
+%htmlPage("Employees!",testContent(emps, apples))%
+
+%>
+
+
+htmlPage(title,content) ::= <<
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>%title%</title>
+</head>
+<body>
+
+%content%
+   
+</body>
+</html>
+>>

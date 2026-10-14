@@ -10,8 +10,6 @@
 	<artifactId>td10-libs</artifactId>
 
 	<properties>
-		<maven.compiler.source>20</maven.compiler.source>
-		<maven.compiler.target>20</maven.compiler.target>
 	</properties>
 
 	<dependencies>
@@ -110,6 +108,20 @@
 			<artifactId>ST4</artifactId>
 			<version>4.3.4</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity-engine-core</artifactId>
+			<version>2.4.1</version>
+		</dependency>
+
+
+<dependency>
+    <groupId>org.apache.velocity</groupId>
+    <artifactId>velocity-engine-examples</artifactId>
+    <version>2.4.1</version>
+    <scope>compile</scope>
+</dependency>
 
 
 		<!-- необходим для ehcache (если использовать xml-конфигурацию) -->

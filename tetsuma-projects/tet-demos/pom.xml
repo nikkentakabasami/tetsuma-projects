@@ -27,9 +27,9 @@
 		<module>web_projects/td50_web_2</module>
 		<module>web_projects/td50_web_3</module>
 		<module>web_projects/td50_web_1_basic</module>
+		<module>libs/td10_libs_jackson</module>
  -->
 
-		<module>libs/td10_libs_jackson</module>
 		<module>td-aux</module>
 		<module>td10-libs</module>
 	</modules>

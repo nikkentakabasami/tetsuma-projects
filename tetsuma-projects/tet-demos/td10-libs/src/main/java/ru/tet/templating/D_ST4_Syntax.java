@@ -35,69 +35,70 @@ public class D_ST4_Syntax extends DemoBase {
 
 	public void test1() throws Exception {
 		/*
-		Операции над коллекциями
+		Способы вывода коллекций.
+		
+		
+		Опции выражений:
+		wrap
+		разрешает разбиение текста на строки
+		Максимальная длина строки задаётся в качестве параметра render(lineWidth)
+		
+		anchor
+		выравнивает разбитые линии, дополняя их пробелами с левой стороны
+		
+		separator
+		текст использующийся для сцепления элементов массива в единую строку
+		
 		 */
 
 		List<String> p1 = DemoAuxDataSamples.makeApplesList(4);
-		List<Integer> p2 = DemoAuxDataSamples.makeNumbersList(4,3);
-		
+		List<Integer> p2 = DemoAuxDataSamples.makeNumbersList(4, 3);
+
 		String g = """
-				
-				par1(x) ::= "(<x>)"
-				par2(x) ::= "[<x>]"
-				
-				test1(p1,p2) ::= <<
 
-Простое объединение элементов коллекции в строку
-<p2>
+								par1(x) ::= "(<x>)"
+								par2(x) ::= "[<x>]"
 
-объединение через разделитель
-<p2; separator=\",\">
+								test1(p1,p2) ::= <<
 
-с переносом на новую строку и сохранением отступа
-<p2; separator=\",\", wrap, anchor>
+				Простое объединение элементов коллекции в строку
+				<p2>
 
-с применением шаблона к каждому элементу
-<p2:par1()>
-<p2:par1(); separator=\",\n\">
+				объединение через разделитель
+				<p2; separator=",">
 
-с использованием анонимных шаблонов
-<p2:{n | <i>) <par1(n)>}; separator=\",\n\">
+				с переносом на новую строку и сохранением отступа
+				<p2; separator=",", wrap, anchor>
 
-объединение коллекций:
-<p1,p2:{ a,b | <a>: <b>}; separator=\",\n\">
+				с применением шаблона к каждому элементу
+				<p2:par1()>
+				<p2:par1(); separator=",\n">
 
-чередование шаблонов:
-<p2:par1(),par2()>
+				с использованием анонимных шаблонов
+				<p2:{n | <i>) <par1(n)>}; separator=",\n">
 
-коллекция-литерал
-<["a", "b", "c"]:par1()>
+				объединение коллекций:
+				<p1,p2:{ a,b | <a>: <b>}; separator=",\n">
 
-				>>
-				""";
+				чередование шаблонов:
+				<p2:par1(),par2()>
 
-		/*
-				t2:
-				<emps:{emp | <i>) <empToStr(emp)>}; separator=\",\n\">
-				t3:
-				<emps:empToStr(); wrap>
-				t4:
-				<emps:empToStr(); separator=\",\n\">
-
-				t5:
-				apples = <apples; separator=\",\", wrap, anchor>
-
-				t6:
-				<apples:{app | apple <i>: <app>\n}>
-
-				t7:
-				<apples:{apple <i>: <%1>\n}>
+				коллекция-литерал
+				<["a", "b", "c"]:par1()>
 
 
-		 * 
-		 */
-		
-		testSTGroup(g,p1,p2);
+				Склейка списков
+				<[p1,p2]; separator=",">
+
+
+				два шаблона
+				<par2(par1("hi"))>
+
+
+								>>
+								""";
+
+		testSTGroup(g, p1, p2);
 
 	}
 
@@ -127,39 +128,15 @@ public class D_ST4_Syntax extends DemoBase {
 
 	public void test3() throws Exception {
 
-		/*
-		Задаём другие delimiters.
-		
-		%i%
-		
-				t1: <emps:{emp | <i>) <empToStr(emp)>,\n }>
-				t2: <emps:{emp | <i>) <empToStr(emp)>}; separator=\\",\n\\">
-				t3: <emps:empToStr()>
-				t4: <emps:empToStr(); separator=\\",\\">
-		 */
-
-		String g = """
-				delimiters "%", "%"
-				getEmpDep(emp) ::= <<department of %emp.department%>>
-				empToStr(emp) ::= <<%emp.id%: %emp.firstName%, %getEmpDep(emp)%>>
-				test1(emps,apples) ::= <<
-				%emps:{emp | %i%) %empToStr(emp)%,\n }%
-				>>
-
-				class(name,members="...",sup="Object") ::= "class <name> extends <sup> { <members> }"
-
-
-				""";
-		testSTGroup(g);
-
 		//у параметров могут быть значения по умолчанию
-		g = """
+		String g = """
 				class(name,members="...",sup="Object") ::= "class <name> extends <sup> { <members> }"
 				""";
 		STGroup group = new STGroupString(g);
 		ST st = group.getInstanceOf("class");
 		st.add("name", "MyClass1");
 		log2(st.render());
+
 
 	}
 
@@ -195,25 +172,28 @@ public class D_ST4_Syntax extends DemoBase {
 
 	@Override
 	public void test5() throws Exception {
+		/*
+		словари (dictionaries)
+		 */
 
 		String g = """
 
-				typeInitMap ::= [
-				"int":"0",
-				"float":"0.0",
-				"boolean":"false",
-				 default:"null"
-				]
-				test1(emps,apples,p1) ::= <<
+								typeInitMap ::= [
+								"int":"0",
+								"float":"0.0",
+								"boolean":"false",
+								 default:"null"
+								]
+								test1(emps,apples,p1) ::= <<
 
-				i = <typeInitMap.int>;
-				b = <typeInitMap.boolean>;
+								i = <typeInitMap.int>;
+								b = <typeInitMap.boolean>;
 
-<p1>
-				>>
-				""";
+				<p1>
+								>>
+								""";
 
-		testSTGroup(g,"777");
+		testSTGroup(g, "777");
 	}
 
 	@Override

@@ -14,8 +14,6 @@
 
 	<properties>
 		<testProp2>accord</testProp2>
-		<maven.compiler.source>20</maven.compiler.source>
-		<maven.compiler.target>20</maven.compiler.target>
 	</properties>
 
 	<dependencies>
@@ -64,16 +62,15 @@
 		</dependency>
 
 
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-			</dependency>
-			
-			<dependency>
-				<groupId>commons-io</groupId>
-				<artifactId>commons-io</artifactId>
-			</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
 
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
 
 
 	</dependencies>
@@ -110,6 +107,64 @@
 					</archive>
 				</configuration>
 			</plugin>
+
+
+			<!-- 
+						<source>src/main/java/ru/tet/aux</source>
+						
+						
+						генерация исходников наоснове user.xsd
+					  global.xjb - global JAXB binding that overrides the default binding rules
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>xjc</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+					</execution>
+
+				</executions>
+				<configuration>
+					<xjbSources>
+						<xjbSource>src/main/resources/xmls/global.xjb</xjbSource>
+					</xjbSources>
+					<sources>
+						<source>src/main/resources/xmls/user.xsd</source>
+					</sources>
+					<clearOutputDir>false</clearOutputDir>
+				</configuration>
+			</plugin>
+					-->
+
+
+			<!--
+								<sourceRoot>${project.basedir}/src/main/java</sourceRoot>
+							<targetPackage>ru.tet.aux</targetPackage>
+			<schemaOutputDirectory>${project.build.directory}/generated-sources/xsd</schemaOutputDirectory>
+-->
+
+<!--
+	
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>4.2.0</version>
+
+				<executions>
+					<execution>
+						<id>schemagen</id>
+						<goals>
+							<goal>schemagen</goal>
+						</goals>
+					</execution>
+				</executions>
+
+			</plugin>
+ -->
 
 
 		</plugins>

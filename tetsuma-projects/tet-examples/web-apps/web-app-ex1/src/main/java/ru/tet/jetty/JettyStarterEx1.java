@@ -14,6 +14,9 @@ import ru.tet.jetty.starter.TetJettyServerOptions;
  */
 public class JettyStarterEx1 extends JettyStarter {
 
+	@Override
+		public void init() throws Exception {
+		}
 	
 	public static void main(String[] args) throws Exception {
 		

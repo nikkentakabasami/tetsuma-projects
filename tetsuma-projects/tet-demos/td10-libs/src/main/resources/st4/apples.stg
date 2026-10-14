@@ -1,0 +1,3 @@
+listApplesImported(apples) ::= <<
+%apples:{app | %i%) %app%}; separator="\n"%
+>>

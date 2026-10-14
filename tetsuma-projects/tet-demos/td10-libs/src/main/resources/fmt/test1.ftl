@@ -68,11 +68,6 @@ ${indexOf("foo", x)}
 <#assign user = "Joe">
 ${user} 
 age:${.globals.user.age}  
-		
-  
-  
-  
-   
    
 </body>
 </html>

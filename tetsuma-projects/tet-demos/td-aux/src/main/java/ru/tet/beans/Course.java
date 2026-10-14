@@ -1,10 +1,14 @@
 package ru.tet.beans;
 
+import java.util.Date;
+
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import ru.tet.aux.DateAdapter;
 
 /**
  * Для тестирования JAXB
@@ -15,14 +19,23 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Course {
-	@XmlAttribute
-	private int id;
-	@XmlElement(namespace = "http://packt.jee.eclipse.jaxb.example")
-	private String name;
-	private int credits;
-	@XmlElement(name = "course_teacher")
-	private Teacher teacher;
-
+	
+	public static final String NS2 = "http://packt.jee.jaxb.example";
+	
+	@XmlAttribute(namespace = NS2)
+	int id;
+	
+	@XmlElement(namespace = NS2)
+	String name;
+	
+	int credits;
+	
+	@XmlElement(name = "course_teacher", namespace = NS2)
+	Teacher teacher;
+	
+	@XmlJavaTypeAdapter(DateAdapter.class)
+	Date entryDate;
+	
 	public Course() {
 	}
 
@@ -30,6 +43,7 @@ public class Course {
 		this.id = id;
 		this.name = name;
 		this.credits = credits;
+		this.entryDate = new Date();
 	}
 	
 	public static Course makeSampleBean() {

@@ -1,4 +1,4 @@
-package ru.tet.java.beans;
+package ru.tet.xml;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;

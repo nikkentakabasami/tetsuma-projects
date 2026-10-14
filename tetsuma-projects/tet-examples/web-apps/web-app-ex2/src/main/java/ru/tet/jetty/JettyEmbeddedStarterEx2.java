@@ -15,6 +15,12 @@ import ru.tet.jetty.starter.TetJettyServerOptions;
  */
 public class JettyEmbeddedStarterEx2 extends JettyStarter {
 
+	@Override
+		public void init() throws Exception {
+			// TODO Auto-generated method stub
+			
+		}
+	
 	
 	public static void main(String[] args) throws Exception {
 		

@@ -1,8 +1,6 @@
 package ru.tet.templating;
 
 import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,29 +23,19 @@ public class D_freemarker extends DemoBase {
 
 	Configuration cfg;
 	
-	class IndexOfMethod implements TemplateMethodModelEx {
 
-		public TemplateModel exec(List args) throws TemplateModelException {
-			if (args.size() != 2) {
-				throw new TemplateModelException("Wrong arguments");
-			}
-			SimpleScalar str = (SimpleScalar) args.get(1);
-			SimpleScalar ss = (SimpleScalar) args.get(0);
-
-			return new SimpleNumber(str.getAsString().indexOf(ss.getAsString()));
-
-		}
-	}
 	
 	@Override
 	protected void doInit() throws Exception {
 		options().hlComments = false;
 		
 		cfg = new Configuration(Configuration.VERSION_2_3_27);
-		
+
+		//загрузка шаблонов из classpath
 		ClassTemplateLoader tl = new ClassTemplateLoader(getClass().getClassLoader(), "/fmt");
 		cfg.setTemplateLoader(tl);
 
+		//загрузка шаблонов из файловой системы
 		//		cfg.setDirectoryForTemplateLoading(new File("path/to/templates"));
 		
 		cfg.setDefaultEncoding("UTF-8");
@@ -62,6 +50,7 @@ public class D_freemarker extends DemoBase {
 		/*
 		 */
 
+		//записываем данные в модель
 		Map<String, Object> root = new HashMap<>();
 		root.put("title", "ingaritsu");
 
@@ -125,4 +114,19 @@ public class D_freemarker extends DemoBase {
 		DemoBase.run(D_freemarker.class);
 	}
 
+	
+	class IndexOfMethod implements TemplateMethodModelEx {
+
+		public TemplateModel exec(List args) throws TemplateModelException {
+			if (args.size() != 2) {
+				throw new TemplateModelException("Wrong arguments");
+			}
+			SimpleScalar str = (SimpleScalar) args.get(1);
+			SimpleScalar ss = (SimpleScalar) args.get(0);
+
+			return new SimpleNumber(str.getAsString().indexOf(ss.getAsString()));
+
+		}
+	}	
+	
 }

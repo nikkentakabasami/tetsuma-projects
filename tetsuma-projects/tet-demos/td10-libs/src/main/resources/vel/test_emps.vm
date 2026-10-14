@@ -1,0 +1,33 @@
+## my test macros
+#macro( department $emp )
+<span class="red"> department of ${emp.department}</span>
+#end
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>$name</title>
+</head>
+<body>
+
+<ul>
+#foreach( $emp in $employees )
+  <li>$foreach.count) ${emp.id}: ${emp.firstName}
+  #department( $emp )
+  #if( $emp.age>25 )(is old!)#end
+  
+  ## последняя ли это итерация
+  #if( $foreach.hasNext ),#end
+  
+  ## можно выйти через  break
+#if( $foreach.count > 2 )
+   #break
+#end  
+  
+  
+#end
+</ul>
+   
+</body>
+</html>

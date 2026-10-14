@@ -10,8 +10,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<skipTests>true</skipTests>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
+		<maven.compiler.source>20</maven.compiler.source>
+		<maven.compiler.target>20</maven.compiler.target>
 		<lombok.version>1.18.30</lombok.version>
 		<jetty.version>12.1.7</jetty.version>
 		<slf4j.version>2.0.17</slf4j.version>
@@ -88,12 +88,11 @@
 				<version>${log4j2.version}</version>
 			</dependency>
 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
 
 
 			<!-- servlet api -->
@@ -241,14 +240,35 @@
 					<artifactId>maven-war-plugin</artifactId>
 					<version>3.4.0</version>
 				</plugin>
-				
-			<plugin>
-				<groupId>org.eclipse.jetty.ee10</groupId>
-				<artifactId>jetty-ee10-maven-plugin</artifactId>
-				<version>12.0.19</version>
-			</plugin>				
-				
-				
+
+				<plugin>
+					<groupId>org.eclipse.jetty.ee10</groupId>
+					<artifactId>jetty-ee10-maven-plugin</artifactId>
+					<version>12.0.19</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.13.0</version>
+					<configuration>
+					    <!-- чтобы работали классы вроде StructuredTaskScope
+					    
+						<compilerArgs>
+							- - enable-preview
+						</compilerArgs>
+					     -->
+						<!-- в 23 версии появились проблемы с ломбуком. Вроде это решение работает -->
+						<annotationProcessorPaths>
+							<path>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+								<version>${lombok.version}</version>
+							</path>
+						</annotationProcessorPaths>
+					</configuration>
+				</plugin>
+
 
 			</plugins>
 		</pluginManagement>
