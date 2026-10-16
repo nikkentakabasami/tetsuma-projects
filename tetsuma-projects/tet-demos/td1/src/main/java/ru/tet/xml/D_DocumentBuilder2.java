@@ -13,10 +13,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import ru.tet.aux.swing.DemoBase;
-import ru.tet.beans.scr.ScreenDom;
-import ru.tet.beans.scr.ScreenDom.AttributeDom;
-import ru.tet.beans.scr.ScreenDom.ButtonDom;
-import ru.tet.beans.scr.ScreenDom.DDom;
+import ru.tet.jaxbmodels.ScreenDom;
+import ru.tet.jaxbmodels.ScreenDom.AttributeDom;
+import ru.tet.jaxbmodels.ScreenDom.ButtonDom;
+import ru.tet.jaxbmodels.ScreenDom.DDom;
 
 public class D_DocumentBuilder2 extends DemoBase {
 

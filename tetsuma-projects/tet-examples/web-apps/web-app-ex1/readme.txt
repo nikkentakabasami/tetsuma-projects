@@ -7,7 +7,7 @@ jetty:run
 
 либо через
 
-JettyEmbeddedStarter1
+JettyStarterEx1
 
 ------------------------------
 

@@ -5,7 +5,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 
 import ru.tet.aux.swing.DemoBase;
-import ru.tet.beans.Course;
+import ru.tet.jaxbmodels.Course;
 
 public class D_BeanInfo extends DemoBase {
 

@@ -1,4 +1,4 @@
-package ru.tet.aux;
+package ru.tet.jaxbmodels;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
@@ -21,14 +21,14 @@ public class Cat {
 
 	@XmlTransient
 	Integer id;
-	
-  @XmlElement(name = "catname")
-  String name;
 
-  @XmlAttribute
-  int age;
+	@XmlElement(name = "catname")
+	String name;
 
-  @XmlAttribute(name = "w")
-  int weight;
+	@XmlAttribute
+	int age;
+
+	@XmlAttribute(name = "w")
+	int weight;
 
 }

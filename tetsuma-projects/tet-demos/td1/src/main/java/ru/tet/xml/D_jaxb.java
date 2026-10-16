@@ -10,9 +10,10 @@ import java.util.stream.Collectors;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
-import ru.tet.aux.Cat;
 import ru.tet.aux.swing.DemoBase;
-import ru.tet.beans.scr.Screen;
+import ru.tet.beans.Teacher;
+import ru.tet.jaxbmodels.Course;
+import ru.tet.jaxbmodels.Screen;
 
 public class D_jaxb extends DemoBase {
 
@@ -60,8 +61,28 @@ public class D_jaxb extends DemoBase {
 
 	public void test4() throws Exception {
 		/*
-		
+		eclipselink
+		Нифига не работает!
 		 */
+
+		System.setProperty("javax.xml.bind.context.factory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
+
+		Course course = new Course(1, "Course-1", 5);
+		course.setTeacher(new Teacher(1, "Teacher-1"));
+
+		JAXBContext context = JAXBContext.newInstance(Course.class);
+		Marshaller marshaller = context.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		//marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
+		//	marshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+		marshaller.setProperty("eclipselink.media-type", "application/json");
+
+		StringWriter stringWriter = new StringWriter();
+		marshaller.marshal(course, stringWriter);
+		String courseJson = stringWriter.getBuffer().toString();
+		stringWriter.close();
+		log2(courseJson);
+
 	}
 
 	@Override

@@ -109,61 +109,56 @@
 			</plugin>
 
 
-			<!-- 
-						<source>src/main/java/ru/tet/aux</source>
-						
-						
-						генерация исходников наоснове user.xsd
-					  global.xjb - global JAXB binding that overrides the default binding rules
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jaxb2-maven-plugin</artifactId>
-				<version>3.1.0</version>
-				<executions>
-					<execution>
-						<id>xjc</id>
-						<goals>
-							<goal>xjc</goal>
-						</goals>
-					</execution>
-
-				</executions>
-				<configuration>
-					<xjbSources>
-						<xjbSource>src/main/resources/xmls/global.xjb</xjbSource>
-					</xjbSources>
-					<sources>
-						<source>src/main/resources/xmls/user.xsd</source>
-					</sources>
-					<clearOutputDir>false</clearOutputDir>
-				</configuration>
-			</plugin>
-					-->
-
-
-			<!--
-								<sourceRoot>${project.basedir}/src/main/java</sourceRoot>
-							<targetPackage>ru.tet.aux</targetPackage>
-			<schemaOutputDirectory>${project.build.directory}/generated-sources/xsd</schemaOutputDirectory>
--->
-
-<!--
-	
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jaxb2-maven-plugin</artifactId>
 				<version>4.2.0</version>
 
 				<executions>
+
+					<!-- генерация исходников наоснове user.xsd -->
+					<execution>
+						<id>xjc</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/resources/xmls/user.xsd</source>
+							</sources>
+							<outputDirectory>
+								${project.build.directory}/generated-sources/jaxb</outputDirectory>
+						</configuration>
+					</execution>
+
+					<!-- генерация xsd на основе класса Cat -->
 					<execution>
 						<id>schemagen</id>
 						<goals>
 							<goal>schemagen</goal>
 						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/java/ru/tet/jaxbmodels</source>
+							</sources>
+							<outputDirectory>
+								${project.build.directory}/generated-resources/schemagen</outputDirectory>
+						</configuration>
 					</execution>
+
+
 				</executions>
 
+				<configuration>
+					<!-- global.xjb - переопределяет стандартные правила преобразования-->
+					<xjbSources>
+						<xjbSource>src/main/resources/xmls/global.xjb</xjbSource>
+					</xjbSources>
+				</configuration>
+
+
 			</plugin>
+			<!--
  -->
 
 

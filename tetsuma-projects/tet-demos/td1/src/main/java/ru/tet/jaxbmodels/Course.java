@@ -1,4 +1,4 @@
-package ru.tet.beans;
+package ru.tet.jaxbmodels;
 
 import java.util.Date;
 
@@ -9,6 +9,7 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import ru.tet.aux.DateAdapter;
+import ru.tet.beans.Teacher;
 
 /**
  * Для тестирования JAXB

@@ -8,9 +8,9 @@ import javax.xml.transform.stream.StreamSource;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
-import ru.tet.aux.Cat;
 import ru.tet.aux.swing.DemoBase;
-import ru.tet.beans.Course;
+import ru.tet.jaxbmodels.Cat;
+import ru.tet.jaxbmodels.Course;
 
 public class D_jaxb2 extends DemoBase {
 

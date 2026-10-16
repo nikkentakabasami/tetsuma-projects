@@ -1,4 +1,4 @@
-package ru.tet.beans.scr;
+package ru.tet.jaxbmodels;
 
 import java.util.ArrayList;
 import java.util.HashMap;
