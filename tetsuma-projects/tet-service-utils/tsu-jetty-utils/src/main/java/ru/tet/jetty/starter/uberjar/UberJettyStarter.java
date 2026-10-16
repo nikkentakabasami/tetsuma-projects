@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
  * Основа для классов, запускающих веб-проект через jetty embedded.
  * 
  */
-public abstract class JettyStarter {
+public abstract class UberJettyStarter {
 
 	public static final String PROJECTS_DIR_NAME = "tetsuma-projects";
 	public static final String JS_LIBS_DIR_NAME = "tet-js-libs";
@@ -18,15 +18,15 @@ public abstract class JettyStarter {
 	static Logger logger = LogManager.getLogger();
 	
 	
-	protected TetJettyServer server;
-	protected TetJettyOptions options;
+	protected UberJettyServer server;
+	protected UberJettyOptions options;
 	
 //	boolean initiated;
 	
-	public JettyStarter() {
+	public UberJettyStarter() {
 		
-		options = new TetJettyOptions();
-		server = new TetJettyServer();
+		options = new UberJettyOptions();
+		server = new UberJettyServer();
 		
 		
 	}

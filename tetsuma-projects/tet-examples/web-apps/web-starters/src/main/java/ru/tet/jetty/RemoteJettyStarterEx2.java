@@ -13,7 +13,7 @@ import ru.tet.jetty.starter.TetJettyServerOptions;
  * Запуск через jetty embedded (С использованием класса TetJettyServer)
  * 
  */
-public class JettyEmbeddedStarterEx2 extends JettyStarter {
+public class RemoteJettyStarterEx2 extends JettyStarter {
 
 	@Override
 		public void init() throws Exception {
@@ -28,12 +28,16 @@ public class JettyEmbeddedStarterEx2 extends JettyStarter {
 		options.setPort(8080);
 		options.setContextPath("/webapp2");
 
+		//подключаем веб-приложение
+		options.setWebAppProjectPath("../web-app-ex2");
+		options.setWebAppProjectFinalName("webapp2");
+		
 		
 		//подключаем дополнительные статические ресурсы
-		options.addAdditionalStatic("/static1/*", Path.of("../web-static-roots/src/main/resources/static-root1/"));
+//		options.addAdditionalStatic("/static1/*", Path.of("../web-static-roots/src/main/resources/static-root1/"));
 
 		//по умолчанию будет подключён по пути: /static-root2/*
-		options.addAdditionalStatic(Path.of("../web-static-roots/src/main/resources/static-root2/"));
+//		options.addAdditionalStatic(Path.of("../web-static-roots/src/main/resources/static-root2/"));
 		
 		TetJettyServer main = new TetJettyServer();
 		

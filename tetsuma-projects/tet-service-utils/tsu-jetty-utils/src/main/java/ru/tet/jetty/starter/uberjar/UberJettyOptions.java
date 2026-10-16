@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class TetJettyOptions {
+public class UberJettyOptions {
 
 	int port = 8080;
 	

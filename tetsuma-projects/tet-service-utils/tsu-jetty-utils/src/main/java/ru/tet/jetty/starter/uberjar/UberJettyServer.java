@@ -26,7 +26,7 @@ import org.eclipse.jetty.util.resource.Resources;
  * 
  * 
  */
-public class TetJettyServer {
+public class UberJettyServer {
 	static Logger logger = LogManager.getLogger();
 	
 	Server server;
@@ -34,12 +34,12 @@ public class TetJettyServer {
 
 	ResourceFactory resourceFactory;
 
-	TetJettyOptions options;
+	UberJettyOptions options;
 
 	//Handler-ы этого сервера. Можно добавлять новые, если надо.
 	Handler.Sequence handlers;
 	
-	public void init(TetJettyOptions options) throws Exception {
+	public void init(UberJettyOptions options) throws Exception {
 		this.options = options;
 
 //		logger.debug("options: "+options.getAdditionalStaticAsString());

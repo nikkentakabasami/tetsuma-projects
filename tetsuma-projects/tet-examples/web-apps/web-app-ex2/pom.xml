@@ -47,7 +47,6 @@
 		<dependency>
 			<groupId>ru.tetsu</groupId>
 			<artifactId>tsu-jetty-utils</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 
 	</dependencies>
@@ -62,7 +61,6 @@
 			<plugin>
 				<groupId>org.eclipse.jetty.ee10</groupId>
 				<artifactId>jetty-ee10-maven-plugin</artifactId>
-				<version>12.0.19</version>
 				<configuration>
 					<modules>ee10-plus,ee10-jsp</modules>
 					<httpConnector>

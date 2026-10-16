@@ -3,13 +3,13 @@ package ru.tet.jetty;
 import javax.naming.NamingException;
 
 import ru.tet.beans.UserDTO;
-import ru.tet.jetty.starter.uberjar.JettyStarter;
+import ru.tet.jetty.starter.uberjar.UberJettyStarter;
 
 /**
  * Запуск через jetty embedded (С использованием класса TetJettyServer)
  * 
  */
-public class JettyStarter52 extends JettyStarter {
+public class JettyStarter52 extends UberJettyStarter {
 
 	@Override
 	public void init() throws Exception {

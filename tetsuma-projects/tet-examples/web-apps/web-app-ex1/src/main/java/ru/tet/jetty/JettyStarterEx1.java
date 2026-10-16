@@ -26,8 +26,8 @@ public class JettyStarterEx1 extends JettyStarter {
 		options.setContextPath("/webapp1");
 
 		//подключаем веб-приложение
-//		options.setWebAppProjectPath("../../web-apps/web-app-ex1");
-//		options.setWebAppProjectFinalName("webapp1");
+		options.setWebAppProjectPath("../web-app-ex1");
+		options.setWebAppProjectFinalName("webapp1");
 		
 		//подключаем дополнительные статические ресурсы
 //		options.getFileSystemBaseResources().add(Path.of("../../web-apps/web-static-roots/src/webapps/alt-root/"));

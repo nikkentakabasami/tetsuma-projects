@@ -17,12 +17,15 @@
 		<module>web-jslibs</module>
 		<module>web-app-ex2</module>
 		<module>web-static-roots</module>
+		<module>web-starters</module>
 	</modules>
 
 
 	<!-- 
 		делаем все jetty библиотеки provided, чтобы они не попадали в конечную сборку.
 		они нужны только для запуска в режиме отладки.
+    Иначе при запуске веб-приложения через jetty-plugin - могут выскочить ошибки с несовместимостью версий классов.
+		
 	  -->
 	<dependencyManagement>
 		<dependencies>
@@ -31,6 +34,7 @@
 			<groupId>ru.tetsu</groupId>
 			<artifactId>tsu-jetty-utils</artifactId>
 			<version>${project.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 			<dependency>

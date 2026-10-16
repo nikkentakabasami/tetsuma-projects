@@ -69,23 +69,11 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
 
-
 		<!-- jetty -->
 		<dependency>
 			<groupId>ru.tetsu</groupId>
 			<artifactId>tsu-jetty-utils</artifactId>
 		</dependency>
-		
-		<!--
-			
-		<dependency>
-			<groupId>org.eclipse.jetty.ee10</groupId>
-			<artifactId>jetty-ee10-annotations</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		 -->
-
-
 
 
 	</dependencies>
